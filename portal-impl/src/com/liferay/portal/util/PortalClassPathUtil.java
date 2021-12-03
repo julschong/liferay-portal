@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.URLCodec;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 import java.lang.reflect.Method;
 
@@ -37,10 +38,12 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -117,12 +120,10 @@ public class PortalClassPathUtil {
 			_buildClassPath(
 				classLoader, CentralizedThreadLocal.class.getName()));
 
-		String bootstrapClassPath = sb.toString();
-
 		sb.append(File.pathSeparator);
 		sb.append(
 			_buildClassPath(
-				classLoader,
+				classLoader, null,
 				"com.liferay.shielded.container.ShieldedContainerInitializer"));
 
 		if (servletContext != null) {
@@ -136,7 +137,11 @@ public class PortalClassPathUtil {
 		ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
 		builder.setArguments(_processArgs);
-		builder.setBootstrapClassPath(bootstrapClassPath);
+
+		builder.setBootstrapClassPath(_buildClassPath(
+			classLoader, PortalClassPathUtil::_filterPetraJar,
+			CentralizedThreadLocal.class.getName()));
+
 		builder.setReactClassLoader(classLoader);
 		builder.setRuntimeClassPath(portalClassPath);
 
@@ -161,15 +166,48 @@ public class PortalClassPathUtil {
 	}
 
 	private static String _buildClassPath(
-		ClassLoader classLoader, String... classNames) {
+		ClassLoader classLoader, FileFilter fileFilter, String... classNames) {
+
+		StringBundler sb = new StringBundler();
+
+		for (String className : classNames) {
+			if (fileFilter == null) {
+				sb.append(_buildClassPath(classLoader, className));
+			}
+			else {
+				sb.append(_buildClassPath(classLoader, className, fileFilter));
+			}
+
+			sb.append(File.pathSeparator);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		return sb.toString();
+	}
+
+	private static String _buildClassPath(
+		ClassLoader classLoader, String className, FileFilter... fileFilters) {
 
 		Set<File> fileSet = new HashSet<>();
 
-		for (String className : classNames) {
-			File[] files = _listClassPathFiles(classLoader, className);
+		File[] filesList = _listClassPathFiles(classLoader, className);
 
-			if (files != null) {
-				Collections.addAll(fileSet, files);
+		if (filesList == null) {
+			return "";
+		}
+
+		for (File file : filesList) {
+			boolean accepted = true;
+
+			for (FileFilter fileFilter : fileFilters) {
+				if (!fileFilter.accept(file)) {
+					accepted = false;
+				}
+			}
+
+			if (accepted) {
+				fileSet.add(file);
 			}
 		}
 
@@ -187,6 +225,36 @@ public class PortalClassPathUtil {
 		sb.setIndex(sb.index() - 1);
 
 		return sb.toString();
+	}
+
+	private static boolean _filterPetraJar(File file) {
+		String filePath = file.getAbsolutePath();
+
+		if (filePath.contains("petra")) {
+			try (JarFile jarFile = new JarFile(new File(filePath))) {
+				Manifest manifest = jarFile.getManifest();
+
+				if (manifest == null) {
+					return false;
+				}
+
+				Attributes attributes = manifest.getMainAttributes();
+
+				if (attributes.containsKey("Liferay-Releng-App-Title")) {
+					return false;
+				}
+
+				return true;
+			}
+			catch (IOException ioException) {
+				_log.error(
+					"Unable to resolve bootstrap entry: " + file.getName() +
+						" from bundle",
+					ioException);
+			}
+		}
+
+		return false;
 	}
 
 	private static File[] _listClassPathFiles(
