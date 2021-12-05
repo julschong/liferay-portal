@@ -15,10 +15,12 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.model.ColorScheme;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Vilmos Papp
  */
+@ProviderType
 public interface ColorSchemeFactory {
 
 	public ColorScheme getColorScheme();
