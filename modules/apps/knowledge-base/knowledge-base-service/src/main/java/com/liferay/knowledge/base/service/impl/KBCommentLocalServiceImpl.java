@@ -105,7 +105,7 @@ public class KBCommentLocalServiceImpl extends KBCommentLocalServiceBaseImpl {
 
 		// Social
 
-		JSONObject extraDataJSONObject = _jSONFactory.createJSONObject();
+		JSONObject extraDataJSONObject = _jsonFactory.createJSONObject();
 
 		putTitle(extraDataJSONObject, kbComment);
 
@@ -306,7 +306,7 @@ public class KBCommentLocalServiceImpl extends KBCommentLocalServiceBaseImpl {
 
 		// Social
 
-		JSONObject extraDataJSONObject = _jSONFactory.createJSONObject();
+		JSONObject extraDataJSONObject = _jsonFactory.createJSONObject();
 
 		putTitle(extraDataJSONObject, kbComment);
 
@@ -553,7 +553,7 @@ public class KBCommentLocalServiceImpl extends KBCommentLocalServiceBaseImpl {
 	private ConfigurationProvider _configurationProvider;
 
 	@Reference
-	private JSONFactory _jSONFactory;
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private KBArticleLocalService _kbArticleLocalService;

@@ -82,8 +82,8 @@ public class ObjectDefinitionsActionsDisplayContext {
 		_ddmFormRenderer = ddmFormRenderer;
 		_objectActionExecutorRegistry = objectActionExecutorRegistry;
 		_objectActionTriggerRegistry = objectActionTriggerRegistry;
-		_objectDefinitionModelResourcePermission =
-			objectDefinitionModelResourcePermission;
+		_objectDefinitionModelResourcePermission =			objectDefinitionModelResourcePermission;
+
 		_jsonFactory = jsonFactory;
 
 		_objectRequestHelper = new ObjectRequestHelper(httpServletRequest);
