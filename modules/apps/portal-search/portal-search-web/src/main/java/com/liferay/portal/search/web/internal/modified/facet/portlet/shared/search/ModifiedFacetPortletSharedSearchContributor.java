@@ -16,7 +16,6 @@ package com.liferay.portal.search.web.internal.modified.facet.portlet.shared.sea
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
@@ -67,7 +66,7 @@ public class ModifiedFacetPortletSharedSearchContributor
 
 		ModifiedFacetBuilder modifiedFacetBuilder = new ModifiedFacetBuilder(
 			modifiedFacetFactory, getCalendarFactory(), getDateFormatFactory(),
-			getJSONFactory());
+			jsonFactory);
 
 		modifiedFacetBuilder.setRangesJSONArray(
 			replaceAliases(
@@ -125,29 +124,20 @@ public class ModifiedFacetPortletSharedSearchContributor
 		return dateRangeFactory;
 	}
 
-	protected JSONFactory getJSONFactory() {
-
-		// See LPS-72507 and LPS-76500
-
-		if (jsonFactory != null) {
-			return jsonFactory;
-		}
-
-		return JSONFactoryUtil.getJSONFactory();
-	}
-
 	protected JSONArray replaceAliases(JSONArray rangesJSONArray) {
 		DateRangeFactory dateRangeFactory = getDateRangeFactory();
 
 		CalendarFactory calendarFactory = getCalendarFactory();
 
 		return dateRangeFactory.replaceAliases(
-			rangesJSONArray, calendarFactory.getCalendar(), getJSONFactory());
+			rangesJSONArray, calendarFactory.getCalendar(), jsonFactory);
 	}
 
 	protected CalendarFactory calendarFactory;
 	protected DateFormatFactory dateFormatFactory;
 	protected DateRangeFactory dateRangeFactory;
+
+	@Reference
 	protected JSONFactory jsonFactory;
 
 	@Reference

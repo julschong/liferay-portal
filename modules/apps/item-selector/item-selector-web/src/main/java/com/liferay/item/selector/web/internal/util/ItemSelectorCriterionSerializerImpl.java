@@ -28,7 +28,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONContext;
 import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONDeserializerTransformer;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.json.JSONTransformer;
 import com.liferay.portal.kernel.log.Log;
@@ -66,7 +66,7 @@ public class ItemSelectorCriterionSerializerImpl
 		Class<T> itemSelectorCriterionClass, String json) {
 
 		JSONDeserializer<T> jsonDeserializer =
-			JSONFactoryUtil.createJSONDeserializer();
+			jsonFactory.createJSONDeserializer();
 
 		jsonDeserializer.transform(
 			_desiredItemSelectorReturnTypesJSONDeserializerTransformer,
@@ -77,7 +77,7 @@ public class ItemSelectorCriterionSerializerImpl
 
 	@Override
 	public String serialize(ItemSelectorCriterion itemSelectorCriterion) {
-		JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
+		JSONSerializer jsonSerializer = jsonFactory.createJSONSerializer();
 
 		jsonSerializer.transform(
 			_desiredItemSelectorReturnTypesJSONTransformer,
@@ -157,6 +157,9 @@ public class ItemSelectorCriterionSerializerImpl
 		_serviceTrackerItemSelectorView.close();
 		_serviceTrackerMap.close();
 	}
+
+	@Reference
+	protected JSONFactory jsonFactory;
 
 	private static final String[] _EXCLUDED_FIELD_NAMES = {
 		"availableItemSelectorReturnTypes", "class"

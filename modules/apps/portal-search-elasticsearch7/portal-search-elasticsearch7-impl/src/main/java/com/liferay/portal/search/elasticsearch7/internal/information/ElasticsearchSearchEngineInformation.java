@@ -16,7 +16,7 @@ package com.liferay.portal.search.elasticsearch7.internal.information;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -336,6 +336,9 @@ public class ElasticsearchSearchEngineInformation
 	protected ElasticsearchSearchEngine elasticsearchSearchEngine;
 
 	@Reference
+	protected JSONFactory jsonFactory;
+
+	@Reference
 	protected NodeInformationBuilderFactory nodeInformationBuilderFactory;
 
 	@Reference
@@ -361,7 +364,7 @@ public class ElasticsearchSearchEngineInformation
 
 		String responseBody = EntityUtils.toString(response.getEntity());
 
-		JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(
+		JSONObject responseJSONObject = jsonFactory.createJSONObject(
 			responseBody);
 
 		String clusterName = GetterUtil.getString(

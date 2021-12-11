@@ -15,7 +15,7 @@
 package com.liferay.portal.workflow.task.web.internal.notifications;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.notifications.BaseUserNotificationHandler;
@@ -59,7 +59,7 @@ public class WorkflowTaskUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+		JSONObject jsonObject = jsonFactory.createJSONObject(
 			userNotificationEvent.getPayload());
 
 		long workflowTaskId = jsonObject.getLong("workflowTaskId");
@@ -85,7 +85,7 @@ public class WorkflowTaskUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+		JSONObject jsonObject = jsonFactory.createJSONObject(
 			userNotificationEvent.getPayload());
 
 		WorkflowHandler<?> workflowHandler =
@@ -120,6 +120,9 @@ public class WorkflowTaskUserNotificationHandler
 
 		_userNotificationEventLocalService = userNotificationEventLocalService;
 	}
+
+	@Reference
+	protected JSONFactory jsonFactory;
 
 	private WorkflowTask _fetchWorkflowTask(
 			long workflowTaskId, ServiceContext serviceContext)

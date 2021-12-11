@@ -16,7 +16,6 @@ package com.liferay.portal.search.web.internal.facet;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -59,7 +58,7 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 
 		facetConfiguration.setClassName(getFacetClassName());
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		for (int i = 0; i < _LABELS.length; i++) {
 			jsonArray.put(
@@ -117,7 +116,7 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 
 	@Override
 	public JSONObject getJSONData(ActionRequest actionRequest) {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		String[] rangesIndexes = StringUtil.split(
 			ParamUtil.getString(
@@ -191,17 +190,6 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 		return modifiedFacetFactory;
 	}
 
-	protected JSONFactory getJSONFactory() {
-
-		// See LPS-72507 and LPS-76500
-
-		if (jsonFactory != null) {
-			return jsonFactory;
-		}
-
-		return JSONFactoryUtil.getJSONFactory();
-	}
-
 	protected JSONArray replaceAliases(JSONArray rangesJSONArray) {
 		DateRangeFactory dateRangeFactory = new DateRangeFactory(
 			getDateFormatFactory());
@@ -209,11 +197,13 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 		CalendarFactory calendarFactory = getCalendarFactory();
 
 		return dateRangeFactory.replaceAliases(
-			rangesJSONArray, calendarFactory.getCalendar(), getJSONFactory());
+			rangesJSONArray, calendarFactory.getCalendar(), jsonFactory);
 	}
 
 	protected CalendarFactory calendarFactory;
 	protected DateFormatFactory dateFormatFactory;
+
+	@Reference
 	protected JSONFactory jsonFactory;
 
 	@Reference

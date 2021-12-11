@@ -16,7 +16,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -70,7 +70,7 @@ public class StatsClusterRequestExecutorImpl
 
 			String responseBody = EntityUtils.toString(response.getEntity());
 
-			JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(
+			JSONObject responseJSONObject = jsonFactory.createJSONObject(
 				responseBody);
 
 			String status = GetterUtil.getString(
@@ -103,6 +103,9 @@ public class StatsClusterRequestExecutorImpl
 
 		_elasticsearchClientResolver = elasticsearchClientResolver;
 	}
+
+	@Reference
+	protected JSONFactory jsonFactory;
 
 	private ClusterHealthStatusTranslator _clusterHealthStatusTranslator;
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
