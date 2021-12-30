@@ -73,8 +73,8 @@ public class AssetCategoryLayoutDisplayPageMultiSelectionProvider
 
 		Stream<InfoItemReference> stream = infoItemReferences.stream();
 
-		Map<Long, Map<Long, InfoItemReference>> vocabularyIdInfoItemReferences =
-			stream.filter(
+		Map<Long, Map<Long, InfoItemReference>>
+			vocabularyIdInfoItemReferencesMap = stream.filter(
 				infoItemReference ->
 					Objects.equals(
 						getClassName(), infoItemReference.getClassName()) &&
@@ -103,7 +103,7 @@ public class AssetCategoryLayoutDisplayPageMultiSelectionProvider
 
 		for (long vocabularyId : _getOrderedVocabularyIds(themeDisplay)) {
 			Map<Long, InfoItemReference> categoryIdInfoItemReferences =
-				vocabularyIdInfoItemReferences.get(vocabularyId);
+				vocabularyIdInfoItemReferencesMap.get(vocabularyId);
 
 			if (MapUtil.isEmpty(categoryIdInfoItemReferences)) {
 				continue;
@@ -112,7 +112,7 @@ public class AssetCategoryLayoutDisplayPageMultiSelectionProvider
 			Set<Long> categoryIds = categoryIdInfoItemReferences.keySet();
 
 			Map<Long, List<InfoItemReference>>
-				parentCategoryIdInfoItemReferences = new HashMap<>();
+				parentCategoryIdInfoItemReferencesMap = new HashMap<>();
 
 			for (InfoItemReference infoItemReference :
 					categoryIdInfoItemReferences.values()) {
@@ -124,19 +124,22 @@ public class AssetCategoryLayoutDisplayPageMultiSelectionProvider
 				long parentCategoryId = _getNearestAncestorCategoryId(
 					assetCategory, categoryIds);
 
-				if (parentCategoryIdInfoItemReferences.containsKey(
-						parentCategoryId)) {
+				List<InfoItemReference> parentCategoryIdInfoItemReferences =
+					parentCategoryIdInfoItemReferencesMap.get(parentCategoryId);
 
-					continue;
+				if (parentCategoryIdInfoItemReferences == null) {
+					parentCategoryIdInfoItemReferences = new ArrayList<>();
+
+					parentCategoryIdInfoItemReferencesMap.put(
+						parentCategoryId, parentCategoryIdInfoItemReferences);
 				}
 
-				parentCategoryIdInfoItemReferences.put(
-					parentCategoryId, ListUtil.fromArray(infoItemReference));
+				parentCategoryIdInfoItemReferences.add(infoItemReference);
 			}
 
 			hierarchicalInfoItemReferences.addAll(
 				_getHierarchicalInfoItemReferences(
-					parentCategoryIdInfoItemReferences, 0L));
+					parentCategoryIdInfoItemReferencesMap, 0L));
 		}
 
 		return hierarchicalInfoItemReferences;
@@ -159,10 +162,12 @@ public class AssetCategoryLayoutDisplayPageMultiSelectionProvider
 	private List<HierarchicalInfoItemReference>
 		_getHierarchicalInfoItemReferences(
 			Map<Long, List<InfoItemReference>>
-				parentCategoryIdInfoItemReferences,
+				parentCategoryIdInfoItemReferencesMap,
 			long parentCategoryId) {
 
-		if (!parentCategoryIdInfoItemReferences.containsKey(parentCategoryId)) {
+		if (!parentCategoryIdInfoItemReferencesMap.containsKey(
+				parentCategoryId)) {
+
 			return Collections.emptyList();
 		}
 
@@ -170,7 +175,7 @@ public class AssetCategoryLayoutDisplayPageMultiSelectionProvider
 			new ArrayList<>();
 
 		List<InfoItemReference> infoItemReferences = ListUtil.sort(
-			parentCategoryIdInfoItemReferences.get(parentCategoryId),
+			parentCategoryIdInfoItemReferencesMap.get(parentCategoryId),
 			Comparator.comparing(
 				infoItemReference -> {
 					AssetCategory assetCategory =
@@ -189,7 +194,7 @@ public class AssetCategoryLayoutDisplayPageMultiSelectionProvider
 			hierarchicalInfoItemReference.
 				setChildrenHierarchicalInfoItemReferences(
 					_getHierarchicalInfoItemReferences(
-						parentCategoryIdInfoItemReferences,
+						parentCategoryIdInfoItemReferencesMap,
 						_getClassPK(infoItemReference)));
 
 			hierarchicalInfoItemReferences.add(hierarchicalInfoItemReference);
