@@ -57,7 +57,7 @@ import com.liferay.commerce.service.CommerceShippingMethodLocalService;
 import com.liferay.commerce.subscription.CommerceSubscriptionEntryHelperUtil;
 import com.liferay.commerce.util.CommerceShippingHelper;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
@@ -468,7 +468,7 @@ public class CommerceOrderEngineImpl implements CommerceOrderEngine {
 									commerceOrder.getCommerceOrderId(),
 									LocaleUtil.getSiteDefault(), null, null));
 
-							return JSONFactoryUtil.createJSONObject(
+							return _jsonFactory.createJSONObject(
 								object.toString());
 						}
 					).put(
@@ -656,6 +656,9 @@ public class CommerceOrderEngineImpl implements CommerceOrderEngine {
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.exception.UserScreenNameException;
 import com.liferay.portal.kernel.exception.UserSmsException;
 import com.liferay.portal.kernel.exception.WebsiteURLException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -303,7 +303,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 		long[] userIds = StringUtil.split(
 			ParamUtil.getString(resourceRequest, "userIds"), 0L);
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		for (long userId : userIds) {
 			try {
@@ -483,7 +483,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 			actionRequest, "emailAddress");
 		String comments = ParamUtil.getString(actionRequest, "comments");
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = jsonFactory.createJSONObject();
 
 		String message = null;
 
@@ -550,7 +550,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = jsonFactory.createJSONObject();
 
 		try {
 			String fieldGroup = ParamUtil.getString(
@@ -682,7 +682,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 			actionRequest, "socialRequestId");
 		int status = ParamUtil.getInteger(actionRequest, "status");
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = jsonFactory.createJSONObject();
 
 		try {
 			SocialRequest socialRequest =
@@ -767,7 +767,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 		JSONObject contactListJSONObject = getContactsJSONObject(
 			actionRequest, actionResponse);
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		for (long userId : userIds) {
 			jsonArray.put(
@@ -819,7 +819,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 
 		String portletId = portletDisplay.getId();
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		if (filterBy.equals(ContactsConstants.FILTER_BY_DEFAULT) &&
 			!portletId.equals(ContactsPortletKeys.MEMBERS)) {
@@ -1290,6 +1290,9 @@ public class ContactsCenterPortlet extends MVCPortlet {
 
 	@Reference
 	protected EntryLocalService entryLocalService;
+
+	@Reference
+	protected JSONFactory jsonFactory;
 
 	@Reference
 	protected Portal portal;
