@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.URLCodec;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 import java.lang.reflect.Method;
 
@@ -41,6 +42,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -107,23 +111,30 @@ public class PortalClassPathUtil {
 			classLoader = currentThread.getContextClassLoader();
 		}
 
-		StringBundler sb = new StringBundler(8);
+		Set<File> fileSet = _listClassPathFiles(
+			classLoader, ServletException.class.getName(),
+			CentralizedThreadLocal.class.getName(),
+			"com.liferay.shielded.container.ShieldedContainerInitializer");
 
-		sb.append(
-			_buildClassPath(classLoader, ServletException.class.getName()));
+		if (fileSet.isEmpty()) {
+			_log.error("Class path file set cannot be empty");
+		}
 
-		sb.append(File.pathSeparator);
-		sb.append(
-			_buildClassPath(
-				classLoader, CentralizedThreadLocal.class.getName()));
+		StringBundler sb = new StringBundler();
+		StringBundler bootstrapSB = new StringBundler();
 
-		String bootstrapClassPath = sb.toString();
+		for (File file : fileSet) {
+			if (_isPetraJar(file)) {
+				bootstrapSB.append(file.getAbsolutePath());
+				bootstrapSB.append(File.pathSeparator);
+			}
 
-		sb.append(File.pathSeparator);
-		sb.append(
-			_buildClassPath(
-				classLoader,
-				"com.liferay.shielded.container.ShieldedContainerInitializer"));
+			sb.append(file.getAbsolutePath());
+			sb.append(File.pathSeparator);
+		}
+
+		sb.setIndex(sb.length() - 1);
+		bootstrapSB.setIndex(bootstrapSB.length() - 1);
 
 		if (servletContext != null) {
 			sb.append(File.pathSeparator);
@@ -136,7 +147,9 @@ public class PortalClassPathUtil {
 		ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
 		builder.setArguments(_processArgs);
-		builder.setBootstrapClassPath(bootstrapClassPath);
+
+		builder.setBootstrapClassPath(bootstrapSB.toString());
+
 		builder.setReactClassLoader(classLoader);
 		builder.setRuntimeClassPath(portalClassPath);
 
@@ -187,6 +200,36 @@ public class PortalClassPathUtil {
 		sb.setIndex(sb.index() - 1);
 
 		return sb.toString();
+	}
+
+	private static boolean _isPetraJar(File file) {
+		String filePath = file.getAbsolutePath();
+
+		if (filePath.contains("petra")) {
+			try (JarFile jarFile = new JarFile(new File(filePath))) {
+				Manifest manifest = jarFile.getManifest();
+
+				if (manifest == null) {
+					return false;
+				}
+
+				Attributes attributes = manifest.getMainAttributes();
+
+				if (attributes.containsKey("Liferay-Releng-App-Title")) {
+					return false;
+				}
+
+				return true;
+			}
+			catch (IOException ioException) {
+				_log.error(
+					"Unable to resolve bootstrap entry: " + file.getName() +
+						" from bundle",
+					ioException);
+			}
+		}
+
+		return false;
 	}
 
 	private static File[] _listClassPathFiles(
@@ -325,6 +368,22 @@ public class PortalClassPathUtil {
 				}
 
 			});
+	}
+
+	private static Set<File> _listClassPathFiles(
+		ClassLoader classLoader, String... classNames) {
+
+		Set<File> fileSet = new HashSet<>();
+
+		for (String className : classNames) {
+			File[] files = _listClassPathFiles(classLoader, className);
+
+			if (files != null) {
+				Collections.addAll(fileSet, files);
+			}
+		}
+
+		return fileSet;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
