@@ -54,13 +54,18 @@ public class PortalClassPathUtil {
 
 		builder.setArguments(_processArgs);
 
-		String classpath = _buildClassPath(classes);
+		File[] files = _listClassPathFiles(classes);
 
-		classpath = StringBundler.concat(
-			classpath, File.pathSeparator,
-			_portalProcessConfig.getBootstrapClassPath());
+		StringBundler classpathSB = new StringBundler(files.length * 2);
 
-		builder.setBootstrapClassPath(classpath);
+		for (File file : files) {
+			classpathSB.append(file.getAbsolutePath());
+			classpathSB.append(File.pathSeparator);
+		}
+
+		classpathSB.append(_portalProcessConfig.getBootstrapClassPath());
+
+		builder.setBootstrapClassPath(classpathSB.toString());
 
 		builder.setProcessLogConsumer(
 			processLog -> {
@@ -88,7 +93,7 @@ public class PortalClassPathUtil {
 				}
 			});
 		builder.setReactClassLoader(PortalClassLoaderUtil.getClassLoader());
-		builder.setRuntimeClassPath(classpath);
+		builder.setRuntimeClassPath(classpathSB.toString());
 
 		return builder.build();
 	}
@@ -118,13 +123,22 @@ public class PortalClassPathUtil {
 				classNotFoundException);
 		}
 
-		String bootstrapClassPath = _buildClassPath(
-			ServletException.class, CentralizedThreadLocal.class,
+		File[] files = _listClassPathFiles(ServletException.class,
+			CentralizedThreadLocal.class,
 			shieldedContainerInitializerClass);
 
-		StringBundler sb = new StringBundler(4);
+		if (files.length == 0) {
+			_log.error("Class path files cannot be loaded");
+		}
 
-		sb.append(bootstrapClassPath);
+		StringBundler sb = new StringBundler(files.length * 2);
+
+		for (File file : files) {
+			sb.append(file.getAbsolutePath());
+			sb.append(File.pathSeparator);
+		}
+
+		sb.setIndex(sb.index() - 1);
 
 		if (servletContext != null) {
 			sb.append(File.pathSeparator);
@@ -137,30 +151,11 @@ public class PortalClassPathUtil {
 		ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
 		builder.setArguments(_processArgs);
-		builder.setBootstrapClassPath(bootstrapClassPath);
+		builder.setBootstrapClassPath(sb.toString());
 		builder.setReactClassLoader(classLoader);
 		builder.setRuntimeClassPath(portalClassPath);
 
 		_portalProcessConfig = builder.build();
-	}
-
-	private static String _buildClassPath(Class<?>... classes) {
-		File[] files = _listClassPathFiles(classes);
-
-		if (files.length == 0) {
-			return StringPool.BLANK;
-		}
-
-		StringBundler sb = new StringBundler(files.length * 2);
-
-		for (File file : files) {
-			sb.append(file.getAbsolutePath());
-			sb.append(File.pathSeparator);
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		return sb.toString();
 	}
 
 	private static File[] _listClassPathFiles(Class<?> clazz) {
