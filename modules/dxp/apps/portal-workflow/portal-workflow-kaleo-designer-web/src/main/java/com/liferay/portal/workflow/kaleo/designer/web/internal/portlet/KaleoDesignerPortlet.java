@@ -19,7 +19,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -266,7 +266,7 @@ public class KaleoDesignerPortlet extends MVCPortlet {
 
 		String name = ParamUtil.getString(resourceRequest, "name");
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		if (Validator.isNotNull(name)) {
 			ThemeDisplay themeDisplay =
@@ -352,7 +352,7 @@ public class KaleoDesignerPortlet extends MVCPortlet {
 				new RoleNameComparator());
 		}
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		for (Role role : roles) {
 			if (!RolePermissionUtil.contains(
@@ -389,7 +389,7 @@ public class KaleoDesignerPortlet extends MVCPortlet {
 				Collectors.toList()
 			);
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		for (Object supportedScriptLanguage : sortedSupportedScriptLanguages) {
 			jsonArray.put(
@@ -455,7 +455,7 @@ public class KaleoDesignerPortlet extends MVCPortlet {
 			}
 		}
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		for (User user : users) {
 			if (!UserPermissionUtil.contains(
@@ -546,6 +546,9 @@ public class KaleoDesignerPortlet extends MVCPortlet {
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private KaleoDefinitionVersionLocalService

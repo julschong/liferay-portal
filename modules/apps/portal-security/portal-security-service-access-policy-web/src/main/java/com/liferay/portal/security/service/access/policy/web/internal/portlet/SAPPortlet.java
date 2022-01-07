@@ -15,7 +15,7 @@
 package com.liferay.portal.security.service.access.policy.web.internal.portlet;
 
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceActionMapping;
@@ -95,7 +95,7 @@ public class SAPPortlet extends MVCPortlet {
 
 		PrintWriter printWriter = resourceResponse.getWriter();
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		String contextName = ParamUtil.getString(
 			resourceRequest, "contextName");
@@ -175,7 +175,7 @@ public class SAPPortlet extends MVCPortlet {
 	}
 
 	protected JSONArray getServiceClassNamesToContextNamesJSONArray() {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		Set<String> contextNames =
 			_jsonWebServiceActionsManager.getContextNames();
@@ -277,6 +277,9 @@ public class SAPPortlet extends MVCPortlet {
 	protected void setSAPEntryService(SAPEntryService sapEntryService) {
 		_sapEntryService = sapEntryService;
 	}
+
+	@Reference
+	protected JSONFactory jsonFactory;
 
 	private JSONWebServiceActionsManager _jsonWebServiceActionsManager;
 	private SAPEntryService _sapEntryService;
