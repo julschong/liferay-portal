@@ -33,7 +33,7 @@ import com.liferay.dynamic.data.mapping.kernel.StorageFieldRequiredException;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -157,7 +157,7 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 		long nodeId = ParamUtil.getLong(uploadPortletRequest, "nodeId");
 		String fileName = ParamUtil.getString(actionRequest, "fileName");
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		try {
 			_wikiPageService.deleteTempFileEntry(
@@ -427,6 +427,9 @@ public class EditPageAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLValidator _dlValidator;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;
