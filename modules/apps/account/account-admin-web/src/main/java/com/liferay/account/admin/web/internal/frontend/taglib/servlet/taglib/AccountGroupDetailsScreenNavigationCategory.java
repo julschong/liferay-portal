@@ -19,7 +19,7 @@ import com.liferay.account.admin.web.internal.display.AccountGroupDisplay;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 
 import java.io.IOException;
 
@@ -57,7 +57,7 @@ public class AccountGroupDetailsScreenNavigationCategory
 
 	@Override
 	public String getLabel(Locale locale) {
-		return LanguageUtil.get(locale, "details");
+		return language.get(locale, "details");
 	}
 
 	@Override
@@ -79,5 +79,8 @@ public class AccountGroupDetailsScreenNavigationCategory
 
 	@Reference
 	protected JSPRenderer jspRenderer;
+
+	@Reference
+	protected Language language;
 
 }
