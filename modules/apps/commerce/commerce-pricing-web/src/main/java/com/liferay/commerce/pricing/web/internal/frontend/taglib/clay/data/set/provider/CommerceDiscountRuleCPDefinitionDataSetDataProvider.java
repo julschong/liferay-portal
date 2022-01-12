@@ -28,7 +28,7 @@ import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Sort;
@@ -116,7 +116,7 @@ public class CommerceDiscountRuleCPDefinitionDataSetDataProvider
 
 		Locale locale = _portal.getLocale(httpServletRequest);
 
-		String languageId = LanguageUtil.getLanguageId(locale);
+		String languageId = _language.getLanguageId(locale);
 
 		String keywordsLowerCase = StringUtil.toLowerCase(filter.getKeywords());
 
@@ -155,7 +155,7 @@ public class CommerceDiscountRuleCPDefinitionDataSetDataProvider
 		}
 
 		if (cpInstances.size() > 1) {
-			return LanguageUtil.get(locale, "multiple-skus");
+			return _language.get(locale, "multiple-skus");
 		}
 
 		CPInstance cpInstance = cpInstances.get(0);
@@ -171,6 +171,9 @@ public class CommerceDiscountRuleCPDefinitionDataSetDataProvider
 
 	@Reference
 	private CPDefinitionService _cpDefinitionService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

@@ -24,7 +24,7 @@ import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -90,7 +90,7 @@ public class CommercePricingClassDiscountDataSetDataProvider
 					_getDiscountType(commerceDiscount.isUsePercentage()),
 					new LabelField(
 						statusDisplayStyle,
-						LanguageUtil.get(
+						_language.get(
 							httpServletRequest,
 							WorkflowConstants.getStatusLabel(
 								commerceDiscount.getStatus())))));
@@ -122,5 +122,8 @@ public class CommercePricingClassDiscountDataSetDataProvider
 
 	@Reference
 	private CommerceDiscountService _commerceDiscountService;
+
+	@Reference
+	private Language _language;
 
 }

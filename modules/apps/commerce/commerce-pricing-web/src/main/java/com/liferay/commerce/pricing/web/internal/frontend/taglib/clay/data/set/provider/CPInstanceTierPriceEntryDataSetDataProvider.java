@@ -25,7 +25,7 @@ import com.liferay.frontend.taglib.clay.data.Filter;
 import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -83,14 +83,14 @@ public class CPInstanceTierPriceEntryDataSetDataProvider
 
 			Date createDate = commerceTierPriceEntry.getCreateDate();
 
-			String createDateDescription = LanguageUtil.getTimeDescription(
+			String createDateDescription = _language.getTimeDescription(
 				httpServletRequest,
 				System.currentTimeMillis() - createDate.getTime(), true);
 
 			instanceTierPriceEntries.add(
 				new InstanceTierPriceEntry(
 					commerceTierPriceEntry.getCommerceTierPriceEntryId(),
-					LanguageUtil.format(
+					_language.format(
 						httpServletRequest, "x-ago", createDateDescription,
 						false),
 					commerceTierPriceEntry.getMinQuantity(),
@@ -116,6 +116,9 @@ public class CPInstanceTierPriceEntryDataSetDataProvider
 
 	@Reference
 	private CommerceTierPriceEntryService _commerceTierPriceEntryService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

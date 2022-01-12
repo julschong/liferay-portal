@@ -24,7 +24,7 @@ import com.liferay.frontend.taglib.clay.data.set.ClayDataSetActionProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -82,7 +82,7 @@ public class CommerceDiscountRuleCPDefinitionDataSetActionProvider
 						discountRuleCPDefinition.getDiscountRuleId(),
 						httpServletRequest));
 				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, Constants.REMOVE));
+					_language.get(httpServletRequest, Constants.REMOVE));
 			}
 		).build();
 	}
@@ -133,6 +133,9 @@ public class CommerceDiscountRuleCPDefinitionDataSetActionProvider
 
 	@Reference
 	private CommerceDiscountRuleService _commerceDiscountRuleService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

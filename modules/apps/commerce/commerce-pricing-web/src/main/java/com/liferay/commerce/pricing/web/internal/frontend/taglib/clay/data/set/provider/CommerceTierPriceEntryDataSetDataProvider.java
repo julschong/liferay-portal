@@ -28,7 +28,7 @@ import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvide
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -159,10 +159,10 @@ public class CommerceTierPriceEntryDataSetDataProvider
 		HttpServletRequest httpServletRequest) {
 
 		if (commerceTierPriceEntry.isDiscountDiscovery()) {
-			return LanguageUtil.get(httpServletRequest, "no");
+			return _language.get(httpServletRequest, "no");
 		}
 
-		return LanguageUtil.get(httpServletRequest, "yes");
+		return _language.get(httpServletRequest, "yes");
 	}
 
 	@Reference
@@ -170,6 +170,9 @@ public class CommerceTierPriceEntryDataSetDataProvider
 
 	@Reference
 	private CommerceTierPriceEntryService _commerceTierPriceEntryService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;
