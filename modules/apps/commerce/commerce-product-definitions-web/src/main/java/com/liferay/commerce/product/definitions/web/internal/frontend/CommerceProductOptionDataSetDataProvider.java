@@ -26,7 +26,7 @@ import com.liferay.frontend.taglib.clay.data.Filter;
 import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
@@ -89,12 +89,12 @@ public class CommerceProductOptionDataSetDataProvider
 						cpDefinitionOptionRel.getDDMFormFieldTypeName(),
 						locale),
 					cpDefinitionOptionRel.getName(
-						LanguageUtil.getLanguageId(locale)),
+						_language.getLanguageId(locale)),
 					cpDefinitionOptionRel.getPriority(),
-					LanguageUtil.get(
+					_language.get(
 						locale,
 						cpDefinitionOptionRel.isRequired() ? "yes" : "no"),
-					LanguageUtil.get(
+					_language.get(
 						locale,
 						cpDefinitionOptionRel.isSkuContributor() ? "yes" :
 							"no"),
@@ -165,7 +165,7 @@ public class CommerceProductOptionDataSetDataProvider
 				ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 					"content.Language", locale, ddmFormFieldType.getClass());
 
-				return LanguageUtil.get(resourceBundle, label);
+				return _language.get(resourceBundle, label);
 			}
 		}
 		catch (MissingResourceException missingResourceException) {
@@ -188,6 +188,9 @@ public class CommerceProductOptionDataSetDataProvider
 
 	@Reference
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

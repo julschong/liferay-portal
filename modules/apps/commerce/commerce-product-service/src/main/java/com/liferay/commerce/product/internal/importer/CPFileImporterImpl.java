@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -763,13 +763,13 @@ public class CPFileImporterImpl implements CPFileImporter {
 			String value)
 		throws Exception {
 
-		for (Locale locale : LanguageUtil.getAvailableLocales(groupId)) {
+		for (Locale locale : _language.getAvailableLocales(groupId)) {
 			ResourceBundle resourceBundle =
 				resourceBundleLoader.loadResourceBundle(locale);
 
 			portletPreferences.setValue(
-				key + StringPool.UNDERLINE + LanguageUtil.getLanguageId(locale),
-				LanguageUtil.get(resourceBundle, value));
+				key + StringPool.UNDERLINE + _language.getLanguageId(locale),
+				_language.get(resourceBundle, value));
 		}
 	}
 
@@ -1036,6 +1036,9 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

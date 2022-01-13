@@ -19,7 +19,7 @@ import com.liferay.commerce.product.content.render.CPContentRenderer;
 import com.liferay.commerce.product.type.virtual.constants.VirtualCPTypeConstants;
 import com.liferay.commerce.product.type.virtual.util.VirtualCPTypeHelper;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.Locale;
@@ -59,7 +59,7 @@ public class VirtualCPContentRenderer implements CPContentRenderer {
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
 
-		return LanguageUtil.get(resourceBundle, KEY);
+		return _language.get(resourceBundle, KEY);
 	}
 
 	@Override
@@ -79,6 +79,9 @@ public class VirtualCPContentRenderer implements CPContentRenderer {
 
 	@Reference
 	private JSPRenderer _jspRenderer;
+
+	@Reference
+	private Language _language;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.commerce.product.type.virtual.web)"

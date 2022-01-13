@@ -23,7 +23,7 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.frontend.taglib.clay.data.set.filter.BaseRadioClayDataSetFilter;
 import com.liferay.frontend.taglib.clay.data.set.filter.ClayDataSetFilter;
 import com.liferay.frontend.taglib.clay.data.set.filter.RadioClayDataSetFilterItem;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
@@ -67,7 +67,7 @@ public class CommerceOptionFieldTypeClayTableDataSetFilter
 				ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 					"content.Language", locale, ddmFormFieldType.getClass());
 
-				return LanguageUtil.get(resourceBundle, label);
+				return _language.get(resourceBundle, label);
 			}
 		}
 		catch (MissingResourceException missingResourceException) {
@@ -130,5 +130,8 @@ public class CommerceOptionFieldTypeClayTableDataSetFilter
 
 	@Reference
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
+
+	@Reference
+	private Language _language;
 
 }

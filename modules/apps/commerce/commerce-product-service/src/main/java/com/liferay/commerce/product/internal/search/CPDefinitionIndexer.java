@@ -48,7 +48,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexer;
@@ -501,11 +501,11 @@ public class CPDefinitionIndexer extends BaseIndexer<CPDefinition> {
 
 			List<String> optionValueIds = new ArrayList<>();
 
-			Set<Locale> availableLocales = LanguageUtil.getAvailableLocales(
+			Set<Locale> availableLocales = _language.getAvailableLocales(
 				cpDefinitionOptionRel.getGroupId());
 
 			for (Locale locale : availableLocales) {
-				String languageId = LanguageUtil.getLanguageId(locale);
+				String languageId = _language.getLanguageId(locale);
 
 				List<String> localizedOptionValues = new ArrayList<>();
 
@@ -607,11 +607,11 @@ public class CPDefinitionIndexer extends BaseIndexer<CPDefinition> {
 
 			specificationOptionValuesNames.add(specificationOptionValue);
 
-			Set<Locale> availableLocales = LanguageUtil.getAvailableLocales(
+			Set<Locale> availableLocales = _language.getAvailableLocales(
 				cpDefinitionSpecificationOptionValue.getGroupId());
 
 			for (Locale locale : availableLocales) {
-				String languageId = LanguageUtil.getLanguageId(locale);
+				String languageId = _language.getLanguageId(locale);
 
 				String localizedSpecificationOptionValue =
 					cpDefinitionSpecificationOptionValue.getValue(languageId);
@@ -968,5 +968,8 @@ public class CPDefinitionIndexer extends BaseIndexer<CPDefinition> {
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
+
+	@Reference
+	private Language _language;
 
 }
