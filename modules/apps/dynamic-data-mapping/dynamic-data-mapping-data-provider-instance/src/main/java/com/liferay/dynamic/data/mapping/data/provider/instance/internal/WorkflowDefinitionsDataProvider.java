@@ -19,7 +19,7 @@ import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderException;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderRequest;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderResponse;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
@@ -57,7 +57,7 @@ public class WorkflowDefinitionsDataProvider implements DDMDataProvider {
 
 		keyValuePairs.add(
 			new KeyValuePair(
-				"no-workflow", LanguageUtil.get(locale, "no-workflow")));
+				"no-workflow", language.get(locale, "no-workflow")));
 
 		DDMDataProviderResponse.Builder builder =
 			DDMDataProviderResponse.Builder.newBuilder();
@@ -97,6 +97,9 @@ public class WorkflowDefinitionsDataProvider implements DDMDataProvider {
 	public Class<?> getSettings() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Reference
+	protected Language language;
 
 	@Reference(
 		cardinality = ReferenceCardinality.OPTIONAL,

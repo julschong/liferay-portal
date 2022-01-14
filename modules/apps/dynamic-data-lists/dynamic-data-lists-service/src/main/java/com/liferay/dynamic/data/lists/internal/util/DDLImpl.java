@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -396,7 +396,7 @@ public class DDLImpl implements DDL {
 				_log.debug(exception, exception);
 			}
 
-			return LanguageUtil.format(
+			return _language.format(
 				LocaleUtil.getSiteDefault(), "is-temporarily-unavailable",
 				"content");
 		}
@@ -427,7 +427,7 @@ public class DDLImpl implements DDL {
 				_log.debug(exception, exception);
 			}
 
-			return LanguageUtil.format(
+			return _language.format(
 				LocaleUtil.getSiteDefault(), "is-temporarily-unavailable",
 				"content");
 		}
@@ -445,7 +445,7 @@ public class DDLImpl implements DDL {
 
 			return _getLayoutName(
 				groupId, privateLayout, layoutId,
-				LanguageUtil.getLanguageId(locale));
+				_language.getLanguageId(locale));
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -474,6 +474,9 @@ public class DDLImpl implements DDL {
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 	private LayoutService _layoutService;
 	private StorageEngine _storageEngine;

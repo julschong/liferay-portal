@@ -27,7 +27,7 @@ import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItem
 import com.liferay.content.dashboard.web.internal.searcher.ContentDashboardSearchRequestBuilderFactory;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -249,6 +249,9 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 		_contentDashboardSearchRequestBuilderFactory;
 
 	@Reference
+	private Language _language;
+
+	@Reference
 	private Portal _portal;
 
 	@Reference
@@ -292,7 +295,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 		}
 
 		public WorkbookBuilder localizedCell(String value) {
-			return cell(LanguageUtil.get(_locale, value));
+			return cell(_language.get(_locale, value));
 		}
 
 		public WorkbookBuilder row() {
