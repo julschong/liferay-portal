@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.data.provider.instance.internal;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderRequest;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderResponse;
 import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterTracker;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -56,6 +57,8 @@ public class DDMStorageTypesDataProviderTest extends PowerMockito {
 
 		_ddmStorageTypesDataProvider.ddmStorageAdapterTracker =
 			_ddmStorageAdapterTracker;
+
+		_ddmStorageTypesDataProvider.language = LanguageUtil.getLanguage();
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

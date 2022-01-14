@@ -20,6 +20,7 @@ import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderResponse;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
@@ -57,6 +58,9 @@ public class WorkflowDefinitionsDataProviderTest extends PowerMockito {
 
 		_workflowDefinitionsDataProvider =
 			new WorkflowDefinitionsDataProvider();
+
+		ReflectionTestUtil.setFieldValue(
+			_workflowDefinitionsDataProvider, "language", _language);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

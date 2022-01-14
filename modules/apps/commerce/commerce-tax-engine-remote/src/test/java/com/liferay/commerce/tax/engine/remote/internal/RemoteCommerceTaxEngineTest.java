@@ -24,8 +24,10 @@ import com.liferay.commerce.tax.engine.remote.internal.configuration.RemoteComme
 import com.liferay.commerce.tax.model.CommerceTaxMethod;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -70,6 +72,9 @@ public class RemoteCommerceTaxEngineTest {
 		_remoteCommerceTaxEngine = Mockito.spy(new RemoteCommerceTaxEngine());
 
 		_remoteCommerceTaxEngine.activate();
+
+		ReflectionTestUtil.setFieldValue(
+			_remoteCommerceTaxEngine, "_language", LanguageUtil.getLanguage());
 
 		Mockito.doReturn(
 			_getRemoteCommerceTaxConfiguration()

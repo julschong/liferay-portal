@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.InputStream;
@@ -61,6 +62,8 @@ public class DataLayoutTaglibUtilTest {
 			_dataLayoutTaglibUtil, "_jsonFactory", new JSONFactoryImpl());
 		ReflectionTestUtil.setFieldValue(
 			_dataLayoutTaglibUtil, "_portal", _portal);
+		ReflectionTestUtil.setFieldValue(
+			_dataLayoutTaglibUtil, "_language", new LanguageImpl());
 
 		_setUpDataDefinitionResource();
 	}

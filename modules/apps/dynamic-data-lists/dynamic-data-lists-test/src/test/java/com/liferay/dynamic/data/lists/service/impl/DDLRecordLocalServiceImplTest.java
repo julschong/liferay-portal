@@ -16,6 +16,8 @@ package com.liferay.dynamic.data.lists.service.impl;
 
 import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,6 +48,13 @@ public class DDLRecordLocalServiceImplTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		ReflectionTestUtil.setFieldValue(
+			_ddlRecordLocalServiceImpl, "_language",
+			LanguageUtil.getLanguage());
+	}
 
 	@Test
 	public void testToFieldWithBoolean() throws Exception {
@@ -275,7 +285,7 @@ public class DDLRecordLocalServiceImplTest {
 		return fieldValuesList;
 	}
 
-	private final DDLRecordLocalServiceImpl _ddlRecordLocalServiceImpl =
+	private static final DDLRecordLocalServiceImpl _ddlRecordLocalServiceImpl =
 		new DDLRecordLocalServiceImpl();
 
 }

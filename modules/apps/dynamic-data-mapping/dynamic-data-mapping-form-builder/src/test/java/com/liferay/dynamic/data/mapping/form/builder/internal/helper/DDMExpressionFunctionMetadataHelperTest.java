@@ -20,6 +20,7 @@ import com.liferay.dynamic.data.mapping.form.builder.internal.util.DDMExpression
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -33,6 +34,7 @@ import java.util.ResourceBundle;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,6 +52,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ResourceBundleUtil.class)
 @RunWith(PowerMockRunner.class)
 public class DDMExpressionFunctionMetadataHelperTest {
+
+	@BeforeClass
+	public static void setUpClass() {
+		ReflectionTestUtil.setFieldValue(
+			_ddmExpressionFunctionMetadataHelper, "_language",
+			PowerMockito.mock(Language.class));
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -200,7 +209,7 @@ public class DDMExpressionFunctionMetadataHelperTest {
 		);
 	}
 
-	private final DDMExpressionFunctionMetadataHelper
+	private static final DDMExpressionFunctionMetadataHelper
 		_ddmExpressionFunctionMetadataHelper =
 			new DDMExpressionFunctionMetadataHelper();
 
