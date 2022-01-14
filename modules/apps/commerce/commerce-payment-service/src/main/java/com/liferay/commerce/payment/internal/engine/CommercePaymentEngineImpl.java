@@ -32,7 +32,7 @@ import com.liferay.commerce.service.CommerceOrderPaymentLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -212,7 +212,7 @@ public class CommercePaymentEngineImpl implements CommercePaymentEngine {
 
 		if (!commercePaymentMethod.isActive()) {
 			name = StringBundler.concat(
-				name, " (", LanguageUtil.get(httpServletRequest, "inactive"),
+				name, " (", _language.get(httpServletRequest, "inactive"),
 				StringPool.CLOSE_PARENTHESIS);
 		}
 
@@ -531,6 +531,9 @@ public class CommercePaymentEngineImpl implements CommercePaymentEngine {
 
 	@Reference
 	private CommercePaymentUtils _commercePaymentUtils;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

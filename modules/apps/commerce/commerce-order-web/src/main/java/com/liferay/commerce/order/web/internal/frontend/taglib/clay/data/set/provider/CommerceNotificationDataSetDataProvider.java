@@ -31,7 +31,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -196,7 +196,7 @@ public class CommerceNotificationDataSetDataProvider
 		String sentDateDescription = StringPool.BLANK;
 
 		if (sentDate != null) {
-			sentDateDescription = LanguageUtil.getTimeDescription(
+			sentDateDescription = _language.getTimeDescription(
 				httpServletRequest,
 				System.currentTimeMillis() - sentDate.getTime(), true);
 		}
@@ -236,6 +236,9 @@ public class CommerceNotificationDataSetDataProvider
 
 	@Reference
 	private CommerceOrderService _commerceOrderService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;
