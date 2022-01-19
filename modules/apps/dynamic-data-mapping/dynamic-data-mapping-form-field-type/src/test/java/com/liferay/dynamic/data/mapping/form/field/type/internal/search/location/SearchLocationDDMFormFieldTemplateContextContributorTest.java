@@ -22,14 +22,17 @@ import com.liferay.google.places.util.GooglePlacesUtil;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.language.LanguageImpl;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -42,6 +45,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.Matchers;
+import org.mockito.Mock;
 
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.api.support.membermodification.MemberMatcher;
@@ -67,7 +71,7 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 		_setUpGooglePlacesUtil();
 		_setUpJSONFactory();
 		_setUpJSONFactoryUtil();
-		_setUpLanguageUtil();
+		_setUpLanguage();
 		_setUpResourceBundleUtil();
 	}
 
@@ -148,8 +152,7 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 
 	private void _mockGet(String key, String message) {
 		PowerMockito.when(
-			LanguageUtil.get(
-				Matchers.any(ResourceBundle.class), Matchers.eq(key))
+			_language.get(Matchers.any(ResourceBundle.class), Matchers.eq(key))
 		).thenReturn(
 			message
 		);
@@ -183,8 +186,12 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
 	}
 
-	private void _setUpLanguageUtil() {
-		PowerMockito.mockStatic(LanguageUtil.class);
+	private void _setUpLanguage() {
+		_language = PowerMockito.mock(LanguageImpl.class);
+
+		ReflectionTestUtil.setFieldValue(
+			_searchLocationDDMFormFieldTemplateContextContributor, "_language",
+			_language);
 
 		_mockGet("address", "Address");
 		_mockGet("city", "City");
@@ -205,6 +212,9 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 	}
 
 	private static final long _GROUP_ID = RandomTestUtil.randomLong();
+
+	@Mock
+	private Language _language;
 
 	private final SearchLocationDDMFormFieldTemplateContextContributor
 		_searchLocationDDMFormFieldTemplateContextContributor =
