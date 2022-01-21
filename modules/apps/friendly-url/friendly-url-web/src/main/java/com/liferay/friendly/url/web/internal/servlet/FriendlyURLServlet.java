@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONSerializable;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -73,6 +73,28 @@ import org.osgi.service.component.annotations.Reference;
 	service = Servlet.class
 )
 public class FriendlyURLServlet extends HttpServlet {
+
+	public FriendlyURLServlet() {
+		if (_defaultInfoItemLanguagesProvider == null) {
+			_defaultInfoItemLanguagesProvider =
+				new InfoItemLanguagesProvider<Object>() {
+
+					@Override
+					public String[] getAvailableLanguageIds(Object object)
+						throws PortalException {
+
+						return new String[] {getDefaultLanguageId(object)};
+					}
+
+					@Override
+					public String getDefaultLanguageId(Object object) {
+						return _language.getLanguageId(
+							LocaleUtil.getSiteDefault());
+					}
+
+				};
+		}
+	}
 
 	@Override
 	protected void doDelete(
@@ -316,29 +338,16 @@ public class FriendlyURLServlet extends HttpServlet {
 		FriendlyURLServlet.class);
 
 	private static final InfoItemLanguagesProvider<Object>
-		_defaultInfoItemLanguagesProvider =
-			new InfoItemLanguagesProvider<Object>() {
-
-				@Override
-				public String[] getAvailableLanguageIds(Object object)
-					throws PortalException {
-
-					return new String[] {getDefaultLanguageId(object)};
-				}
-
-				@Override
-				public String getDefaultLanguageId(Object object) {
-					return LanguageUtil.getLanguageId(
-						LocaleUtil.getSiteDefault());
-				}
-
-			};
+		_defaultInfoItemLanguagesProvider;
 
 	@Reference
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;
