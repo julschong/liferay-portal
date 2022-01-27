@@ -29,12 +29,14 @@ import com.liferay.source.formatter.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -84,8 +86,8 @@ public class JavaOSGiReferenceCheck extends BaseFileCheck {
 			}
 		}
 
-		List<String> serviceReferenceUtilClassNames = getAttributeValues(
-			_SERVICE_REFERENCE_UTIL_CLASS_NAMES_KEY, absolutePath);
+		List<String> serviceReferenceUtilClassNames = getReferenceClassNames(
+			absolutePath);
 
 		for (String serviceReferenceUtilClassName :
 				serviceReferenceUtilClassNames) {
@@ -96,6 +98,54 @@ public class JavaOSGiReferenceCheck extends BaseFileCheck {
 		}
 
 		return content;
+	}
+
+	protected List<String> getReferenceClassNames(String absolutePath) {
+		String portalVersion;
+
+		try {
+			portalVersion = getPortalVersion(false);
+		}
+		catch (IOException ioException) {
+			return new ArrayList<>();
+		}
+
+		portalVersion = StringUtil.replace(portalVersion, '.', '_');
+
+		System.out.println(portalVersion);
+
+		if (portalVersion.equals("7_4_0")) {
+			return getAttributeValues(
+				_SERVICE_REFERENCE_UTIL_CLASS_NAMES_KEY, absolutePath);
+		}
+
+		Properties properties = new Properties();
+
+		try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(
+				"dependencies/" + portalVersion +
+					"/compatibility.properties")) {
+
+			properties.load(inputStream);
+		}
+		catch (IOException ioException) {
+			System.out.println(
+				"*** Could not get the dependency matching: " + portalVersion +
+					" ***");
+
+			return new ArrayList<>();
+		}
+
+		String utilClasses = properties.getProperty(
+			"java.osgi.reference.check");
+
+		List<String> referenceCheckUtilClasses = new ArrayList<>();
+
+		Collections.addAll(
+			referenceCheckUtilClasses, StringUtil.split(utilClasses, ","));
+
+		System.out.println(referenceCheckUtilClasses);
+
+		return referenceCheckUtilClasses;
 	}
 
 	private void _checkMissingReference(String fileName, String content) {
