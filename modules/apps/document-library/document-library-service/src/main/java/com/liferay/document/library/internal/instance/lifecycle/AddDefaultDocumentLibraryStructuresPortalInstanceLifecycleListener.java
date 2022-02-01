@@ -15,7 +15,6 @@
 package com.liferay.document.library.internal.instance.lifecycle;
 
 import com.liferay.document.library.configuration.DLConfiguration;
-import com.liferay.document.library.kernel.util.RawMetadataProcessor;
 import com.liferay.dynamic.data.mapping.constants.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.io.DDMFormSerializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeRequest;
@@ -37,7 +36,7 @@ import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.SingleVMPool;
-import com.liferay.portal.kernel.metadata.RawMetadataProcessorUtil;
+import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -144,7 +143,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 
 		Locale locale = _portal.getSiteDefaultLocale(group.getGroupId());
 
-		Map<String, Field[]> fields = RawMetadataProcessorUtil.getFields();
+		Map<String, Field[]> fields = _rawMetadataProcessor.getFields();
 
 		for (Map.Entry<String, Field[]> entry : fields.entrySet()) {
 			String name = entry.getKey();
@@ -287,6 +286,9 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 	private Portal _portal;
 
 	private volatile PortalCache<DDMForm, String> _portalCache;
+
+	@Reference
+	private RawMetadataProcessor _rawMetadataProcessor;
 
 	@Reference
 	private SingleVMPool _singleVMPool;
