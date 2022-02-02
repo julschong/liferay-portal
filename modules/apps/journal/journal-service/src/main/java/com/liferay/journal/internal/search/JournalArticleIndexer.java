@@ -58,7 +58,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -248,7 +248,7 @@ public class JournalArticleIndexer extends BaseIndexer<JournalArticle> {
 
 		dateRangeFilterBuilder.setFormat(formatPattern);
 
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		Format dateFormat = _fastDateFormatFactory.getSimpleDateFormat(
 			formatPattern);
 
 		dateRangeFilterBuilder.setFrom(dateFormat.format(new Date()));
@@ -967,6 +967,10 @@ public class JournalArticleIndexer extends BaseIndexer<JournalArticle> {
 	private ConfigurationProvider _configurationProvider;
 	private DDMIndexer _ddmIndexer;
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
+
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
 
 	@Reference

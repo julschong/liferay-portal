@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
@@ -979,7 +979,7 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 			timeZone = TimeZone.getTimeZone(StringPool.UTC);
 		}
 
-		Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(
+		Format dateFormatDateTime = _fastDateFormatFactory.getDateTime(
 			themeDisplay.getLocale(), timeZone);
 
 		return StringUtil.replace(
@@ -1010,6 +1010,9 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 
 	@Reference
 	private CalendarService _calendarService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private Portal _portal;
