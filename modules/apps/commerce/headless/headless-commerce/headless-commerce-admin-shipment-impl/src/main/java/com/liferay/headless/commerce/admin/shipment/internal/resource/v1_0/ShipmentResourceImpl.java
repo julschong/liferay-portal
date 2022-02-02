@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.RegionService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -116,7 +116,7 @@ public class ShipmentResourceImpl extends BaseShipmentResourceImpl {
 		Date expectedDate = shipment.getExpectedDate();
 
 		if (expectedDate != null) {
-			Calendar calendar = CalendarFactoryUtil.getCalendar(
+			Calendar calendar = _calendarFactory.getCalendar(
 				expectedDate.getTime());
 
 			int expectedDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -142,7 +142,7 @@ public class ShipmentResourceImpl extends BaseShipmentResourceImpl {
 		Date shippingDate = shipment.getShippingDate();
 
 		if (shippingDate != null) {
-			Calendar calendar = CalendarFactoryUtil.getCalendar(
+			Calendar calendar = _calendarFactory.getCalendar(
 				shippingDate.getTime());
 
 			int shippingDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -249,6 +249,9 @@ public class ShipmentResourceImpl extends BaseShipmentResourceImpl {
 				commerceShipmentId, contextAcceptLanguage.getPreferredLocale(),
 				contextUriInfo, contextUser));
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;
