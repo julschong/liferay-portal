@@ -59,7 +59,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -775,8 +775,7 @@ public class OrganizationResourceImpl
 
 		Date date = null;
 
-		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
-			"HH:mm");
+		DateFormat dateFormat = _dateFormatFactory.getSimpleDateFormat("HH:mm");
 
 		try {
 			date = dateFormat.parse(timeString);
@@ -799,6 +798,9 @@ public class OrganizationResourceImpl
 
 	private static final EntityModel _entityModel =
 		new OrganizationEntityModel();
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
