@@ -75,7 +75,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -1529,6 +1529,9 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
+
 	private DLFileEntryLocalService _dlFileEntryLocalService;
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
@@ -1564,8 +1567,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 
 				Date exportDate = GetterUtil.getDate(
 					exportDateString,
-					DateFormatFactoryUtil.getSimpleDateFormat(
-						Time.RFC822_FORMAT));
+					_dateFormatFactory.getSimpleDateFormat(Time.RFC822_FORMAT));
 
 				_manifestSummary.setExportDate(exportDate);
 			}
