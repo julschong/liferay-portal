@@ -22,7 +22,7 @@ import com.liferay.digital.signature.rest.resource.v1_0.DSEnvelopeResource;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.osgi.service.component.annotations.Component;
@@ -77,8 +77,7 @@ public class DSEnvelopeResourceImpl extends BaseDSEnvelopeResourceImpl {
 			}
 
 			document.setData(
-				Base64.encode(
-					FileUtil.getBytes(dlFileEntry.getContentStream())));
+				Base64.encode(_file.getBytes(dlFileEntry.getContentStream())));
 		}
 
 		return DSEnvelopeUtil.toDSEnvelope(dsEnvelope);
@@ -89,5 +88,8 @@ public class DSEnvelopeResourceImpl extends BaseDSEnvelopeResourceImpl {
 
 	@Reference
 	private DSEnvelopeManager _dsEnvelopeManager;
+
+	@Reference
+	private File _file;
 
 }

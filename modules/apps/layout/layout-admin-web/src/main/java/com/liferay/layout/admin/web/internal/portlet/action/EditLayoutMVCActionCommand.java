@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -108,7 +108,7 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 				FileEntry fileEntry = _dlAppLocalService.getFileEntry(
 					fileEntryId);
 
-				iconBytes = FileUtil.getBytes(fileEntry.getContentStream());
+				iconBytes = _file.getBytes(fileEntry.getContentStream());
 			}
 
 			Layout layout = _layoutLocalService.getLayout(
@@ -255,6 +255,9 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

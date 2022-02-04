@@ -18,7 +18,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -30,6 +29,7 @@ import org.osgi.framework.BundleListener;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Matthew Tambara
@@ -75,6 +75,9 @@ public class JspReloader {
 
 	private BundleContext _bundleContext;
 
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
+
 	private final BundleListener _jspReloadBundleListener =
 		new BundleListener() {
 
@@ -96,7 +99,7 @@ public class JspReloader {
 						bundle.getVersion());
 
 				if (file.exists()) {
-					FileUtil.deltree(file);
+					_file.deltree(file);
 
 					if (PropsValues.WORK_DIR_OVERRIDE_ENABLED &&
 						_log.isInfoEnabled()) {

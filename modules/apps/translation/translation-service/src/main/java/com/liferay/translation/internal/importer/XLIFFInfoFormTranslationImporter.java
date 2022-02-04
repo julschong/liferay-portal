@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.LayoutLocalService;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -297,7 +296,7 @@ public class XLIFFInfoFormTranslationImporter
 			XLIFFInfoFormTranslationImporter.class.getClassLoader());
 
 		try (AutoXLIFFFilter autoXLIFFFilter = new AutoXLIFFFilter()) {
-			File tempFile = FileUtil.createTempFile(inputStream);
+			File tempFile = _file.createTempFile(inputStream);
 
 			Document document = _saxReader.read(tempFile);
 
@@ -658,6 +657,9 @@ public class XLIFFInfoFormTranslationImporter
 	}
 
 	private static final Pattern _pattern = Pattern.compile("([^:]+):(.+)");
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Language _language;

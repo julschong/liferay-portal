@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -102,7 +102,7 @@ public class AddDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 				return new DSDocument() {
 					{
 						data = Base64.encode(
-							FileUtil.getBytes(fileEntry.getContentStream()));
+							_file.getBytes(fileEntry.getContentStream()));
 						dsDocumentId = String.valueOf(fileEntryId);
 						fileExtension = fileEntry.getExtension();
 						name = fileEntry.getFileName();
@@ -133,5 +133,8 @@ public class AddDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference
 	private DSEnvelopeManager _dsEnvelopeManager;
+
+	@Reference
+	private File _file;
 
 }

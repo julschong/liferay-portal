@@ -65,7 +65,6 @@ import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -223,7 +222,7 @@ public class DDMTemplateLocalServiceImpl
 
 		if (smallImage) {
 			try {
-				smallImageBytes = FileUtil.getBytes(smallImageFile);
+				smallImageBytes = _file.getBytes(smallImageFile);
 			}
 			catch (IOException ioException) {
 				if (_log.isDebugEnabled()) {
@@ -1453,7 +1452,7 @@ public class DDMTemplateLocalServiceImpl
 
 		if (smallImage) {
 			try {
-				smallImageBytes = FileUtil.getBytes(smallImageFile);
+				smallImageBytes = _file.getBytes(smallImageFile);
 			}
 			catch (IOException ioException) {
 				if (_log.isDebugEnabled()) {
@@ -1673,7 +1672,7 @@ public class DDMTemplateLocalServiceImpl
 
 		if (template.isSmallImage()) {
 			try {
-				smallImageBytes = FileUtil.getBytes(smallImageFile);
+				smallImageBytes = _file.getBytes(smallImageFile);
 			}
 			catch (IOException ioException) {
 				if (_log.isDebugEnabled()) {
@@ -1761,10 +1760,10 @@ public class DDMTemplateLocalServiceImpl
 				template.getSmallImageId());
 
 			if (smallImage != null) {
-				smallImageFile = FileUtil.createTempFile(smallImage.getType());
+				smallImageFile = _file.createTempFile(smallImage.getType());
 
 				try {
-					FileUtil.write(smallImageFile, smallImage.getTextObj());
+					_file.write(smallImageFile, smallImage.getTextObj());
 				}
 				catch (IOException ioException) {
 					_log.error(ioException, ioException);
@@ -1945,6 +1944,9 @@ public class DDMTemplateLocalServiceImpl
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	private volatile DepotEntryLocalService _depotEntryLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private ImageLocalService _imageLocalService;

@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -68,6 +67,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Josef Sustacek
@@ -92,7 +92,7 @@ public class AzureStore implements Store {
 		File tempFile = null;
 
 		try {
-			tempFile = FileUtil.createTempFile(inputStream);
+			tempFile = _file.createTempFile(inputStream);
 
 			blobClient.uploadFromFile(tempFile.getAbsolutePath(), true);
 		}
@@ -105,7 +105,7 @@ public class AzureStore implements Store {
 				"Unable to add file", uncheckedIOException);
 		}
 		finally {
-			FileUtil.delete(tempFile);
+			_file.delete(tempFile);
 		}
 	}
 
@@ -449,5 +449,8 @@ public class AzureStore implements Store {
 	private static final Log _log = LogFactoryUtil.getLog(AzureStore.class);
 
 	private volatile BlobContainerClient _blobContainerClient;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -250,7 +250,7 @@ public class WelcomeSiteInitializer implements SiteInitializer {
 		byte[] bytes = null;
 
 		try (InputStream inputStream = url.openStream()) {
-			bytes = FileUtil.getBytes(inputStream);
+			bytes = _file.getBytes(inputStream);
 		}
 
 		fileEntry = _portletFileRepository.addPortletFileEntry(
@@ -369,6 +369,9 @@ public class WelcomeSiteInitializer implements SiteInitializer {
 		WelcomeSiteInitializer.class);
 
 	private Bundle _bundle;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

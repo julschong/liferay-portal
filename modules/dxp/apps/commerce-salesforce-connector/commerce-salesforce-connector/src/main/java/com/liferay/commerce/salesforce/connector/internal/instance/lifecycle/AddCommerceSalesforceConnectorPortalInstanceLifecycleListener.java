@@ -23,7 +23,6 @@ import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portlet.documentlibrary.store.StoreFactory;
 
@@ -68,7 +67,7 @@ public class AddCommerceSalesforceConnectorPortalInstanceLifecycleListener
 
 		Class<?> clazz = getClass();
 
-		File connectorArchiveFile = FileUtil.createTempFile(
+		File connectorArchiveFile = _file.createTempFile(
 			clazz.getResourceAsStream("/" + name));
 
 		try (FileInputStream fileInputStream = new FileInputStream(
@@ -90,7 +89,7 @@ public class AddCommerceSalesforceConnectorPortalInstanceLifecycleListener
 				"application/zip", new FileInputStream(connectorArchiveFile));
 		}
 		finally {
-			FileUtil.delete(connectorArchiveFile);
+			_file.delete(connectorArchiveFile);
 		}
 	}
 
@@ -102,6 +101,9 @@ public class AddCommerceSalesforceConnectorPortalInstanceLifecycleListener
 
 	@Reference
 	private DLFileVersionPreviewLocalService _dlFileVersionPreviewLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference(target = "(dl.store.impl.enabled=true)")
 	private StoreFactory _storeFactory;

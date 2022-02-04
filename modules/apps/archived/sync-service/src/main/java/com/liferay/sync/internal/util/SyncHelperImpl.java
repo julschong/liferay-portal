@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
@@ -344,7 +343,7 @@ public class SyncHelperImpl implements SyncHelper {
 	public File getFileDelta(File sourceFile, File targetFile)
 		throws PortalException {
 
-		File checksumsFile = FileUtil.createTempFile();
+		File checksumsFile = _file.createTempFile();
 
 		try (FileInputStream sourceFileInputStream = new FileInputStream(
 				sourceFile);
@@ -365,7 +364,7 @@ public class SyncHelperImpl implements SyncHelper {
 			throw new PortalException(exception);
 		}
 
-		File deltaFile = FileUtil.createTempFile();
+		File deltaFile = _file.createTempFile();
 
 		try (FileInputStream targetFileInputStream = new FileInputStream(
 				targetFile);
@@ -395,7 +394,7 @@ public class SyncHelperImpl implements SyncHelper {
 			throw new PortalException(exception);
 		}
 		finally {
-			FileUtil.delete(checksumsFile);
+			_file.delete(checksumsFile);
 		}
 
 		return deltaFile;
@@ -730,6 +729,10 @@ public class SyncHelperImpl implements SyncHelper {
 
 	private final Map<String, String> _checksums = new ConcurrentHashMap<>();
 	private DLFileVersionLocalService _dlFileVersionLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
+
 	private GroupLocalService _groupLocalService;
 	private final Map<String, String> _lanTokenKeys = new ConcurrentHashMap<>();
 	private final Provider _provider = new BouncyCastleProvider();

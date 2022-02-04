@@ -84,7 +84,6 @@ import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlEscapableObject;
@@ -796,10 +795,10 @@ public class JournalArticleStagedModelDataHandler
 						smallImagePath);
 
 					if (bytes != null) {
-						smallFile = FileUtil.createTempFile(
+						smallFile = _file.createTempFile(
 							article.getSmallImageType());
 
-						FileUtil.write(smallFile, bytes);
+						_file.write(smallFile, bytes);
 					}
 				}
 			}
@@ -1816,6 +1815,9 @@ public class JournalArticleStagedModelDataHandler
 	@Reference(target = "(content.processor.type=DLReferences)")
 	private ExportImportContentProcessor<String>
 		_dlReferencesExportImportContentProcessor;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;

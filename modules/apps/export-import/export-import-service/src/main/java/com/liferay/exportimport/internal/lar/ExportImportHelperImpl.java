@@ -78,7 +78,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -467,7 +466,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 			FileEntry fileEntry)
 		throws Exception {
 
-		File file = FileUtil.createTempFile("lar");
+		File file = _file.createTempFile("lar");
 
 		ZipReader zipReader = null;
 
@@ -476,7 +475,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 		try (InputStream inputStream = _dlFileEntryLocalService.getFileAsStream(
 				fileEntry.getFileEntryId(), fileEntry.getVersion(), false)) {
 
-			FileUtil.write(file, inputStream);
+			_file.write(file, inputStream);
 
 			Group group = _groupLocalService.getGroup(groupId);
 			String userIdStrategy = MapUtil.getString(
@@ -496,7 +495,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 				zipReader.close();
 			}
 
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 
 		return manifestSummary;
@@ -1530,6 +1529,10 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	private ConfigurationProvider _configurationProvider;
 
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
+
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
 	private LayoutRevisionLocalService _layoutRevisionLocalService;

@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -259,7 +258,7 @@ public class StyleBookEntryZipProcessorImpl
 			groupId, userId, className, classPK,
 			StyleBookPortletKeys.STYLE_BOOK, repository.getDlFolderId(),
 			inputStream,
-			classPK + "_preview." + FileUtil.getExtension(contentPath),
+			classPK + "_preview." + _file.getExtension(contentPath),
 			MimeTypesUtil.getContentType(contentPath), false);
 
 		return fileEntry.getFileEntryId();
@@ -369,6 +368,9 @@ public class StyleBookEntryZipProcessorImpl
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	private List<StyleBookEntryZipProcessorImportResultEntry>
 		_importResultEntries;

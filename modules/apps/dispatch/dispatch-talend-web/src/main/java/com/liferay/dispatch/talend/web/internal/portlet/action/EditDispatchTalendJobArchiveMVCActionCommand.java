@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -77,7 +76,7 @@ public class EditDispatchTalendJobArchiveMVCActionCommand
 			long dispatchTriggerId = ParamUtil.getLong(
 				uploadPortletRequest, "dispatchTriggerId");
 
-			File jobArchiveFile = FileUtil.createTempFile(
+			File jobArchiveFile = _file.createTempFile(
 				uploadPortletRequest.getFileAsStream("jobArchive"));
 
 			try (FileInputStream fileInputStream = new FileInputStream(
@@ -104,7 +103,7 @@ public class EditDispatchTalendJobArchiveMVCActionCommand
 					uploadPortletRequest.getFileName("jobArchive"));
 			}
 			finally {
-				FileUtil.delete(jobArchiveFile);
+				_file.delete(jobArchiveFile);
 			}
 		}
 		catch (Exception exception) {
@@ -176,6 +175,9 @@ public class EditDispatchTalendJobArchiveMVCActionCommand
 
 	@Reference
 	private ExpandoValueLocalService _expandoValueLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Portal _portal;

@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.InetAddressUtil;
@@ -311,7 +310,7 @@ public class DLOpenerGoogleDriveManager
 				"Authorization", "Bearer " + credential.getAccessToken());
 
 			try (InputStream inputStream = urlConnection.getInputStream()) {
-				return FileUtil.createTempFile(inputStream);
+				return _file.createTempFile(inputStream);
 			}
 		}
 		catch (IOException | PortalException exception) {
@@ -374,6 +373,9 @@ public class DLOpenerGoogleDriveManager
 	@Reference
 	private DLOpenerFileEntryReferenceLocalService
 		_dlOpenerFileEntryReferenceLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	private JsonFactory _jsonFactory;
 	private NetHttpTransport _netHttpTransport;

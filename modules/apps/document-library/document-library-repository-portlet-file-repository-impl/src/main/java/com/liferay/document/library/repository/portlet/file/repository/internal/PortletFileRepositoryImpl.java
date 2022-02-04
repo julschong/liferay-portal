@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -111,7 +110,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(bytes);
+			file = _file.createTempFile(bytes);
 
 			return addPortletFileEntry(
 				groupId, userId, className, classPK, portletId, folderId, file,
@@ -122,7 +121,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 				"Unable to write temporary file", ioException);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -191,7 +190,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(inputStream);
+			file = _file.createTempFile(inputStream);
 
 			return addPortletFileEntry(
 				groupId, userId, className, classPK, portletId, folderId, file,
@@ -202,7 +201,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 				"Unable to write temporary file", ioException);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -651,7 +650,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 			try {
 				getPortletFileEntry(groupId, folderId, uniqueFileName);
 
-				uniqueFileName = FileUtil.appendParentheticalSuffix(
+				uniqueFileName = _file.appendParentheticalSuffix(
 					fileName, String.valueOf(i));
 			}
 			catch (Exception exception) {
@@ -800,6 +799,9 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 
 	@Reference
 	private DLTrashLocalService _dlTrashLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

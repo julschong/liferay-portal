@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
@@ -374,7 +374,7 @@ public class BlogPostingResourceImpl
 				image.getImageId());
 
 			return new ImageSelector(
-				FileUtil.getBytes(fileEntry.getContentStream()),
+				_file.getBytes(fileEntry.getContentStream()),
 				fileEntry.getFileName(), fileEntry.getMimeType(),
 				"{\"height\": 0, \"width\": 0, \"x\": 0, \"y\": 0}");
 		}
@@ -488,6 +488,9 @@ public class BlogPostingResourceImpl
 
 	@Reference
 	private ExpandoTableLocalService _expandoTableLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;

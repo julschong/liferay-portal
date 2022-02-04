@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -46,6 +45,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Riccardo Ferrari
@@ -103,7 +103,7 @@ public class AnalyticsBatchClientImpl
 			HttpEntity httpEntity = closeableHttpResponse.getEntity();
 
 			if (httpEntity != null) {
-				return FileUtil.createTempFile(httpEntity.getContent());
+				return _file.createTempFile(httpEntity.getContent());
 			}
 		}
 		catch (Exception exception) {
@@ -198,5 +198,8 @@ public class AnalyticsBatchClientImpl
 	private static final Format _modifiedSinceHeaderDateFormatter =
 		FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"EEE, dd MMM yyyy HH:mm:ss zzz");
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

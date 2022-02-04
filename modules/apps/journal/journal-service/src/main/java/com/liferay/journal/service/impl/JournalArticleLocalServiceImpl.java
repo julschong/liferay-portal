@@ -178,7 +178,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
@@ -513,7 +512,7 @@ public class JournalArticleLocalServiceImpl
 		byte[] smallImageBytes = null;
 
 		try {
-			smallImageBytes = FileUtil.getBytes(smallImageFile);
+			smallImageBytes = _file.getBytes(smallImageFile);
 		}
 		catch (IOException ioException) {
 			if (_log.isDebugEnabled()) {
@@ -771,7 +770,7 @@ public class JournalArticleLocalServiceImpl
 		byte[] smallImageBytes = null;
 
 		try {
-			smallImageBytes = FileUtil.getBytes(smallImageFile);
+			smallImageBytes = _file.getBytes(smallImageFile);
 		}
 		catch (IOException ioException) {
 			if (_log.isDebugEnabled()) {
@@ -5672,7 +5671,7 @@ public class JournalArticleLocalServiceImpl
 		byte[] smallImageBytes = null;
 
 		try {
-			smallImageBytes = FileUtil.getBytes(smallImageFile);
+			smallImageBytes = _file.getBytes(smallImageFile);
 		}
 		catch (IOException ioException) {
 			if (_log.isDebugEnabled()) {
@@ -6288,7 +6287,7 @@ public class JournalArticleLocalServiceImpl
 		byte[] smallImageBytes = null;
 
 		try {
-			smallImageBytes = FileUtil.getBytes(smallImageFile);
+			smallImageBytes = _file.getBytes(smallImageFile);
 		}
 		catch (IOException ioException) {
 			if (_log.isDebugEnabled()) {
@@ -9301,6 +9300,9 @@ public class JournalArticleLocalServiceImpl
 
 	@Reference
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

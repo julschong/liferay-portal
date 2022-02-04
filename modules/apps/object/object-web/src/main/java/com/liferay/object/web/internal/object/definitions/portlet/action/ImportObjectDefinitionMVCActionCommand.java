@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -152,7 +152,7 @@ public class ImportObjectDefinitionMVCActionCommand
 		UploadPortletRequest uploadPortletRequest = _getUploadPortletRequest(
 			actionRequest);
 
-		String objectDefinitionJSON = FileUtil.read(
+		String objectDefinitionJSON = _file.read(
 			uploadPortletRequest.getFile("objectDefinitionJSON"));
 
 		JSONObject objectDefinitionJSONObject =
@@ -273,6 +273,9 @@ public class ImportObjectDefinitionMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ImportObjectDefinitionMVCActionCommand.class);
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private ObjectActionResource.Factory _objectActionResourceFactory;

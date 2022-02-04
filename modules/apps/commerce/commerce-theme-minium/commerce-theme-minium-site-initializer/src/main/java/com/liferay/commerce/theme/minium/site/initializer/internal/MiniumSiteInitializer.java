@@ -92,7 +92,6 @@ import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -912,7 +911,7 @@ public class MiniumSiteInitializer implements SiteInitializer {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(inputStream);
+			file = _file.createTempFile(inputStream);
 
 			String mimeType = MimeTypesUtil.getContentType(file);
 
@@ -926,7 +925,7 @@ public class MiniumSiteInitializer implements SiteInitializer {
 		}
 		finally {
 			if (file != null) {
-				FileUtil.delete(file);
+				_file.delete(file);
 			}
 		}
 	}
@@ -956,7 +955,7 @@ public class MiniumSiteInitializer implements SiteInitializer {
 			_siteInitializerDependencyResolver.getImageDependencyPath() +
 				"minium_logo.png");
 
-		File file = FileUtil.createTempFile(inputStream);
+		File file = _file.createTempFile(inputStream);
 
 		_cpFileImporter.updateLogo(file, true, true, serviceContext);
 		_cpFileImporter.updateLogo(file, false, true, serviceContext);
@@ -1111,6 +1110,9 @@ public class MiniumSiteInitializer implements SiteInitializer {
 
 	@Reference
 	private DLImporter _dlImporter;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

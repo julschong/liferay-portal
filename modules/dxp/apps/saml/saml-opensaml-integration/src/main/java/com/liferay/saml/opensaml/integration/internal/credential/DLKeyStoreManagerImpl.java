@@ -21,7 +21,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.saml.runtime.credential.KeyStoreManager;
 
 import java.io.File;
@@ -39,6 +38,7 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Mika Koivisto
@@ -95,7 +95,7 @@ public class DLKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 
 	@Override
 	public void saveKeyStore(KeyStore keyStore) throws Exception {
-		File tempFile = FileUtil.createTempFile("jks");
+		File tempFile = _file.createTempFile("jks");
 
 		try {
 			String samlKeyStorePassword = getSamlKeyStorePassword();
@@ -138,5 +138,8 @@ public class DLKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLKeyStoreManagerImpl.class);
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

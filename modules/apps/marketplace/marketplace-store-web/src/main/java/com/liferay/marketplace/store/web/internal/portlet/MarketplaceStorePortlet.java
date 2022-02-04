@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.patcher.PatcherUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Validator;
@@ -104,7 +103,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile();
+			file = _file.createTempFile();
 
 			downloadApp(
 				actionRequest, actionResponse, appPackageId, unlicensed, file);
@@ -276,7 +275,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile();
+			file = _file.createTempFile();
 
 			downloadApp(
 				actionRequest, actionResponse, appPackageId, unlicensed, file);
@@ -362,7 +361,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 					File file = null;
 
 					try {
-						file = FileUtil.createTempFile();
+						file = _file.createTempFile();
 
 						downloadApp(
 							actionRequest, actionResponse, appPackageId, false,
@@ -460,7 +459,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
 
-		FileUtil.write(file, response.getStream());
+		_file.write(file, response.getStream());
 	}
 
 	@Override
@@ -564,6 +563,10 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 	private AppLocalService _appLocalService;
 	private AppService _appService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
+
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 }

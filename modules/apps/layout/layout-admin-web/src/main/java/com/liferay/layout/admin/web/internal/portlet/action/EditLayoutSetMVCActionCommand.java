@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.LayoutSetService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -136,7 +136,7 @@ public class EditLayoutSetMVCActionCommand extends BaseMVCActionCommand {
 		if (fileEntryId > 0) {
 			FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
 
-			logoBytes = FileUtil.getBytes(fileEntry.getContentStream());
+			logoBytes = _file.getBytes(fileEntry.getContentStream());
 		}
 
 		long groupId = liveGroupId;
@@ -190,6 +190,9 @@ public class EditLayoutSetMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

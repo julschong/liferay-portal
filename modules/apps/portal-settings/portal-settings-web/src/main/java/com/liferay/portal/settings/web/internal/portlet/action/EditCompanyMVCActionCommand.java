@@ -59,7 +59,7 @@ import com.liferay.portal.kernel.service.WebsiteLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -201,7 +201,7 @@ public class EditCompanyMVCActionCommand extends BaseFormMVCActionCommand {
 		if (fileEntryId > 0) {
 			FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
 
-			logoBytes = FileUtil.getBytes(fileEntry.getContentStream());
+			logoBytes = _file.getBytes(fileEntry.getContentStream());
 		}
 
 		User defaultUser = _userLocalService.getDefaultUser(companyId);
@@ -401,6 +401,9 @@ public class EditCompanyMVCActionCommand extends BaseFormMVCActionCommand {
 
 	@Reference
 	private EmailAddressLocalService _emailAddressLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

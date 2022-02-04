@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -513,14 +513,14 @@ public class WebFormPortlet extends MVCPortlet {
 
 		StringBundler sb = new StringBundler();
 
-		if (!FileUtil.exists(fileName)) {
+		if (!_file.exists(fileName)) {
 			_appendFieldLabels(fieldsMap, csvSeparator, sb);
 		}
 
 		_appendFieldValues(fieldsMap, csvSeparator, sb);
 
 		try {
-			FileUtil.write(fileName, sb.toString(), false, true);
+			_file.write(fileName, sb.toString(), false, true);
 
 			return true;
 		}
@@ -641,6 +641,9 @@ public class WebFormPortlet extends MVCPortlet {
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private Portal _portal;

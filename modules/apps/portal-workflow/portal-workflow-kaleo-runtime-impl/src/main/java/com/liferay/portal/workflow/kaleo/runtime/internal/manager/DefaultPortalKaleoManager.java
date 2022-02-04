@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -189,7 +189,7 @@ public class DefaultPortalKaleoManager
 			_workflowDefinitionManager.deployWorkflowDefinition(
 				serviceContext.getCompanyId(), defaultUser.getUserId(),
 				_getLocalizedTitle(companyId, definitionName), definitionName,
-				FileUtil.getBytes(inputStream));
+				_file.getBytes(inputStream));
 		}
 	}
 
@@ -344,6 +344,9 @@ public class DefaultPortalKaleoManager
 		_DEFINITION_NAME,
 		"META-INF/definitions/single-approver-workflow-definition.xml"
 	).build();
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private Language _language;

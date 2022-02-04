@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.RandomUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,7 +95,7 @@ public class UnsplashFileEntryDemoDataCreatorImpl
 		URL url = _getNextUrl();
 
 		try (InputStream inputStream = url.openStream()) {
-			return FileUtil.getBytes(inputStream);
+			return _file.getBytes(inputStream);
 		}
 		catch (IOException ioException) {
 			if (_log.isWarnEnabled()) {
@@ -106,7 +106,7 @@ public class UnsplashFileEntryDemoDataCreatorImpl
 				"dependencies/%d.jpg", RandomUtil.nextInt(5));
 
 			try {
-				return FileUtil.getBytes(getClass(), fileName);
+				return _file.getBytes(getClass(), fileName);
 			}
 			catch (Exception exception) {
 				throw new PortalException(exception);
@@ -138,6 +138,9 @@ public class UnsplashFileEntryDemoDataCreatorImpl
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private File _file;
 
 	private final List<Long> _fileEntryIds = new CopyOnWriteArrayList<>();
 

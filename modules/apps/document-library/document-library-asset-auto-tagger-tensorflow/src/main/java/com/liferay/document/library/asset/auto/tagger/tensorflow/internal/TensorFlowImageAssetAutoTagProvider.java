@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCap
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +83,7 @@ public class TensorFlowImageAssetAutoTagProvider
 
 				if (_isSupportedMimeType(fileVersion.getMimeType())) {
 					return _label(
-						FileUtil.getBytes(fileVersion.getContentStream(false)),
+						_file.getBytes(fileVersion.getContentStream(false)),
 						fileVersion.getMimeType(),
 						tensorFlowImageAssetAutoTagProviderCompanyConfiguration.
 							confidenceThreshold());
@@ -182,6 +182,9 @@ public class TensorFlowImageAssetAutoTagProvider
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private File _file;
 
 	private String[] _labels;
 

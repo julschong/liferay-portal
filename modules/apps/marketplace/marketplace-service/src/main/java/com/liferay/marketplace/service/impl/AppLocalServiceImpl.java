@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -277,10 +276,9 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 				StringBundler.concat(
 					SystemProperties.get(SystemProperties.TMP_DIR),
 					StringPool.SLASH, encodeSafeFileName(app.getTitle()),
-					StringPool.PERIOD,
-					FileUtil.getExtension(app.getFileName())));
+					StringPool.PERIOD, _file.getExtension(app.getFileName())));
 
-			FileUtil.write(file, inputStream);
+			_file.write(file, inputStream);
 
 			BundleManagerUtil.installLPKG(file);
 		}
@@ -413,7 +411,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 			return StringPool.BLANK;
 		}
 
-		fileName = FileUtil.encodeSafeFileName(fileName);
+		fileName = _file.encodeSafeFileName(fileName);
 
 		return StringUtil.replace(
 			fileName, _SAFE_FILE_NAME_1, _SAFE_FILE_NAME_2);
@@ -435,12 +433,12 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 					try (InputStream subsystemInputStream =
 							zipFile.getInputStream(subsystemZipEntry)) {
 
-						file = FileUtil.createTempFile(subsystemInputStream);
+						file = _file.createTempFile(subsystemInputStream);
 
 						return getMarketplaceProperties(file);
 					}
 					finally {
-						FileUtil.delete(file);
+						_file.delete(file);
 					}
 				}
 
@@ -493,6 +491,9 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AppLocalServiceImpl.class);
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	private List<App> _installedApps;
 

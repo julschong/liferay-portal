@@ -74,7 +74,7 @@ import com.liferay.portal.kernel.upload.UploadRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -1152,7 +1152,7 @@ public class DDMImpl implements DDM {
 			UploadRequest uploadRequest, String fieldNameValue)
 		throws Exception {
 
-		byte[] bytes = FileUtil.getBytes(
+		byte[] bytes = _file.getBytes(
 			uploadRequest.getFile(fieldNameValue + "File"));
 
 		if (ArrayUtil.isNotEmpty(bytes)) {
@@ -1340,6 +1340,9 @@ public class DDMImpl implements DDM {
 	private DLURLHelper _dlURLHelper;
 
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private Http _http;

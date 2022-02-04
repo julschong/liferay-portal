@@ -68,7 +68,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
@@ -1001,11 +1000,11 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 			DLFileVersion dlFileVersion =
 				_dlFileVersionLocalService.getDLFileVersion(sourceVersionId);
 
-			sourceFile = FileUtil.createTempFile(
+			sourceFile = _file.createTempFile(
 				_dlFileEntryLocalService.getFileAsStream(
 					fileEntryId, dlFileVersion.getVersion(), false));
 
-			patchedFile = FileUtil.createTempFile();
+			patchedFile = _file.createTempFile();
 
 			_syncHelper.patchFile(sourceFile, deltaFile, patchedFile);
 
@@ -1032,9 +1031,9 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 				_syncHelper.buildExceptionMessage(exception), exception);
 		}
 		finally {
-			FileUtil.delete(sourceFile);
+			_file.delete(sourceFile);
 
-			FileUtil.delete(patchedFile);
+			_file.delete(patchedFile);
 		}
 	}
 
@@ -1651,7 +1650,7 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 			File tempFile = null;
 
 			try {
-				tempFile = FileUtil.createTempFile(inputStream);
+				tempFile = _file.createTempFile(inputStream);
 
 				String checksum = MapUtil.getString(
 					jsonWebServiceActionParametersMap, "checksum");
@@ -1661,7 +1660,7 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 					description, changeLog, tempFile, checksum, serviceContext);
 			}
 			finally {
-				FileUtil.delete(tempFile);
+				_file.delete(tempFile);
 			}
 		}
 		else if (urlPath.endsWith("/add-folder")) {
@@ -1748,7 +1747,7 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 			File tempFile = null;
 
 			try {
-				tempFile = FileUtil.createTempFile(inputStream);
+				tempFile = _file.createTempFile(inputStream);
 
 				String checksum = MapUtil.getString(
 					jsonWebServiceActionParametersMap, "checksum");
@@ -1759,7 +1758,7 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 					checksum, serviceContext);
 			}
 			finally {
-				FileUtil.delete(tempFile);
+				_file.delete(tempFile);
 			}
 		}
 		else if (urlPath.endsWith("/update-file-entry")) {
@@ -1785,7 +1784,7 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 					zipFileId);
 
 				if (inputStream != null) {
-					tempFile = FileUtil.createTempFile(inputStream);
+					tempFile = _file.createTempFile(inputStream);
 				}
 
 				String checksum = MapUtil.getString(
@@ -1797,7 +1796,7 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 					serviceContext);
 			}
 			finally {
-				FileUtil.delete(tempFile);
+				_file.delete(tempFile);
 			}
 		}
 		else if (urlPath.endsWith("/update-folder")) {
@@ -1847,6 +1846,9 @@ public class SyncDLObjectServiceImpl extends SyncDLObjectServiceBaseImpl {
 
 	@Reference
 	private DLTrashService _dlTrashService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
