@@ -19,7 +19,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.util.PropsValues;
@@ -41,6 +40,7 @@ import org.osgi.framework.VersionRange;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
 
@@ -76,6 +76,9 @@ public class JSPServletFactoryImpl implements JSPServletFactory {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JSPServletFactoryImpl.class);
+
+	@Reference
+	private static com.liferay.portal.kernel.util.File _file;
 
 	private BundleTracker<Tracked> _bundleTracker;
 
@@ -161,7 +164,7 @@ public class JSPServletFactoryImpl implements JSPServletFactory {
 						"Deleting JSP class files from ".concat(scratchDir));
 				}
 
-				FileUtil.deltree(new File(scratchDir));
+				_file.deltree(new File(scratchDir));
 			}
 		}
 
