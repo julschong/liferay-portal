@@ -20,8 +20,10 @@ import com.liferay.document.library.kernel.exception.InvalidFileException;
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.DDMFormWebConfiguration;
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.activator.DDMFormWebConfigurationActivator;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.FileImpl;
 
 import java.io.File;
 
@@ -46,6 +48,8 @@ public class DDMFormUploadValidatorTest {
 	@Before
 	public void setUp() throws Exception {
 		_setUpDDMFormWebConfigurationActivator();
+		ReflectionTestUtil.setFieldValue(
+			_ddmFormUploadValidator, "_file", new FileImpl());
 	}
 
 	@Test(expected = InvalidFileException.class)
