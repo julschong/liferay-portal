@@ -29,7 +29,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelper;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeFormatter;
 import com.liferay.portal.kernel.util.Validator;
@@ -114,7 +113,7 @@ public final class DLValidatorImpl implements DLValidator {
 			}
 		}
 
-		String nameWithoutExtension = FileUtil.stripExtension(name);
+		String nameWithoutExtension = _file.stripExtension(name);
 
 		for (String blacklistName : PropsValues.DL_NAME_BLACKLIST) {
 			if (StringUtil.equalsIgnoreCase(
@@ -149,7 +148,7 @@ public final class DLValidatorImpl implements DLValidator {
 
 		for (String fileExtension : _dlConfiguration.fileExtensions()) {
 			String fileNameExtension = StringUtil.toLowerCase(
-				FileUtil.getExtension(fileName));
+				_file.getExtension(fileName));
 
 			if (StringPool.STAR.equals(fileExtension) ||
 				StringUtil.equals(
@@ -241,7 +240,7 @@ public final class DLValidatorImpl implements DLValidator {
 			String fileExtension, String sourceFileName)
 		throws SourceFileNameException {
 
-		String sourceFileExtension = FileUtil.getExtension(sourceFileName);
+		String sourceFileExtension = _file.getExtension(sourceFileName);
 
 		if (Validator.isNotNull(sourceFileName) &&
 			PropsValues.DL_FILE_EXTENSIONS_STRICT_CHECK &&
@@ -306,8 +305,8 @@ public final class DLValidatorImpl implements DLValidator {
 	}
 
 	private String _replaceDLNameBlacklist(String title) {
-		String extension = FileUtil.getExtension(title);
-		String nameWithoutExtension = FileUtil.stripExtension(title);
+		String extension = _file.getExtension(title);
+		String nameWithoutExtension = _file.stripExtension(title);
 
 		for (String blacklistName : PropsValues.DL_NAME_BLACKLIST) {
 			if (StringUtil.equalsIgnoreCase(
@@ -333,6 +332,9 @@ public final class DLValidatorImpl implements DLValidator {
 	}
 
 	private volatile DLConfiguration _dlConfiguration;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private UploadServletRequestConfigurationHelper

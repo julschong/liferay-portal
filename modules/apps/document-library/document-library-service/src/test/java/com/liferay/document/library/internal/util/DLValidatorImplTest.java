@@ -17,7 +17,9 @@ package com.liferay.document.library.internal.util;
 import com.liferay.document.library.configuration.DLConfiguration;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.util.DLValidator;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.FileImpl;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -43,6 +45,8 @@ public class DLValidatorImplTest {
 		dlValidatorImpl.setDLConfiguration(_dlConfiguration);
 
 		_dlValidator = dlValidatorImpl;
+
+		ReflectionTestUtil.setFieldValue(_dlValidator, "_file", new FileImpl());
 	}
 
 	@Test(expected = FileExtensionException.class)
