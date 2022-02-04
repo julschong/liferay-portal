@@ -74,7 +74,7 @@ import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -1269,7 +1269,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 		String twitterSn = BeanParamUtil.getString(
 			contact, actionRequest, "twitterSn");
 
-		Calendar cal = CalendarFactoryUtil.getCalendar();
+		Calendar cal = _calendarFactory.getCalendar();
 
 		cal.setTime(user.getBirthday());
 
@@ -1310,6 +1310,9 @@ public class ContactsCenterPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ContactsCenterPortlet.class);
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	private volatile UserFileUploadsConfiguration _userFileUploadsConfiguration;
 

@@ -204,10 +204,9 @@
 	<bean class="com.liferay.portal.kernel.servlet.SharedSessionUtil" id="com.liferay.portal.kernel.servlet.SharedSessionUtil">
 		<property name="sharedSession" ref="com.liferay.portal.kernel.servlet.SharedSession" />
 	</bean>
+	<bean class="com.liferay.portal.servlet.TransferHeadersHelperImpl" id="com.liferay.portal.kernel.servlet.TransferHeadersHelper" />
 	<bean class="com.liferay.portal.kernel.servlet.TransferHeadersHelperUtil" id="com.liferay.portal.kernel.servlet.TransferHeadersHelperUtil">
-		<property name="transferHeadersHelper">
-			<bean class="com.liferay.portal.servlet.TransferHeadersHelperImpl" />
-		</property>
+		<property name="transferHeadersHelper" ref="com.liferay.portal.kernel.servlet.TransferHeadersHelper" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.spring.orm.LastSessionRecorderHelperUtil" id="com.liferay.portal.kernel.spring.orm.LastSessionRecorderHelperUtil">
 		<property name="lastSessionRecorderHelper">
@@ -229,15 +228,13 @@
 			<bean class="com.liferay.portal.upgrade.util.MemoryValueMapperFactoryImpl" />
 		</property>
 	</bean>
+	<bean class="com.liferay.portal.util.CalendarFactoryImpl" id="com.liferay.portal.kernel.util.CalendarFactory" />
 	<bean class="com.liferay.portal.kernel.util.CalendarFactoryUtil" id="com.liferay.portal.kernel.util.CalendarFactoryUtil">
-		<property name="calendarFactory">
-			<bean class="com.liferay.portal.util.CalendarFactoryImpl" />
-		</property>
+		<property name="calendarFactory" ref="com.liferay.portal.kernel.util.CalendarFactory" />
 	</bean>
+	<bean class="com.liferay.portal.util.ColorSchemeFactoryImpl" id="com.liferay.portal.kernel.util.ColorScheme" />
 	<bean class="com.liferay.portal.kernel.util.ColorSchemeFactoryUtil" id="com.liferay.portal.kernel.util.ColorSchemeFactoryUtil">
-		<property name="colorSchemeFactory">
-			<bean class="com.liferay.portal.util.ColorSchemeFactoryImpl" />
-		</property>
+		<property name="colorSchemeFactory" ref="com.liferay.portal.kernel.util.ColorScheme" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.util.CustomJspRegistryUtil" id="com.liferay.portal.kernel.util.CustomJspRegistryUtil">
 		<property name="customJspRegistry">
