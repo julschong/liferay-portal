@@ -146,6 +146,16 @@
 	<bean class="com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconTracker" id="com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconTracker" />
 	<bean class="com.liferay.portal.kernel.portlet.toolbar.PortletToolbar" id="com.liferay.portal.kernel.portlet.toolbar.PortletToolbar" />
 	<bean class="com.liferay.portal.kernel.sanitizer.SanitizerUtil" id="com.liferay.portal.kernel.sanitizer.SanitizerUtil" />
+	^---- Question here:
+	So far the Util classes I have changed all contain a set**Util method therefore I can initialize a new bean for the implementation,
+	then Util property can reference to the implementation.
+
+	For Example below:
+	CommonPermissionImpl with id CommonPermission can be set to commonPermission inside CommonPermissionUtil
+
+	But, in this case, SanitizerUtil does not contains _sanitizer property. Instead, it has _sanitizers set to ServiceTrackerList<Sanitizer> _sanitizers
+	I don't know how to deal with this case...
+
 	<bean class="com.liferay.portal.service.permission.CommonPermissionImpl" id="com.liferay.portal.kernel.service.permission.CommonPermission" />
 	<bean class="com.liferay.portal.kernel.service.permission.CommonPermissionUtil" id="com.liferay.portal.kernel.service.permission.CommonPermissionUtil">
 		<property name="commonPermission" ref="com.liferay.portal.kernel.service.permission.CommonPermission" />
