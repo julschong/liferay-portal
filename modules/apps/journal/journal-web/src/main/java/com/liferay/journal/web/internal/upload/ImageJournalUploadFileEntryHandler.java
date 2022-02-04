@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -197,7 +197,7 @@ public class ImageJournalUploadFileEntryHandler
 
 		_dlValidator.validateFileSize(fileName, size);
 
-		String extension = FileUtil.getExtension(fileName);
+		String extension = _file.getExtension(fileName);
 
 		for (String imageExtension :
 				_journalFileUploadsConfiguration.imageExtensions()) {
@@ -224,6 +224,9 @@ public class ImageJournalUploadFileEntryHandler
 
 	@Reference
 	private DLValidator _dlValidator;
+
+	@Reference
+	private File _file;
 
 	private ModelResourcePermission<JournalArticle>
 		_journalArticleModelResourcePermission;

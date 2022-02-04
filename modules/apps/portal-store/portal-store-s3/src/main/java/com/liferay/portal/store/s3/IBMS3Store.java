@@ -54,7 +54,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.s3.configuration.S3StoreConfiguration;
 
@@ -107,7 +106,7 @@ public class IBMS3Store implements Store {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(inputStream);
+			file = _file.createTempFile(inputStream);
 
 			putObject(companyId, repositoryId, fileName, versionLabel, file);
 		}
@@ -115,7 +114,7 @@ public class IBMS3Store implements Store {
 			throw new SystemException(ioException);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -731,6 +730,9 @@ public class IBMS3Store implements Store {
 	private AmazonS3 _amazonS3;
 	private AWSCredentialsProvider _awsCredentialsProvider;
 	private String _bucketName;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private S3FileCache _s3FileCache;

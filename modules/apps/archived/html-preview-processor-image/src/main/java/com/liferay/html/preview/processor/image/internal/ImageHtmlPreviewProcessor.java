@@ -18,7 +18,6 @@ import com.liferay.html.preview.processor.HtmlPreviewProcessor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 
 import java.awt.image.BufferedImage;
 
@@ -29,6 +28,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Entities;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import org.xhtmlrenderer.swing.Java2DRenderer;
 import org.xhtmlrenderer.util.FSImageWriter;
@@ -48,7 +48,7 @@ public class ImageHtmlPreviewProcessor implements HtmlPreviewProcessor {
 	@Override
 	public File generateContentHtmlPreview(String content, int width) {
 		try {
-			File tempFile = FileUtil.createTempFile();
+			File tempFile = _file.createTempFile();
 
 			Document document = Jsoup.parse(content);
 
@@ -57,7 +57,7 @@ public class ImageHtmlPreviewProcessor implements HtmlPreviewProcessor {
 			outputSettings.syntax(Document.OutputSettings.Syntax.xml);
 			outputSettings.escapeMode(Entities.EscapeMode.xhtml);
 
-			FileUtil.write(tempFile, document.html());
+			_file.write(tempFile, document.html());
 
 			return _getFile(new Java2DRenderer(tempFile, width));
 		}
@@ -97,7 +97,7 @@ public class ImageHtmlPreviewProcessor implements HtmlPreviewProcessor {
 	private File _getFile(Java2DRenderer renderer) throws Exception {
 		renderer.setBufferedImageType(BufferedImage.TYPE_INT_RGB);
 
-		File outputFile = FileUtil.createTempFile("png");
+		File outputFile = _file.createTempFile("png");
 
 		FSImageWriter imageWriter = new FSImageWriter();
 
@@ -108,5 +108,8 @@ public class ImageHtmlPreviewProcessor implements HtmlPreviewProcessor {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ImageHtmlPreviewProcessor.class);
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

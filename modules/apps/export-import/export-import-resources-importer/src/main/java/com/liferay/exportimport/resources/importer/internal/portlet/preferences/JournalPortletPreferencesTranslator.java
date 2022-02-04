@@ -17,13 +17,14 @@ package com.liferay.exportimport.resources.importer.internal.portlet.preferences
 import com.liferay.exportimport.resources.importer.portlet.preferences.PortletPreferencesTranslator;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -45,7 +46,7 @@ public class JournalPortletPreferencesTranslator
 		String value = portletPreferencesJSONObject.getString(key);
 
 		if (key.equals("articleId")) {
-			String articleId = FileUtil.stripExtension(value);
+			String articleId = _file.stripExtension(value);
 
 			articleId = StringUtil.toUpperCase(articleId);
 
@@ -55,5 +56,8 @@ public class JournalPortletPreferencesTranslator
 
 		portletPreferences.setValue(key, value);
 	}
+
+	@Reference
+	private File _file;
 
 }

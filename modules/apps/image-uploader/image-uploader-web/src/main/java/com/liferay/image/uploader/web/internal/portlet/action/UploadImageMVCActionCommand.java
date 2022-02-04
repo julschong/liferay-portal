@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelper;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -379,7 +378,7 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 					(ThemeDisplay)actionRequest.getAttribute(
 						WebKeys.THEME_DISPLAY);
 
-				File file = FileUtil.createTempFile(bytes);
+				File file = _file.createTempFile(bytes);
 
 				try {
 					TempFileEntryUtil.deleteTempFileEntry(
@@ -413,6 +412,9 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 		UploadImageMVCActionCommand.class);
 
 	private volatile DLConfiguration _dlConfiguration;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Portal _portal;

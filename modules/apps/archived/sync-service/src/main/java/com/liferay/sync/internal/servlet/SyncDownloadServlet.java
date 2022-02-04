@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -282,14 +281,14 @@ public class SyncDownloadServlet extends HttpServlet {
 		DLFileVersion sourceDLFileVersion =
 			_dlFileVersionLocalService.getDLFileVersion(sourceVersionId);
 
-		File sourceFile = FileUtil.createTempFile(
+		File sourceFile = _file.createTempFile(
 			_dlFileEntryLocalService.getFileAsStream(
 				fileEntryId, sourceDLFileVersion.getVersion(), false));
 
 		DLFileVersion targetDLFileVersion =
 			_dlFileVersionLocalService.getDLFileVersion(targetVersionId);
 
-		File targetFile = FileUtil.createTempFile(
+		File targetFile = _file.createTempFile(
 			_dlFileEntryLocalService.getFileAsStream(
 				fileEntryId, targetDLFileVersion.getVersion(), false));
 
@@ -364,7 +363,7 @@ public class SyncDownloadServlet extends HttpServlet {
 					new FileInputStream(deltaFile), deltaFile.length());
 			}
 			finally {
-				FileUtil.delete(deltaFile);
+				_file.delete(deltaFile);
 			}
 		}
 
@@ -398,7 +397,7 @@ public class SyncDownloadServlet extends HttpServlet {
 				new FileInputStream(deltaFile), deltaFile.length());
 		}
 		finally {
-			FileUtil.delete(deltaFile);
+			_file.delete(deltaFile);
 		}
 	}
 
@@ -575,6 +574,10 @@ public class SyncDownloadServlet extends HttpServlet {
 	private DLAppService _dlAppService;
 	private DLFileEntryLocalService _dlFileEntryLocalService;
 	private DLFileVersionLocalService _dlFileVersionLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
+
 	private GroupLocalService _groupLocalService;
 
 	@Reference

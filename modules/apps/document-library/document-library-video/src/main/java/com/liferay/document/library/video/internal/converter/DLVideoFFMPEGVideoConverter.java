@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.image.ImageToolUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -49,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Tardín
@@ -63,7 +63,7 @@ public class DLVideoFFMPEGVideoConverter implements VideoConverter {
 	public InputStream generateVideoPreview(File file, String containerType)
 		throws Exception {
 
-		File destinationFile = FileUtil.createTempFile(containerType);
+		File destinationFile = _file.createTempFile(containerType);
 
 		Properties videoProperties = PropsUtil.getProperties(
 			PropsKeys.DL_FILE_ENTRY_PREVIEW_VIDEO, false);
@@ -91,7 +91,7 @@ public class DLVideoFFMPEGVideoConverter implements VideoConverter {
 		throws Exception {
 
 		try {
-			File destinationFile = FileUtil.createTempFile(format);
+			File destinationFile = _file.createTempFile(format);
 
 			_runFFMPEGCommand(
 				Arrays.asList(
@@ -239,5 +239,8 @@ public class DLVideoFFMPEGVideoConverter implements VideoConverter {
 
 	private volatile DLVideoFFMPEGVideoConverterConfiguration
 		_dlVideoFFMPEGVideoConverterConfiguration;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

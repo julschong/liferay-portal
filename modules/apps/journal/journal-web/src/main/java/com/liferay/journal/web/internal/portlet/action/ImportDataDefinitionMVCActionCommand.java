@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -76,7 +76,7 @@ public class ImportDataDefinitionMVCActionCommand extends BaseMVCActionCommand {
 				_getUploadPortletRequest(actionRequest);
 
 			DataDefinition dataDefinition = DataDefinition.toDTO(
-				FileUtil.read(uploadPortletRequest.getFile("jsonFile")));
+				_file.read(uploadPortletRequest.getFile("jsonFile")));
 
 			dataDefinition.setName(
 				HashMapBuilder.<String, Object>put(
@@ -278,6 +278,9 @@ public class ImportDataDefinitionMVCActionCommand extends BaseMVCActionCommand {
 	private DataDefinitionResource.Factory _dataDefinitionResourceFactory;
 
 	private final Set<String> _fieldNames = new HashSet<>();
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private Portal _portal;

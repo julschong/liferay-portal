@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
@@ -456,7 +455,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 				throw new IOException("Unable to open file " + fileName);
 			}
 
-			return FileUtil.createTempFile(inputStream);
+			return _file.createTempFile(inputStream);
 		}
 	}
 
@@ -589,6 +588,9 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private JSONFactory _jsonFactory;

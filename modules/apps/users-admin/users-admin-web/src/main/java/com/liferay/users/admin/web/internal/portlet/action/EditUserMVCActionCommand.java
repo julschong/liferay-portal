@@ -63,7 +63,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -375,7 +375,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 		if (fileEntryId > 0) {
 			FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
 
-			portraitBytes = FileUtil.getBytes(fileEntry.getContentStream());
+			portraitBytes = _file.getBytes(fileEntry.getContentStream());
 		}
 
 		String languageId = BeanParamUtil.getString(
@@ -569,6 +569,10 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private File _file;
+
 	private ListTypeLocalService _listTypeLocalService;
 
 	@Reference

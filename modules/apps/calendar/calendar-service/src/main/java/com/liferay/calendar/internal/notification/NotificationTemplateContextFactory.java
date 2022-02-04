@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -127,7 +127,7 @@ public class NotificationTemplateContextFactory {
 								calendarBooking.getCalendarBookingId(),
 								CalendarUtil.ICAL_EXTENSION);
 
-						return FileUtil.createTempFile(
+						return _file.createTempFile(
 							calendarBookingString.getBytes());
 					}
 
@@ -302,6 +302,10 @@ public class NotificationTemplateContextFactory {
 
 	private static CalendarBookingLocalService _calendarBookingLocalService;
 	private static CompanyLocalService _companyLocalService;
+
+	@Reference
+	private static File _file;
+
 	private static GroupLocalService _groupLocalService;
 	private static LayoutLocalService _layoutLocalService;
 

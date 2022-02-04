@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -140,7 +139,7 @@ public class S3FileCache {
 				throw new IOException("S3 object input stream is null");
 			}
 
-			FileUtil.mkdirs(cacheFile.getParentFile());
+			_file.mkdirs(cacheFile.getParentFile());
 
 			try (OutputStream outputStream = new FileOutputStream(cacheFile)) {
 				StreamUtil.transfer(inputStream, outputStream);
@@ -249,6 +248,10 @@ public class S3FileCache {
 	private volatile AtomicInteger _cacheDirCleanUpExpunge;
 	private volatile AtomicInteger _cacheDirCleanUpFrequency;
 	private int _calledCleanUpCacheFilesCount;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
+
 	private S3KeyTransformer _s3KeyTransformer;
 	private volatile S3StoreConfiguration _s3StoreConfiguration;
 

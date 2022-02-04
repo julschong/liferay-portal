@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.io.File;
@@ -107,7 +106,7 @@ public class TalendDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			throw new PortalException(exception);
 		}
 		finally {
-			FileUtil.deltree(new File(talendArchive.getJobDirectory()));
+			_file.deltree(new File(talendArchive.getJobDirectory()));
 		}
 	}
 
@@ -185,6 +184,9 @@ public class TalendDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private ProcessExecutor _processExecutor;

@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.sync.constants.SyncDLObjectConstants;
@@ -176,7 +176,7 @@ public class SyncDLObjectLocalServiceImpl
 					SyncDLObjectConstants.TYPE_FOLDER,
 					syncDLObject.getParentFolderId());
 
-			String parentFolderExtension = FileUtil.getExtension(
+			String parentFolderExtension = _file.getExtension(
 				parentFolderSyncDLObject.getName());
 
 			if (ArrayUtil.contains(
@@ -415,6 +415,9 @@ public class SyncDLObjectLocalServiceImpl
 
 	@Reference
 	private DLFolderLocalService _dlFolderLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private SyncDLFileVersionDiffLocalService

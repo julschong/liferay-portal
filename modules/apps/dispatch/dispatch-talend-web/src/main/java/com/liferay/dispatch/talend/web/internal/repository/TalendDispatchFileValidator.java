@@ -20,12 +20,13 @@ import com.liferay.dispatch.repository.exception.DispatchRepositoryException;
 import com.liferay.dispatch.talend.web.internal.configuration.DispatchTalendConfiguration;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Beslic
@@ -45,7 +46,7 @@ public class TalendDispatchFileValidator extends BaseDispatchFileValidator {
 		throws DispatchRepositoryException {
 
 		if (isValidExtension(
-				StringPool.PERIOD + FileUtil.getExtension(fileName),
+				StringPool.PERIOD + _file.getExtension(fileName),
 				_dispatchTalendConfiguration.fileExtensions())) {
 
 			return;
@@ -74,5 +75,8 @@ public class TalendDispatchFileValidator extends BaseDispatchFileValidator {
 	}
 
 	private volatile DispatchTalendConfiguration _dispatchTalendConfiguration;
+
+	@Reference
+	private File _file;
 
 }

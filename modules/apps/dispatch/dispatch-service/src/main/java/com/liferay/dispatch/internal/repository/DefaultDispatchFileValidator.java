@@ -21,12 +21,13 @@ import com.liferay.dispatch.repository.DispatchFileValidator;
 import com.liferay.dispatch.repository.exception.DispatchRepositoryException;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Beslic
@@ -44,7 +45,7 @@ public class DefaultDispatchFileValidator extends BaseDispatchFileValidator {
 		throws DispatchRepositoryException {
 
 		if (isValidExtension(
-				StringPool.PERIOD + FileUtil.getExtension(fileName),
+				StringPool.PERIOD + _file.getExtension(fileName),
 				_dispatchConfiguration.fileExtensions())) {
 
 			return;
@@ -73,5 +74,8 @@ public class DefaultDispatchFileValidator extends BaseDispatchFileValidator {
 	}
 
 	private volatile DispatchConfiguration _dispatchConfiguration;
+
+	@Reference
+	private File _file;
 
 }

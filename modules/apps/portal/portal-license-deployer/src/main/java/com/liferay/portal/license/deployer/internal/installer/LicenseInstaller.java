@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
@@ -40,14 +39,14 @@ public class LicenseInstaller implements FileInstaller {
 
 	@Override
 	public boolean canTransformURL(File artifact) {
-		String extension = FileUtil.getExtension(artifact.getName());
+		String extension = _file.getExtension(artifact.getName());
 
 		if (!extension.equals("xml")) {
 			return false;
 		}
 
 		try {
-			String content = FileUtil.read(artifact);
+			String content = _file.read(artifact);
 
 			Document document = SAXReaderUtil.read(content);
 
@@ -73,7 +72,7 @@ public class LicenseInstaller implements FileInstaller {
 	@Override
 	public URL transformURL(File file) throws Exception {
 		LicenseManagerUtil.registerLicense(
-			JSONUtil.put("licenseXML", FileUtil.read(file)));
+			JSONUtil.put("licenseXML", _file.read(file)));
 
 		return null;
 	}
@@ -84,6 +83,9 @@ public class LicenseInstaller implements FileInstaller {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LicenseInstaller.class);
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference(target = ModuleServiceLifecycle.LICENSE_INSTALL)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

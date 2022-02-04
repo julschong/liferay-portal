@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -36,6 +36,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Petteri Karttunen
@@ -140,7 +141,7 @@ public class ImportGooglePlacesMVCActionCommand extends BaseMVCActionCommand {
 	private JSONObject _read(String fileName) throws Exception {
 		return jsonFactory.createJSONObject(
 			new String(
-				FileUtil.getBytes(
+				_file.getBytes(
 					getClass(),
 					"dependencies/google/places/" + fileName + ".json")));
 	}
@@ -187,5 +188,8 @@ public class ImportGooglePlacesMVCActionCommand extends BaseMVCActionCommand {
 		CharPool.QUESTION, CharPool.QUOTE, CharPool.RETURN, CharPool.SEMICOLON,
 		CharPool.SLASH, CharPool.STAR, CharPool.TILDE
 	};
+
+	@Reference
+	private File _file;
 
 }

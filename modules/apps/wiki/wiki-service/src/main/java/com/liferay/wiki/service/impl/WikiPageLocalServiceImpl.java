@@ -74,7 +74,6 @@ import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLoca
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -442,7 +441,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			File file = null;
 
 			try {
-				file = FileUtil.createTempFile(inputStream);
+				file = _file.createTempFile(inputStream);
 
 				String mimeType = _mimeTypes.getContentType(file, fileName);
 
@@ -456,7 +455,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 					"Unable to write temporary file", ioException);
 			}
 			finally {
-				FileUtil.delete(file);
+				_file.delete(file);
 			}
 		}
 
@@ -3459,6 +3458,9 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;

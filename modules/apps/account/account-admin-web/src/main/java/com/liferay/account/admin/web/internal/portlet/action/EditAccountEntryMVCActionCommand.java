@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -219,7 +219,7 @@ public class EditAccountEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
 
-		return FileUtil.getBytes(fileEntry.getContentStream());
+		return _file.getBytes(fileEntry.getContentStream());
 	}
 
 	private int _getStatus(ActionRequest actionRequest) {
@@ -247,6 +247,9 @@ public class EditAccountEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private Http _http;

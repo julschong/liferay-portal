@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -381,10 +380,10 @@ public class DDMTemplateStagedModelDataHandler
 						smallImagePath);
 
 					if (bytes != null) {
-						smallFile = FileUtil.createTempFile(
+						smallFile = _file.createTempFile(
 							template.getSmallImageType());
 
-						FileUtil.write(smallFile, bytes);
+						_file.write(smallFile, bytes);
 					}
 				}
 			}
@@ -630,6 +629,9 @@ public class DDMTemplateStagedModelDataHandler
 		_ddmTemplateExportImportContentProcessor;
 	private DDMTemplateLocalService _ddmTemplateLocalService;
 	private DDMTemplateVersionLocalService _ddmTemplateVersionLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

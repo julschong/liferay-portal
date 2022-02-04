@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -93,6 +92,9 @@ public class AddTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 	protected DDMTemplateService ddmTemplateService;
 
 	@Reference
+	protected com.liferay.portal.kernel.util.File file;
+
+	@Reference
 	protected Portal portal;
 
 	private DDMTemplate _addTemplate(ActionRequest actionRequest)
@@ -142,15 +144,15 @@ public class AddTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 			UploadPortletRequest uploadPortletRequest)
 		throws Exception {
 
-		File file = uploadPortletRequest.getFile("script");
+		File scriptFile = uploadPortletRequest.getFile("script");
 
-		if (file == null) {
+		if (scriptFile == null) {
 			return null;
 		}
 
-		String fileScriptContent = FileUtil.read(file);
+		String fileScriptContent = file.read(scriptFile);
 
-		String contentType = MimeTypesUtil.getContentType(file);
+		String contentType = MimeTypesUtil.getContentType(scriptFile);
 
 		if (Validator.isNotNull(fileScriptContent) &&
 			!_isValidContentType(contentType)) {

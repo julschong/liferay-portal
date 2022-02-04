@@ -51,7 +51,6 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -600,7 +599,7 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 		FileEntry fileEntry = PortletFileRepositoryUtil.addPortletFileEntry(
 			groupId, userId, className, classPK, FragmentPortletKeys.FRAGMENT,
 			repository.getDlFolderId(), inputStream,
-			classPK + "_preview." + FileUtil.getExtension(contentPath),
+			classPK + "_preview." + _file.getExtension(contentPath),
 			MimeTypesUtil.getContentType(contentPath), false);
 
 		return fileEntry.getFileEntryId();
@@ -893,6 +892,9 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private FragmentCollectionLocalService _fragmentCollectionLocalService;

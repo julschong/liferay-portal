@@ -17,7 +17,6 @@ package com.liferay.portal.osgi.web.wab.reference.support.internal;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.xml.Document;
@@ -204,7 +203,7 @@ public class WabDirURLStreamHandlerService
 	}
 
 	private Document _readDocument(File file) throws IOException {
-		String content = FileUtil.read(file);
+		String content = _file.read(file);
 
 		try {
 			return UnsecureSAXReaderUtil.read(content);

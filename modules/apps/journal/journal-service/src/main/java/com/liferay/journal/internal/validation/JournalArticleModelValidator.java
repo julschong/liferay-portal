@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -207,7 +206,7 @@ public class JournalArticleModelValidator
 		if (!validSmallImageExtension) {
 			throw new ArticleSmallImageNameException(
 				"Invalid image extension " +
-					FileUtil.getExtension(smallImageName));
+					_file.getExtension(smallImageName));
 		}
 
 		long smallImageMaxSize =
@@ -369,10 +368,9 @@ public class JournalArticleModelValidator
 
 				if (smallImageBytes != null) {
 					try {
-						smallImageFile = FileUtil.createTempFile(
-							image.getType());
+						smallImageFile = _file.createTempFile(image.getType());
 
-						FileUtil.write(smallImageFile, smallImageBytes, false);
+						_file.write(smallImageFile, smallImageBytes, false);
 					}
 					catch (IOException ioException) {
 						if (_log.isDebugEnabled()) {
@@ -528,6 +526,9 @@ public class JournalArticleModelValidator
 
 	@Reference
 	private DepotEntryLocalService _depotEntryLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private ImageLocalService _imageLocalService;

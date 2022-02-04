@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.multipart.BinaryFile;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
@@ -197,7 +196,7 @@ public class BatchEngineBrokerImpl implements BatchEngineBroker {
 				BatchPlannerLogConstants.STATUS_QUEUED);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -218,6 +217,9 @@ public class BatchEngineBrokerImpl implements BatchEngineBroker {
 
 	@Reference
 	private ExportTaskResource _exportTaskResource;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private ImportTaskResource _importTaskResource;

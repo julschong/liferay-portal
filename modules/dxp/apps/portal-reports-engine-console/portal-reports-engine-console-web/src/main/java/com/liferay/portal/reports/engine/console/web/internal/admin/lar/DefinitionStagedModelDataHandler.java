@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.reports.engine.console.model.Definition;
@@ -167,7 +167,7 @@ public class DefinitionStagedModelDataHandler
 			String fullFileName = attachmentElement.attributeValue(
 				"full-file-name");
 
-			fileName = FileUtil.getShortFileName(fullFileName);
+			fileName = _file.getShortFileName(fullFileName);
 		}
 
 		try (InputStream inputStream =
@@ -215,6 +215,9 @@ public class DefinitionStagedModelDataHandler
 
 	@Reference
 	private DefinitionLocalService _definitionLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private SourceLocalService _sourceLocalService;

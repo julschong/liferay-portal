@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -159,7 +158,7 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 
 		File file = uploadPortletRequest.getFile("file");
 
-		if (ArrayUtil.isEmpty(FileUtil.getBytes(file))) {
+		if (ArrayUtil.isEmpty(_file.getBytes(file))) {
 			SessionErrors.add(actionRequest, UploadException.class.getName());
 		}
 		else if (!fileName.endsWith(".jar") && !fileName.endsWith(".lpkg") &&
@@ -170,7 +169,7 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 		else {
 			String deployDir = PropsUtil.get(PropsKeys.AUTO_DEPLOY_DEPLOY_DIR);
 
-			FileUtil.copyFile(
+			_file.copyFile(
 				file.toString(), deployDir + StringPool.SLASH + fileName);
 
 			SessionMessages.add(actionRequest, "pluginUploaded");
@@ -469,7 +468,7 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 
 				File destinationFile = new File(destination);
 
-				FileUtil.write(destinationFile, bytes);
+				_file.write(destinationFile, bytes);
 
 				SessionMessages.add(actionRequest, "pluginDownloaded");
 			}
@@ -532,6 +531,9 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 
 	@Reference
 	private BundleManager _bundleManager;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Http _http;

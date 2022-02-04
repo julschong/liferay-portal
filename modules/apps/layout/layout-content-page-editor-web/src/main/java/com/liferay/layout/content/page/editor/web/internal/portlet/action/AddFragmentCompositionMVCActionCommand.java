@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -185,7 +185,7 @@ public class AddFragmentCompositionMVCActionCommand
 
 				URL imageURL = new URL(url);
 
-				bytes = FileUtil.getBytes(imageURL.openStream());
+				bytes = _file.getBytes(imageURL.openStream());
 			}
 
 			if (bytes.length == 0) {
@@ -227,6 +227,9 @@ public class AddFragmentCompositionMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AddFragmentCompositionMVCActionCommand.class);
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private FragmentCollectionContributorTracker

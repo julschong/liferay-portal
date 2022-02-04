@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseTransactionalMVCResourc
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -127,7 +126,7 @@ public class SubmitBatchPlannerPlanMVCResourceCommand
 					batchPlannerLog.getBatchEngineImportTaskERC()));
 		}
 		finally {
-			FileUtil.delete(importFile);
+			_file.delete(importFile);
 		}
 	}
 
@@ -137,7 +136,7 @@ public class SubmitBatchPlannerPlanMVCResourceCommand
 
 		UUID uuid = UUID.randomUUID();
 
-		File file = FileUtil.createTempFile(uuid.toString(), externalType);
+		File file = _file.createTempFile(uuid.toString(), externalType);
 
 		try {
 			Files.copy(inputStream, file.toPath());
@@ -158,6 +157,9 @@ public class SubmitBatchPlannerPlanMVCResourceCommand
 
 	@Reference
 	private BatchPlannerPlanHelper _batchPlannerPlanHelper;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Portal _portal;

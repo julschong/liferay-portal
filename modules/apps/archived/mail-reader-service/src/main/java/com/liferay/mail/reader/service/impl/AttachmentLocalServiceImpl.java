@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,6 +36,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Scott Lee
@@ -145,9 +145,9 @@ public class AttachmentLocalServiceImpl extends AttachmentLocalServiceBaseImpl {
 	@Override
 	public File getFile(long attachmentId) throws PortalException {
 		try {
-			File file = FileUtil.createTempFile();
+			File file = _file.createTempFile();
 
-			FileUtil.write(file, getInputStream(attachmentId));
+			_file.write(file, getInputStream(attachmentId));
 
 			return file;
 		}
@@ -185,5 +185,8 @@ public class AttachmentLocalServiceImpl extends AttachmentLocalServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AttachmentLocalServiceImpl.class);
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

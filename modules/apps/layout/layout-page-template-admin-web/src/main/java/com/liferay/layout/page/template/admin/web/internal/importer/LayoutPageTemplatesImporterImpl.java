@@ -80,7 +80,6 @@ import com.liferay.portal.kernel.service.ThemeLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -747,12 +746,12 @@ public class LayoutPageTemplatesImporterImpl
 
 		String imageFileName =
 			layoutPageTemplateEntryId + "_preview." +
-				FileUtil.getExtension(zipEntry.getName());
+				_file.getExtension(zipEntry.getName());
 
 		byte[] bytes = null;
 
 		try (InputStream inputStream = zipFile.getInputStream(zipEntry)) {
-			bytes = FileUtil.getBytes(inputStream);
+			bytes = _file.getBytes(inputStream);
 		}
 
 		FileEntry fileEntry = _portletFileRepository.fetchPortletFileEntry(
@@ -1415,6 +1414,9 @@ public class LayoutPageTemplatesImporterImpl
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;

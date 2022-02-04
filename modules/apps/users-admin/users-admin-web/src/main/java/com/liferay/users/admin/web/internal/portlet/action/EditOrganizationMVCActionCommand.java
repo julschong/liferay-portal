@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -202,7 +202,7 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 		if (fileEntryId > 0) {
 			FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
 
-			logoBytes = FileUtil.getBytes(fileEntry.getContentStream());
+			logoBytes = _file.getBytes(fileEntry.getContentStream());
 		}
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
@@ -244,6 +244,9 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private Http _http;
