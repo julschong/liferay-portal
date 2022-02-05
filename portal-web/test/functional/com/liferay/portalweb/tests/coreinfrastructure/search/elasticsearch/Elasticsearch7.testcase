@@ -591,11 +591,21 @@ definition {
 			groupName = "Guest",
 			title = "WC WebContent Title");
 
+		var baseURL = PropsUtil.get("portal.url");
+
+		ServerAdministration.openServerAdmin();
+
+		ServerAdministration.addCategoryLogLevels(
+			categoryLevel = "INFO",
+			categoryName = "com.liferay.portal.search.elasticsearch7.internal.connection");
+
 		AntCommand(
 			locator1 = "build-test-elasticsearch7.xml",
 			value1 = "start-elasticsearch");
 
 		WaitForConsoleTextPresent(value1 = "Stopping sidecar Elasticsearch");
+
+		WaitForConsoleTextPresent(value1 = "Returning connection with ID: __REMOTE__");
 
 		// LRCI-2401
 
