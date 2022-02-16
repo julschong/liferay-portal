@@ -14,17 +14,16 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.process.ProcessLog;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ClassUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.ServerDetector;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.URLCodec;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -39,6 +38,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -215,113 +215,28 @@ public class PortalClassPathUtil {
 		String className = clazz.getName();
 		ClassLoader classLoader = clazz.getClassLoader();
 
-		String pathOfClass = StringUtil.replace(
-			className, CharPool.PERIOD, CharPool.SLASH);
+		UnsafeFunction<URL, URL, Exception> urlMapper = url -> {
+			URLConnection urlConnection = url.openConnection();
 
-		pathOfClass = pathOfClass.concat(".class");
+			Class<?> urlConnectionClass = urlConnection.getClass();
 
-		URL url = classLoader.getResource(pathOfClass);
+			Method getLocalURLMethod = urlConnectionClass.getDeclaredMethod(
+				"getLocalURL");
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Build class path from " + url);
-		}
+			getLocalURLMethod.setAccessible(true);
 
-		String protocol = url.getProtocol();
+			return (URL)getLocalURLMethod.invoke(urlConnection);
+		};
 
-		if (protocol.equals("bundle") || protocol.equals("bundleresource")) {
-			try {
-				URLConnection urlConnection = url.openConnection();
+		Map<String, UnsafeFunction<URL, URL, Exception>> urlMappers =
+			HashMapBuilder.<String, UnsafeFunction<URL, URL, Exception>>put(
+				"bundle", urlMapper
+			).put(
+				"bundleresource", urlMapper
+			).build();
 
-				Class<?> urlConnectionClass = urlConnection.getClass();
-
-				Method getLocalURLMethod = urlConnectionClass.getDeclaredMethod(
-					"getLocalURL");
-
-				getLocalURLMethod.setAccessible(true);
-
-				url = (URL)getLocalURLMethod.invoke(urlConnection);
-			}
-			catch (Exception exception) {
-				_log.error(
-					"Unable to resolve local URL from bundle", exception);
-
-				return null;
-			}
-		}
-
-		String path = URLCodec.decodeURL(url.getPath());
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Path " + path);
-		}
-
-		path = StringUtil.replace(path, CharPool.BACK_SLASH, CharPool.SLASH);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Decoded path " + path);
-		}
-
-		if (ServerDetector.isWebLogic() && protocol.equals("zip")) {
-			path = "file:".concat(path);
-		}
-
-		if ((ServerDetector.isJBoss() || ServerDetector.isWildfly()) &&
-			(protocol.equals("vfs") || protocol.equals("vfsfile") ||
-			 protocol.equals("vfszip"))) {
-
-			int pos = path.indexOf(".jar/");
-
-			if (pos != -1) {
-				String jarFilePath = path.substring(0, pos + 4);
-
-				File jarFile = new File(jarFilePath);
-
-				if (jarFile.isFile()) {
-					path = jarFilePath + '!' + path.substring(pos + 4);
-				}
-			}
-
-			path = "file:".concat(path);
-		}
-
-		File dir = null;
-
-		int pos = -1;
-
-		if (!path.startsWith("file:") ||
-			((pos = path.indexOf(CharPool.EXCLAMATION)) == -1)) {
-
-			if (!path.endsWith(pathOfClass)) {
-				_log.error(
-					"Class " + className + " is not loaded from a JAR file");
-
-				return null;
-			}
-
-			String classesDirName = path.substring(
-				0, path.length() - pathOfClass.length());
-
-			if (!classesDirName.endsWith("/WEB-INF/classes/")) {
-				_log.error(
-					StringBundler.concat(
-						"Class ", className, " is not loaded from a standard ",
-						"location (/WEB-INF/classes)"));
-
-				return null;
-			}
-
-			String libDirName = classesDirName.substring(
-				0, classesDirName.length() - "classes/".length());
-
-			libDirName += "/lib";
-
-			dir = new File(libDirName);
-		}
-		else {
-			pos = path.lastIndexOf(CharPool.SLASH, pos);
-
-			dir = new File(path.substring("file:".length(), pos));
-		}
+		File dir = new File(
+			ClassUtil.getParentDir(classLoader, className, urlMappers));
 
 		if (!dir.isDirectory()) {
 			_log.error(dir.toString() + " is not a directory");
