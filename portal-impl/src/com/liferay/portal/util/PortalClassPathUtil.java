@@ -14,7 +14,6 @@
 
 package com.liferay.portal.util;
 
-import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.process.ProcessLog;
@@ -22,23 +21,16 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
-import java.lang.reflect.Method;
-
-import java.net.URL;
-import java.net.URLConnection;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -215,28 +207,7 @@ public class PortalClassPathUtil {
 		String className = clazz.getName();
 		ClassLoader classLoader = clazz.getClassLoader();
 
-		UnsafeFunction<URL, URL, Exception> urlMapper = url -> {
-			URLConnection urlConnection = url.openConnection();
-
-			Class<?> urlConnectionClass = urlConnection.getClass();
-
-			Method getLocalURLMethod = urlConnectionClass.getDeclaredMethod(
-				"getLocalURL");
-
-			getLocalURLMethod.setAccessible(true);
-
-			return (URL)getLocalURLMethod.invoke(urlConnection);
-		};
-
-		Map<String, UnsafeFunction<URL, URL, Exception>> urlMappers =
-			HashMapBuilder.<String, UnsafeFunction<URL, URL, Exception>>put(
-				"bundle", urlMapper
-			).put(
-				"bundleresource", urlMapper
-			).build();
-
-		File dir = new File(
-			ClassUtil.getParentDir(classLoader, className, urlMappers));
+		File dir = new File(ClassUtil.getParentDir(classLoader, className));
 
 		if (!dir.isDirectory()) {
 			_log.error(dir.toString() + " is not a directory");
