@@ -14,9 +14,9 @@
 
 package com.liferay.layout.page.template.validator;
 
-import com.liferay.layout.page.template.exception.DisplayPageTemplateValidatorException;
 import com.liferay.json.validator.JSONValidator;
 import com.liferay.json.validator.JSONValidatorException;
+import com.liferay.layout.page.template.exception.DisplayPageTemplateValidatorException;
 import com.liferay.portal.kernel.util.Validator;
 
 /**
