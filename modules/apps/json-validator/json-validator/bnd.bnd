@@ -1,4 +1,4 @@
-Bundle-Name: Liferay Petra JSON Validator
-Bundle-SymbolicName: com.liferay.petra.json.validator
+Bundle-Name: Liferay JSON Validator
+Bundle-SymbolicName: com.liferay.json.validator
 Bundle-Version: 6.0.3
-Export-Package: com.liferay.petra.json.validator
+Export-Package: com.liferay.json.validator
