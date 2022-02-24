@@ -14,10 +14,10 @@
 
 package com.liferay.json.web.service.client.internal;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
-import com.liferay.petra.json.web.service.client.keystore.KeyStoreLoader;
-import com.liferay.petra.json.web.service.client.server.simulator.HTTPSServerSimulator;
-import com.liferay.petra.json.web.service.client.server.simulator.constants.SimulatorConstants;
+import com.liferay.json.web.service.client.JSONWebServiceException;
+import com.liferay.json.web.service.client.keystore.KeyStoreLoader;
+import com.liferay.json.web.service.client.simulator.HTTPSServerSimulator;
+import com.liferay.json.web.service.client.simulator.constants.SimulatorConstants;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.security.KeyStore;

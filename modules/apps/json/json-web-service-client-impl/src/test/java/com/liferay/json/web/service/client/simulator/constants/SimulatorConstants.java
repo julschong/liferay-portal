@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client.server.simulator.constants;
+package com.liferay.json.web.service.client.simulator.constants;
 
 /**
  * @author Igor Beslic

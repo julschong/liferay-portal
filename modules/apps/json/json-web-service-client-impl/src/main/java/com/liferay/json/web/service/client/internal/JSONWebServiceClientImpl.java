@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.json.web.service.client.internal.internal;
+package com.liferay.json.web.service.client.internal;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.json.web.service.client.JSONWebServiceTransportException;
 
 import java.security.KeyStore;
 
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * @author Igor Beslic
  */
 @Component(
-	factory = "com.liferay.petra.json.web.service.client.JSONWebServiceClient",
+	factory = "com.liferay.json.web.service.client.JSONWebServiceClient",
 	service = {}
 )
 public class JSONWebServiceClientImpl extends BaseJSONWebServiceClientImpl {
