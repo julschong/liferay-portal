@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client;
+package com.liferay.petra.json.web.service.client.internal;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -20,6 +20,10 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
+import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
+import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.petra.json.web.service.client.internal.AsyncHttpClient;
 import com.liferay.petra.json.web.service.client.internal.IdleConnectionMonitorThread;
 import com.liferay.petra.json.web.service.client.internal.JSONWebServiceClientImpl;
@@ -181,7 +185,7 @@ public abstract class BaseJSONWebServiceClientImpl
 	@Override
 	public String doDelete(String url, List<NameValuePair> parameters)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException {
+		JSONWebServiceTransportException {
 
 		return doDelete(
 			url, parameters, Collections.<NameValuePair>emptyList());
@@ -278,7 +282,7 @@ public abstract class BaseJSONWebServiceClientImpl
 			Class<T> clazz, String url, List<NameValuePair> parameters,
 			List<NameValuePair> headers)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
+		JSONWebServiceSerializeException,
 			   JSONWebServiceTransportException {
 
 		String json = doGet(url, parameters, headers);
