@@ -14,7 +14,6 @@
 
 package com.liferay.portal.verify;
 
-import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.BaseDBProcess;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -31,12 +30,8 @@ import java.sql.ResultSet;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -101,32 +96,6 @@ public abstract class VerifyProcess extends BaseDBProcess {
 	}
 
 	protected void doVerify() throws Exception {
-	}
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
-	 *             #processConcurrently(Object[], UnsafeConsumer, String)}
-	 */
-	@Deprecated
-	protected void doVerify(Collection<? extends Callable<Void>> callables)
-		throws Exception {
-
-		try {
-			ExecutorService executorService = Executors.newFixedThreadPool(
-				callables.size());
-
-			List<Future<Void>> futures = executorService.invokeAll(callables);
-
-			executorService.shutdown();
-
-			UnsafeConsumer.accept(futures, Future::get);
-		}
-		catch (Throwable throwable) {
-			Class<?> clazz = getClass();
-
-			throw new Exception(
-				"Verification error: " + clazz.getName(), throwable);
-		}
 	}
 
 	/**
