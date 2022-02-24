@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.json.web.service.client.internal.internal;
+package com.liferay.json.web.service.client.internal;
 
 import java.io.Closeable;
 import java.io.IOException;
