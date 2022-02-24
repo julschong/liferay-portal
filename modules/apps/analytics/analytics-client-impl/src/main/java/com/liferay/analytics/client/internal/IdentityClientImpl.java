@@ -18,8 +18,8 @@ import com.liferay.analytics.client.IdentityClient;
 import com.liferay.analytics.data.binding.JSONObjectMapper;
 import com.liferay.analytics.data.binding.internal.IdentityContextMessageJSONObjectMapper;
 import com.liferay.analytics.model.IdentityContextMessage;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.internal.JSONWebServiceClientImpl;
+import com.liferay.json.web.service.client.JSONWebServiceClient;
+import com.liferay.json.web.service.client.internal.JSONWebServiceClientImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import org.slf4j.Logger;
