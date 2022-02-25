@@ -36,6 +36,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -139,11 +142,36 @@ public class ClassUtil {
 		return clazz.getName();
 	}
 
+	public static String getParentDir(
+		ClassLoader classLoader, String className) {
+
+		String path = getParentPath(classLoader, className);
+
+		int pos = path.lastIndexOf("!/");
+
+		if (pos == -1) {
+			pos = path.lastIndexOf(".jar/");
+		}
+
+		pos = path.lastIndexOf(CharPool.SLASH, pos);
+
+		return path.substring(0, pos + 1);
+	}
+
 	public static String getParentPath(
 		ClassLoader classLoader, String className) {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Class name " + className);
+		}
+
+		Class<?> clazz = null;
+
+		try {
+			clazz = classLoader.loadClass(className);
+		}
+		catch (ClassNotFoundException classNotFoundException) {
+			_log.error("Class not found" + className);
 		}
 
 		if (!className.endsWith(_CLASS_EXTENSION)) {
@@ -157,7 +185,7 @@ public class ClassUtil {
 
 		URL url = classLoader.getResource(className);
 
-		Path path = Paths.get(_getPathURIFromURL(url));
+		Path path = Paths.get(_getPathURIFromURL(url, clazz));
 
 		String parentPath = StringUtil.replace(
 			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
@@ -231,7 +259,7 @@ public class ClassUtil {
 		return false;
 	}
 
-	private static URI _getPathURIFromURL(URL url) {
+	private static URI _getPathURIFromURL(URL url, Class<?> clazz) {
 		String urlProtocol = url.getProtocol();
 
 		if (urlProtocol.equals("jar") || urlProtocol.equals("wsjar")) {
@@ -241,6 +269,16 @@ public class ClassUtil {
 			catch (MalformedURLException malformedURLException) {
 				throw new SystemException(malformedURLException);
 			}
+		}
+
+		if (urlProtocol.equals("bundle") ||
+			urlProtocol.equals("bundleresource")) {
+
+			ProtectionDomain protectionDomain = clazz.getProtectionDomain();
+
+			CodeSource codeSource = protectionDomain.getCodeSource();
+
+			url = codeSource.getLocation();
 		}
 
 		String path = url.getPath();
