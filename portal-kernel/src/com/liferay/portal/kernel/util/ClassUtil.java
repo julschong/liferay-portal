@@ -297,6 +297,10 @@ public class ClassUtil {
 			path = StringPool.SLASH + path;
 		}
 
+		if (path.startsWith("/file:")) {
+			path = path.substring(6);
+		}
+
 		try {
 			URI uri = new URI("file:" + path);
 
