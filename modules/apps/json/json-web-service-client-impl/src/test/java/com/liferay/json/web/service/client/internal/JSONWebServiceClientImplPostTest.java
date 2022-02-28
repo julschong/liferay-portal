@@ -16,9 +16,9 @@ package com.liferay.json.web.service.client.internal;
 
 import com.liferay.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.json.web.service.client.model.ResponseBody;
-import com.liferay.json.web.service.client.simulator.HTTPServerSimulator;
-import com.liferay.json.web.service.client.simulator.constants.SimulatorConstants;
+import com.liferay.json.web.service.client.internal.model.ResponseBody;
+import com.liferay.json.web.service.client.internal.simulator.HTTPServerSimulator;
+import com.liferay.json.web.service.client.internal.simulator.constants.SimulatorConstants;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;

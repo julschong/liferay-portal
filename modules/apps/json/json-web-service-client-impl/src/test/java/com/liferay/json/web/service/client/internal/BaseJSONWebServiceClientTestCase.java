@@ -14,12 +14,11 @@
 
 package com.liferay.json.web.service.client.internal;
 
-import com.liferay.json.web.service.client.simulator.HTTPServerSimulator;
-import com.liferay.json.web.service.client.simulator.constants.SimulatorConstants;
+import com.liferay.json.web.service.client.internal.simulator.HTTPServerSimulator;
+import com.liferay.json.web.service.client.internal.simulator.constants.SimulatorConstants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
