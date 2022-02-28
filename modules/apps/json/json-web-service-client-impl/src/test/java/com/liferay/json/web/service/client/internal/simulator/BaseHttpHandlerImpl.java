@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.json.web.service.client.simulator;
+package com.liferay.json.web.service.client.internal.simulator;
 
-import com.liferay.json.web.service.client.simulator.constants.SimulatorConstants;
+import com.liferay.json.web.service.client.internal.simulator.constants.SimulatorConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import com.sun.net.httpserver.Headers;

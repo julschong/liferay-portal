@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.json.web.service.client.simulator;
+package com.liferay.json.web.service.client.internal.simulator;
 
-import com.liferay.json.web.service.client.keystore.KeyStoreLoader;
+import com.liferay.json.web.service.client.internal.keystore.KeyStoreLoader;
 
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;

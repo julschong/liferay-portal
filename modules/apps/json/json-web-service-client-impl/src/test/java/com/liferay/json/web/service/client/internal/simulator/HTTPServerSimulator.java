@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.json.web.service.client.simulator;
+package com.liferay.json.web.service.client.internal.simulator;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
