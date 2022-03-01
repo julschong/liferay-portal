@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -157,8 +158,8 @@ public class ClassUtilTest {
 		URL url = classLoader.getResource(className);
 
 		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, Map.class}, url, Collections.emptyMap());
 
 		Path path = Paths.get(uri);
 
@@ -242,10 +243,11 @@ public class ClassUtilTest {
 
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, Map.class},
 				new URL(
 					"jar:file:/opt/liferay/tomcat/lib/servlet-api.jar" +
-						"!/javax/servlet/Servlet.class"));
+						"!/javax/servlet/Servlet.class"),
+				Collections.emptyMap());
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -265,10 +267,11 @@ public class ClassUtilTest {
 		try {
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, Map.class},
 				new URL(
 					"jar:file:/[opt/liferay/tomcat/lib/servlet-api.jar" +
-						"!/javax/servlet/Servlet.class"));
+						"!/javax/servlet/Servlet.class"),
+				Collections.emptyMap());
 
 			Assert.fail(
 				"SystemException caused by URISyntaxException should be " +
@@ -288,12 +291,13 @@ public class ClassUtilTest {
 		try {
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, Map.class},
 				new URL(
 					"jar", null, -1,
 					"unknown:/opt/liferay/tomcat/lib/servlet-api.jar!/javax" +
 						"/servlet/Servlet.class",
-					null));
+					null),
+				Collections.emptyMap());
 
 			Assert.fail(
 				"SystemException caused by MalformedURLException should be " +
@@ -423,8 +427,8 @@ public class ClassUtilTest {
 
 	private void _testGetPathURIFromURL(URL url, String expectedPath) {
 		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, Map.class}, url, Collections.emptyMap());
 
 		Assert.assertEquals(expectedPath, uri.getPath());
 	}
