@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -25,6 +26,8 @@ import com.liferay.portal.test.log.LoggerTestUtil;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+
+import java.lang.reflect.Method;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -42,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -149,6 +153,43 @@ public class ClassUtilTest {
 	}
 
 	@Test
+	public void testGetParentDir() {
+		ClassLoader classLoader = ClassUtilTest.class.getClassLoader();
+
+		String className = "java/lang/String.class";
+
+		URL url = classLoader.getResource(className);
+
+		URI uri = ReflectionTestUtil.invoke(
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, Map.class}, url, Collections.emptyMap());
+
+		Path path = Paths.get(uri);
+
+		String expectedParentDir = StringUtil.replace(
+			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
+
+		int pos = expectedParentDir.indexOf(className);
+
+		expectedParentDir = expectedParentDir.substring(0, pos);
+
+		pos = expectedParentDir.lastIndexOf("!/");
+
+		expectedParentDir = expectedParentDir.substring(0, pos);
+
+		pos = expectedParentDir.lastIndexOf(CharPool.SLASH);
+
+		expectedParentDir = expectedParentDir.substring(0, pos + 1);
+
+		Assert.assertEquals(
+			expectedParentDir,
+			ClassUtil.getParentDir(classLoader, "java.lang.String.class"));
+		Assert.assertEquals(
+			expectedParentDir,
+			ClassUtil.getParentDir(classLoader, "java.lang.String"));
+	}
+
+	@Test
 	public void testGetParentPath() {
 		ClassLoader classLoader = ClassUtilTest.class.getClassLoader();
 
@@ -157,8 +198,8 @@ public class ClassUtilTest {
 		URL url = classLoader.getResource(className);
 
 		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, Map.class}, url, Collections.emptyMap());
 
 		Path path = Paths.get(uri);
 
@@ -242,10 +283,11 @@ public class ClassUtilTest {
 
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, Map.class},
 				new URL(
 					"jar:file:/opt/liferay/tomcat/lib/servlet-api.jar" +
-						"!/javax/servlet/Servlet.class"));
+						"!/javax/servlet/Servlet.class"),
+				Collections.emptyMap());
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -265,10 +307,11 @@ public class ClassUtilTest {
 		try {
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, Map.class},
 				new URL(
 					"jar:file:/[opt/liferay/tomcat/lib/servlet-api.jar" +
-						"!/javax/servlet/Servlet.class"));
+						"!/javax/servlet/Servlet.class"),
+				Collections.emptyMap());
 
 			Assert.fail(
 				"SystemException caused by URISyntaxException should be " +
@@ -288,12 +331,13 @@ public class ClassUtilTest {
 		try {
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, Map.class},
 				new URL(
 					"jar", null, -1,
 					"unknown:/opt/liferay/tomcat/lib/servlet-api.jar!/javax" +
 						"/servlet/Servlet.class",
-					null));
+					null),
+				Collections.emptyMap());
 
 			Assert.fail(
 				"SystemException caused by MalformedURLException should be " +
@@ -306,6 +350,69 @@ public class ClassUtilTest {
 
 			Assert.assertSame(
 				MalformedURLException.class, throwable.getClass());
+		}
+	}
+
+	@Test
+	public void testGetPathURIFromURLWithURLMapperApplied() {
+		Map<String, UnsafeFunction<URL, URL, Exception>> urlMappers =
+			HashMapBuilder.<String, UnsafeFunction<URL, URL, Exception>>put(
+				"bundleresource",
+				url -> new URL(
+					"bundleresource", null, -1, "/file:/appliedUrlPath")
+			).build();
+
+		try {
+			URI uri = ReflectionTestUtil.invoke(
+				ClassUtil.class, "_getPathURIFromURL",
+				new Class<?>[] {URL.class, Map.class},
+				new URL("bundleresource", null, -1, "unrelatedPath", null),
+				urlMappers);
+
+			Assert.assertEquals("file:/appliedUrlPath", uri.toString());
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testGetPathURIFromURLWithURLMapperLocalURLNotFound()
+		throws MalformedURLException {
+
+		Map<String, UnsafeFunction<URL, URL, Exception>> urlMappers =
+			HashMapBuilder.<String, UnsafeFunction<URL, URL, Exception>>put(
+				"bundleresource",
+				url -> {
+					URLConnection urlConnection = url.openConnection();
+
+					Class<?> urlConnectionClass = urlConnection.getClass();
+
+					Method getLocalURLMethod =
+						urlConnectionClass.getDeclaredMethod("getLocalURL");
+
+					getLocalURLMethod.setAccessible(true);
+
+					return (URL)getLocalURLMethod.invoke(urlConnection);
+				}
+			).build();
+
+		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
+				ClassUtil.class.getName(), Level.SEVERE)) {
+
+			ReflectionTestUtil.invoke(
+				ClassUtil.class, "_getPathURIFromURL",
+				new Class<?>[] {URL.class, Map.class},
+				new URL("bundleresource", null, -1, "unknownBundle", null),
+				urlMappers);
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Assert.assertEquals(
+				"Unable to resolve local URL from bundle",
+				logEntry.getMessage());
 		}
 	}
 
@@ -423,8 +530,8 @@ public class ClassUtilTest {
 
 	private void _testGetPathURIFromURL(URL url, String expectedPath) {
 		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, Map.class}, url, Collections.emptyMap());
 
 		Assert.assertEquals(expectedPath, uri.getPath());
 	}
