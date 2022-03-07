@@ -12,28 +12,28 @@
  * details.
  */
 
-package com.liferay.petra.mail;
+package com.liferay.petra.mail.exception;
 
 import com.liferay.portal.kernel.exception.NestableException;
 
 /**
- * @author Alexander Chow
- * @see    com.liferay.util.mail.MailServerException
+ * @author Brian Wing Shun Chan
+ * @see    com.liferay.util.mail.MailEngineException
  */
-public class MailServerException extends NestableException {
+public class MailEngineException extends NestableException {
 
-	public MailServerException() {
+	public MailEngineException() {
 	}
 
-	public MailServerException(String msg) {
+	public MailEngineException(String msg) {
 		super(msg);
 	}
 
-	public MailServerException(String msg, Throwable throwable) {
+	public MailEngineException(String msg, Throwable throwable) {
 		super(msg, throwable);
 	}
 
-	public MailServerException(Throwable throwable) {
+	public MailEngineException(Throwable throwable) {
 		super(throwable);
 	}
 

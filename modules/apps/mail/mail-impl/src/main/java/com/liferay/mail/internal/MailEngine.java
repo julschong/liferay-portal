@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.mail;
+package com.liferay.petra.mail.internal;
 
 import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.FileAttachment;
