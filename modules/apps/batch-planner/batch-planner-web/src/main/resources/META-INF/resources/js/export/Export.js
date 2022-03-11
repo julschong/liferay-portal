@@ -52,7 +52,7 @@ function Export({
 	}, [portletNamespace]);
 
 	return (
-		<span>
+		<>
 			<ClayButton
 				disabled={disable}
 				displayType="primary"
@@ -72,7 +72,7 @@ function Export({
 					observer={observer}
 				/>
 			)}
-		</span>
+		</>
 	);
 }
 

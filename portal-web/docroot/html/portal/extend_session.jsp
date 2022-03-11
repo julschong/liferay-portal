@@ -24,7 +24,7 @@ if (_log.isWarnEnabled()) {
 		_log.warn("Unable to extend the HTTP session. Review the portal property \"session.timeout\" if this warning is displayed frequently.");
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("The the requested session " + requestedSessionId + " is not the same as session " + session.getId());
+			_log.debug("The requested session " + requestedSessionId + " is not the same as session " + session.getId());
 		}
 	}
 }

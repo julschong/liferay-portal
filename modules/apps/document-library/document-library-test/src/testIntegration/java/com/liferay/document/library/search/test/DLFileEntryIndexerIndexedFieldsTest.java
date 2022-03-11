@@ -51,6 +51,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -134,8 +135,6 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 		Document document = dlSearchFixture.searchOnlyOneSearchHit(
 			searchTerm, LocaleUtil.JAPAN);
 
-		document = indexedFieldsFixture.postProcessDocument(document);
-
 		Map<String, String> map = new HashMap<>();
 
 		populateExpectedFieldValues(fileEntry, map);
@@ -196,28 +195,14 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 			"CONTENT_TYPE", "text/plain; charset=UTF-8", ddmStructureId, map);
 	}
 
-	protected void populateContentLength(
-			FileEntry fileEntry, Map<String, String> map)
-		throws Exception {
+	protected void populateDates(FileEntry fileEntry, Map<String, String> map) {
+		Date createDate = fileEntry.getCreateDate();
 
-		String contentLength = "5";
+		indexedFieldsFixture.populateDate(Field.CREATE_DATE, createDate, map);
 
-		String key = "contentLength_ja_JP";
-
-		map.put(key, contentLength);
-		map.put(key.concat("_sortable"), contentLength);
-	}
-
-	protected void populateDates(
-		AssetEntry assetEntry, FileEntry fileEntry, Map<String, String> map) {
-
-		indexedFieldsFixture.populateDate(
-			Field.CREATE_DATE, fileEntry.getCreateDate(), map);
 		indexedFieldsFixture.populateDate(
 			Field.MODIFIED_DATE, fileEntry.getModifiedDate(), map);
-		indexedFieldsFixture.populateDate(
-			Field.PUBLISH_DATE, assetEntry.getPublishDate(), map);
-
+		indexedFieldsFixture.populateDate(Field.PUBLISH_DATE, createDate, map);
 		indexedFieldsFixture.populateExpirationDateWithForever(map);
 	}
 
@@ -225,11 +210,11 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 			FileEntry fileEntry, Map<String, String> map)
 		throws Exception {
 
-		AssetEntry assetEntry = _getAssetEntry(fileEntry);
-
-		long assetEntryId = _getAssetEntryId(assetEntry);
+		long assetEntryId = _getAssetEntryId(_getAssetEntry(fileEntry));
 
 		map.put(Field.ASSET_ENTRY_ID, String.valueOf(assetEntryId));
+		map.put(
+			Field.ASSET_ENTRY_ID + "_sortable", String.valueOf(assetEntryId));
 
 		map.put(Field.CLASS_NAME_ID, "0");
 		map.put(Field.CLASS_PK, "0");
@@ -248,9 +233,10 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 		map.put(Field.USER_ID, String.valueOf(fileEntry.getUserId()));
 		map.put(
 			Field.USER_NAME, StringUtil.toLowerCase(fileEntry.getUserName()));
-		map.put("assetEntryId_sortable", String.valueOf(assetEntryId));
 		map.put("classTypeId", "0");
 		map.put("content_ja_JP", getContents(fileEntry));
+		map.put("contentLength_ja_JP", "5");
+		map.put("contentLength_ja_JP_sortable", "5");
 		map.put(
 			"dataRepositoryId", String.valueOf(fileEntry.getRepositoryId()));
 		map.put("ddmContent", "text/plain; charset=UTF-8 UTF-8");
@@ -277,8 +263,7 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 			"versionCount_sortable", String.valueOf(fileEntry.getVersion()));
 		map.put("visible", "true");
 
-		populateContentLength(fileEntry, map);
-		populateDates(assetEntry, fileEntry, map);
+		populateDates(fileEntry, map);
 
 		if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
 			legacyPopulateHttpHeaders(fileEntry, map);

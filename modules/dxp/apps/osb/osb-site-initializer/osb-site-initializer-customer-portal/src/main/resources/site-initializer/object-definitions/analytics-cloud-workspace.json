@@ -73,6 +73,16 @@
 			},
 			"name": "timeZone",
 			"required": false
+		},
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Workspace Group ID"
+			},
+			"name": "workspaceGroupId",
+			"required": false
 		}
 	],
 	"pluralLabel": {

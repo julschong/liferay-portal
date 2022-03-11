@@ -14,8 +14,10 @@
 
 package com.liferay.content.dashboard.web.internal.item.type;
 
+import com.liferay.content.dashboard.web.internal.info.item.provider.util.ClassNameClassPKInfoItemIdentifier;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.info.item.InfoItemReference;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -59,20 +61,23 @@ public class DDMStructureContentDashboardItemSubtypeTest {
 		Assert.assertEquals(
 			"structureName",
 			ddmStructureContentDashboardItemSubtype.getLabel(LocaleUtil.US));
-		Assert.assertEquals(
-			ddmStructure.getModifiedDate(),
-			ddmStructureContentDashboardItemSubtype.getModifiedDate());
-		Assert.assertEquals(
-			ddmStructure.getUserId(),
-			ddmStructureContentDashboardItemSubtype.getUserId());
 
 		InfoItemReference infoItemReference =
 			ddmStructureContentDashboardItemSubtype.getInfoItemReference();
 
 		Assert.assertEquals(
-			DDMStructure.class.getName(), infoItemReference.getClassName());
+			JournalArticle.class.getName(), infoItemReference.getClassName());
+
+		ClassNameClassPKInfoItemIdentifier classNameClassPKInfoItemIdentifier =
+			(ClassNameClassPKInfoItemIdentifier)
+				infoItemReference.getInfoItemIdentifier();
+
 		Assert.assertEquals(
-			ddmStructure.getStructureId(), infoItemReference.getClassPK());
+			DDMStructure.class.getName(),
+			classNameClassPKInfoItemIdentifier.getClassName());
+		Assert.assertEquals(
+			ddmStructure.getStructureId(),
+			classNameClassPKInfoItemIdentifier.getClassPK());
 	}
 
 	@Test
@@ -94,7 +99,7 @@ public class DDMStructureContentDashboardItemSubtypeTest {
 	}
 
 	@Test
-	public void testNoEquals() throws PortalException {
+	public void testNotEquals() throws PortalException {
 		DDMStructure ddmStructure1 = _getDDMStructure("structureName");
 
 		DDMStructureContentDashboardItemSubtype
@@ -126,11 +131,17 @@ public class DDMStructureContentDashboardItemSubtypeTest {
 		InfoItemReference infoItemReference =
 			ddmStructureContentDashboardItemSubtype.getInfoItemReference();
 
+		ClassNameClassPKInfoItemIdentifier classNameClassPKInfoItemIdentifier =
+			(ClassNameClassPKInfoItemIdentifier)
+				infoItemReference.getInfoItemIdentifier();
+
 		Assert.assertEquals(
 			JSONUtil.put(
-				"className", infoItemReference.getClassName()
+				"className", classNameClassPKInfoItemIdentifier.getClassName()
 			).put(
-				"classPK", infoItemReference.getClassPK()
+				"classPK", classNameClassPKInfoItemIdentifier.getClassPK()
+			).put(
+				"entryClassName", infoItemReference.getClassName()
 			).put(
 				"title",
 				ddmStructureContentDashboardItemSubtype.getFullLabel(

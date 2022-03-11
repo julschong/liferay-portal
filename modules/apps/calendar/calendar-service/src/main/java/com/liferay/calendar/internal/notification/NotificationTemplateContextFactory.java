@@ -38,11 +38,11 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -64,7 +64,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = {})
 public class NotificationTemplateContextFactory {
 
-	public static NotificationTemplateContext getInstance(
+	public NotificationTemplateContext getInstance(
 			NotificationType notificationType,
 			NotificationTemplateType notificationTemplateType,
 			CalendarBooking calendarBooking, User user)
@@ -179,7 +179,7 @@ public class NotificationTemplateContextFactory {
 		return notificationTemplateContext;
 	}
 
-	public static NotificationTemplateContext getInstance(
+	public NotificationTemplateContext getInstance(
 			NotificationType notificationType,
 			NotificationTemplateType notificationTemplateType,
 			CalendarBooking calendarBooking, User user,
@@ -238,8 +238,7 @@ public class NotificationTemplateContextFactory {
 		_layoutLocalService = layoutLocalService;
 	}
 
-	private static String _getCalendarBookingURL(
-			User user, long calendarBookingId)
+	private String _getCalendarBookingURL(User user, long calendarBookingId)
 		throws Exception {
 
 		Group group = _groupLocalService.getGroup(
@@ -251,28 +250,27 @@ public class NotificationTemplateContextFactory {
 		String portalURL = _getPortalURL(
 			group.getCompanyId(), group.getGroupId());
 
-		String layoutActualURL = PortalUtil.getLayoutActualURL(layout);
+		String layoutActualURL = _portal.getLayoutActualURL(layout);
 
 		String url = portalURL + layoutActualURL;
 
-		String namespace = PortalUtil.getPortletNamespace(
+		String namespace = _portal.getPortletNamespace(
 			CalendarPortletKeys.CALENDAR);
 
-		url = HttpUtil.addParameter(
+		url = _http.addParameter(
 			url, namespace + "mvcPath", "/view_calendar_booking.jsp");
 
-		url = HttpUtil.addParameter(
-			url, "p_p_id", CalendarPortletKeys.CALENDAR);
-		url = HttpUtil.addParameter(url, "p_p_lifecycle", "0");
-		url = HttpUtil.addParameter(
+		url = _http.addParameter(url, "p_p_id", CalendarPortletKeys.CALENDAR);
+		url = _http.addParameter(url, "p_p_lifecycle", "0");
+		url = _http.addParameter(
 			url, "p_p_state", WindowState.MAXIMIZED.toString());
-		url = HttpUtil.addParameter(
+		url = _http.addParameter(
 			url, namespace + "calendarBookingId", calendarBookingId);
 
 		return url;
 	}
 
-	private static String _getPortalURL(long companyId, long groupId)
+	private String _getPortalURL(long companyId, long groupId)
 		throws PortalException {
 
 		Company company = _companyLocalService.getCompany(companyId);
@@ -280,7 +278,7 @@ public class NotificationTemplateContextFactory {
 		return company.getPortalURL(groupId);
 	}
 
-	private static Format _getUserDateTimeFormat(
+	private Format _getUserDateTimeFormat(
 		CalendarBooking calendarBooking, User user) {
 
 		TimeZone userTimeZone = user.getTimeZone();
@@ -289,11 +287,11 @@ public class NotificationTemplateContextFactory {
 			userTimeZone = TimeZone.getTimeZone(StringPool.UTC);
 		}
 
-		return FastDateFormatFactoryUtil.getDateTime(
+		return _fastDateFormatFactory.getDateTime(
 			user.getLocale(), userTimeZone);
 	}
 
-	private static String _getUserTimezoneDisplayName(User user) {
+	private String _getUserTimezoneDisplayName(User user) {
 		TimeZone userTimeZone = user.getTimeZone();
 
 		return userTimeZone.getDisplayName(
@@ -304,5 +302,14 @@ public class NotificationTemplateContextFactory {
 	private static CompanyLocalService _companyLocalService;
 	private static GroupLocalService _groupLocalService;
 	private static LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
+
+	@Reference
+	private Http _http;
+
+	@Reference
+	private Portal _portal;
 
 }

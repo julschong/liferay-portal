@@ -119,19 +119,23 @@ const NotificationsInfo = ({
 	const [notificationName, setNotificationName] = useState(
 		selectedItem.data.notifications?.name?.[notificationIndex] || ''
 	);
+
 	const [notificationTypeEmail, setNotificationTypeEmail] = useState(
 		selectedItem.data.notifications?.notificationTypes?.[
 			notificationIndex
-		]?.includes('email') || false
+		]?.some((value) => value.notificationType === 'email') || false
 	);
+
 	const [
 		notificationTypeUserNotification,
 		setNotificationTypeUserNotification,
 	] = useState(
 		selectedItem.data.notifications?.notificationTypes?.[
 			notificationIndex
-		]?.includes('user-notification') || false
+		]?.some((value) => value.notificationType === 'user-notification') ||
+			false
 	);
+
 	const [recipientType, setRecipientType] = useState(
 		getRecipientType(
 			selectedItem.data.notifications?.recipients?.[notificationIndex]
@@ -151,12 +155,43 @@ const NotificationsInfo = ({
 		{
 			checked: notificationTypeEmail,
 			label: Liferay.Language.get('email'),
-			onChange: (value) => {
-				setNotificationTypeEmail(value);
 
+			onBlur: () => {
 				const notificationTypes = [];
 
-				if (value) {
+				if (notificationTypeEmail) {
+					notificationTypes.push({notificationType: 'email'});
+				}
+				if (notificationTypeUserNotification) {
+					notificationTypes.push({
+						notificationType: 'user-notification',
+					});
+				}
+				updateNotificationInfo({
+					description: notificationDescription,
+					executionType,
+					name: notificationName,
+					notificationTypes,
+					template,
+					templateLanguage,
+				});
+			},
+
+			onChange: (value) => {
+				setNotificationTypeEmail(value);
+			},
+
+			type: 'checkbox',
+			value: 'email',
+		},
+		{
+			checked: notificationTypeUserNotification,
+			label: Liferay.Language.get('user-notification'),
+
+			onBlur: () => {
+				const notificationTypes = [];
+
+				if (notificationTypeEmail) {
 					notificationTypes.push({notificationType: 'email'});
 				}
 
@@ -175,36 +210,11 @@ const NotificationsInfo = ({
 					templateLanguage,
 				});
 			},
-			type: 'checkbox',
-			value: 'email',
-		},
-		{
-			checked: notificationTypeUserNotification,
-			label: Liferay.Language.get('user-notification'),
+
 			onChange: (value) => {
 				setNotificationTypeUserNotification(value);
-
-				const notificationTypes = [];
-
-				if (notificationTypeEmail) {
-					notificationTypes.push({notificationType: 'email'});
-				}
-
-				if (value) {
-					notificationTypes.push({
-						notificationType: 'user-notification',
-					});
-				}
-
-				updateNotificationInfo({
-					description: notificationDescription,
-					executionType,
-					name: notificationName,
-					notificationTypes,
-					template,
-					templateLanguage,
-				});
 			},
+
 			type: 'checkbox',
 			value: 'userNotification',
 		},
@@ -443,9 +453,7 @@ const NotificationsInfo = ({
 				<ClaySelect
 					aria-label="Select"
 					id="template-language"
-					onChange={({target}) => {
-						setTemplateLanguage(target.value);
-
+					onBlur={() => {
 						const notificationTypes = [];
 
 						if (notificationTypeEmail) {
@@ -467,6 +475,7 @@ const NotificationsInfo = ({
 							templateLanguage,
 						});
 					}}
+					onChange={({target}) => setTemplateLanguage(target.value)}
 					value={templateLanguage}
 				>
 					{templateLanguageOptions.map((item) => (
@@ -542,21 +551,16 @@ const NotificationsInfo = ({
 				<ClaySelect
 					aria-label="Select"
 					id="execution-type"
-					onChange={({target}) => {
-						setExecutionType(target.value);
-
+					onBlur={() => {
 						const notificationTypes = [];
-
 						if (notificationTypeEmail) {
 							notificationTypes.push({notificationType: 'email'});
 						}
-
 						if (notificationTypeUserNotification) {
 							notificationTypes.push({
 								notificationType: 'user-notification',
 							});
 						}
-
 						updateNotificationInfo({
 							description: notificationDescription,
 							executionType,
@@ -566,6 +570,7 @@ const NotificationsInfo = ({
 							templateLanguage,
 						});
 					}}
+					onChange={({target}) => setExecutionType(target.value)}
 					value={executionType}
 				>
 					{executionTypeOptions.map((item) => (

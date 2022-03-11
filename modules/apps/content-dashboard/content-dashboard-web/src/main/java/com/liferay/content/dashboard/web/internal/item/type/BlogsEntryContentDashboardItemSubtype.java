@@ -20,7 +20,6 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -59,16 +58,6 @@ public class BlogsEntryContentDashboardItemSubtype
 	}
 
 	@Override
-	public Date getModifiedDate() {
-		return new Date();
-	}
-
-	@Override
-	public long getUserId() {
-		return 0;
-	}
-
-	@Override
 	public int hashCode() {
 		return HashUtil.hash(0, BlogsEntry.class.getName());
 	}
@@ -76,7 +65,7 @@ public class BlogsEntryContentDashboardItemSubtype
 	@Override
 	public String toJSONString(Locale locale) {
 		return JSONUtil.put(
-			"className", BlogsEntry.class.getName()
+			"entryClassName", BlogsEntry.class.getName()
 		).put(
 			"title", getFullLabel(locale)
 		).toJSONString();

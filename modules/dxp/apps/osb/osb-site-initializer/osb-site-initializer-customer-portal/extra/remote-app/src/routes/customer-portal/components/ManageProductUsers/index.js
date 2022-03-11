@@ -11,19 +11,18 @@
 
 import {useEffect, useState} from 'react';
 import client from '../../../../apolloClient';
-import {getDXPCloudEnvironment} from '../../../../common/services/liferay/graphql/queries';
+import {
+	getAnalyticsCloudWorkspace,
+	getDXPCloudEnvironment,
+} from '../../../../common/services/liferay/graphql/queries';
 import {PRODUCT_TYPES} from '../../utils/constants/productTypes';
 import {STATUS_TAG_TYPE_NAMES} from '../../utils/constants/statusTag';
 import ManageProductButton from '../ManageProductButton';
-
 const ManageProductUser = ({project, subscriptionGroups}) => {
-	const [dxpCloudEnvironment, setDxpCloudEnvironment] = useState('');
-	const [activationStatusDXPC, setActivatedStatusDXPC] = useState('');
-	const [activationStatusAC, setActivatedStatusAC] = useState('Active');
-	const GROUP_ID = 'groupid';
-	const activatedLinkDXPC = `https://console.liferay.cloud/projects/${dxpCloudEnvironment}/overview`;
-	const activatedLinkAC = `https://analytics.liferay.com/workspace/${GROUP_ID}/sites`;
-
+	const [dxpCloudProjectId, setDxpCloudProjectId] = useState('');
+	const [analyctsCloudGroupId, setAnalyctsCloudGroupId] = useState('');
+	const activatedLinkDXPC = `https://console.liferay.cloud/projects/${dxpCloudProjectId}/overview`;
+	const activatedLinkAC = `https://analytics.liferay.com/workspace/${analyctsCloudGroupId}/sites`;
 	useEffect(() => {
 		const getOnboardingFormData = async () => {
 			const {data} = await client.query({
@@ -37,35 +36,42 @@ const ManageProductUser = ({project, subscriptionGroups}) => {
 			if (data) {
 				const dxpProjectId =
 					data.c?.dXPCloudEnvironments?.items[0]?.projectId;
-
-				setDxpCloudEnvironment(dxpProjectId);
+				setDxpCloudProjectId(dxpProjectId);
 			}
 		};
 		getOnboardingFormData();
 
-		const accountSubscriptionFromDXPC = subscriptionGroups.find(
+		const getAnalyticsCloudWorkspaces = async () => {
+			const {data} = await client.query({
+				query: getAnalyticsCloudWorkspace,
+				variables: {
+					filter: `accountKey eq '${project.accountKey}'`,
+					scopeKey: Liferay.ThemeDisplay.getScopeGroupId(),
+				},
+			});
+			if (data) {
+				const analyticsCloudWorkspacesGroupID =
+					data?.c.analyticsCloudWorkspaces.items[0].workspaceGroupId;
+				setAnalyctsCloudGroupId(analyticsCloudWorkspacesGroupID);
+			}
+		};
+		getAnalyticsCloudWorkspaces();
+	}, [project.accountKey]);
+
+	const isActiveStatusDXPC =
+		subscriptionGroups.find(
 			(subscriptionGroup) =>
 				subscriptionGroup.name === PRODUCT_TYPES.dxpCloud
-		);
-		const activationStatusDXPC =
-			accountSubscriptionFromDXPC?.activationStatus;
-
-		if (activationStatusDXPC === STATUS_TAG_TYPE_NAMES.active) {
-			setActivatedStatusDXPC(activationStatusDXPC);
-		}
-		if (activationStatusAC === STATUS_TAG_TYPE_NAMES.active) {
-			setActivatedStatusAC(activationStatusAC);
-		}
-	}, [
-		activationStatusAC,
-		dxpCloudEnvironment,
-		project.accountKey,
-		subscriptionGroups,
-	]);
+		)?.activationStatus === STATUS_TAG_TYPE_NAMES.active;
+	const isActiveStatusAC =
+		subscriptionGroups.find(
+			(subscriptionGroup) =>
+				subscriptionGroup.name === PRODUCT_TYPES.analyticsCloud
+		)?.activationStatus === STATUS_TAG_TYPE_NAMES.active;
 
 	return (
 		<>
-			{(activationStatusDXPC || activationStatusAC) && (
+			{(isActiveStatusDXPC || isActiveStatusAC) && (
 				<div className="bg-brand-primary-lighten-6 border-0 card card-flat cp-manager-product-container mt-5">
 					<div className="p-4">
 						<p className="h4">Manage Product Users</p>
@@ -76,14 +82,14 @@ const ManageProductUser = ({project, subscriptionGroups}) => {
 						</p>
 
 						<div className="d-flex">
-							{activationStatusDXPC && (
+							{isActiveStatusDXPC && (
 								<ManageProductButton
 									activatedLink={activatedLinkDXPC}
 									activatedTitle="Manage DXP Cloud Users"
 								/>
 							)}
 
-							{activationStatusAC && (
+							{isActiveStatusAC && (
 								<ManageProductButton
 									activatedLink={activatedLinkAC}
 									activatedTitle="Manage Analytics Cloud Users"

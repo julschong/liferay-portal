@@ -100,7 +100,15 @@ export function parseNotifications(node) {
 		);
 
 		if (Array.isArray(notificationTypes[0])) {
-			notificationTypes = notificationTypes[0];
+			var typeArray = [];
+			notificationTypes[0].forEach((type) => {
+				typeArray.push({notificationType: type});
+			});
+
+			notificationTypes = typeArray;
+		}
+		else {
+			notificationTypes = [{notificationType: notificationTypes[0]}];
 		}
 
 		notifications.notificationTypes[index] = notificationTypes;

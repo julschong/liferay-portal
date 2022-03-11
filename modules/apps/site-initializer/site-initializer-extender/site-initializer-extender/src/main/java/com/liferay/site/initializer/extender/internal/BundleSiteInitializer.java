@@ -2654,12 +2654,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 			JSONObject workflowDefinitionJSONObject =
 				JSONFactoryUtil.createJSONObject(
 					SiteInitializerUtil.read(
-						resourcePath + ".json", _servletContext));
+						resourcePath + "workflow-definition.json",
+						_servletContext));
 
 			workflowDefinitionJSONObject.put(
 				"content",
 				SiteInitializerUtil.read(
-					resourcePath + ".content.xml", _servletContext));
+					resourcePath + "workflow-definition.xml", _servletContext));
 
 			WorkflowDefinition workflowDefinition =
 				workflowDefinitionResource.postWorkflowDefinitionDeploy(
@@ -2667,7 +2668,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 						workflowDefinitionJSONObject.toString()));
 
 			String propertiesJSON = SiteInitializerUtil.read(
-				resourcePath + ".properties.json", _servletContext);
+				resourcePath + "workflow-definition.properties.json",
+				_servletContext);
 
 			if (propertiesJSON == null) {
 				continue;
@@ -2716,10 +2718,25 @@ public class BundleSiteInitializer implements SiteInitializer {
 						className, "#", objectDefinition.getId());
 				}
 
+				long typePK = 0;
+
+				if ((_commerceSiteInitializer != null) &&
+					StringUtil.equals(
+						className,
+						_commerceSiteInitializer.getCommerceOrderClassName())) {
+
+					groupId =
+						_commerceSiteInitializer.getCommerceChannelGroupId(
+							groupId);
+
+					typePK = propertiesJSONObject.getLong("typePK");
+				}
+
 				_workflowDefinitionLinkLocalService.
 					updateWorkflowDefinitionLink(
 						serviceContext.getUserId(),
-						serviceContext.getCompanyId(), groupId, className, 0, 0,
+						serviceContext.getCompanyId(), groupId, className, 0,
+						typePK,
 						StringBundler.concat(
 							workflowDefinition.getName(), "@",
 							workflowDefinition.getVersion()));

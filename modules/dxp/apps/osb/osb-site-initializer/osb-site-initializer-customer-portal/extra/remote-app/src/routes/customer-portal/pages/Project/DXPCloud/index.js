@@ -8,6 +8,7 @@
  * permissions and limitations under the License, including but not limited to
  * distribution rights of the Software.
  */
+
 import {useEffect, useState} from 'react';
 import client from '../../../../../apolloClient';
 import {Liferay} from '../../../../../common/services/liferay';
@@ -43,7 +44,7 @@ const DXPCloud = ({project, sessionId, subscriptionGroups, userAccount}) => {
 
 	return (
 		<div className="mr-4">
-			<ActivationStatus
+			<ActivationStatus.DXPCloud
 				dxpCloudEnvironment={dxpCloudEnvironment}
 				project={project}
 				subscriptionGroupDXPCloud={subscriptionGroups.find(

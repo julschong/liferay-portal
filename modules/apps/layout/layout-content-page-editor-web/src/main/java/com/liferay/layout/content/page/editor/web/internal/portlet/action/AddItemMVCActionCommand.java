@@ -16,12 +16,15 @@ package com.liferay.layout.content.page.editor.web.internal.portlet.action;
 
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
+import com.liferay.layout.responsive.ViewportSize;
 import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
 import com.liferay.layout.util.structure.ColumnLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructureItem;
+import com.liferay.layout.util.structure.RowStyledLayoutStructureItem;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -29,9 +32,11 @@ import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.util.PropsUtil;
 
 import java.util.Objects;
 
@@ -126,24 +131,68 @@ public class AddItemMVCActionCommand extends BaseMVCActionCommand {
 					themeDisplay.getScopeGroupId(), segmentsExperienceId,
 					themeDisplay.getPlid(),
 					layoutStructure -> {
-						LayoutStructureItem layoutStructureItem =
-							layoutStructure.addRowStyledLayoutStructureItem(
-								parentItemId, position, _DEFAULT_ROW_COLUMNS);
+						if (GetterUtil.getBoolean(
+								PropsUtil.get("feature.flag.LPS-119551"))) {
 
-						for (int i = 0; i < _DEFAULT_ROW_COLUMNS; i++) {
-							ColumnLayoutStructureItem
-								columnLayoutStructureItem =
-									(ColumnLayoutStructureItem)
+							RowStyledLayoutStructureItem
+								rowStyledLayoutStructureItem =
+									(RowStyledLayoutStructureItem)
 										layoutStructure.
-											addColumnLayoutStructureItem(
-												layoutStructureItem.getItemId(),
-												i);
+											addRowStyledLayoutStructureItem(
+												parentItemId, position,
+												_DEFAULT_ROW_COLUMNS);
 
-							columnLayoutStructureItem.setSize(4);
+							rowStyledLayoutStructureItem.
+								setViewportConfiguration(
+									ViewportSize.MOBILE_LANDSCAPE.
+										getViewportSizeId(),
+									JSONUtil.put("modulesPerRow", 1));
+
+							for (int i = 0; i < _DEFAULT_ROW_COLUMNS; i++) {
+								ColumnLayoutStructureItem
+									columnLayoutStructureItem =
+										(ColumnLayoutStructureItem)
+											layoutStructure.
+												addColumnLayoutStructureItem(
+													rowStyledLayoutStructureItem.
+														getItemId(),
+													i);
+
+								columnLayoutStructureItem.
+									setViewportConfiguration(
+										ViewportSize.MOBILE_LANDSCAPE.
+											getViewportSizeId(),
+										JSONUtil.put("size", 12));
+
+								columnLayoutStructureItem.setSize(4);
+							}
+
+							jsonObject.put(
+								"addedItemId",
+								rowStyledLayoutStructureItem.getItemId());
 						}
+						else {
+							LayoutStructureItem layoutStructureItem =
+								layoutStructure.addRowStyledLayoutStructureItem(
+									parentItemId, position,
+									_DEFAULT_ROW_COLUMNS);
 
-						jsonObject.put(
-							"addedItemId", layoutStructureItem.getItemId());
+							for (int i = 0; i < _DEFAULT_ROW_COLUMNS; i++) {
+								ColumnLayoutStructureItem
+									columnLayoutStructureItem =
+										(ColumnLayoutStructureItem)
+											layoutStructure.
+												addColumnLayoutStructureItem(
+													layoutStructureItem.
+														getItemId(),
+													i);
+
+								columnLayoutStructureItem.setSize(4);
+							}
+
+							jsonObject.put(
+								"addedItemId", layoutStructureItem.getItemId());
+						}
 					});
 		}
 		else {

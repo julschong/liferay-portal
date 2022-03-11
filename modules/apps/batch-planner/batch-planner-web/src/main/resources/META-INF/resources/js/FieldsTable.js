@@ -34,10 +34,15 @@ function FieldsTable({portletNamespace}) {
 			if (event.schema) {
 				const newFields = getFieldsFromSchema(event.schema);
 
-				setFields(newFields);
+				const formattedFields = [
+					...newFields.required,
+					...newFields.optional,
+				];
+
+				setFields(formattedFields);
 
 				if (!useTemplateMappingRef.current) {
-					setSelectedFields(newFields);
+					setSelectedFields(formattedFields);
 				}
 			}
 			else {

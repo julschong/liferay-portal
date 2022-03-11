@@ -835,6 +835,10 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		layout = layoutPersistence.remove(layout);
 
+		if (layout == null) {
+			return;
+		}
+
 		// Portal preferences
 
 		_resetPortalPreferences(layout);

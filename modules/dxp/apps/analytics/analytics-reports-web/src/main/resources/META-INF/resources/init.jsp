@@ -29,10 +29,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 page import="com.liferay.analytics.reports.web.internal.display.context.AnalyticsReportsDisplayContext" %><%@
 page import="com.liferay.analytics.reports.web.internal.util.AnalyticsReportsUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
-page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
-page import="com.liferay.portal.kernel.util.SessionClicks" %>
-
-<%@ page import="java.util.Objects" %>
+page import="com.liferay.portal.kernel.util.PortalUtil" %>
 
 <liferay-theme:defineObjects />
 
