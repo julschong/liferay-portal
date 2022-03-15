@@ -1,0 +1,10 @@
+dependencies {
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly group: "com.sun.mail", name: "jakarta.mail", version: "1.6.6"
+	compileOnly project(":apps:mail:mail-api")
+	compileOnly project(":core:petra:petra-string")
+
+	testCompile project(":core:petra:petra-lang")
+
+	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
+}
