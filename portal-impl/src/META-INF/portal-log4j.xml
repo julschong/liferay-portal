@@ -30,13 +30,13 @@
 		<Logger level="ERROR" name="com.liferay" />
 		<Logger level="INFO" name="com.liferay.bean.portlet" />
 		<Logger level="ERROR" name="com.liferay.jdbc" />
+		<Logger level="WARN" name="com.liferay.mail" />
 		<Logger level="WARN" name="com.liferay.mail.messaging" />
 		<Logger level="ERROR" name="com.liferay.mail.service.impl.MailServiceImpl" />
 		<Logger level="ERROR" name="com.liferay.mail.util" />
 		<Logger level="ERROR" name="com.liferay.mail.util.DummyHook" />
 		<Logger level="ERROR" name="com.liferay.mail.util.HookFactory" />
 		<Logger level="ERROR" name="com.liferay.mail.util.MailSessionFactoryBean" />
-		<Logger level="WARN" name="com.liferay.petra.mail" />
 		<Logger level="INFO" name="com.liferay.portal.action.JSONServiceAction" />
 		<Logger level="WARN" name="com.liferay.portal.action.LayoutAction" />
 		<Logger level="WARN" name="com.liferay.portal.bean.BeanLocatorImpl" />
