@@ -15,8 +15,9 @@
 package com.liferay.portal.util.mail.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.mail.MailEngine;
+import com.liferay.mail.internal.MailEngineImpl;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.petra.mail.MailEngine;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.test.ReloadURLClassLoader;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -59,7 +60,9 @@ public class MailEngineTest {
 
 	@Test
 	public void testSendMail() throws Exception {
-		MailEngine.send(
+		MailEngine mailEngine = new MailEngineImpl();
+
+		mailEngine.send(
 			new MailMessage(
 				new InternetAddress("from@test.com"),
 				new InternetAddress("to@test.com"), "Hello",
