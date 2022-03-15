@@ -12,13 +12,15 @@
  * details.
  */
 
-package com.liferay.petra.mail.internal;
+package com.liferay.mail.internal;
 
+import com.liferay.mail.exception.MailEngineException;
 import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.FileAttachment;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.model.SMTPAccount;
 import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.util.InternetAddressUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.SystemException;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.mail.internal;
+package com.liferay.mail.internal;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 

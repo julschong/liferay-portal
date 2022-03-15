@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.mail;
+package com.liferay.mail.util;
 
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.mail.util;
+package com.liferay.mail.util;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
