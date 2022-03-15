@@ -20,7 +20,7 @@ import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.FileAttachment;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.model.SMTPAccount;
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.util.InternetAddressUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -72,6 +72,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -107,7 +108,7 @@ public class MailEngineImpl implements MailEngine {
 		Session session = null;
 
 		try {
-			session = MailServiceUtil.getSession();
+			session = _mailService.getSession();
 		}
 		catch (SystemException systemException) {
 			if (_log.isWarnEnabled()) {
@@ -709,5 +710,8 @@ public class MailEngineImpl implements MailEngine {
 	private static final AtomicLong _lastResetTime = new AtomicLong();
 	private static final Map<Long, AtomicLong> _mailMessageCounts =
 		new ConcurrentHashMap<>();
+
+	@Reference
+	private MailService _mailService;
 
 }
