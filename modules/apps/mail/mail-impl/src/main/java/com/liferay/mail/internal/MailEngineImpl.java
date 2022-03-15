@@ -14,6 +14,7 @@
 
 package com.liferay.mail.internal;
 
+import com.liferay.mail.MailEngine;
 import com.liferay.mail.exception.MailEngineException;
 import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.FileAttachment;
@@ -70,6 +71,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Brian Myunghun Kim
@@ -79,13 +82,14 @@ import javax.mail.internet.MimeMultipart;
  * @author Brett Swaim
  * @see    com.liferay.util.mail.MailEngine
  */
-public class MailEngine {
+@Component(service = MailEngine.class)
+public class MailEngineImpl implements MailEngine {
 
-	public static Session getSession() {
+	public Session getSession() {
 		return getSession(false);
 	}
 
-	public static Session getSession(Account account) {
+	public Session getSession(Account account) {
 		Session session = Session.getInstance(_getProperties(account));
 
 		if (_log.isDebugEnabled()) {
@@ -99,7 +103,7 @@ public class MailEngine {
 		return session;
 	}
 
-	public static Session getSession(boolean cache) {
+	public Session getSession(boolean cache) {
 		Session session = null;
 
 		try {
@@ -124,7 +128,7 @@ public class MailEngine {
 		return session;
 	}
 
-	public static void send(byte[] bytes) throws MailEngineException {
+	public void send(byte[] bytes) throws MailEngineException {
 		try {
 			Session session = getSession();
 
@@ -138,7 +142,7 @@ public class MailEngine {
 		}
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress to, String subject,
 			String body)
 		throws MailEngineException {
@@ -148,7 +152,7 @@ public class MailEngine {
 			null, null, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress to, String subject,
 			String body, boolean htmlFormat)
 		throws MailEngineException {
@@ -158,7 +162,7 @@ public class MailEngine {
 			htmlFormat, null, null, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			InternetAddress[] bcc, InternetAddress[] bulkAddresses,
 			String subject, String body, boolean htmlFormat,
@@ -170,7 +174,7 @@ public class MailEngine {
 			replyTo, messageId, inReplyTo, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			InternetAddress[] bcc, InternetAddress[] bulkAddresses,
 			String subject, String body, boolean htmlFormat,
@@ -183,7 +187,7 @@ public class MailEngine {
 			replyTo, messageId, inReplyTo, fileAttachments, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			InternetAddress[] bcc, InternetAddress[] bulkAddresses,
 			String subject, String body, boolean htmlFormat,
@@ -196,7 +200,7 @@ public class MailEngine {
 			replyTo, messageId, inReplyTo, fileAttachments, smtpAccount, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			InternetAddress[] bcc, InternetAddress[] bulkAddresses,
 			String subject, String body, boolean htmlFormat,
@@ -411,7 +415,7 @@ public class MailEngine {
 		}
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			InternetAddress[] bcc, String subject, String body)
 		throws MailEngineException {
@@ -419,7 +423,7 @@ public class MailEngine {
 		send(from, to, cc, bcc, subject, body, false, null, null, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			InternetAddress[] bcc, String subject, String body,
 			boolean htmlFormat, InternetAddress[] replyTo, String messageId,
@@ -431,7 +435,7 @@ public class MailEngine {
 			messageId, inReplyTo, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			String subject, String body)
 		throws MailEngineException {
@@ -439,7 +443,7 @@ public class MailEngine {
 		send(from, to, cc, null, subject, body, false, null, null, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
 			String subject, String body, boolean htmlFormat)
 		throws MailEngineException {
@@ -447,7 +451,7 @@ public class MailEngine {
 		send(from, to, cc, null, subject, body, htmlFormat, null, null, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, String subject,
 			String body)
 		throws MailEngineException {
@@ -455,7 +459,7 @@ public class MailEngine {
 		send(from, to, null, null, subject, body, false, null, null, null);
 	}
 
-	public static void send(
+	public void send(
 			InternetAddress from, InternetAddress[] to, String subject,
 			String body, boolean htmlFormat)
 		throws MailEngineException {
@@ -463,9 +467,7 @@ public class MailEngine {
 		send(from, to, null, null, subject, body, htmlFormat, null, null, null);
 	}
 
-	public static void send(MailMessage mailMessage)
-		throws MailEngineException {
-
+	public void send(MailMessage mailMessage) throws MailEngineException {
 		send(
 			mailMessage.getFrom(), mailMessage.getTo(), mailMessage.getCC(),
 			mailMessage.getBCC(), mailMessage.getBulkAddresses(),
@@ -476,7 +478,7 @@ public class MailEngine {
 			mailMessage.getInternetHeaders());
 	}
 
-	public static void send(String from, String to, String subject, String body)
+	public void send(String from, String to, String subject, String body)
 		throws MailEngineException {
 
 		try {
@@ -489,7 +491,7 @@ public class MailEngine {
 		}
 	}
 
-	private static Address[] _getBatchAddresses(
+	private Address[] _getBatchAddresses(
 		Address[] addresses, int index, int batchSize) {
 
 		if ((batchSize == _BATCH_SIZE) && (index == 0)) {
@@ -514,7 +516,7 @@ public class MailEngine {
 		return ArrayUtil.subset(addresses, start, end);
 	}
 
-	private static Properties _getProperties(Account account) {
+	private Properties _getProperties(Account account) {
 		Properties properties = new Properties();
 
 		String protocol = account.getProtocol();
@@ -546,7 +548,7 @@ public class MailEngine {
 		return properties;
 	}
 
-	private static String _getSMTPProperty(Session session, String suffix) {
+	private String _getSMTPProperty(Session session, String suffix) {
 		String protocol = GetterUtil.getString(
 			session.getProperty("mail.transport.protocol"));
 
@@ -557,18 +559,18 @@ public class MailEngine {
 		return session.getProperty("mail.smtp." + suffix);
 	}
 
-	private static boolean _isThrowsExceptionOnFailure() {
+	private boolean _isThrowsExceptionOnFailure() {
 		return GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.MAIL_THROWS_EXCEPTION_ON_FAILURE));
 	}
 
-	private static String _sanitizeCRLF(String text) {
+	private String _sanitizeCRLF(String text) {
 		return StringUtil.replace(
 			text, new char[] {CharPool.NEW_LINE, CharPool.RETURN},
 			new char[] {CharPool.SPACE, CharPool.SPACE});
 	}
 
-	private static void _send(
+	private void _send(
 			Session session, Message message, InternetAddress[] bulkAddresses,
 			int batchSize)
 		throws MailEngineException {
@@ -702,7 +704,7 @@ public class MailEngine {
 
 	private static final String _TEXT_PLAIN = "text/plain;charset=\"UTF-8\"";
 
-	private static final Log _log = LogFactoryUtil.getLog(MailEngine.class);
+	private static final Log _log = LogFactoryUtil.getLog(MailEngineImpl.class);
 
 	private static final AtomicLong _lastResetTime = new AtomicLong();
 	private static final Map<Long, AtomicLong> _mailMessageCounts =

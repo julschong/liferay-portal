@@ -3,6 +3,9 @@ dependencies {
 	compileOnly group: "com.sun.mail", name: "jakarta.mail", version: "1.6.6"
 	compileOnly group: "commons-validator", name: "commons-validator", version: "1.5.1"
 	compileOnly group: "javax.activation", name: "javax.activation-api", version: "1.2.0"
+	compileOnly group: "org.osgi", name: "org.osgi.annotation.versioning", version: "1.1.0"
+	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
+	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":apps:mail:mail-api")
 	compileOnly project(":core:petra:petra-string")
 
