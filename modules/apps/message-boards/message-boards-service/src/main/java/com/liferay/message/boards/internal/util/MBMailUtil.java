@@ -14,9 +14,9 @@
 
 package com.liferay.message.boards.internal.util;
 
+import com.liferay.mail.util.JavaMailUtil;
 import com.liferay.message.boards.constants.MBMessageConstants;
 import com.liferay.message.boards.model.MBMessage;
-import com.liferay.petra.mail.JavaMailUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;

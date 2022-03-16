@@ -14,9 +14,9 @@
 
 package com.liferay.mail.messaging;
 
+import com.liferay.mail.MailEngine;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.util.HookFactory;
-import com.liferay.petra.mail.MailEngine;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.mail.internet.InternetAddress;
+
+import jdk.nashorn.internal.ir.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -97,7 +99,7 @@ public class MailMessageListener extends BaseMessageListener {
 		if (ArrayUtil.isNotEmpty(to) || ArrayUtil.isNotEmpty(cc) ||
 			ArrayUtil.isNotEmpty(bcc) || ArrayUtil.isNotEmpty(bulkAddresses)) {
 
-			MailEngine.send(mailMessage);
+			_mailEngine.send(mailMessage);
 		}
 	}
 
@@ -176,5 +178,8 @@ public class MailMessageListener extends BaseMessageListener {
 
 	private static final Set<String> _mailSendBlacklist = new HashSet<>(
 		Arrays.asList(PropsValues.MAIL_SEND_BLACKLIST));
+
+	@Reference
+	private MailEngine _mailEngine;
 
 }

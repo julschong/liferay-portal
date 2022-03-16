@@ -25,7 +25,7 @@ import com.liferay.mail.reader.model.MailFile;
 import com.liferay.mail.reader.service.AttachmentLocalServiceUtil;
 import com.liferay.mail.reader.service.FolderLocalServiceUtil;
 import com.liferay.mail.reader.service.MessageLocalServiceUtil;
-import com.liferay.petra.mail.InternetAddressUtil;
+import com.liferay.mail.util.InternetAddressUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
