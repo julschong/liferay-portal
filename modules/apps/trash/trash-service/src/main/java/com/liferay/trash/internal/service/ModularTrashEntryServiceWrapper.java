@@ -95,7 +95,7 @@ public class ModularTrashEntryServiceWrapper extends TrashEntryServiceWrapper {
 		throws PrincipalException {
 
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryService.getEntries(groupId, className));
 	}
 
