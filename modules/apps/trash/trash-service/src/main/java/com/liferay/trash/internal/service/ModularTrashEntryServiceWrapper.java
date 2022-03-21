@@ -15,7 +15,9 @@
 package com.liferay.trash.internal.service;
 
 import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
@@ -26,7 +28,10 @@ import com.liferay.trash.kernel.model.TrashEntryList;
 import com.liferay.trash.kernel.service.TrashEntryServiceWrapper;
 import com.liferay.trash.service.TrashEntryService;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.util.List;
+import java.util.function.Function;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -112,7 +117,8 @@ public class ModularTrashEntryServiceWrapper extends TrashEntryServiceWrapper {
 	@Override
 	public TrashEntry restoreEntry(long entryId) throws PortalException {
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class, _trashEntryService.restoreEntry(entryId));
+			_trashEntryModuleToKernelProxyProviderFunction,
+			_trashEntryService.restoreEntry(entryId));
 	}
 
 	@Override
@@ -121,7 +127,7 @@ public class ModularTrashEntryServiceWrapper extends TrashEntryServiceWrapper {
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryService.restoreEntry(entryId, overrideClassPK, name));
 	}
 
@@ -130,7 +136,7 @@ public class ModularTrashEntryServiceWrapper extends TrashEntryServiceWrapper {
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryService.restoreEntry(className, classPK));
 	}
 
@@ -140,7 +146,7 @@ public class ModularTrashEntryServiceWrapper extends TrashEntryServiceWrapper {
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryService.restoreEntry(
 				className, classPK, overrideClassPK, name));
 	}
@@ -149,6 +155,11 @@ public class ModularTrashEntryServiceWrapper extends TrashEntryServiceWrapper {
 	protected void setTrashEntryService(TrashEntryService trashEntryService) {
 		_trashEntryService = trashEntryService;
 	}
+
+	private static final Function<InvocationHandler, TrashEntry>
+		_trashEntryModuleToKernelProxyProviderFunction =
+			ProxyUtil.getProxyProviderFunction(
+				TrashEntry.class, ModelWrapper.class);
 
 	private TrashEntryService _trashEntryService;
 
@@ -164,7 +175,8 @@ public class ModularTrashEntryServiceWrapper extends TrashEntryServiceWrapper {
 
 		@Override
 		public TrashEntry adapt(com.liferay.trash.model.TrashEntry trashEntry) {
-			return ModelAdapterUtil.adapt(TrashEntry.class, trashEntry);
+			return ModelAdapterUtil.adapt(
+				_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 		}
 
 	}
