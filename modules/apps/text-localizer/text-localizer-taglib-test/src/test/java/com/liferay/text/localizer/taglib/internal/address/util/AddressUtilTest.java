@@ -14,6 +14,7 @@
 
 package com.liferay.text.localizer.taglib.internal.address.util;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Address;
@@ -54,7 +55,7 @@ public class AddressUtilTest {
 		LanguageUtil languageUtil = new LanguageUtil();
 
 		languageUtil.setLanguage(
-			(Language)ProxyUtil.newProxyInstance(
+			(Language) ProxyUtil.newProxyInstance(
 				Language.class.getClassLoader(),
 				new Class<?>[] {Language.class},
 				(proxy, method, args) -> {
