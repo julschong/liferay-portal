@@ -14,11 +14,10 @@
 
 package com.liferay.petra.model.adapter.util;
 
-import com.liferay.petra.reflect.ProxyUtil;
-import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
 import java.util.function.Function;
 
@@ -40,21 +39,14 @@ public class ModelAdapterUtilTest {
 	@Test
 	public void testAdapt() {
 		Assert.assertEquals(
-			ModelAdapterUtil.adapt(
-				_testInterfaceModuleToKernelProxyProviderFunction,
-				new TestClass(1)),
+			ModelAdapterUtil.adapt(_mockProxyFunction, new TestClass(1)),
 			new TestClass(1));
 		Assert.assertEquals(
-			ModelAdapterUtil.adapt(
-				_testInterfaceModuleToKernelProxyProviderFunction,
-				new TestClass(1)),
-			ModelAdapterUtil.adapt(
-				_testInterfaceModuleToKernelProxyProviderFunction,
-				new TestClass(1)));
+			ModelAdapterUtil.adapt(_mockProxyFunction, new TestClass(1)),
+			ModelAdapterUtil.adapt(_mockProxyFunction, new TestClass(1)));
 
 		TestInterface proxyObject = ModelAdapterUtil.adapt(
-			_testInterfaceModuleToKernelProxyProviderFunction,
-			new TestClass(1));
+			_mockProxyFunction, new TestClass(1));
 
 		Assert.assertEquals(0, proxyObject.compareTo(new TestClass(1)));
 		Assert.assertEquals(-1, proxyObject.compareTo(new TestClass(2)));
@@ -63,29 +55,44 @@ public class ModelAdapterUtilTest {
 		Assert.assertEquals(
 			0,
 			proxyObject.compareTo(
-				ModelAdapterUtil.adapt(
-					_testInterfaceModuleToKernelProxyProviderFunction,
-					new TestClass(1))));
+				ModelAdapterUtil.adapt(_mockProxyFunction, new TestClass(1))));
 		Assert.assertEquals(
 			-1,
 			proxyObject.compareTo(
-				ModelAdapterUtil.adapt(
-					_testInterfaceModuleToKernelProxyProviderFunction,
-					new TestClass(2))));
+				ModelAdapterUtil.adapt(_mockProxyFunction, new TestClass(2))));
 		Assert.assertEquals(
 			1,
 			proxyObject.compareTo(
-				ModelAdapterUtil.adapt(
-					_testInterfaceModuleToKernelProxyProviderFunction,
-					new TestClass(0))));
+				ModelAdapterUtil.adapt(_mockProxyFunction, new TestClass(0))));
 	}
 
-	private static final Function<InvocationHandler, TestInterface>
-		_testInterfaceModuleToKernelProxyProviderFunction =
-			ProxyUtil.getProxyProviderFunction(
-				TestInterface.class, ModelWrapper.class);
+	private final Function<InvocationHandler, TestInterface>
+		_mockProxyFunction = invocationHandler -> {
+			Method method = null;
 
-	private class TestClass implements TestInterface {
+			try {
+				method = TestClass.class.getDeclaredMethod("getId");
+			}
+			catch (NoSuchMethodException noSuchMethodException) {
+				noSuchMethodException.printStackTrace();
+			}
+
+			Integer testId;
+
+			try {
+				testId = (Integer)invocationHandler.invoke(
+					new Object(), method, null);
+
+				return new TestClass(testId);
+			}
+			catch (Throwable throwable) {
+				throwable.printStackTrace();
+			}
+
+			return null;
+		};
+
+	private static class TestClass implements TestInterface {
 
 		@Override
 		public int compareTo(TestInterface testInterface) {
@@ -116,6 +123,10 @@ public class ModelAdapterUtilTest {
 			}
 
 			return false;
+		}
+
+		public int getId() {
+			return _id;
 		}
 
 		@Override
