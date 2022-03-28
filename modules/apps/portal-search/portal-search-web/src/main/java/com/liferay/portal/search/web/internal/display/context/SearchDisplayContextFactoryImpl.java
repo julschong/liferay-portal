@@ -45,35 +45,35 @@ public class SearchDisplayContextFactoryImpl
 		throws PortletException {
 
 		return new SearchDisplayContext(
-			renderRequest, portletPreferences, portal, html, language, searcher,
-			new IndexSearchPropsValuesImpl(),
+			renderRequest, portletPreferences, _portal, _html, _language,
+			_searcher, new IndexSearchPropsValuesImpl(),
 			new ClassicPortletURLFactoryImpl(renderRequest, renderResponse),
-			summaryBuilderFactory, searchContextFactory,
-			searchRequestBuilderFactory, searchFacetTracker);
+			_summaryBuilderFactory, _searchContextFactory,
+			_searchRequestBuilderFactory, _searchFacetTracker);
 	}
 
 	@Reference
-	protected Html html;
+	private Html _html;
 
 	@Reference
-	protected Language language;
+	private Language _language;
 
 	@Reference
-	protected Portal portal;
+	private Portal _portal;
 
 	@Reference
-	protected SearchContextFactory searchContextFactory;
+	private SearchContextFactory _searchContextFactory;
 
 	@Reference
-	protected Searcher searcher;
+	private Searcher _searcher;
 
 	@Reference
-	protected SearchFacetTracker searchFacetTracker;
+	private SearchFacetTracker _searchFacetTracker;
 
 	@Reference
-	protected SearchRequestBuilderFactory searchRequestBuilderFactory;
+	private SearchRequestBuilderFactory _searchRequestBuilderFactory;
 
 	@Reference
-	protected SummaryBuilderFactory summaryBuilderFactory;
+	private SummaryBuilderFactory _summaryBuilderFactory;
 
 }
