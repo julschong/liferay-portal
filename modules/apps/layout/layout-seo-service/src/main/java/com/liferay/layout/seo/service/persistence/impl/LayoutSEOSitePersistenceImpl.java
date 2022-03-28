@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -1867,7 +1867,7 @@ public class LayoutSEOSitePersistenceImpl
 		layoutSEOSite.setNew(true);
 		layoutSEOSite.setPrimaryKey(layoutSEOSiteId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		layoutSEOSite.setUuid(uuid);
 
@@ -1988,7 +1988,7 @@ public class LayoutSEOSitePersistenceImpl
 			(LayoutSEOSiteModelImpl)layoutSEOSite;
 
 		if (Validator.isNull(layoutSEOSite.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			layoutSEOSite.setUuid(uuid);
 		}
@@ -2698,5 +2698,8 @@ public class LayoutSEOSitePersistenceImpl
 	@Reference
 	private LayoutSEOSiteModelArgumentsResolver
 		_layoutSEOSiteModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

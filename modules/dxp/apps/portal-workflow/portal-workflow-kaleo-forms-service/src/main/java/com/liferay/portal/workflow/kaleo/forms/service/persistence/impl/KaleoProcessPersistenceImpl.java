@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.workflow.kaleo.forms.exception.NoSuchKaleoProcessException;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcessTable;
@@ -2678,7 +2678,7 @@ public class KaleoProcessPersistenceImpl
 		kaleoProcess.setNew(true);
 		kaleoProcess.setPrimaryKey(kaleoProcessId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		kaleoProcess.setUuid(uuid);
 
@@ -2797,7 +2797,7 @@ public class KaleoProcessPersistenceImpl
 			(KaleoProcessModelImpl)kaleoProcess;
 
 		if (Validator.isNull(kaleoProcess.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			kaleoProcess.setUuid(uuid);
 		}
@@ -3323,5 +3323,8 @@ public class KaleoProcessPersistenceImpl
 	@Reference
 	private KaleoProcessModelArgumentsResolver
 		_kaleoProcessModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

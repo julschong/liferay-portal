@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -5119,7 +5119,7 @@ public class KBCommentPersistenceImpl
 		kbComment.setNew(true);
 		kbComment.setPrimaryKey(kbCommentId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		kbComment.setUuid(uuid);
 
@@ -5234,7 +5234,7 @@ public class KBCommentPersistenceImpl
 		KBCommentModelImpl kbCommentModelImpl = (KBCommentModelImpl)kbComment;
 
 		if (Validator.isNull(kbComment.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			kbComment.setUuid(uuid);
 		}
@@ -5837,5 +5837,8 @@ public class KBCommentPersistenceImpl
 
 	@Reference
 	private KBCommentModelArgumentsResolver _kbCommentModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

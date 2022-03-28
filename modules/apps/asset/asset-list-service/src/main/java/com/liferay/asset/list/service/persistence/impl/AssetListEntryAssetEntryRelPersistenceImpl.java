@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -4008,7 +4008,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		assetListEntryAssetEntryRel.setPrimaryKey(
 			assetListEntryAssetEntryRelId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		assetListEntryAssetEntryRel.setUuid(uuid);
 
@@ -4144,7 +4144,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 					assetListEntryAssetEntryRel;
 
 		if (Validator.isNull(assetListEntryAssetEntryRel.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			assetListEntryAssetEntryRel.setUuid(uuid);
 		}
@@ -4953,5 +4953,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 	@Reference
 	private AssetListEntryAssetEntryRelModelArgumentsResolver
 		_assetListEntryAssetEntryRelModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

@@ -52,7 +52,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -91,7 +91,8 @@ import org.osgi.service.component.annotations.Reference;
  * @generated
  */
 @Component(service = {JournalArticlePersistence.class, BasePersistence.class})
-public class JournalArticlePersistenceImpl
+public class
+JournalArticlePersistenceImpl
 	extends BasePersistenceImpl<JournalArticle>
 	implements JournalArticlePersistence {
 
@@ -34168,7 +34169,7 @@ public class JournalArticlePersistenceImpl
 		journalArticle.setNew(true);
 		journalArticle.setPrimaryKey(id);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		journalArticle.setUuid(uuid);
 
@@ -34288,7 +34289,7 @@ public class JournalArticlePersistenceImpl
 			(JournalArticleModelImpl)journalArticle;
 
 		if (Validator.isNull(journalArticle.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			journalArticle.setUuid(uuid);
 		}
@@ -35803,5 +35804,8 @@ public class JournalArticlePersistenceImpl
 	@Reference
 	private JournalArticleModelArgumentsResolver
 		_journalArticleModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

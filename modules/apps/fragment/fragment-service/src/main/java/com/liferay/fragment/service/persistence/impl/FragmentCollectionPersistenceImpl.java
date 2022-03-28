@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -3635,7 +3635,7 @@ public class FragmentCollectionPersistenceImpl
 		fragmentCollection.setNew(true);
 		fragmentCollection.setPrimaryKey(fragmentCollectionId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		fragmentCollection.setUuid(uuid);
 
@@ -3762,7 +3762,7 @@ public class FragmentCollectionPersistenceImpl
 			(FragmentCollectionModelImpl)fragmentCollection;
 
 		if (Validator.isNull(fragmentCollection.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			fragmentCollection.setUuid(uuid);
 		}
@@ -4518,5 +4518,8 @@ public class FragmentCollectionPersistenceImpl
 	@Reference
 	private FragmentCollectionModelArgumentsResolver
 		_fragmentCollectionModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

@@ -52,7 +52,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -10470,7 +10470,7 @@ public class DDMStructurePersistenceImpl
 		ddmStructure.setNew(true);
 		ddmStructure.setPrimaryKey(structureId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		ddmStructure.setUuid(uuid);
 
@@ -10591,7 +10591,7 @@ public class DDMStructurePersistenceImpl
 			(DDMStructureModelImpl)ddmStructure;
 
 		if (Validator.isNull(ddmStructure.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			ddmStructure.setUuid(uuid);
 		}
@@ -11520,5 +11520,8 @@ public class DDMStructurePersistenceImpl
 	@Reference
 	private DDMStructureModelArgumentsResolver
 		_ddmStructureModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

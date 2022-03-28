@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -3950,7 +3950,7 @@ public class DepotEntryGroupRelPersistenceImpl
 		depotEntryGroupRel.setNew(true);
 		depotEntryGroupRel.setPrimaryKey(depotEntryGroupRelId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUIDp.generate();
 
 		depotEntryGroupRel.setUuid(uuid);
 
@@ -4075,7 +4075,7 @@ public class DepotEntryGroupRelPersistenceImpl
 			(DepotEntryGroupRelModelImpl)depotEntryGroupRel;
 
 		if (Validator.isNull(depotEntryGroupRel.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUIDp.generate();
 
 			depotEntryGroupRel.setUuid(uuid);
 		}
@@ -4640,5 +4640,8 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Reference
 	private DepotEntryGroupRelModelArgumentsResolver
 		_depotEntryGroupRelModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUIDp;
 
 }

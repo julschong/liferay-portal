@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -2906,7 +2906,7 @@ public class DDMStorageLinkPersistenceImpl
 		ddmStorageLink.setNew(true);
 		ddmStorageLink.setPrimaryKey(storageLinkId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		ddmStorageLink.setUuid(uuid);
 
@@ -3028,7 +3028,7 @@ public class DDMStorageLinkPersistenceImpl
 			(DDMStorageLinkModelImpl)ddmStorageLink;
 
 		if (Validator.isNull(ddmStorageLink.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			ddmStorageLink.setUuid(uuid);
 		}
@@ -3735,5 +3735,8 @@ public class DDMStorageLinkPersistenceImpl
 	@Reference
 	private DDMStorageLinkModelArgumentsResolver
 		_ddmStorageLinkModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

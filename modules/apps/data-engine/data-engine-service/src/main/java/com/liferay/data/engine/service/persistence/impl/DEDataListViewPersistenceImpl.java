@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -2770,7 +2770,7 @@ public class DEDataListViewPersistenceImpl
 		deDataListView.setNew(true);
 		deDataListView.setPrimaryKey(deDataListViewId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		deDataListView.setUuid(uuid);
 
@@ -2892,7 +2892,7 @@ public class DEDataListViewPersistenceImpl
 			(DEDataListViewModelImpl)deDataListView;
 
 		if (Validator.isNull(deDataListView.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			deDataListView.setUuid(uuid);
 		}
@@ -3634,5 +3634,8 @@ public class DEDataListViewPersistenceImpl
 	@Reference
 	private DEDataListViewModelArgumentsResolver
 		_deDataListViewModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }
