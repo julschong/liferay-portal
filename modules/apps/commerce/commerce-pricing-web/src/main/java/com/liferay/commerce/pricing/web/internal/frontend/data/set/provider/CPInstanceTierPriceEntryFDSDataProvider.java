@@ -27,7 +27,7 @@ import com.liferay.frontend.data.set.provider.search.FDSPagination;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -94,7 +94,7 @@ public class CPInstanceTierPriceEntryFDSDataProvider
 						httpServletRequest, "x-ago", createDateDescription,
 						false),
 					commerceTierPriceEntry.getMinQuantity(),
-					HtmlUtil.escape(
+					_html.escape(
 						priceCommerceMoney.format(
 							_portal.getLocale(httpServletRequest)))));
 		}
@@ -116,6 +116,9 @@ public class CPInstanceTierPriceEntryFDSDataProvider
 
 	@Reference
 	private CommerceTierPriceEntryService _commerceTierPriceEntryService;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Portal _portal;

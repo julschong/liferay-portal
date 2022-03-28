@@ -43,8 +43,8 @@ import com.liferay.portal.kernel.security.permission.resource.PortletResourcePer
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HtmlParser;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
@@ -316,7 +316,7 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 
 		Group group = themeDisplay.getScopeGroup();
 
-		String descriptiveName = HtmlUtil.escape(
+		String descriptiveName = _html.escape(
 			group.getDescriptiveName(themeDisplay.getLocale()));
 
 		String name = descriptiveName;
@@ -1041,6 +1041,9 @@ public class KBArticleServiceImpl extends KBArticleServiceBaseImpl {
 		target = "(resource.name=" + KBConstants.RESOURCE_NAME_DISPLAY + ")"
 	)
 	private PortletResourcePermission _displayPortletResourcePermission;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private HtmlParser _htmlParser;

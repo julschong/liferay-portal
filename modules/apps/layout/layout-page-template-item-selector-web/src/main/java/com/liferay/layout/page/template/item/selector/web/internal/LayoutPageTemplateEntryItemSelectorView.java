@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -126,6 +126,9 @@ public class LayoutPageTemplateEntryItemSelectorView
 	private static final List<ItemSelectorReturnType>
 		_supportedItemSelectorReturnTypes = Collections.singletonList(
 			new LayoutPageTemplateEntryItemSelectorReturnType());
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
@@ -301,7 +304,7 @@ public class LayoutPageTemplateEntryItemSelectorView
 
 		@Override
 		public String getTitle(Locale locale) {
-			return HtmlUtil.escape(_layoutPageTemplateEntry.getName());
+			return _html.escape(_layoutPageTemplateEntry.getName());
 		}
 
 		@Override

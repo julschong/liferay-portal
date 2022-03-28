@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -49,6 +49,7 @@ import org.apache.tika.mime.MimeTypesReaderMetKeys;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -94,8 +95,7 @@ public class MimeTypesImpl implements MimeTypes, MimeTypesReaderMetKeys {
 		Metadata metadata = new Metadata();
 
 		if (Validator.isNotNull(fileName)) {
-			metadata.set(
-				Metadata.RESOURCE_NAME_KEY, HtmlUtil.escapeURL(fileName));
+			metadata.set(Metadata.RESOURCE_NAME_KEY, _html.escapeURL(fileName));
 		}
 
 		if ((inputStream != null) && !inputStream.markSupported()) {
@@ -258,5 +258,8 @@ public class MimeTypesImpl implements MimeTypes, MimeTypesReaderMetKeys {
 	private final Map<String, String> _contentTypes = new HashMap<>();
 	private final Detector _detector = new DefaultDetector();
 	private final Map<String, Set<String>> _extensionsMap = new HashMap<>();
+
+	@Reference
+	private Html _html;
 
 }

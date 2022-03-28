@@ -117,8 +117,8 @@ import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HtmlParser;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -1886,7 +1886,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		}
 
 		if (StringUtil.equals(format, "html")) {
-			return HtmlUtil.escape(subject);
+			return _html.escape(subject);
 		}
 
 		return subject;
@@ -2809,7 +2809,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		String title = message.getSubject();
 
 		if (message.isDiscussion()) {
-			title = HtmlUtil.stripHtml(title);
+			title = _html.stripHtml(title);
 		}
 
 		JSONObject extraDataJSONObject = JSONUtil.put("title", title);
@@ -2918,6 +2918,9 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private HtmlParser _htmlParser;
