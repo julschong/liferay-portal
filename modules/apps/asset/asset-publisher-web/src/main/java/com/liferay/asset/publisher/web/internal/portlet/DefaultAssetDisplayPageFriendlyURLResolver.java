@@ -56,7 +56,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.InheritableMap;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -345,8 +345,8 @@ public class DefaultAssetDisplayPageFriendlyURLResolver
 		_portal.addPageTitle(
 			journalArticle.getTitle(locale), httpServletRequest);
 
-		String pageDescription = HtmlUtil.unescape(
-			HtmlUtil.stripHtml(journalArticle.getDescription(locale)));
+		String pageDescription = _html.unescape(
+			_html.stripHtml(journalArticle.getDescription(locale)));
 
 		if (Validator.isNotNull(pageDescription)) {
 			_portal.addPageDescription(pageDescription, httpServletRequest);
@@ -567,6 +567,9 @@ public class DefaultAssetDisplayPageFriendlyURLResolver
 
 	@Reference
 	private FriendlyURLNormalizer _friendlyURLNormalizer;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Http _http;

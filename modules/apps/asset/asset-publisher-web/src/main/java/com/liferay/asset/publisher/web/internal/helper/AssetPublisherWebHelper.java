@@ -56,7 +56,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -345,9 +345,9 @@ public class AssetPublisherWebHelper {
 				themeDisplay.getLocale(),
 				"the-company-name-associated-with-the-assets")
 		).put(
-			"[$FROM_ADDRESS$]", HtmlUtil.escape(emailFromAddress)
+			"[$FROM_ADDRESS$]", _html.escape(emailFromAddress)
 		).put(
-			"[$FROM_NAME$]", HtmlUtil.escape(emailFromName)
+			"[$FROM_NAME$]", _html.escape(emailFromName)
 		).put(
 			"[$PORTAL_URL$]",
 			() -> {
@@ -357,7 +357,7 @@ public class AssetPublisherWebHelper {
 			}
 		).put(
 			"[$PORTLET_NAME$]",
-			HtmlUtil.escape(
+			_html.escape(
 				_portal.getPortletTitle(
 					AssetPublisherPortletKeys.ASSET_PUBLISHER,
 					themeDisplay.getLocale()))
@@ -367,7 +367,7 @@ public class AssetPublisherWebHelper {
 				PortletDisplay portletDisplay =
 					themeDisplay.getPortletDisplay();
 
-				return HtmlUtil.escape(portletDisplay.getTitle());
+				return _html.escape(portletDisplay.getTitle());
 			}
 		).put(
 			"[$SITE_NAME$]",
@@ -680,6 +680,9 @@ public class AssetPublisherWebHelper {
 
 	@Reference
 	private GroupPermission _groupPermission;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

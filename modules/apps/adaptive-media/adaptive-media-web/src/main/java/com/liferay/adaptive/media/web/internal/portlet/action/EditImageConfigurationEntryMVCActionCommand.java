@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -139,8 +139,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 						"x-was-saved-successfully.-the-id-was-duplicated-and-" +
 							"renamed-to-x",
 						new String[] {
-							HtmlUtil.escape(
-								amImageConfigurationEntry.getName()),
+							_html.escape(amImageConfigurationEntry.getName()),
 							amImageConfigurationEntry.getUUID()
 						});
 				}
@@ -169,9 +168,8 @@ public class EditImageConfigurationEntryMVCActionCommand
 					message = LanguageUtil.format(
 						resourceBundle, "x-and-x-were-saved-successfully",
 						new String[] {
-							HtmlUtil.escape(
-								amImageConfigurationEntry.getName()),
-							HtmlUtil.escape(
+							_html.escape(amImageConfigurationEntry.getName()),
+							_html.escape(
 								highResolutionAMImageConfigurationEntry.
 									getName())
 						});
@@ -183,7 +181,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 							"x-was-saved-successfully.-the-id-was-duplicated-" +
 								"and-renamed-to-x",
 							new String[] {
-								HtmlUtil.escape(
+								_html.escape(
 									amImageConfigurationEntry.getName()),
 								amImageConfigurationEntry.getUUID()
 							});
@@ -320,5 +318,8 @@ public class EditImageConfigurationEntryMVCActionCommand
 
 	@Reference
 	private FriendlyURLNormalizer _friendlyURLNormalizer;
+
+	@Reference
+	private Html _html;
 
 }

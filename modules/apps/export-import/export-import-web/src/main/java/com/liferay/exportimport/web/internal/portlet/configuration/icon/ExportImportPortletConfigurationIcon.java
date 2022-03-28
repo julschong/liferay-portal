@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.permission.GroupPermission;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletRequest;
@@ -82,7 +82,7 @@ public class ExportImportPortletConfigurationIcon
 		sb.append("', title: '");
 		sb.append(LanguageUtil.get(themeDisplay.getLocale(), "export-import"));
 		sb.append("', url: '");
-		sb.append(HtmlUtil.escapeJS(portletDisplay.getURLExportImport()));
+		sb.append(_html.escapeJS(portletDisplay.getURLExportImport()));
 		sb.append("'}); return false;");
 
 		return sb.toString();
@@ -153,6 +153,9 @@ public class ExportImportPortletConfigurationIcon
 
 	@Reference
 	private GroupPermission _groupPermission;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private PortletLocalService _portletLocalService;
