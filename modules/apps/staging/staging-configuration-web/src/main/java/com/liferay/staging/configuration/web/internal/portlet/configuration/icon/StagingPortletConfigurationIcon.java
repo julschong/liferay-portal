@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.permission.GroupPermission;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.staging.constants.StagingConfigurationPortletKeys;
@@ -87,7 +87,7 @@ public class StagingPortletConfigurationIcon
 		sb.append("', title: '");
 		sb.append(LanguageUtil.get(themeDisplay.getLocale(), "staging"));
 		sb.append("', url: '");
-		sb.append(HtmlUtil.escapeJS(portletDisplay.getURLStaging()));
+		sb.append(_html.escapeJS(portletDisplay.getURLStaging()));
 		sb.append("'}); return false;");
 
 		return sb.toString();
@@ -178,6 +178,9 @@ public class StagingPortletConfigurationIcon
 
 	@Reference
 	private GroupPermission _groupPermission;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private PortletLocalService _portletLocalService;

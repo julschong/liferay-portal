@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -67,15 +67,6 @@ public class DDMFormFieldOptionsFactoryImpl
 		return _createDDMFormFieldOptions(
 			ddmFormField, ddmFormFieldRenderingContext, dataSourceType);
 	}
-
-	@Reference
-	protected DDMDataProviderInvoker ddmDataProviderInvoker;
-
-	@Reference
-	protected JSONFactory jsonFactory;
-
-	@Reference
-	protected Portal portal;
 
 	private DDMFormFieldOptions _createDDMFormFieldOptions(
 		DDMFormField ddmFormField,
@@ -144,21 +135,21 @@ public class DDMFormFieldOptionsFactoryImpl
 				builder.withDDMDataProviderId(
 					ddmDataProviderInstanceId
 				).withCompanyId(
-					portal.getCompanyId(httpServletRequest)
+					_portal.getCompanyId(httpServletRequest)
 				).withGroupId(
 					_getGroupId(httpServletRequest)
 				).withLocale(
 					ddmFormFieldRenderingContext.getLocale()
 				).withParameter(
 					"filterParameterValue",
-					HtmlUtil.escapeURL(
+					_html.escapeURL(
 						String.valueOf(ddmFormFieldRenderingContext.getValue()))
 				).withParameter(
 					"httpServletRequest", httpServletRequest
 				).build();
 
 			DDMDataProviderResponse ddmDataProviderResponse =
-				ddmDataProviderInvoker.invoke(ddmDataProviderRequest);
+				_ddmDataProviderInvoker.invoke(ddmDataProviderRequest);
 
 			String ddmDataProviderInstanceOutput = _getJSONArrayFirstValue(
 				GetterUtil.getString(
@@ -206,7 +197,7 @@ public class DDMFormFieldOptionsFactoryImpl
 
 	private String _getJSONArrayFirstValue(String value) {
 		try {
-			JSONArray jsonArray = jsonFactory.createJSONArray(value);
+			JSONArray jsonArray = _jsonFactory.createJSONArray(value);
 
 			return jsonArray.getString(0);
 		}
@@ -221,5 +212,17 @@ public class DDMFormFieldOptionsFactoryImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMFormFieldOptionsFactoryImpl.class);
+
+	@Reference
+	private DDMDataProviderInvoker _ddmDataProviderInvoker;
+
+	@Reference
+	private Html _html;
+
+	@Reference
+	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -43,7 +43,7 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -169,10 +169,10 @@ public class CommerceShippingFixedOptionClayTableDataSetDisplayView
 
 			shippingFixedOptions.add(
 				new ShippingFixedOption(
-					HtmlUtil.escape(
+					_html.escape(
 						commerceShippingFixedOption.getDescription(
 							themeDisplay.getLocale())),
-					HtmlUtil.escape(
+					_html.escape(
 						commerceShippingFixedOption.getName(
 							themeDisplay.getLocale())),
 					commerceShippingFixedOption.getPriority(),
@@ -261,6 +261,9 @@ public class CommerceShippingFixedOptionClayTableDataSetDisplayView
 	@Reference
 	private CommerceShippingMethodLocalService
 		_commerceShippingMethodLocalService;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Portal _portal;
