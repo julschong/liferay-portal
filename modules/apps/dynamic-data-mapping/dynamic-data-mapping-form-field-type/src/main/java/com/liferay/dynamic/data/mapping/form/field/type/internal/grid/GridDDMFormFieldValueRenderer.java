@@ -44,7 +44,7 @@ public class GridDDMFormFieldValueRenderer
 
 	@Override
 	public String render(DDMFormFieldValue ddmFormFieldValue, Locale locale) {
-		JSONObject valuesJSONObject = gridDDMFormFieldValueAccessor.getValue(
+		JSONObject valuesJSONObject = _gridDDMFormFieldValueAccessor.getValue(
 			ddmFormFieldValue, locale);
 
 		if (valuesJSONObject.length() == 0) {
@@ -98,16 +98,16 @@ public class GridDDMFormFieldValueRenderer
 		LocalizedValue label, String defaultLabel, Locale locale) {
 
 		if (label != null) {
-			return html.escape(label.getString(locale));
+			return _html.escape(label.getString(locale));
 		}
 
 		return defaultLabel;
 	}
 
 	@Reference
-	protected GridDDMFormFieldValueAccessor gridDDMFormFieldValueAccessor;
+	private GridDDMFormFieldValueAccessor _gridDDMFormFieldValueAccessor;
 
 	@Reference
-	protected Html html;
+	private Html _html;
 
 }
