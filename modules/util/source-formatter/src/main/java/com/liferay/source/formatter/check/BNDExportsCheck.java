@@ -109,8 +109,7 @@ public class BNDExportsCheck extends BaseFileCheck {
 
 		if (moduleName.endsWith("-api") || moduleName.endsWith("-client") ||
 			moduleName.endsWith("-spi") || moduleName.endsWith("-taglib") ||
-			moduleName.contains("-taglib-") ||
-			moduleName.endsWith("-test-util")) {
+			moduleName.contains("-taglib-") || moduleName.endsWith("-util")) {
 
 			return;
 		}
