@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.apache.http.components;
+package com.liferay.translation.uri.builder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
