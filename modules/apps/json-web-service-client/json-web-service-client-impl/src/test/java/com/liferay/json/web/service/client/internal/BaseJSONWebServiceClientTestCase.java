@@ -31,7 +31,7 @@ import org.apache.http.message.BasicNameValuePair;
 public abstract class BaseJSONWebServiceClientTestCase {
 
 	protected Map<String, Object> getBaseProperties() {
-		Map<String, Object> properties = new HashMap<String, Object>();
+		Map<String, Object> properties = new HashMap<>();
 
 		properties.put("hostName", HTTPServerSimulator.HOST_ADDRESS);
 		properties.put("hostPort", HTTPServerSimulator.HOST_PORT);

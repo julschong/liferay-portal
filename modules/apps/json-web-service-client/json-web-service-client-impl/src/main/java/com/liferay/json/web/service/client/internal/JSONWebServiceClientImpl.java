@@ -117,7 +117,7 @@ public class JSONWebServiceClientImpl extends BaseJSONWebServiceClientImpl {
 			return;
 		}
 
-		Map<String, String> headers = new HashMap<String, String>();
+		Map<String, String> headers = new HashMap<>();
 
 		for (String header : headersString.split(";")) {
 			String[] headerParts = header.split("=");

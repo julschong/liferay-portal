@@ -188,7 +188,7 @@ public class BaseHttpHandlerImpl implements HttpHandler {
 		String body = getBody(httpExchange);
 		String query = getQuery(httpExchange);
 
-		List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+		List<NameValuePair> parameters = new ArrayList<>();
 
 		parameters.addAll(_parseParameters(body));
 		parameters.addAll(_parseParameters(query));
@@ -299,7 +299,7 @@ public class BaseHttpHandlerImpl implements HttpHandler {
 			return Collections.emptyList();
 		}
 
-		List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+		List<NameValuePair> parameters = new ArrayList<>();
 
 		String[] parameterEntries = parameterEntriesString.split("&");
 
