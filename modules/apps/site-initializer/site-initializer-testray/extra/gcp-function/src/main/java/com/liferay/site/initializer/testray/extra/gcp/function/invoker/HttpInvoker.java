@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.http.invoker;
+package com.liferay.site.initializer.testray.extra.gcp.function.invoker;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -88,7 +88,8 @@ public class HttpInvoker {
 
 	public HttpInvoker multipart() {
 		_contentType =
-			"multipart/form-data; charset=utf-8; boundary=__MULTIPART_BOUNDARY__";
+			"multipart/form-data; charset=utf-8; " +
+				"boundary=__MULTIPART_BOUNDARY__";
 		_multipartBoundary = "__MULTIPART_BOUNDARY__";
 
 		return this;

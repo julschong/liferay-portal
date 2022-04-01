@@ -11,12 +11,13 @@
 
 import ClayIcon from '@clayui/icon';
 import {FieldArray, Formik} from 'formik';
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {Button, Input} from '../../../../../common/components';
+import {Badge, Button, Input} from '../../../../../common/components';
 import Layout from '../../../../../common/containers/setup-forms/Layout';
+import {useApplicationProvider} from '../../../../../common/context/AppPropertiesProvider';
 import {createNewGenerateKey} from '../../../../../common/services/liferay/rest/raysource/LicenseKeys';
-import getInitialGenerateNewDXPKey from '../../../../../common/utils/constants/getInitialGenerateNewDXPKey';
+import getInitialGenerateNewKey from '../../../../../common/utils/constants/getInitialGenerateNewKey';
 import GenerateCardLayout from '../GenerateCardLayout';
 import KeyInputs from '../KeyInputs';
 import KeySelect from '../KeySelect';
@@ -25,15 +26,20 @@ const RequiredInformation = ({
 	accountKey,
 	errors,
 	infoSelectedKey,
-	licenseKeyDownloadURL,
 	sessionId,
+	setErrors,
 	setStep,
+	setTouched,
 	touched,
 	urlPreviousPage,
 	values,
 }) => {
+	const {licenseKeyDownloadURL} = useApplicationProvider();
+
 	const [baseButtonDisabled, setBaseButtonDisabled] = useState(true);
 	const [addButtonDisabled, setAddButtonDisabled] = useState(false);
+	const [showKeyEmptyError, setShowKeyEmptyError] = useState(false);
+
 	const [availableKeys, setAvailableKeys] = useState(1);
 	const navigate = useNavigate();
 
@@ -45,74 +51,124 @@ const RequiredInformation = ({
 	const usedKeysCount =
 		infoSelectedKey.selectedSubscription?.provisionedCount;
 
-	useEffect(() => {
-		const newUsedKeys = usedKeysCount + +values?.keys?.length;
-		const hasFilledAtLeastOneField = values?.keys?.every((key) => {
-			const fieldValues = Object.values(key).filter(Boolean);
+	const hasFilledAtLeastOneField = useMemo(
+		() =>
+			values?.keys?.every((key) => {
+				const fieldValues = Object.values(key).filter(Boolean);
 
-			return fieldValues.length > 0;
-		});
+				return fieldValues.length > 0;
+			}),
+		[values?.keys]
+	);
+
+	useEffect(() => {
+		const newUsedKeys = usedKeysCount + values?.keys?.length;
 
 		const verificationDisabledType = infoSelectedKey.hasNotPermanentLicence
 			? !values.name || !values.maxClusterNodes
-			: !hasFilledAtLeastOneField || hasError;
+			: !values.name || hasError;
 
 		setBaseButtonDisabled(verificationDisabledType);
-		setAddButtonDisabled(newUsedKeys === avaliableKeysMaximumCount);
+		setAddButtonDisabled(
+			newUsedKeys === avaliableKeysMaximumCount ||
+				!hasFilledAtLeastOneField
+		);
 	}, [
 		avaliableKeysMaximumCount,
 		hasError,
+		hasFilledAtLeastOneField,
 		infoSelectedKey.hasNotPermanentLicence,
 		usedKeysCount,
-		values,
+		values?.keys?.length,
+		values.maxClusterNodes,
+		values.name,
 	]);
 
 	const submitKey = async () => {
-		const productName = `${infoSelectedKey?.productType} ${infoSelectedKey?.licenseEntryType}`;
+		if (
+			!infoSelectedKey.hasNotPermanentLicence &&
+			!hasFilledAtLeastOneField
+		) {
+			setErrors({
+				keys: [
+					{
+						hostName: true,
+						ipAddresses: true,
+						macAddresses: true,
+					},
+				],
+			});
 
-		const licenseKey = {
-			accountKey,
-			active: true,
-			description: values?.description,
-			expirationDate: infoSelectedKey?.selectedSubscription.endDate,
-			licenseEntryType: 'production',
-			maxClusterNodes: values?.maxClusterNodes || 0,
-			name: values?.name,
-			productKey: infoSelectedKey?.selectedSubscription.productKey,
-			productName,
-			productPurchaseKey:
-				infoSelectedKey?.selectedSubscription.productPurchaseKey,
-			productVersion: infoSelectedKey?.productVersion,
-			sizing: `Sizing ${infoSelectedKey?.selectedSubscription.instanceSize}`,
-			startDate: infoSelectedKey?.selectedSubscription.startDate,
-		};
-
-		if (infoSelectedKey.hasNotPermanentLicence) {
-			await createNewGenerateKey(
-				accountKey,
-				licenseKeyDownloadURL,
-				sessionId,
-				licenseKey
+			setTouched(
+				{
+					keys: [
+						{
+							hostName: true,
+							ipAddresses: true,
+							macAddresses: true,
+						},
+					],
+				},
+				false
 			);
+
+			setShowKeyEmptyError(true);
 		}
 		else {
-			await Promise.all(
-				values?.keys?.map(({hostName, ipAddresses, macAddresses}) => {
-					licenseKey.macAddresses = macAddresses.replace('\n', ',');
-					licenseKey.hostName = hostName.replace('\n', ',');
-					licenseKey.ipAddresses = ipAddresses.replace('\n', ',');
+			const productName = `${infoSelectedKey?.productType} ${infoSelectedKey?.licenseEntryType}`;
 
-					return createNewGenerateKey(
-						accountKey,
-						licenseKeyDownloadURL,
-						sessionId,
-						licenseKey
-					);
-				})
-			);
+			const licenseKey = {
+				accountKey,
+				active: true,
+				description: values?.description,
+				expirationDate: infoSelectedKey?.selectedSubscription.endDate,
+				licenseEntryType: 'production',
+				maxClusterNodes: values?.maxClusterNodes || 0,
+				name: values?.name,
+				productKey: infoSelectedKey?.selectedSubscription.productKey,
+				productName,
+				productPurchaseKey:
+					infoSelectedKey?.selectedSubscription.productPurchaseKey,
+				productVersion: infoSelectedKey?.productVersion,
+				sizing: `Sizing ${infoSelectedKey?.selectedSubscription.instanceSize}`,
+				startDate: infoSelectedKey?.selectedSubscription.startDate,
+			};
+
+			if (infoSelectedKey.hasNotPermanentLicence) {
+				await createNewGenerateKey(
+					accountKey,
+					licenseKeyDownloadURL,
+					sessionId,
+					licenseKey
+				);
+			}
+			else {
+				await Promise.all(
+					values?.keys?.map(
+						({hostName, ipAddresses, macAddresses}) => {
+							licenseKey.macAddresses = macAddresses.replace(
+								'\n',
+								','
+							);
+							licenseKey.hostName = hostName.replace('\n', ',');
+							licenseKey.ipAddresses = ipAddresses.replace(
+								'\n',
+								','
+							);
+
+							return createNewGenerateKey(
+								accountKey,
+								licenseKeyDownloadURL,
+								sessionId,
+								licenseKey
+							);
+						}
+					)
+				);
+			}
+
+			navigate(urlPreviousPage, {state: {newKeyGeneratedAlert: true}});
 		}
-
-		navigate(urlPreviousPage, {state: {newKeyGeneratedAlert: true}});
 	};
 
 	return (
@@ -218,6 +274,16 @@ const RequiredInformation = ({
 										<KeyInputs id={index} key={index} />
 									))}
 
+									{showKeyEmptyError && !!hasError && (
+										<Badge badgeClassName="m-0">
+											<span className="pl-1">
+												One or more Host Name, IP
+												Address, or MAC Address is
+												required
+											</span>
+										</Badge>
+									)}
+
 									{values?.keys?.length > 1 && (
 										<Button
 											className="btn btn-secondary mb-3 mr-3 mt-4 py-2"
@@ -246,7 +312,7 @@ const RequiredInformation = ({
 										disabled={addButtonDisabled}
 										displayType="secundary"
 										onClick={() => {
-											push(getInitialGenerateNewDXPKey());
+											push(getInitialGenerateNewKey());
 
 											setAvailableKeys(
 												(
@@ -273,8 +339,8 @@ const RequiredInformation = ({
 											avaliableKeysMaximumCount
 										}
 										minAvaliableKeysCount={
-											infoSelectedKey.selectedSubscription
-												?.provisionedCount
+											avaliableKeysMaximumCount -
+											usedKeysCount
 										}
 										selectedClusterNodes={
 											values.maxClusterNodes
@@ -297,7 +363,7 @@ const RequiredInformationForm = (props) => {
 		<Formik
 			initialValues={{
 				description: '',
-				keys: [getInitialGenerateNewDXPKey()],
+				keys: [getInitialGenerateNewKey()],
 				maxClusterNodes: '',
 				name: '',
 			}}

@@ -10,8 +10,6 @@
  */
 
 import {useState} from 'react';
-import {useApplicationProvider} from '../../../../common/context/AppPropertiesProvider';
-import {PAGE_TYPES} from '../../utils/constants';
 import GenerateNewKeySkeleton from './Skeleton';
 import RequiredInformation from './pages/RequiredInformation';
 import SelectSubscription from './pages/SelectSubscription';
@@ -19,19 +17,17 @@ import {STEP_TYPES} from './utils/constants/stepType';
 
 const ACTIVATION_ROOT_ROUTER = 'activation';
 
-const GenerateNewDXPKey = ({accountKey, productGroupName, sessionId}) => {
+const GenerateNewKey = ({accountKey, productGroupName, sessionId}) => {
 	const [infoSelectedKey, setInfoSelectedKey] = useState();
 	const [step, setStep] = useState(STEP_TYPES.selectDescriptions);
-	const {licenseKeyDownloadURL} = useApplicationProvider();
 
-	const urlPreviousPage = `/${accountKey}/${ACTIVATION_ROOT_ROUTER}/${PAGE_TYPES.dxp}`;
+	const urlPreviousPage = `/${accountKey}/${ACTIVATION_ROOT_ROUTER}/${productGroupName.toLowerCase()}`;
 
 	const StepLayout = {
 		[STEP_TYPES.generateKeys]: (
 			<RequiredInformation
 				accountKey={accountKey}
 				infoSelectedKey={infoSelectedKey}
-				licenseKeyDownloadURL={licenseKeyDownloadURL}
 				sessionId={sessionId}
 				setStep={setStep}
 				urlPreviousPage={urlPreviousPage}
@@ -41,7 +37,6 @@ const GenerateNewDXPKey = ({accountKey, productGroupName, sessionId}) => {
 			<SelectSubscription
 				accountKey={accountKey}
 				infoSelectedKey={infoSelectedKey}
-				licenseKeyDownloadURL={licenseKeyDownloadURL}
 				productGroupName={productGroupName}
 				sessionId={sessionId}
 				setInfoSelectedKey={setInfoSelectedKey}
@@ -54,6 +49,6 @@ const GenerateNewDXPKey = ({accountKey, productGroupName, sessionId}) => {
 	return StepLayout[step];
 };
 
-GenerateNewDXPKey.Skeleton = GenerateNewKeySkeleton;
+GenerateNewKey.Skeleton = GenerateNewKeySkeleton;
 
-export default GenerateNewDXPKey;
+export default GenerateNewKey;
