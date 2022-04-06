@@ -329,29 +329,11 @@ public class PropsUtil {
 	}
 
 	private static String _getLibDir(Class<?> clazz) {
-		String className = clazz.getName();
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Class name " + className);
-		}
-
 		ClassLoader classLoader = clazz.getClassLoader();
 
-		URL url = classLoader.getResource(
-			StringUtil.replace(className, CharPool.PERIOD, CharPool.SLASH) +
-				".class");
+		URL url = classLoader.getResource(".");
 
-		String path = url.getPath();
-
-		if (path.startsWith("file:")) {
-			path = path.substring(5);
-		}
-
-		int pos = path.lastIndexOf("!/");
-
-		pos = path.lastIndexOf(CharPool.SLASH, pos);
-
-		return path.substring(0, pos + 1);
+		return url.getPath();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(PropsUtil.class);
