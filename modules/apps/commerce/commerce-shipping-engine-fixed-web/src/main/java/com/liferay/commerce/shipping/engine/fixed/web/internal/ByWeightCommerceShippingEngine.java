@@ -31,8 +31,10 @@ import com.liferay.commerce.service.CommerceShippingMethodLocalService;
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOption;
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionRel;
 import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionLocalService;
+import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionQualifierLocalService;
 import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionRelLocalService;
 import com.liferay.commerce.shipping.engine.fixed.util.comparator.CommerceShippingFixedOptionPriorityComparator;
+import com.liferay.commerce.shipping.engine.fixed.web.internal.util.CommerceShippingFixedOptionEngineUtil;
 import com.liferay.commerce.util.CommerceShippingHelper;
 import com.liferay.commerce.util.comparator.CommerceShippingOptionPriorityComparator;
 import com.liferay.petra.string.StringPool;
@@ -84,7 +86,7 @@ public class ByWeightCommerceShippingEngine implements CommerceShippingEngine {
 
 		try {
 			commerceShippingOptions = _getCommerceShippingOptions(
-				commerceOrder, locale);
+				false, commerceOrder, locale);
 		}
 		catch (PortalException portalException) {
 			if (_log.isDebugEnabled()) {
@@ -99,6 +101,28 @@ public class ByWeightCommerceShippingEngine implements CommerceShippingEngine {
 	public String getDescription(Locale locale) {
 		return LanguageUtil.get(
 			_getResourceBundle(locale), "by-weight-description");
+	}
+
+	@Override
+	public List<CommerceShippingOption> getEnabledCommerceShippingOptions(
+			CommerceContext commerceContext, CommerceOrder commerceOrder,
+			Locale locale)
+		throws CommerceShippingEngineException {
+
+		List<CommerceShippingOption> commerceShippingOptions =
+			new ArrayList<>();
+
+		try {
+			commerceShippingOptions = _getCommerceShippingOptions(
+				true, commerceOrder, locale);
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
+			}
+		}
+
+		return commerceShippingOptions;
 	}
 
 	@Override
@@ -211,7 +235,8 @@ public class ByWeightCommerceShippingEngine implements CommerceShippingEngine {
 	}
 
 	private List<CommerceShippingOption> _getCommerceShippingOptions(
-			CommerceOrder commerceOrder, Locale locale)
+			boolean checkEligibility, CommerceOrder commerceOrder,
+			Locale locale)
 		throws PortalException {
 
 		List<CommerceShippingOption> commerceShippingOptions =
@@ -225,8 +250,21 @@ public class ByWeightCommerceShippingEngine implements CommerceShippingEngine {
 			commerceCountryId = commerceAddress.getCountryId();
 		}
 
-		List<CommerceShippingFixedOption> commerceShippingFixedOptions =
-			_getCommerceShippingFixedOptions(commerceOrder.getGroupId());
+		List<CommerceShippingFixedOption> commerceShippingFixedOptions = null;
+
+		if (checkEligibility) {
+			commerceShippingFixedOptions =
+				CommerceShippingFixedOptionEngineUtil.
+					getEligibleCommerceShippingFixedOptions(
+						commerceOrder.getCommerceOrderTypeId(),
+						_commerceShippingFixedOptionQualifierLocalService,
+						_getCommerceShippingFixedOptions(
+							commerceOrder.getGroupId()));
+		}
+		else {
+			commerceShippingFixedOptions = _getCommerceShippingFixedOptions(
+				commerceOrder.getGroupId());
+		}
 
 		for (CommerceShippingFixedOption commerceShippingFixedOption :
 				commerceShippingFixedOptions) {
@@ -278,6 +316,10 @@ public class ByWeightCommerceShippingEngine implements CommerceShippingEngine {
 	@Reference
 	private CommerceShippingFixedOptionLocalService
 		_commerceShippingFixedOptionLocalService;
+
+	@Reference
+	private CommerceShippingFixedOptionQualifierLocalService
+		_commerceShippingFixedOptionQualifierLocalService;
 
 	@Reference
 	private CommerceShippingFixedOptionRelLocalService

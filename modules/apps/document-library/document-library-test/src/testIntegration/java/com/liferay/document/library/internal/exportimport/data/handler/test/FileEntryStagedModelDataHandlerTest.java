@@ -202,6 +202,77 @@ public class FileEntryStagedModelDataHandlerTest
 	}
 
 	@Test
+	public void testExportImportFileEntryFriendlyURLEntries() throws Exception {
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					_FF_FRIENDLY_URL_ENTRY_FILE_ENTRY_CONFIGURATION_PID,
+					HashMapDictionaryBuilder.<String, Object>put(
+						"enabled", true
+					).build())) {
+
+			String fileName = "PDF_Test.pdf";
+
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext(
+					stagingGroup.getGroupId(), TestPropsValues.getUserId());
+
+			FileEntry fileEntry = _dlAppLocalService.addFileEntry(
+				null, TestPropsValues.getUserId(), stagingGroup.getGroupId(),
+				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, fileName,
+				ContentTypes.APPLICATION_PDF,
+				FileUtil.getBytes(getClass(), "dependencies/" + fileName), null,
+				null, serviceContext);
+
+			fileEntry = DLAppServiceUtil.updateFileEntry(
+				fileEntry.getFileEntryId(), StringPool.BLANK,
+				ContentTypes.TEXT_PLAIN, fileEntry.getTitle(), "urltitle",
+				StringPool.BLANK, StringPool.BLANK,
+				DLVersionNumberIncrease.MINOR, (byte[])null, null, null,
+				serviceContext);
+
+			FriendlyURLEntry mainFriendlyURLEntry =
+				_friendlyURLEntryLocalService.getMainFriendlyURLEntry(
+					_portal.getClassNameId(FileEntry.class),
+					fileEntry.getFileEntryId());
+
+			Assert.assertEquals("urltitle", mainFriendlyURLEntry.getUrlTitle());
+
+			List<FriendlyURLEntry> friendlyURLEntries =
+				_friendlyURLEntryLocalService.getFriendlyURLEntries(
+					fileEntry.getGroupId(),
+					_portal.getClassNameId(FileEntry.class),
+					fileEntry.getFileEntryId());
+
+			Assert.assertEquals(
+				friendlyURLEntries.toString(), 2, friendlyURLEntries.size());
+
+			exportImportStagedModel(fileEntry);
+
+			FileEntry importedFileEntry =
+				DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
+					fileEntry.getUuid(), liveGroup.getGroupId());
+
+			FriendlyURLEntry mainImportedFriendlyURLEntry =
+				_friendlyURLEntryLocalService.getMainFriendlyURLEntry(
+					_portal.getClassNameId(FileEntry.class),
+					fileEntry.getFileEntryId());
+
+			Assert.assertEquals(
+				"urltitle", mainImportedFriendlyURLEntry.getUrlTitle());
+
+			List<FriendlyURLEntry> importedFriendlyURLEntries =
+				_friendlyURLEntryLocalService.getFriendlyURLEntries(
+					importedFileEntry.getGroupId(),
+					_portal.getClassNameId(FileEntry.class),
+					importedFileEntry.getFileEntryId());
+
+			Assert.assertEquals(
+				importedFriendlyURLEntries.toString(), 2,
+				importedFriendlyURLEntries.size());
+		}
+	}
+
+	@Test
 	public void testExportImportFileEntryFriendlyURLEntriesUpdatingFileEntry()
 		throws Exception {
 
@@ -231,7 +302,7 @@ public class FileEntryStagedModelDataHandlerTest
 					fileEntry.getFileEntryId());
 
 			Assert.assertNotNull(friendlyURLEntry);
-			Assert.assertEquals("pdf_test.pdf", friendlyURLEntry.getUrlTitle());
+			Assert.assertEquals("pdf_test-pdf", friendlyURLEntry.getUrlTitle());
 
 			exportImportStagedModel(fileEntry);
 
@@ -245,7 +316,7 @@ public class FileEntryStagedModelDataHandlerTest
 					importedFileEntry.getFileEntryId());
 
 			Assert.assertEquals(
-				"pdf_test.pdf", importedFriendlyURLEntry.getUrlTitle());
+				"pdf_test-pdf", importedFriendlyURLEntry.getUrlTitle());
 
 			fileEntry = DLAppServiceUtil.updateFileEntry(
 				fileEntry.getFileEntryId(), StringPool.BLANK,
@@ -435,7 +506,7 @@ public class FileEntryStagedModelDataHandlerTest
 					fileEntry.getFileEntryId());
 
 			Assert.assertNotNull(friendlyURLEntry);
-			Assert.assertEquals("pdf_test.pdf", friendlyURLEntry.getUrlTitle());
+			Assert.assertEquals("pdf_test-pdf", friendlyURLEntry.getUrlTitle());
 
 			exportImportStagedModel(fileEntry);
 
@@ -449,7 +520,7 @@ public class FileEntryStagedModelDataHandlerTest
 					importedFileEntry.getFileEntryId());
 
 			Assert.assertEquals(
-				"pdf_test.pdf", importedFriendlyURLEntry.getUrlTitle());
+				"pdf_test-pdf", importedFriendlyURLEntry.getUrlTitle());
 		}
 	}
 

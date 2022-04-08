@@ -504,7 +504,12 @@
 </tr>
 <tr>
 	<td>FRAGMENT_SIDEBAR_SECONDARY_TEXT</td>
-	<td>//*[contains(@class,'empty-state-text')]</td>
+	<td>//*[contains(@class,'text-secondary')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FRAGMENT_SIDEBAR_STATE_TEXT</td>
+	<td>//*[contains(@class,'state-text')]</td>
 	<td></td>
 </tr>
 <tr>

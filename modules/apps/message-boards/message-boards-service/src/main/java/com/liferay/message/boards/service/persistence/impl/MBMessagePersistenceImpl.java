@@ -58,7 +58,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -95,7 +95,8 @@ import org.osgi.service.component.annotations.Reference;
  * @generated
  */
 @Component(service = {MBMessagePersistence.class, BasePersistence.class})
-public class MBMessagePersistenceImpl
+public class
+MBMessagePersistenceImpl
 	extends BasePersistenceImpl<MBMessage> implements MBMessagePersistence {
 
 	/*
@@ -21566,7 +21567,7 @@ public class MBMessagePersistenceImpl
 		mbMessage.setNew(true);
 		mbMessage.setPrimaryKey(messageId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		mbMessage.setUuid(uuid);
 
@@ -21683,7 +21684,7 @@ public class MBMessagePersistenceImpl
 		MBMessageModelImpl mbMessageModelImpl = (MBMessageModelImpl)mbMessage;
 
 		if (Validator.isNull(mbMessage.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			mbMessage.setUuid(uuid);
 		}
@@ -23029,5 +23030,8 @@ public class MBMessagePersistenceImpl
 
 	@Reference
 	private MBMessageModelArgumentsResolver _mbMessageModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

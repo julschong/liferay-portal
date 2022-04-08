@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -3108,7 +3108,7 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 		layoutPageTemplateStructureRel.setPrimaryKey(
 			layoutPageTemplateStructureRelId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		layoutPageTemplateStructureRel.setUuid(uuid);
 
@@ -3244,7 +3244,7 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 					layoutPageTemplateStructureRel;
 
 		if (Validator.isNull(layoutPageTemplateStructureRel.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			layoutPageTemplateStructureRel.setUuid(uuid);
 		}
@@ -4043,5 +4043,8 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 	@Reference
 	private LayoutPageTemplateStructureRelModelArgumentsResolver
 		_layoutPageTemplateStructureRelModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

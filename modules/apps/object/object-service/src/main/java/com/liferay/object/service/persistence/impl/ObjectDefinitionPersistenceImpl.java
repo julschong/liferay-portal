@@ -49,7 +49,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -7564,7 +7564,7 @@ public class ObjectDefinitionPersistenceImpl
 		objectDefinition.setNew(true);
 		objectDefinition.setPrimaryKey(objectDefinitionId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		objectDefinition.setUuid(uuid);
 
@@ -7684,7 +7684,7 @@ public class ObjectDefinitionPersistenceImpl
 			(ObjectDefinitionModelImpl)objectDefinition;
 
 		if (Validator.isNull(objectDefinition.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			objectDefinition.setUuid(uuid);
 		}
@@ -8302,5 +8302,8 @@ public class ObjectDefinitionPersistenceImpl
 	@Reference
 	private ObjectDefinitionModelArgumentsResolver
 		_objectDefinitionModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

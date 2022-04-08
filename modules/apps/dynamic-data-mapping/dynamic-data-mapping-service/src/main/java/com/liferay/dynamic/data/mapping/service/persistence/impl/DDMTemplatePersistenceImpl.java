@@ -52,7 +52,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -12306,7 +12306,7 @@ public class DDMTemplatePersistenceImpl
 		ddmTemplate.setNew(true);
 		ddmTemplate.setPrimaryKey(templateId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		ddmTemplate.setUuid(uuid);
 
@@ -12424,7 +12424,7 @@ public class DDMTemplatePersistenceImpl
 			(DDMTemplateModelImpl)ddmTemplate;
 
 		if (Validator.isNull(ddmTemplate.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			ddmTemplate.setUuid(uuid);
 		}
@@ -13435,5 +13435,8 @@ public class DDMTemplatePersistenceImpl
 	@Reference
 	private DDMTemplateModelArgumentsResolver
 		_ddmTemplateModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

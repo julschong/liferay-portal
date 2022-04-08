@@ -58,7 +58,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -21821,7 +21821,7 @@ public class BlogsEntryPersistenceImpl
 		blogsEntry.setNew(true);
 		blogsEntry.setPrimaryKey(entryId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		blogsEntry.setUuid(uuid);
 
@@ -21939,7 +21939,7 @@ public class BlogsEntryPersistenceImpl
 			(BlogsEntryModelImpl)blogsEntry;
 
 		if (Validator.isNull(blogsEntry.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			blogsEntry.setUuid(uuid);
 		}
@@ -23158,5 +23158,8 @@ public class BlogsEntryPersistenceImpl
 
 	@Reference
 	private BlogsEntryModelArgumentsResolver _blogsEntryModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }

@@ -11,9 +11,6 @@
 	<bean class="com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil" id="com.liferay.expando.kernel.service.permission.ExpandoColumnPermissionUtil">
 		<property name="expandoColumnPermission" ref="com.liferay.expando.kernel.service.permission.ExpandoColumnPermission" />
 	</bean>
-	<bean class="com.liferay.expando.kernel.util.ExpandoBridgeIndexerUtil" id="com.liferay.expando.kernel.util.ExpandoBridgeIndexerUtil">
-		<property name="expandoBridgeIndexer" ref="com.liferay.portlet.expando.util.ExpandoBridgeIndexerImpl" />
-	</bean>
 	<bean class="com.liferay.mail.util.DummyHook" id="com.liferay.mail.util.DummyHook" />
 	<bean class="com.liferay.portal.bean.BeanPropertiesImpl" id="com.liferay.portal.bean.BeanPropertiesImpl" />
 	<bean class="com.liferay.portal.convert.documentlibrary.DocumentLibraryConvertProcess" />
@@ -269,10 +266,9 @@
 			<bean class="com.liferay.portal.util.PortletListerFactoryImpl" />
 		</property>
 	</bean>
+	<bean class="com.liferay.portal.util.ThemeFactoryImpl" id="com.liferay.portal.kernel.util.ThemeFactory" />
 	<bean class="com.liferay.portal.kernel.util.ThemeFactoryUtil" id="com.liferay.portal.kernel.util.ThemeFactoryUtil">
-		<property name="ThemeFactory">
-			<bean class="com.liferay.portal.util.ThemeFactoryImpl" />
-		</property>
+		<property name="ThemeFactory" ref="com.liferay.portal.kernel.util.ThemeFactory" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.util.ThreadLocalDistributor" id="com.liferay.portal.kernel.util.ThreadLocalDistributor">
 		<property name="threadLocalSources">
@@ -350,7 +346,6 @@
 		<constructor-arg name="portletContainer" ref="com.liferay.portlet.internal.PortletContainerImpl" />
 	</bean>
 	<bean class="com.liferay.portlet.admin.util.OmniadminImpl" id="com.liferay.portlet.admin.util.OmniadminImpl" />
-	<bean class="com.liferay.portlet.expando.util.ExpandoBridgeIndexerImpl" id="com.liferay.portlet.expando.util.ExpandoBridgeIndexerImpl" />
 	<bean class="com.liferay.portlet.internal.PortletContainerImpl" id="com.liferay.portlet.internal.PortletContainerImpl">
 		<property name="portletConfigurationIconMenu" ref="com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu" />
 		<property name="portletToolbar" ref="com.liferay.portal.kernel.portlet.toolbar.PortletToolbar" />

@@ -791,7 +791,7 @@ definition {
 
 		Click(
 			key_pageNumber = "2",
-			locator1 = "Pagination#ANY_PAGE");
+			locator1 = "CommerceNavigation#PAGINATION_ANY_PAGE");
 
 		var iterator = "1";
 
@@ -835,9 +835,9 @@ definition {
 
 		IFrame.closeFrame();
 
-		AssertTextEquals(
-			locator1 = "Dropdown#ENTRIES",
-			value1 = "4 Entries Per Page");
+		AssertElementPresent(
+			key_numberEntries = "4 Entries",
+			locator1 = "Dropdown#ENTRIES_NUMBER");
 	}
 
 	@description = "COMMERCE-6663. I want to be able to use ADT to render Search Results widget and I want to be able to select a Display Template and see it applied to the widget"

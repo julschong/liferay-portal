@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
@@ -2409,7 +2409,7 @@ public class ObjectValidationRulePersistenceImpl
 		objectValidationRule.setNew(true);
 		objectValidationRule.setPrimaryKey(objectValidationRuleId);
 
-		String uuid = PortalUUIDUtil.generate();
+		String uuid = _portalUUID.generate();
 
 		objectValidationRule.setUuid(uuid);
 
@@ -2534,7 +2534,7 @@ public class ObjectValidationRulePersistenceImpl
 			(ObjectValidationRuleModelImpl)objectValidationRule;
 
 		if (Validator.isNull(objectValidationRule.getUuid())) {
-			String uuid = PortalUUIDUtil.generate();
+			String uuid = _portalUUID.generate();
 
 			objectValidationRule.setUuid(uuid);
 		}
@@ -3042,5 +3042,8 @@ public class ObjectValidationRulePersistenceImpl
 	@Reference
 	private ObjectValidationRuleModelArgumentsResolver
 		_objectValidationRuleModelArgumentsResolver;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 }
