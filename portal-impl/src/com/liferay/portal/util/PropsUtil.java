@@ -34,18 +34,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
-import java.io.UnsupportedEncodingException;
-
-import java.net.URL;
-import java.net.URLDecoder;
-
-import java.nio.charset.StandardCharsets;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.servlet.Servlet;
 
 /**
  * @author Brian Wing Shun Chan
@@ -351,7 +342,6 @@ public class PropsUtil {
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
 
 		if (portalShieldedContainerLibDirProperty != null) {
-
 			String portalShieldedContainerLibDir = StringUtil.replace(
 				portalShieldedContainerLibDirProperty, CharPool.BACK_SLASH,
 				CharPool.SLASH);
@@ -365,6 +355,7 @@ public class PropsUtil {
 				portalShieldedContainerLibDir);
 
 			// Portal web directory
+
 			String portalWebDir = portalShieldedContainerLibDirProperty;
 
 			if (portalWebDir.endsWith("/WEB-INF/shielded-container-lib/")) {
@@ -376,9 +367,9 @@ public class PropsUtil {
 				_log.debug("Portal web directory " + portalWebDir);
 			}
 
-			SystemProperties.set(PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
+			SystemProperties.set(
+				PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
 		}
-
 
 		// Liferay home directory
 

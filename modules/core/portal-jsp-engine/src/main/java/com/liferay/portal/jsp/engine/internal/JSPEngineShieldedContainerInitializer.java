@@ -34,11 +34,13 @@ import com.liferay.taglib.servlet.JspFactorySwapper;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.io.UnsupportedEncodingException;
+
 import java.net.URL;
 import java.net.URLDecoder;
+
 import java.nio.charset.StandardCharsets;
+
 import java.util.EnumSet;
 import java.util.Map;
 
@@ -72,8 +74,8 @@ public class JSPEngineShieldedContainerInitializer
 	public void initialize(ServletContext servletContext)
 		throws ServletException {
 
-
 		// set shieldedContainerLib to System Property
+
 		File shieldedContainerLib = new File(
 			servletContext.getRealPath(SHIELDED_CONTAINER_LIB));
 
@@ -89,8 +91,9 @@ public class JSPEngineShieldedContainerInitializer
 		String className = StringUtil.replace(
 			Servlet.class.getName(), CharPool.PERIOD, CharPool.FORWARD_SLASH);
 
+		ClassLoader classLoader = Servlet.class.getClassLoader();
 
-		URL url = Servlet.class.getClassLoader().getResource(className + ".class");
+		URL url = classLoader.getResource(className + ".class");
 
 		String path;
 
@@ -99,7 +102,8 @@ public class JSPEngineShieldedContainerInitializer
 				url.getPath(), StandardCharsets.UTF_8.name());
 		}
 		catch (UnsupportedEncodingException unsupportedEncodingException) {
-			throw new ServletException("Cannot set global shared lib directory");
+			throw new ServletException(
+				unsupportedEncodingException.getMessage() + " from: " + url);
 		}
 
 		if (path.startsWith("file:")) {
@@ -114,7 +118,9 @@ public class JSPEngineShieldedContainerInitializer
 
 		pos = path.lastIndexOf("/");
 
-		System.setProperty(PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR, path.substring(0, pos + 1));
+		System.setProperty(
+			PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR,
+			path.substring(0, pos + 1));
 
 		ClassLoaderPool.register(
 			"ShieldedContainerClassLoader", servletContext.getClassLoader());
