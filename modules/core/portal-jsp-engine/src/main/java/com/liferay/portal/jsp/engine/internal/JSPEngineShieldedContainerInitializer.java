@@ -15,6 +15,7 @@
 package com.liferay.portal.jsp.engine.internal;
 
 import com.liferay.petra.lang.ClassLoaderPool;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.jsp.engine.internal.delegate.CheckEnabledServletDelegate;
 import com.liferay.portal.jsp.engine.internal.delegate.JspConfigDescriptorServletContextDelegate;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -25,6 +26,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.shielded.container.Ordered;
 import com.liferay.shielded.container.ShieldedContainerInitializer;
@@ -33,6 +35,10 @@ import com.liferay.taglib.servlet.JspFactorySwapper;
 import java.io.File;
 import java.io.IOException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.Map;
 
@@ -66,6 +72,8 @@ public class JSPEngineShieldedContainerInitializer
 	public void initialize(ServletContext servletContext)
 		throws ServletException {
 
+
+		// set shieldedContainerLib to System Property
 		File shieldedContainerLib = new File(
 			servletContext.getRealPath(SHIELDED_CONTAINER_LIB));
 
@@ -77,6 +85,36 @@ public class JSPEngineShieldedContainerInitializer
 		catch (IOException ioException) {
 			throw new ServletException(ioException);
 		}
+
+		String className = StringUtil.replace(
+			Servlet.class.getName(), CharPool.PERIOD, CharPool.FORWARD_SLASH);
+
+
+		URL url = Servlet.class.getClassLoader().getResource(className + ".class");
+
+		String path;
+
+		try {
+			path = URLDecoder.decode(
+				url.getPath(), StandardCharsets.UTF_8.name());
+		}
+		catch (UnsupportedEncodingException unsupportedEncodingException) {
+			throw new ServletException("Cannot set global shared lib directory");
+		}
+
+		if (path.startsWith("file:")) {
+			path = path.substring(5);
+		}
+
+		int pos = path.lastIndexOf("!/");
+
+		if (pos != -1) {
+			path = path.substring(0, pos);
+		}
+
+		pos = path.lastIndexOf("/");
+
+		System.setProperty(PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR, path.substring(0, pos + 1));
 
 		ClassLoaderPool.register(
 			"ShieldedContainerClassLoader", servletContext.getClassLoader());
