@@ -16,7 +16,6 @@ package com.liferay.translation.web.internal.display.context;
 
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.localized.InfoLocalizedValue;
-import com.liferay.petra.apache.http.components.URIBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -30,6 +29,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -46,8 +46,6 @@ import com.liferay.segments.service.SegmentsExperienceServiceUtil;
 import com.liferay.translation.exporter.TranslationInfoItemFieldValuesExporter;
 import com.liferay.translation.exporter.TranslationInfoItemFieldValuesExporterTracker;
 import com.liferay.translation.info.item.provider.InfoItemLanguagesProvider;
-
-import java.net.URI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -269,22 +267,20 @@ public class ExportTranslationDisplayContext {
 	}
 
 	private String _getExportTranslationURLString() throws Exception {
-		URIBuilder.URIBuilderWrapper uriBuilderWrapper = URIBuilder.create(
+		String url =
 			PortalUtil.getPortalURL(_httpServletRequest) + Portal.PATH_MODULE +
-				"/translation/export_translation"
-		).addParameter(
-			"classNameId", String.valueOf(_classNameId)
-		);
+				"/translation/export_translation";
+
+		url = HttpComponentsUtil.addParameter(
+			url, "classNameId", String.valueOf(_classNameId));
 
 		for (long classPK : _classPKs) {
-			uriBuilderWrapper.addParameter("classPK", String.valueOf(classPK));
+			url = HttpComponentsUtil.addParameter(
+				url, "classPK", String.valueOf(classPK));
 		}
 
-		uriBuilderWrapper.addParameter("groupId", String.valueOf(_groupId));
-
-		URI uri = uriBuilderWrapper.build();
-
-		return uri.toString();
+		return HttpComponentsUtil.addParameter(
+			url, "groupId", String.valueOf(_groupId));
 	}
 
 	private JSONArray _getLocalesJSONArray(
