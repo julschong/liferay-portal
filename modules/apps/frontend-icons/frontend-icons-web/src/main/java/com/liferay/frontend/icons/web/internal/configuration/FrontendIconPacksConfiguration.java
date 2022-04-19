@@ -26,9 +26,13 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 	scope = ExtendedObjectClassDefinition.Scope.COMPANY
 )
 @Meta.OCD(
-	id = "com.liferay.frontend.icons.web.internal.configuration.FrontendIconsConfiguration",
+	id = "com.liferay.frontend.icons.web.internal.configuration.FrontendIconPacksConfiguration",
 	localization = "content/Language",
 	name = "frontend-icons-configuration-name"
 )
-public interface FrontendIconsConfiguration {
+public interface FrontendIconPacksConfiguration {
+
+	@Meta.AD(deflt = "", name = "selected-icon-packs", required = false)
+	public String[] selectedIconPacks();
+
 }
