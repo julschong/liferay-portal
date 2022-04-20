@@ -20,7 +20,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.object.validation.rule.ObjectValidationRuleEngineServicesTracker;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
