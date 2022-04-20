@@ -27,13 +27,14 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+
+import java.net.URL;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -328,18 +329,11 @@ public class PropsUtil {
 	}
 
 	private static String _getLibDir(Class<?> clazz) {
-		String path = ClassUtil.getParentPath(
-			clazz.getClassLoader(), clazz.getName());
+		ClassLoader classLoader = clazz.getClassLoader();
 
-		int pos = path.lastIndexOf(".jar!");
+		URL url = classLoader.getResource(".");
 
-		if (pos == -1) {
-			pos = path.lastIndexOf(".jar/");
-		}
-
-		pos = path.lastIndexOf(CharPool.SLASH, pos);
-
-		return path.substring(0, pos + 1);
+		return url.getPath();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(PropsUtil.class);
