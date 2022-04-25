@@ -27,9 +27,9 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.frontend.data.set.sample.web.internal.constants.FDSSampleFDSNames" %><%@
 page import="com.liferay.frontend.data.set.sample.web.internal.constants.FDSSampleWebKeys" %><%@
 page import="com.liferay.frontend.data.set.sample.web.internal.display.context.FDSSampleDisplayContext" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
-page import="com.liferay.portal.kernel.util.ParamUtil" %>
+page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 
