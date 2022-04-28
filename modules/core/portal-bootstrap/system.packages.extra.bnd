@@ -287,7 +287,6 @@ Provide-Capability:\
 	@lib/com.liferay.petra.function.jar,\
 	@lib/com.liferay.petra.io.jar,\
 	@lib/com.liferay.petra.lang.jar,\
-	@lib/com.liferay.petra.log4j.jar,\
 	@lib/com.liferay.petra.mail.jar,\
 	@lib/com.liferay.petra.memory.jar,\
 	@lib/com.liferay.petra.nio.jar,\
@@ -298,5 +297,6 @@ Provide-Capability:\
 	@lib/com.liferay.petra.sql.dsl.spi.jar,\
 	@lib/com.liferay.petra.string.jar,\
 	@lib/com.liferay.petra.url.pattern.mapper.jar,\
-	@lib/com.liferay.petra.xml.jar
+	@lib/com.liferay.petra.xml.jar,\
+	@lib/com.liferay.portal.log4j.jar
 -removeheaders: Private-Package
