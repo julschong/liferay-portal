@@ -57,7 +57,7 @@ import com.liferay.portal.events.ThemeServicePreAction;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.frontend.icons.FrontendIconsUtil;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Field;
@@ -292,7 +292,7 @@ public class DataLayoutResourceImpl
 		ddmFormTemplateContext.remove("fieldTypes");
 
 		return Response.ok(
-			JSONFactoryUtil.looseSerializeDeep(ddmFormTemplateContext)
+			_jsonFactory.looseSerializeDeep(ddmFormTemplateContext)
 		).build();
 	}
 
@@ -618,7 +618,7 @@ public class DataLayoutResourceImpl
 			String content, String definitionSchemaVersion)
 		throws Exception {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(content);
+		JSONObject jsonObject = _jsonFactory.createJSONObject(content);
 
 		jsonObject.put("definitionSchemaVersion", definitionSchemaVersion);
 
@@ -720,6 +720,9 @@ public class DataLayoutResourceImpl
 	@Reference
 	private DEDataDefinitionFieldLinkLocalService
 		_deDataDefinitionFieldLinkLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;
