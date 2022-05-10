@@ -20,7 +20,7 @@ import com.liferay.object.admin.rest.dto.v1_0.util.ObjectActionUtil;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectActionResource;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
 import com.liferay.object.service.ObjectActionService;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -189,7 +189,7 @@ public class ObjectActionResourceImpl
 			Object value = entry.getValue();
 
 			if (value instanceof ArrayList) {
-				value = JSONFactoryUtil.looseSerialize(value);
+				value = _jsonFactory.looseSerialize(value);
 			}
 
 			map.put(entry.getKey(), value.toString());
@@ -199,6 +199,9 @@ public class ObjectActionResourceImpl
 			map, true
 		).build();
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private ObjectActionService _objectActionService;
