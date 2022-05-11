@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -115,7 +115,7 @@ public class EditChannelMVCActionCommand extends BaseAnalyticsMVCActionCommand {
 				"content.Language", themeDisplay.getLocale(), getClass());
 
 			return groupJSONObject.put(
-				"name", LanguageUtil.get(resourceBundle, "unknown"));
+				"name", _language.get(resourceBundle, "unknown"));
 		}
 	}
 
@@ -269,5 +269,8 @@ public class EditChannelMVCActionCommand extends BaseAnalyticsMVCActionCommand {
 
 	@Reference
 	private CompanyService _companyService;
+
+	@Reference
+	private Language _language;
 
 }
