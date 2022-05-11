@@ -52,7 +52,7 @@ import com.liferay.commerce.util.comparator.CommerceShippingMethodPriorityCompar
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -218,7 +218,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 				_commerceOrderLocalService.updateTermsAndConditions(
 					commerceOrder.getCommerceOrderId(),
 					accountEntry.getDefaultDeliveryCTermEntryId(), 0,
-					LanguageUtil.getLanguageId(
+					_language.getLanguageId(
 						_portal.getLocale(httpServletRequest)));
 			}
 			else {
@@ -766,6 +766,9 @@ public class DefaultCommerceCheckoutStepHttpHelper
 
 	@Reference
 	private CommerceTermEntryLocalService _commerceTermEntryLocalService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;
