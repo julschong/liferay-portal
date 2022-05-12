@@ -17,51 +17,61 @@ package com.liferay.portal.kernel.util;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 
+import java.net.URI;
+
 /**
  * @author Julius Lee
  */
-public class URLBuilder {
+public class URIBuilder {
 
-	public static String addParameter(String url, String name, boolean value) {
-		return addParameter(url, name, String.valueOf(value));
+	public static URIBuilder create(String uri) {
+		return new URIBuilder(uri);
 	}
 
-	public static String addParameter(String url, String name, double value) {
-		return addParameter(url, name, String.valueOf(value));
+	public static URIBuilder create(URI uri) {
+		return new URIBuilder(uri.toString());
 	}
 
-	public static String addParameter(String url, String name, int value) {
-		return addParameter(url, name, String.valueOf(value));
+	public URIBuilder addParameter(String name, boolean value) {
+		return addParameter(name, String.valueOf(value));
 	}
 
-	public static String addParameter(String url, String name, long value) {
-		return addParameter(url, name, String.valueOf(value));
+	public URIBuilder addParameter(String name, double value) {
+		return addParameter(name, String.valueOf(value));
 	}
 
-	public static String addParameter(String url, String name, short value) {
-		return addParameter(url, name, String.valueOf(value));
+	public URIBuilder addParameter(String name, int value) {
+		return addParameter(name, String.valueOf(value));
 	}
 
-	public static String addParameter(String url, String name, String value) {
-		if (url == null) {
-			return null;
+	public URIBuilder addParameter(String name, long value) {
+		return addParameter(name, String.valueOf(value));
+	}
+
+	public URIBuilder addParameter(String name, short value) {
+		return addParameter(name, String.valueOf(value));
+	}
+
+	public URIBuilder addParameter(String name, String value) {
+		if (Validator.isNull(_uri) || Validator.isNull(value)) {
+			return this;
 		}
 
-		String[] urlArray = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		String[] urlArray = PortalUtil.stripURLAnchor(_uri, StringPool.POUND);
 
-		url = urlArray[0];
+		_uri = urlArray[0];
 
 		String anchor = urlArray[1];
 
 		StringBundler sb = new StringBundler(6);
 
-		sb.append(url);
+		sb.append(_uri);
 
-		if (url.indexOf(CharPool.QUESTION) == -1) {
+		if (_uri.indexOf(CharPool.QUESTION) == -1) {
 			sb.append(StringPool.QUESTION);
 		}
-		else if (!url.endsWith(StringPool.QUESTION) &&
-				 !url.endsWith(StringPool.AMPERSAND)) {
+		else if (!_uri.endsWith(StringPool.QUESTION) &&
+				 !_uri.endsWith(StringPool.AMPERSAND)) {
 
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -71,49 +81,61 @@ public class URLBuilder {
 		sb.append(URLCodec.encodeURL(value));
 		sb.append(anchor);
 
-		return shortenURL(sb.toString());
+		_uri = HttpComponentsUtil.shortenURL(sb.toString());
+
+		return this;
 	}
 
-	public static String encodeParameters(String url) {
-		if (Validator.isNull(url)) {
-			return url;
+	public String build() {
+		if (Validator.isNull(_uri)) {
+			return null;
 		}
 
-		String queryString = getQueryString(url);
+		return _uri;
+	}
+
+	public URIBuilder encodeParameters() {
+		if (Validator.isNull(_uri)) {
+			return this;
+		}
+
+		String queryString = HttpComponentsUtil.getQueryString(_uri);
 
 		if (Validator.isNull(queryString)) {
-			return url;
+			return this;
 		}
 
-		String encodedQueryString = parameterMapToString(
-			parameterMapFromString(queryString), false);
+		String encodedQueryString = HttpComponentsUtil.parameterMapToString(
+			HttpComponentsUtil.parameterMapFromString(queryString), false);
 
-		return StringUtil.replace(url, queryString, encodedQueryString);
+		_uri = StringUtil.replace(_uri, queryString, encodedQueryString);
+
+		return this;
 	}
 
-	public static String removeParameter(String url, String name) {
-		if (Validator.isNull(url) || Validator.isNull(name)) {
-			return url;
+	public URIBuilder removeParameter(String name) {
+		if (Validator.isNull(_uri) || Validator.isNull(name)) {
+			return this;
 		}
 
-		int pos = url.indexOf(CharPool.QUESTION);
+		int pos = _uri.indexOf(CharPool.QUESTION);
 
 		if (pos == -1) {
-			return url;
+			return this;
 		}
 
-		String[] array = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		String[] array = PortalUtil.stripURLAnchor(_uri, StringPool.POUND);
 
-		url = array[0];
+		_uri = array[0];
 
 		String anchor = array[1];
 
 		StringBundler sb = new StringBundler();
 
-		sb.append(url.substring(0, pos + 1));
+		sb.append(_uri.substring(0, pos + 1));
 
 		String[] parameters = StringUtil.split(
-			url.substring(pos + 1), CharPool.AMPERSAND);
+			_uri.substring(pos + 1), CharPool.AMPERSAND);
 
 		for (String parameter : parameters) {
 			if (parameter.length() > 0) {
@@ -136,51 +158,57 @@ public class URLBuilder {
 			}
 		}
 
-		url = StringUtil.replace(
+		_uri = StringUtil.replace(
 			sb.toString(), StringPool.AMPERSAND + StringPool.AMPERSAND,
 			StringPool.AMPERSAND);
 
-		if (url.endsWith(StringPool.AMPERSAND)) {
-			url = url.substring(0, url.length() - 1);
+		if (_uri.endsWith(StringPool.AMPERSAND)) {
+			_uri = _uri.substring(0, _uri.length() - 1);
 		}
 
-		if (url.endsWith(StringPool.QUESTION)) {
-			url = url.substring(0, url.length() - 1);
+		if (_uri.endsWith(StringPool.QUESTION)) {
+			_uri = _uri.substring(0, _uri.length() - 1);
 		}
 
-		return url + anchor;
+		_uri = _uri + anchor;
+
+		return this;
 	}
 
-	public static String setParameter(String url, String name, boolean value) {
-		return setParameter(url, name, String.valueOf(value));
+	public URIBuilder setParameter(String name, boolean value) {
+		return setParameter(name, String.valueOf(value));
 	}
 
-	public static String setParameter(String url, String name, double value) {
-		return setParameter(url, name, String.valueOf(value));
+	public URIBuilder setParameter(String name, double value) {
+		return setParameter(name, String.valueOf(value));
 	}
 
-	public static String setParameter(String url, String name, int value) {
-		return setParameter(url, name, String.valueOf(value));
+	public URIBuilder setParameter(String name, int value) {
+		return setParameter(name, String.valueOf(value));
 	}
 
-	public static String setParameter(String url, String name, long value) {
-		return setParameter(url, name, String.valueOf(value));
+	public URIBuilder setParameter(String name, long value) {
+		return setParameter(name, String.valueOf(value));
 	}
 
-	public static String setParameter(String url, String name, short value) {
-		return setParameter(url, name, String.valueOf(value));
+	public URIBuilder setParameter(String name, short value) {
+		return setParameter(name, String.valueOf(value));
 	}
 
-	public static String setParameter(String url, String name, String value) {
-		if (Validator.isNull(url) || Validator.isNull(name)) {
-			return url;
+	public URIBuilder setParameter(String name, String value) {
+		if (Validator.isNull(_uri) || Validator.isNull(name)) {
+			return this;
 		}
 
-		url = removeParameter(url, name);
+		removeParameter(name);
 
-		return addParameter(url, name, value);
+		return addParameter(name, value);
 	}
-	
-	private String _url;
+
+	private URIBuilder(String uri) {
+		_uri = uri;
+	}
+
+	private String _uri;
 
 }
