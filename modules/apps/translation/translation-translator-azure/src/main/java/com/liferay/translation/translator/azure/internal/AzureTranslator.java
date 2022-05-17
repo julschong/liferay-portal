@@ -14,7 +14,6 @@
 
 package com.liferay.translation.translator.azure.internal;
 
-import com.liferay.petra.apache.http.components.URIBuilder;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.URIBuilder;
 import com.liferay.translation.translator.Translator;
 import com.liferay.translation.translator.TranslatorPacket;
 import com.liferay.translation.translator.azure.internal.configuration.AzureTranslatorConfiguration;

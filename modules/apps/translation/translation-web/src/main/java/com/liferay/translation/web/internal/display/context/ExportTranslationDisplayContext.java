@@ -16,7 +16,6 @@ package com.liferay.translation.web.internal.display.context;
 
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.localized.InfoLocalizedValue;
-import com.liferay.petra.apache.http.components.URIBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.URIBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.constants.SegmentsEntryConstants;
@@ -280,7 +280,7 @@ public class ExportTranslationDisplayContext {
 	}
 
 	private String _getExportTranslationURLString() throws Exception {
-		URIBuilder.URIBuilderWrapper uriBuilderWrapper = URIBuilder.create(
+		URIBuilder uriBuilder = URIBuilder.create(
 			PortalUtil.getPortalURL(_httpServletRequest) + Portal.PATH_MODULE +
 				"/translation/export_translation"
 		).addParameter(
@@ -289,18 +289,17 @@ public class ExportTranslationDisplayContext {
 
 		for (long classPK : _classPKs) {
 			if (_className.equals(Layout.class.getName())) {
-				uriBuilderWrapper.addParameter(
+				uriBuilder.addParameter(
 					"classPK", String.valueOf(_getDraftLayoutPlid(classPK)));
 			}
 			else {
-				uriBuilderWrapper.addParameter(
-					"classPK", String.valueOf(classPK));
+				uriBuilder.addParameter("classPK", String.valueOf(classPK));
 			}
 		}
 
-		uriBuilderWrapper.addParameter("groupId", String.valueOf(_groupId));
+		uriBuilder.addParameter("groupId", String.valueOf(_groupId));
 
-		URI uri = uriBuilderWrapper.build();
+		URI uri = uriBuilder.build();
 
 		return uri.toString();
 	}
