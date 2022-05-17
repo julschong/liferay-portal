@@ -34,8 +34,6 @@ import com.liferay.translation.translator.azure.internal.configuration.AzureTran
 
 import java.io.IOException;
 
-import java.net.URISyntaxException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,8 +127,8 @@ public class AzureTranslator implements Translator {
 
 			};
 		}
-		catch (IOException | URISyntaxException exception) {
-			throw new PortalException(exception);
+		catch (IOException ioException) {
+			throw new PortalException(ioException);
 		}
 	}
 
