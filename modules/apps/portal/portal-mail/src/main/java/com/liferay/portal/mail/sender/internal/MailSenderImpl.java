@@ -12,20 +12,18 @@
  * details.
  */
 
-package com.liferay.mail.service.impl;
+package com.liferay.portal.mail.sender.internal;
 
 import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.Filter;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.util.Hook;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.DestinationNames;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
@@ -34,6 +32,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.mail.sender.internal.constants.MailSenderMessagesDestinationNames;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -50,10 +49,14 @@ import javax.mail.Session;
 
 import javax.portlet.PortletPreferences;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Brian Wing Shun Chan
+ * @author Julius Lee
  */
-public class MailServiceImpl implements IdentifiableOSGiService, MailService {
+@Component(immediate = true, service = MailSender.class)
+public class MailSenderImpl implements MailSender {
 
 	@Override
 	public void addForward(
@@ -68,7 +71,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			_addForwardMethodKey, companyId, userId, filters, emailAddresses,
 			leaveCopy);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
 	@Override
@@ -84,7 +89,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			_addUserMethodKey, companyId, userId, password, firstName,
 			middleName, lastName, emailAddress);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
 	@Override
@@ -100,7 +107,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			_addVacationMessageMethodKey, companyId, userId, emailAddress,
 			vacationMessage);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
 	@Clusterable
@@ -128,7 +137,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		MethodHandler methodHandler = new MethodHandler(
 			_deleteEmailAddressMethodKey, companyId, userId);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
 	@Override
@@ -140,12 +151,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		MethodHandler methodHandler = new MethodHandler(
 			_deleteUserMethodKey, companyId, userId);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
-	}
-
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return MailService.class.getName();
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
 	@Override
@@ -340,7 +348,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			_log.debug("sendEmail");
 		}
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, mailMessage);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			mailMessage);
 	}
 
 	@Override
@@ -354,7 +364,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		MethodHandler methodHandler = new MethodHandler(
 			_updateBlockedMethodKey, companyId, userId, blocked);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
 	@Override
@@ -368,7 +380,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		MethodHandler methodHandler = new MethodHandler(
 			_updateEmailAddressMethodKey, companyId, userId, emailAddress);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
 	@Override
@@ -380,11 +394,12 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		MethodHandler methodHandler = new MethodHandler(
 			_updatePasswordMethodKey, companyId, userId, password);
 
-		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
+		MessageBusUtil.sendMessage(
+			MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+			methodHandler);
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		MailServiceImpl.class);
+	private static final Log _log = LogFactoryUtil.getLog(MailSenderImpl.class);
 
 	private static final MethodKey _addForwardMethodKey = new MethodKey(
 		Hook.class, "addForward", long.class, long.class, List.class,

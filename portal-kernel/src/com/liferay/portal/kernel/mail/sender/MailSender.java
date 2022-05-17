@@ -12,23 +12,22 @@
  * details.
  */
 
-package com.liferay.mail.kernel.service;
+package com.liferay.portal.kernel.mail.sender;
 
 import com.liferay.mail.kernel.model.Filter;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.transaction.Transactional;
 
 import java.util.List;
 
 import javax.mail.Session;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
- * @author Brian Wing Shun Chan
+ * @author Julius Lee
  */
-@Transactional(rollbackFor = {PortalException.class, SystemException.class})
-public interface MailService {
+@ProviderType
+public interface MailSender {
 
 	public void addForward(
 		long companyId, long userId, List<Filter> filters,
