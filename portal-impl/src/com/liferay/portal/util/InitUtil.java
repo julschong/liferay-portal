@@ -16,6 +16,8 @@ package com.liferay.portal.util;
 
 import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.configuration.ConfigurationFactoryImpl;
 import com.liferay.portal.dao.db.DBManagerImpl;
@@ -58,6 +60,8 @@ import com.liferay.portal.spring.context.ArrayApplicationContext;
 import com.liferay.portal.xml.SAXReaderImpl;
 
 import java.lang.reflect.Field;
+
+import java.net.URL;
 
 import java.util.List;
 import java.util.zip.ZipFile;
@@ -147,6 +151,33 @@ public class InitUtil {
 				_log.debug(exception);
 			}
 		}
+
+		// set LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR from PropsUtil class
+
+		String propsUtilClassName = PropsUtil.class.getName();
+
+		propsUtilClassName = StringUtil.replace(
+			propsUtilClassName, CharPool.PERIOD, CharPool.SLASH);
+
+		propsUtilClassName = propsUtilClassName + ".class";
+
+		ClassLoader propsUtilClassLoader = PropsUtil.class.getClassLoader();
+
+		URL url = propsUtilClassLoader.getResource(propsUtilClassName);
+
+		String path = url.getPath();
+
+		if (path.startsWith("file:")) {
+			path = path.substring(5);
+		}
+
+		int pos = path.lastIndexOf("!/");
+
+		pos = path.lastIndexOf(CharPool.SLASH, pos);
+
+		SystemProperties.set(
+			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
+			path.substring(0, pos + 1));
 
 		// Log4J
 

@@ -368,7 +368,7 @@ public class PropsUtil {
 
 		// Global shared lib directory
 
-		String globalSharedLibDir = _getLibDir(Servlet.class);
+		String globalSharedLibDir = _getLibDir(Servlet.class); // TODO: Get rid of _getLibDir
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Global shared lib directory " + globalSharedLibDir);
@@ -378,8 +378,6 @@ public class PropsUtil {
 			PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR, globalSharedLibDir);
 
 		// Portal shielded container lib directory
-
-		String portalShieldedContainerLibDir = _getLibDir(PropsUtil.class);
 
 		String portalShieldedContainerLibDirProperty = System.getProperty(
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
@@ -395,17 +393,14 @@ public class PropsUtil {
 				portalShieldedContainerLibDirProperty += StringPool.SLASH;
 			}
 
-			portalShieldedContainerLibDir =
-				portalShieldedContainerLibDirProperty;
+			SystemProperties.set(
+				PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
+				portalShieldedContainerLibDirProperty);
 		}
-
-		SystemProperties.set(
-			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
-			portalShieldedContainerLibDir);
 
 		// Portal web directory
 
-		String portalWebDir = portalShieldedContainerLibDir;
+		String portalWebDir = portalShieldedContainerLibDirProperty;
 
 		if (portalWebDir.endsWith("/WEB-INF/shielded-container-lib/")) {
 			portalWebDir = portalWebDir.substring(
