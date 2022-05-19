@@ -396,22 +396,23 @@ public class PropsUtil {
 			SystemProperties.set(
 				PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
 				portalShieldedContainerLibDirProperty);
+
+			// Portal web directory
+
+			String portalWebDir = portalShieldedContainerLibDirProperty;
+
+			if (portalWebDir.endsWith("/WEB-INF/shielded-container-lib/")) {
+				portalWebDir = portalWebDir.substring(
+					0, portalWebDir.length() - 31);
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Portal web directory " + portalWebDir);
+			}
+
+			SystemProperties.set(
+				PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
 		}
-
-		// Portal web directory
-
-		String portalWebDir = portalShieldedContainerLibDirProperty;
-
-		if (portalWebDir.endsWith("/WEB-INF/shielded-container-lib/")) {
-			portalWebDir = portalWebDir.substring(
-				0, portalWebDir.length() - 31);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Portal web directory " + portalWebDir);
-		}
-
-		SystemProperties.set(PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
 
 		// Liferay home directory
 
