@@ -32,7 +32,7 @@ import com.liferay.layout.display.page.LayoutDisplayPageProviderTracker;
 import com.liferay.layout.display.page.constants.LayoutDisplayPageWebKeys;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -81,12 +81,12 @@ public class GetFragmentEntryLinkMVCResourceCommand
 		if (fragmentEntryLink == null) {
 			JSONPortletResponseUtil.writeJSON(
 				resourceRequest, resourceResponse,
-				JSONFactoryUtil.createJSONObject());
+				_jsonFactory.createJSONObject());
 
 			return;
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		DefaultFragmentRendererContext defaultFragmentRendererContext =
 			new DefaultFragmentRendererContext(fragmentEntryLink);
@@ -212,6 +212,9 @@ public class GetFragmentEntryLinkMVCResourceCommand
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutDisplayPageProviderTracker _layoutDisplayPageProviderTracker;
