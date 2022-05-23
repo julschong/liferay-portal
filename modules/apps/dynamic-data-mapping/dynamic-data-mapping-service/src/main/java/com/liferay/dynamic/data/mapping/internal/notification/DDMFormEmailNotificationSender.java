@@ -35,7 +35,7 @@ import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -304,7 +304,7 @@ public class DDMFormEmailNotificationSender {
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
 
-		String defaultEmailSubject = LanguageUtil.format(
+		String defaultEmailSubject = _language.format(
 			resourceBundle, "new-x-form-submitted",
 			ddmFormInstance.getName(locale), false);
 
@@ -470,7 +470,7 @@ public class DDMFormEmailNotificationSender {
 			return userName;
 		}
 
-		return LanguageUtil.get(_getResourceBundle(locale), "someone");
+		return _language.get(_getResourceBundle(locale), "someone");
 	}
 
 	private String _getViewFormEntriesURL(
@@ -584,6 +584,9 @@ public class DDMFormEmailNotificationSender {
 
 	@Reference
 	private HtmlParser _htmlParser;
+
+	@Reference
+	private Language _language;
 
 	private MailService _mailService;
 

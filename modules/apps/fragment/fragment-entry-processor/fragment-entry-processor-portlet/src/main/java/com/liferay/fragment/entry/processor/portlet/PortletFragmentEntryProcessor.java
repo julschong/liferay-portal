@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ModelHintsConstants;
@@ -187,7 +187,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 						 fragmentEntryLink, portletName)) {
 
 				throw new FragmentEntryContentException(
-					LanguageUtil.get(
+					_language.get(
 						_resourceBundle,
 						"noninstanceable-widgets-can-be-embedded-only-once-" +
 							"on-the-same-page"));
@@ -529,7 +529,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 			if (Validator.isNull(_portletRegistry.getPortletName(alias))) {
 				throw new FragmentEntryContentException(
-					LanguageUtil.format(
+					_language.format(
 						_resourceBundle,
 						"there-is-no-widget-available-for-alias-x", alias));
 			}
@@ -538,7 +538,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 			if (Validator.isNotNull(id) && !Validator.isAlphanumericName(id)) {
 				throw new FragmentEntryContentException(
-					LanguageUtil.format(
+					_language.format(
 						_resourceBundle,
 						"widget-id-must-contain-only-alphanumeric-characters",
 						alias));
@@ -549,7 +549,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 				if (elements.size() > 1) {
 					throw new FragmentEntryContentException(
-						LanguageUtil.get(
+						_language.get(
 							_resourceBundle, "widget-id-must-be-unique"));
 				}
 
@@ -557,7 +557,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 						ModelHintsConstants.TEXT_MAX_LENGTH)) {
 
 					throw new FragmentEntryContentException(
-						LanguageUtil.format(
+						_language.format(
 							_resourceBundle,
 							"widget-id-cannot-exceed-x-characters",
 							ModelHintsConstants.TEXT_MAX_LENGTH));
@@ -568,7 +568,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 			if ((elements.size() > 1) && Validator.isNull(id)) {
 				throw new FragmentEntryContentException(
-					LanguageUtil.get(
+					_language.get(
 						_resourceBundle,
 						"duplicate-widgets-within-the-same-fragment-must-" +
 							"have-an-id"));
@@ -580,7 +580,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 				if (!portlet.isInstanceable()) {
 					throw new FragmentEntryContentException(
-						LanguageUtil.format(
+						_language.format(
 							_resourceBundle,
 							"you-cannot-add-the-widget-x-more-than-once",
 							alias));
@@ -597,6 +597,9 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 	@Reference
 	private FragmentPortletRenderer _fragmentPortletRenderer;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private LayoutClassedModelUsageLocalService

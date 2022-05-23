@@ -29,7 +29,7 @@ import com.liferay.layout.page.template.serializer.LayoutStructureItemJSONSerial
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Repository;
@@ -92,7 +92,7 @@ public class AddFragmentCompositionMVCActionCommand
 			actionRequest);
 
 		if (fragmentCollection == null) {
-			String fragmentCollectionName = LanguageUtil.get(
+			String fragmentCollectionName = _language.get(
 				themeDisplay.getRequest(), "saved-fragments");
 
 			fragmentCollection =
@@ -216,7 +216,7 @@ public class AddFragmentCompositionMVCActionCommand
 			}
 
 			throw new StorageFieldValueException(
-				LanguageUtil.format(
+				_language.format(
 					themeDisplay.getRequest(), "the-file-x-cannot-be-saved",
 					url));
 		}
@@ -240,6 +240,9 @@ public class AddFragmentCompositionMVCActionCommand
 
 	@Reference
 	private FragmentRendererTracker _fragmentRendererTracker;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

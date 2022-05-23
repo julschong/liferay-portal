@@ -35,7 +35,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.NoSuchClassNameException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ColorScheme;
@@ -982,7 +982,7 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 	private String _getUniqueCopyName(
 		long groupId, String sourceName, int type, Locale locale) {
 
-		String copy = LanguageUtil.get(locale, "copy");
+		String copy = _language.get(locale, "copy");
 
 		String name = StringUtil.appendParentheticalSuffix(sourceName, copy);
 
@@ -1022,6 +1022,9 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
