@@ -31,7 +31,7 @@ import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
@@ -300,7 +300,7 @@ public class FreeMarkerFragmentEntryProcessor
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", getClass());
 
-		String message = LanguageUtil.get(
+		String message = _language.get(
 			resourceBundle, "freemarker-syntax-is-invalid");
 
 		Throwable causeThrowable = templateException.getCause();
@@ -362,6 +362,9 @@ public class FreeMarkerFragmentEntryProcessor
 
 	@Reference
 	private FragmentEntryLocalService _fragmentEntryLocalService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;
