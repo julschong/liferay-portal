@@ -87,10 +87,6 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 
 		browserSnifferUtil.setBrowserSniffer(new BrowserSnifferImpl());
 
-		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
-
-		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
-
 		LanguageUtil languageUtil = new LanguageUtil();
 
 		languageUtil.setLanguage(new LanguageImpl());
@@ -339,6 +335,10 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 
 		_getContentDashboardItemInfoMVCResourceCommand =
 			new GetContentDashboardItemInfoMVCResourceCommand();
+
+		ReflectionTestUtil.setFieldValue(
+			_getContentDashboardItemInfoMVCResourceCommand, "_jsonFactory",
+			new JSONFactoryImpl());
 
 		AssetVocabularyLocalService assetVocabularyLocalService = Mockito.mock(
 			AssetVocabularyLocalService.class);
