@@ -22,7 +22,7 @@ import com.liferay.fragment.service.FragmentEntryService;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -93,7 +93,7 @@ public class EditFragmentEntryMVCActionCommand
 			actionRequest, "configurationContent");
 		int status = ParamUtil.getInteger(actionRequest, "status");
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		draftFragmentEntry.setName(name);
 		draftFragmentEntry.setCss(css);
@@ -106,10 +106,10 @@ public class EditFragmentEntryMVCActionCommand
 			String[] fieldTypes = ParamUtil.getStringValues(
 				actionRequest, "fieldTypes");
 
-			JSONArray fieldTypesJSONArray = JSONFactoryUtil.createJSONArray(
+			JSONArray fieldTypesJSONArray = _jsonFactory.createJSONArray(
 				fieldTypes);
 
-			JSONObject typeOptionsJSONObject = JSONFactoryUtil.createJSONObject(
+			JSONObject typeOptionsJSONObject = _jsonFactory.createJSONObject(
 				draftFragmentEntry.getTypeOptions());
 
 			typeOptionsJSONObject.put("fieldTypes", fieldTypesJSONArray);
@@ -134,5 +134,8 @@ public class EditFragmentEntryMVCActionCommand
 
 	@Reference
 	private FragmentEntryService _fragmentEntryService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

@@ -33,7 +33,7 @@ import com.liferay.layout.list.retriever.ListObjectReferenceFactoryTracker;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -75,7 +75,7 @@ public class FragmentEntryConfigurationParserImpl
 		List<FragmentConfigurationField> fragmentConfigurationFields =
 			getFragmentConfigurationFields(configuration);
 
-		JSONObject defaultValuesJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONObject defaultValuesJSONObject = _jsonFactory.createJSONObject();
 
 		for (FragmentConfigurationField fragmentConfigurationField :
 				fragmentConfigurationFields) {
@@ -96,8 +96,8 @@ public class FragmentEntryConfigurationParserImpl
 		FragmentConfigurationFieldDataType fragmentConfigurationFieldDataType) {
 
 		try {
-			JSONObject editableValuesJSONObject =
-				JSONFactoryUtil.createJSONObject(editableValues);
+			JSONObject editableValuesJSONObject = _jsonFactory.createJSONObject(
+				editableValues);
 
 			JSONObject configurationValuesJSONObject =
 				editableValuesJSONObject.getJSONObject(
@@ -131,10 +131,10 @@ public class FragmentEntryConfigurationParserImpl
 			getConfigurationDefaultValuesJSONObject(configuration);
 
 		if (configurationDefaultValuesJSONObject == null) {
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 
-		JSONObject editableValuesJSONObject = JSONFactoryUtil.createJSONObject(
+		JSONObject editableValuesJSONObject = _jsonFactory.createJSONObject(
 			editableValues);
 
 		JSONObject configurationValuesJSONObject =
@@ -227,7 +227,7 @@ public class FragmentEntryConfigurationParserImpl
 			JSONUtil.isValid(value)) {
 
 			try {
-				JSONObject valueJSONObject = JSONFactoryUtil.createJSONObject(
+				JSONObject valueJSONObject = _jsonFactory.createJSONObject(
 					value);
 
 				value = valueJSONObject.getString(
@@ -310,7 +310,7 @@ public class FragmentEntryConfigurationParserImpl
 
 		try {
 			JSONObject editableValuesJSONObject =
-				JSONFactoryUtil.createJSONObject(editableValues);
+				_jsonFactory.createJSONObject(editableValues);
 
 			JSONObject configurationValuesJSONObject =
 				editableValuesJSONObject.getJSONObject(
@@ -338,7 +338,7 @@ public class FragmentEntryConfigurationParserImpl
 		JSONObject editableValuesJSONObject = null;
 
 		try {
-			editableValuesJSONObject = JSONFactoryUtil.createJSONObject(
+			editableValuesJSONObject = _jsonFactory.createJSONObject(
 				editableValues);
 		}
 		catch (Exception exception) {
@@ -490,8 +490,8 @@ public class FragmentEntryConfigurationParserImpl
 
 	private JSONArray _getFieldSetsJSONArray(String configuration) {
 		try {
-			JSONObject configurationJSONObject =
-				JSONFactoryUtil.createJSONObject(configuration);
+			JSONObject configurationJSONObject = _jsonFactory.createJSONObject(
+				configuration);
 
 			return configurationJSONObject.getJSONArray("fieldSets");
 		}
@@ -514,7 +514,7 @@ public class FragmentEntryConfigurationParserImpl
 				FragmentConfigurationFieldDataType.ARRAY) {
 
 			try {
-				return JSONFactoryUtil.createJSONArray(value);
+				return _jsonFactory.createJSONArray(value);
 			}
 			catch (JSONException jsonException) {
 				if (_log.isDebugEnabled()) {
@@ -543,7 +543,7 @@ public class FragmentEntryConfigurationParserImpl
 					FragmentConfigurationFieldDataType.OBJECT) {
 
 			try {
-				return JSONFactoryUtil.createJSONObject(value);
+				return _jsonFactory.createJSONObject(value);
 			}
 			catch (JSONException jsonException) {
 				if (_log.isDebugEnabled()) {
@@ -568,7 +568,7 @@ public class FragmentEntryConfigurationParserImpl
 		}
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
+			JSONObject jsonObject = _jsonFactory.createJSONObject(value);
 
 			String className = GetterUtil.getString(
 				jsonObject.getString("className"));
@@ -597,18 +597,17 @@ public class FragmentEntryConfigurationParserImpl
 
 	private JSONObject _getInfoDisplayObjectEntryJSONObject(String value) {
 		if (Validator.isNull(value) ||
-			Objects.equals(value, JSONFactoryUtil.getNullJSON())) {
+			Objects.equals(value, _jsonFactory.getNullJSON())) {
 
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 
 		try {
 			JSONObject configurationValueJSONObject =
-				JSONFactoryUtil.createJSONObject(value);
+				_jsonFactory.createJSONObject(value);
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				JSONFactoryUtil.looseSerialize(
-					_getInfoDisplayObjectEntry(value)));
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
+				_jsonFactory.looseSerialize(_getInfoDisplayObjectEntry(value)));
 
 			jsonObject.put(
 				"className",
@@ -650,7 +649,7 @@ public class FragmentEntryConfigurationParserImpl
 		}
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
+			JSONObject jsonObject = _jsonFactory.createJSONObject(value);
 
 			if (jsonObject.length() <= 0) {
 				return Collections.emptyList();
@@ -695,11 +694,11 @@ public class FragmentEntryConfigurationParserImpl
 
 	private JSONObject _getInfoListObjectEntryJSONObject(String value) {
 		if (Validator.isNull(value)) {
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 
 		try {
-			return JSONFactoryUtil.createJSONObject(value);
+			return _jsonFactory.createJSONObject(value);
 		}
 		catch (JSONException jsonException) {
 			if (_log.isDebugEnabled()) {
@@ -794,6 +793,9 @@ public class FragmentEntryConfigurationParserImpl
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutListRetrieverTracker _layoutListRetrieverTracker;
