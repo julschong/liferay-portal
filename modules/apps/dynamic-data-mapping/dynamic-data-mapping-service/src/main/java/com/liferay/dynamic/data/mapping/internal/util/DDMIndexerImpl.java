@@ -608,16 +608,14 @@ public class DDMIndexerImpl implements DDMIndexer {
 			type.equals(DDMFormFieldTypeConstants.JOURNAL_ARTICLE) ||
 			type.equals(DDMFormFieldTypeConstants.LINK_TO_LAYOUT)) {
 
-			JSONObject jsonObject = _jsonFactory.createJSONObject(
-				valueString);
+			JSONObject jsonObject = _jsonFactory.createJSONObject(valueString);
 
 			if ((jsonObject != null) && jsonObject.has("title")) {
 				sb.append(jsonObject.getString("title"));
 			}
 		}
 		else if (type.equals(DDMFormFieldTypeConstants.IMAGE)) {
-			JSONObject jsonObject = _jsonFactory.createJSONObject(
-				valueString);
+			JSONObject jsonObject = _jsonFactory.createJSONObject(valueString);
 
 			if (jsonObject == null) {
 				return;

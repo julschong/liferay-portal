@@ -55,6 +55,54 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = SearchFacet.class)
 public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 
+	public List<AssetRendererFactory<?>> getAssetRendererFactories(
+		long companyId) {
+
+		return AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
+			companyId);
+	}
+
+	@Override
+	public String getConfigurationJspPath() {
+		return "/facets/configuration/asset_entries.jsp";
+	}
+
+	@Override
+	public FacetConfiguration getDefaultConfiguration(long companyId) {
+		FacetConfiguration facetConfiguration = new FacetConfiguration();
+
+		facetConfiguration.setClassName(getFacetClassName());
+
+		facetConfiguration.setDataJSONObject(
+			JSONUtil.put(
+				"frequencyThreshold", 1
+			).put(
+				"values",
+				() -> {
+					JSONArray jsonArray = _jsonFactory.createJSONArray();
+
+					for (String assetType : getAssetTypes(companyId)) {
+						jsonArray.put(assetType);
+					}
+
+					return jsonArray;
+				}
+			));
+
+		facetConfiguration.setFieldName(getFieldName());
+		facetConfiguration.setLabel(getLabel());
+		facetConfiguration.setOrder(getOrder());
+		facetConfiguration.setStatic(false);
+		facetConfiguration.setWeight(1.5);
+
+		return facetConfiguration;
+	}
+
+	@Override
+	public String getDisplayJspPath() {
+		return "/facets/view/asset_entries.jsp";
+	}
+
 	public String[] getEntryClassNames(String configuration) {
 		if (Validator.isNull(configuration)) {
 			return null;
@@ -104,54 +152,6 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 		).orElse(
 			null
 		);
-	}
-
-	public List<AssetRendererFactory<?>> getAssetRendererFactories(
-		long companyId) {
-
-		return AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
-			companyId);
-	}
-
-	@Override
-	public String getConfigurationJspPath() {
-		return "/facets/configuration/asset_entries.jsp";
-	}
-
-	@Override
-	public FacetConfiguration getDefaultConfiguration(long companyId) {
-		FacetConfiguration facetConfiguration = new FacetConfiguration();
-
-		facetConfiguration.setClassName(getFacetClassName());
-
-		facetConfiguration.setDataJSONObject(
-			JSONUtil.put(
-				"frequencyThreshold", 1
-			).put(
-				"values",
-				() -> {
-					JSONArray jsonArray = _jsonFactory.createJSONArray();
-
-					for (String assetType : getAssetTypes(companyId)) {
-						jsonArray.put(assetType);
-					}
-
-					return jsonArray;
-				}
-			));
-
-		facetConfiguration.setFieldName(getFieldName());
-		facetConfiguration.setLabel(getLabel());
-		facetConfiguration.setOrder(getOrder());
-		facetConfiguration.setStatic(false);
-		facetConfiguration.setWeight(1.5);
-
-		return facetConfiguration;
-	}
-
-	@Override
-	public String getDisplayJspPath() {
-		return "/facets/view/asset_entries.jsp";
 	}
 
 	@Override
@@ -230,13 +230,13 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 	protected AssetEntriesFacetFactory assetEntriesFacetFactory;
 
 	@Reference
-	private JSONFactory _jsonFactory;
-
-	@Reference
 	protected SearchableAssetClassNamesProvider
 		searchableAssetClassNamesProvider;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetEntriesSearchFacet.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

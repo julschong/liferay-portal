@@ -309,8 +309,8 @@ public class FragmentEntryConfigurationParserImpl
 		FragmentConfigurationField fragmentConfigurationField, Locale locale) {
 
 		try {
-			JSONObject editableValuesJSONObject =
-				_jsonFactory.createJSONObject(editableValues);
+			JSONObject editableValuesJSONObject = _jsonFactory.createJSONObject(
+				editableValues);
 
 			JSONObject configurationValuesJSONObject =
 				editableValuesJSONObject.getJSONObject(
