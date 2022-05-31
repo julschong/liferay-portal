@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.display.context;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -21,6 +22,7 @@ import com.liferay.portal.search.context.SearchContextFactory;
 import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.Searcher;
 import com.liferay.portal.search.summary.SummaryBuilderFactory;
+import com.liferay.portal.search.web.internal.facet.AssetEntriesSearchFacet;
 import com.liferay.portal.search.web.internal.facet.SearchFacetTracker;
 
 import javax.portlet.PortletException;
@@ -28,8 +30,10 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Tina Tian
@@ -49,7 +53,8 @@ public class SearchDisplayContextFactoryImpl
 			language, searcher, new IndexSearchPropsValuesImpl(),
 			new ClassicPortletURLFactoryImpl(renderRequest, renderResponse),
 			summaryBuilderFactory, searchContextFactory,
-			searchRequestBuilderFactory, searchFacetTracker);
+			searchRequestBuilderFactory, searchFacetTracker,
+			_assetEntriesSearchFacetServiceTracker.getService());
 	}
 
 	@Reference
@@ -72,5 +77,10 @@ public class SearchDisplayContextFactoryImpl
 
 	@Reference
 	protected SummaryBuilderFactory summaryBuilderFactory;
+
+	private static final ServiceTracker<?, AssetEntriesSearchFacet>
+		_assetEntriesSearchFacetServiceTracker = ServiceTrackerFactory.open(
+			FrameworkUtil.getBundle(AssetEntriesSearchFacet.class),
+			AssetEntriesSearchFacet.class);
 
 }

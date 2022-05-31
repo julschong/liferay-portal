@@ -18,7 +18,7 @@ import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -55,7 +55,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = SearchFacet.class)
 public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 
-	public static String[] getEntryClassNames(String configuration) {
+	public String[] getEntryClassNames(String configuration) {
 		if (Validator.isNull(configuration)) {
 			return null;
 		}
@@ -63,7 +63,7 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 		JSONObject configurationJSONObject;
 
 		try {
-			configurationJSONObject = JSONFactoryUtil.createJSONObject(
+			configurationJSONObject = _jsonFactory.createJSONObject(
 				configuration);
 		}
 		catch (JSONException jsonException) {
@@ -130,7 +130,7 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 			).put(
 				"values",
 				() -> {
-					JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+					JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 					for (String assetType : getAssetTypes(companyId)) {
 						jsonArray.put(assetType);
@@ -179,7 +179,7 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 					ParamUtil.getString(
 						actionRequest, getClassName() + "assetTypes"));
 
-				JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+				JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 				if (ArrayUtil.isEmpty(assetTypes)) {
 					ThemeDisplay themeDisplay =
@@ -228,6 +228,9 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 
 	@Reference
 	protected AssetEntriesFacetFactory assetEntriesFacetFactory;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	protected SearchableAssetClassNamesProvider
