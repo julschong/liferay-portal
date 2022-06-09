@@ -21,7 +21,6 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.URLCodec;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -103,7 +102,7 @@ public class URLBuilder {
 	}
 
 	public URLBuilder removeParameter(String name) {
-		if (Validator.isNull(_url) || Validator.isNull(name)) {
+		if ((_url == null) || (name == null)) {
 			return this;
 		}
 
@@ -185,7 +184,7 @@ public class URLBuilder {
 	}
 
 	public URLBuilder setParameter(String name, String value) {
-		if (Validator.isNull(_url) || Validator.isNull(name)) {
+		if ((_url == null) || (name == null)) {
 			return this;
 		}
 
