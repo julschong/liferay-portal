@@ -18,9 +18,12 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.List;
 
 /**
  * @author Julius Lee
@@ -62,13 +65,13 @@ public class URLBuilder {
 	}
 
 	public URLBuilder addParameter(String name, String value) {
-		if (url == null) {
-			return null;
+		if (_url == null) {
+			return this;
 		}
 
-		String[] urlArray = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		String[] urlArray = PortalUtil.stripURLAnchor(_url, StringPool.POUND);
 
-		url = urlArray[0];
+		String url = urlArray[0];
 
 		String anchor = urlArray[1];
 
@@ -90,7 +93,9 @@ public class URLBuilder {
 		sb.append(URLCodec.encodeURL(value));
 		sb.append(anchor);
 
-		return shortenURL(sb.toString());
+		_url = HttpComponentsUtil.shortenURL(sb.toString());
+
+		return this;
 	}
 
 	public String build() {
@@ -98,19 +103,19 @@ public class URLBuilder {
 	}
 
 	public URLBuilder removeParameter(String name) {
-		if (Validator.isNull(url) || Validator.isNull(name)) {
-			return url;
+		if (Validator.isNull(_url) || Validator.isNull(name)) {
+			return this;
 		}
 
-		int pos = url.indexOf(CharPool.QUESTION);
+		int pos = _url.indexOf(CharPool.QUESTION);
 
 		if (pos == -1) {
-			return url;
+			return this;
 		}
 
-		String[] array = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		String[] array = PortalUtil.stripURLAnchor(_url, StringPool.POUND);
 
-		url = array[0];
+		String url = array[0];
 
 		String anchor = array[1];
 
@@ -118,19 +123,19 @@ public class URLBuilder {
 
 		sb.append(url.substring(0, pos + 1));
 
-		String[] parameters = StringUtil.split(
+		List<String> parameters = StringUtil.split(
 			url.substring(pos + 1), CharPool.AMPERSAND);
 
 		for (String parameter : parameters) {
 			if (parameter.length() > 0) {
-				String[] kvp = StringUtil.split(parameter, CharPool.EQUAL);
+				List<String> kvp = StringUtil.split(parameter, CharPool.EQUAL);
 
-				String key = kvp[0];
+				String key = kvp.get(0);
 
 				String value = StringPool.BLANK;
 
-				if (kvp.length > 1) {
-					value = kvp[1];
+				if (kvp.size() > 1) {
+					value = kvp.get(1);
 				}
 
 				if (!key.equals(name)) {
@@ -154,7 +159,9 @@ public class URLBuilder {
 			url = url.substring(0, url.length() - 1);
 		}
 
-		return url + anchor;
+		_url = url + anchor;
+
+		return this;
 	}
 
 	public URLBuilder setParameter(String name, boolean value) {
@@ -178,13 +185,13 @@ public class URLBuilder {
 	}
 
 	public URLBuilder setParameter(String name, String value) {
-		if (Validator.isNull(url) || Validator.isNull(name)) {
-			return url;
+		if (Validator.isNull(_url) || Validator.isNull(name)) {
+			return this;
 		}
 
-		url = removeParameter(url, name);
+		removeParameter(name);
 
-		return addParameter(url, name, value);
+		return addParameter(name, value);
 	}
 
 	public String toString() {
@@ -195,6 +202,6 @@ public class URLBuilder {
 		_url = url;
 	}
 
-	private final String _url;
+	private String _url;
 
 }
