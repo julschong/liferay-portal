@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -216,8 +216,11 @@ public abstract class BaseMVCActionCommand implements MVCActionCommand {
 		if ((portletConfig != null) && Validator.isNotNull(redirect) &&
 			Validator.isNotNull(closeRedirect)) {
 
-			redirect = HttpComponentsUtil.setParameter(
-				redirect, "closeRedirect", closeRedirect);
+			redirect = URLBuilder.create(
+				redirect
+			).setParameter(
+				"closeRedirect", closeRedirect
+			).build();
 
 			SessionMessages.add(
 				actionRequest,

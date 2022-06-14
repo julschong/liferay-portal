@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -330,10 +330,13 @@ public class AssetLinksTag extends IncludeTag {
 			if (Validator.isNotNull(urlViewInContext) &&
 				!Objects.equals(urlViewInContext, noSuchEntryRedirect)) {
 
-				urlViewInContext = HttpComponentsUtil.setParameter(
-					urlViewInContext, "inheritRedirect", Boolean.TRUE);
-				urlViewInContext = HttpComponentsUtil.setParameter(
-					urlViewInContext, "redirect", themeDisplay.getURLCurrent());
+				urlViewInContext = URLBuilder.create(
+					urlViewInContext
+				).setParameter(
+					"inheritRedirect", Boolean.TRUE
+				).setParameter(
+					"redirect", themeDisplay.getURLCurrent()
+				).build();
 			}
 
 			viewURL = urlViewInContext;

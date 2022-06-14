@@ -20,8 +20,8 @@ import com.liferay.account.service.AccountGroupService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -57,9 +57,12 @@ public class EditAccountGroupMVCActionCommand extends BaseMVCActionCommand {
 		if (cmd.equals(Constants.ADD)) {
 			AccountGroup accountGroup = _addAccountGroup(actionRequest);
 
-			redirect = HttpComponentsUtil.setParameter(
-				redirect, actionResponse.getNamespace() + "accountGroupId",
-				accountGroup.getAccountGroupId());
+			redirect = URLBuilder.create(
+				redirect
+			).setParameter(
+				actionResponse.getNamespace() + "accountGroupId",
+				accountGroup.getAccountGroupId()
+			).build();
 		}
 		else if (cmd.equals(Constants.UPDATE)) {
 			_updateAccountGroup(actionRequest);

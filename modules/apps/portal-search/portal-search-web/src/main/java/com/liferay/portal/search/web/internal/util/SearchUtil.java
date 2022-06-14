@@ -31,8 +31,8 @@ import com.liferay.portal.kernel.search.OpenSearchRegistryUtil;
 import com.liferay.portal.kernel.search.OpenSearchUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Tuple;
@@ -163,8 +163,11 @@ public class SearchUtil {
 			).buildPortletURL();
 
 			if (Validator.isNull(className) || (classPK <= 0)) {
-				return HttpComponentsUtil.setParameter(
-					viewContentURL.toString(), "p_l_back_url", currentURL);
+				return URLBuilder.create(
+					viewContentURL.toString()
+				).setParameter(
+					"p_l_back_url", currentURL
+				).build();
 			}
 
 			AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
@@ -175,8 +178,11 @@ public class SearchUtil {
 					getAssetRendererFactoryByClassName(className);
 
 			if (assetRendererFactory == null) {
-				return HttpComponentsUtil.setParameter(
-					viewContentURL.toString(), "p_l_back_url", currentURL);
+				return URLBuilder.create(
+					viewContentURL.toString()
+				).setParameter(
+					"p_l_back_url", currentURL
+				).build();
 			}
 
 			viewContentURL.setParameter(
@@ -184,8 +190,11 @@ public class SearchUtil {
 			viewContentURL.setParameter("type", assetRendererFactory.getType());
 
 			if (!viewInContext) {
-				return HttpComponentsUtil.setParameter(
-					viewContentURL.toString(), "p_l_back_url", currentURL);
+				return URLBuilder.create(
+					viewContentURL.toString()
+				).setParameter(
+					"p_l_back_url", currentURL
+				).build();
 			}
 
 			AssetRenderer<?> assetRenderer =
@@ -200,8 +209,11 @@ public class SearchUtil {
 				viewURL = viewContentURL.toString();
 			}
 
-			return HttpComponentsUtil.setParameter(
-				viewURL, "p_l_back_url", currentURL);
+			return URLBuilder.create(
+				viewURL
+			).setParameter(
+				"p_l_back_url", currentURL
+			).build();
 		}
 		catch (Exception exception) {
 			_log.error(

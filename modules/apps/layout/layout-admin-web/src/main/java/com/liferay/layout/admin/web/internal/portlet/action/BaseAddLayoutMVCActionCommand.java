@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -48,25 +48,25 @@ public abstract class BaseAddLayoutMVCActionCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String layoutFullURL = portal.getLayoutFullURL(layout, themeDisplay);
+		URLBuilder layoutFullURLBuilder = URLBuilder.create(
+			portal.getLayoutFullURL(layout, themeDisplay));
 
 		Layout draftLayout = layout.fetchDraftLayout();
 
 		if (draftLayout != null) {
-			layoutFullURL = portal.getLayoutFullURL(draftLayout, themeDisplay);
+			layoutFullURLBuilder = URLBuilder.create(
+				portal.getLayoutFullURL(draftLayout, themeDisplay));
 		}
 
-		layoutFullURL = HttpComponentsUtil.setParameter(
-			layoutFullURL, "p_l_mode", Constants.EDIT);
+		layoutFullURLBuilder.setParameter("p_l_mode", Constants.EDIT);
 
 		String backURL = ParamUtil.getString(actionRequest, "backURL");
 
 		if (Validator.isNotNull(backURL)) {
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_back_url", backURL);
+			layoutFullURLBuilder.setParameter("p_l_back_url", backURL);
 		}
 
-		return layoutFullURL;
+		return layoutFullURLBuilder.build();
 	}
 
 	protected String getRedirectURL(
@@ -87,9 +87,11 @@ public abstract class BaseAddLayoutMVCActionCommand
 		if (Validator.isNull(backURL)) {
 			PortletURL redirectURL = liferayPortletResponse.createRenderURL();
 
-			backURL = HttpComponentsUtil.setParameter(
-				redirectURL.toString(), "p_p_state",
-				WindowState.NORMAL.toString());
+			backURL = URLBuilder.create(
+				redirectURL.toString()
+			).setParameter(
+				"p_p_state", WindowState.NORMAL.toString()
+			).build();
 		}
 
 		configureLayoutURL.setParameter("redirect", backURL);

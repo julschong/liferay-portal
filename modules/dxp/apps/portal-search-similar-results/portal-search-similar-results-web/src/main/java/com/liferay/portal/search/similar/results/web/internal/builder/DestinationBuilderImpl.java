@@ -15,7 +15,7 @@
 package com.liferay.portal.search.similar.results.web.internal.builder;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
@@ -48,8 +48,11 @@ public class DestinationBuilderImpl implements DestinationBuilder {
 	public DestinationBuilder replaceParameter(
 		String parameter, String newValue) {
 
-		_urlString = HttpComponentsUtil.setParameter(
-			_urlString, parameter, newValue);
+		_urlString = URLBuilder.create(
+			_urlString
+		).setParameter(
+			parameter, newValue
+		).build();
 
 		return this;
 	}

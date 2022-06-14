@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -106,10 +106,12 @@ public class KBServicePreAction extends Action {
 			return;
 		}
 
-		redirect = HttpComponentsUtil.setParameter(
-			redirect, "p_p_auth", actual_p_p_auth);
-
-		httpServletResponse.sendRedirect(redirect);
+		httpServletResponse.sendRedirect(
+			URLBuilder.create(
+				redirect
+			).setParameter(
+				"p_p_auth", actual_p_p_auth
+			).build());
 	}
 
 	private static final boolean _PORTLET_ADD_DEFAULT_RESOURCE_CHECK_ENABLED =

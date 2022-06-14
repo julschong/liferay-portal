@@ -45,8 +45,8 @@ import com.liferay.portal.kernel.service.LayoutPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutPrototypeServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -320,14 +320,12 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 			Group layoutPrototypeGroup = layoutPrototype.getGroup();
 
 			return dropdownItem -> {
-				String layoutFullURL = layoutPrototypeGroup.getDisplayURL(
-					_themeDisplay, true);
-
-				layoutFullURL = HttpComponentsUtil.setParameter(
-					layoutFullURL, "p_l_back_url",
-					_themeDisplay.getURLCurrent());
-
-				dropdownItem.setHref(layoutFullURL);
+				dropdownItem.setHref(
+					URLBuilder.create(
+						layoutPrototypeGroup.getDisplayURL(_themeDisplay, true)
+					).setParameter(
+						"p_l_back_url", _themeDisplay.getURLCurrent()
+					).build());
 
 				dropdownItem.setIcon("pencil");
 				dropdownItem.setLabel(
@@ -336,15 +334,14 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 		}
 
 		return dropdownItem -> {
-			String layoutFullURL = PortalUtil.getLayoutFullURL(
-				_draftLayout, _themeDisplay);
-
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_back_url", _themeDisplay.getURLCurrent());
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_mode", Constants.EDIT);
-
-			dropdownItem.setHref(layoutFullURL);
+			dropdownItem.setHref(
+				URLBuilder.create(
+					PortalUtil.getLayoutFullURL(_draftLayout, _themeDisplay)
+				).setParameter(
+					"p_l_back_url", _themeDisplay.getURLCurrent()
+				).setParameter(
+					"p_l_mode", Constants.EDIT
+				).build());
 
 			dropdownItem.setIcon("pencil");
 			dropdownItem.setLabel(

@@ -19,6 +19,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -165,19 +166,19 @@ public class RenderRequestPortletContainerTest
 		// Make a render request to the target portlet using the portlet
 		// authentication token
 
-		String url = PortletURLBuilder.create(
-			PortletURLFactoryUtil.create(
-				httpServletRequest, testTargetPortletId, layout.getPlid(),
-				PortletRequest.RENDER_PHASE)
-		).setWindowState(
-			WindowState.MAXIMIZED
-		).buildString();
-
-		url = HttpComponentsUtil.setParameter(
-			url, "p_p_auth", response.getBody());
-
 		response = PortletContainerTestUtil.request(
-			url, Collections.singletonMap("Cookie", response.getCookies()));
+			URLBuilder.create(
+				PortletURLBuilder.create(
+					PortletURLFactoryUtil.create(
+						httpServletRequest, testTargetPortletId,
+						layout.getPlid(), PortletRequest.RENDER_PHASE)
+				).setWindowState(
+					WindowState.MAXIMIZED
+				).buildString()
+			).setParameter(
+				"p_p_auth", response.getBody()
+			).build(),
+			Collections.singletonMap("Cookie", response.getCookies()));
 
 		Assert.assertEquals(200, response.getCode());
 

@@ -28,10 +28,10 @@ import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Html;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -155,12 +155,16 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 			SegmentsExperienceManager segmentsExperienceManager =
 				new SegmentsExperienceManager(_segmentsExperienceLocalService);
 
-			String dataURL = HttpComponentsUtil.setParameter(
-				portletURL.toString(), "segmentsExperienceId",
-				segmentsExperienceManager.getSegmentsExperienceId(
-					httpServletRequest));
-
-			values.put("dataURL", "data-url='" + dataURL + "'");
+			values.put(
+				"dataURL",
+				"data-url='" +
+					URLBuilder.create(
+						portletURL.toString()
+					).setParameter(
+						"segmentsExperienceId",
+						segmentsExperienceManager.getSegmentsExperienceId(
+							httpServletRequest)
+					).build() + "'");
 		}
 
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(

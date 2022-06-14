@@ -15,7 +15,7 @@
 package com.liferay.portal.search.admin.web.internal.display.context.builder;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.admin.web.internal.display.context.FieldMappingIndexDisplayContext;
 import com.liferay.portal.search.admin.web.internal.display.context.FieldMappingsDisplayContext;
@@ -139,10 +139,12 @@ public class FieldMappingsDisplayContextBuilder {
 			fieldMappingIndexDisplayContext.setCssClass("active");
 		}
 
-		String url = HttpComponentsUtil.setParameter(
-			_currentURL, _namespace + "selectedIndexName", indexName);
-
-		fieldMappingIndexDisplayContext.setUrl(url);
+		fieldMappingIndexDisplayContext.setUrl(
+			URLBuilder.create(
+				_currentURL
+			).setParameter(
+				_namespace + "selectedIndexName", indexName
+			).build());
 
 		return fieldMappingIndexDisplayContext;
 	}

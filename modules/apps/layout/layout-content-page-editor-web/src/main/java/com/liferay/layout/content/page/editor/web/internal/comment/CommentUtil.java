@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -108,9 +108,11 @@ public class CommentUtil {
 			WorkflowUtil.getServiceContextFunction(
 				_getWorkflowAction(actionRequest), actionRequest);
 
-		String notificationRedirect = HttpComponentsUtil.setParameter(
-			PortalUtil.getLayoutFullURL(themeDisplay), "p_l_mode",
-			Constants.EDIT);
+		String notificationRedirect = URLBuilder.create(
+			PortalUtil.getLayoutFullURL(themeDisplay)
+		).setParameter(
+			"p_l_mode", Constants.EDIT
+		).build();
 
 		return serviceContextFunction.andThen(
 			serviceContext -> {

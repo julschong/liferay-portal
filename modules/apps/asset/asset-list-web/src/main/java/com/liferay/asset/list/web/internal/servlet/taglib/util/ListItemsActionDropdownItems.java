@@ -33,7 +33,7 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -109,12 +109,12 @@ public class ListItemsActionDropdownItems {
 			className = FileEntry.class.getName();
 		}
 
-		String viewDisplayPageURL =
+		return URLBuilder.create(
 			_assetDisplayPageFriendlyURLProvider.getFriendlyURL(
-				className, classPK, _themeDisplay);
-
-		return HttpComponentsUtil.setParameter(
-			viewDisplayPageURL, "p_l_back_url", _getRedirect());
+				className, classPK, _themeDisplay)
+		).setParameter(
+			"p_l_back_url", _getRedirect()
+		).build();
 	}
 
 	private Object _getAssetEntryObject(AssetEntry assetEntry)
@@ -179,11 +179,11 @@ public class ListItemsActionDropdownItems {
 			return null;
 		}
 
-		String editContentURL = infoEditURLProvider.getURL(
-			object, _httpServletRequest);
-
-		return HttpComponentsUtil.setParameter(
-			editContentURL, "redirect", _getRedirect());
+		return URLBuilder.create(
+			infoEditURLProvider.getURL(object, _httpServletRequest)
+		).setParameter(
+			"redirect", _getRedirect()
+		).build();
 	}
 
 	private String _getRedirect() {

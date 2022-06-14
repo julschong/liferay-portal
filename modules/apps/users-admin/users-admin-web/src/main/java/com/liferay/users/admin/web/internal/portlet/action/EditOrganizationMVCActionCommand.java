@@ -36,9 +36,9 @@ import com.liferay.portal.kernel.service.OrganizationService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -98,15 +98,17 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 				deleteOrganizations(actionRequest);
 			}
 
-			String redirect = ParamUtil.getString(actionRequest, "redirect");
+			URLBuilder redirectBuilder = URLBuilder.create(
+				ParamUtil.getString(actionRequest, "redirect"));
 
 			if (organization != null) {
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, actionResponse.getNamespace() + "organizationId",
+				redirectBuilder.setParameter(
+					actionResponse.getNamespace() + "organizationId",
 					organization.getOrganizationId());
 			}
 
-			actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+			actionRequest.setAttribute(
+				WebKeys.REDIRECT, redirectBuilder.build());
 
 			sendRedirect(actionRequest, actionResponse);
 		}
@@ -158,10 +160,12 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 						actionRequest, "organizationId");
 
 					if (organizationId > 0) {
-						redirect = HttpComponentsUtil.setParameter(
-							redirect,
+						redirect = URLBuilder.create(
+							redirect
+						).setParameter(
 							actionResponse.getNamespace() + "organizationId",
-							organizationId);
+							organizationId
+						).build();
 					}
 
 					if (Validator.isNotNull(redirect)) {

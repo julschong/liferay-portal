@@ -178,9 +178,11 @@ public class GetPersonalMenuItemsMVCResourceCommand
 			jsonArray.put(
 				JSONUtil.put(
 					"href",
-					HttpComponentsUtil.setParameter(
-						ParamUtil.getString(portletRequest, "currentURL"),
-						"doAsUserLanguageId", doAsUserLanguageId)
+					URLBuilder.create(
+						ParamUtil.getString(portletRequest, "currentURL")
+					).setParameter(
+						"doAsUserLanguageId", doAsUserLanguageId
+					).build()
 				).put(
 					"label", changeLanguageLabel
 				).put(

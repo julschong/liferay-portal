@@ -33,8 +33,8 @@ import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutPrototypeServiceUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.List;
@@ -106,24 +106,23 @@ public class LayoutPageTemplateEntryVerticalCard extends BaseVerticalCard {
 
 				Group layoutPrototypeGroup = layoutPrototype.getGroup();
 
-				String layoutFullURL = layoutPrototypeGroup.getDisplayURL(
-					themeDisplay, true);
-
-				return HttpComponentsUtil.setParameter(
-					layoutFullURL, "p_l_back_url",
-					themeDisplay.getURLCurrent());
+				return URLBuilder.create(
+					layoutPrototypeGroup.getDisplayURL(themeDisplay, true)
+				).setParameter(
+					"p_l_back_url", themeDisplay.getURLCurrent()
+				).build();
 			}
 
-			String layoutFullURL = PortalUtil.getLayoutFullURL(
-				LayoutLocalServiceUtil.fetchDraftLayout(
-					_layoutPageTemplateEntry.getPlid()),
-				themeDisplay);
-
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_mode", Constants.EDIT);
-
-			return HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_back_url", themeDisplay.getURLCurrent());
+			return URLBuilder.create(
+				PortalUtil.getLayoutFullURL(
+					LayoutLocalServiceUtil.fetchDraftLayout(
+						_layoutPageTemplateEntry.getPlid()),
+					themeDisplay)
+			).setParameter(
+				"p_l_mode", Constants.EDIT
+			).setParameter(
+				"p_l_back_url", themeDisplay.getURLCurrent()
+			).build();
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

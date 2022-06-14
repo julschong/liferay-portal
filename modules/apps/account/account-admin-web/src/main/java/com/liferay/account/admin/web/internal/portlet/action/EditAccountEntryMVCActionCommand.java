@@ -34,9 +34,9 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -82,10 +82,12 @@ public class EditAccountEntryMVCActionCommand extends BaseMVCActionCommand {
 						AccountEntry accountEntry = _addAccountEntry(
 							actionRequest);
 
-						redirect = HttpComponentsUtil.setParameter(
-							redirect,
+						redirect = URLBuilder.create(
+							redirect
+						).setParameter(
 							actionResponse.getNamespace() + "accountEntryId",
-							accountEntry.getAccountEntryId());
+							accountEntry.getAccountEntryId()
+						).build();
 					}
 					else if (cmd.equals(Constants.UPDATE)) {
 						updateAccountEntry(actionRequest);

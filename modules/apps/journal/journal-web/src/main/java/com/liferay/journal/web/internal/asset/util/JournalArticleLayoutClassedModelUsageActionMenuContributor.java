@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -149,21 +149,22 @@ public class JournalArticleLayoutClassedModelUsageActionMenuContributor
 		if (layoutClassedModelUsage.getContainerType() ==
 				_portal.getClassNameId(FragmentEntryLink.class)) {
 
-			layoutURL = _portal.getLayoutFriendlyURL(
-				_layoutLocalService.fetchLayout(
-					layoutClassedModelUsage.getPlid()),
-				themeDisplay);
-
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "previewClassNameId",
-				String.valueOf(layoutClassedModelUsage.getClassNameId()));
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "previewClassPK",
-				String.valueOf(layoutClassedModelUsage.getClassPK()));
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "previewType", String.valueOf(previewType));
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "previewVersion", previewVersion);
+			layoutURL = URLBuilder.create(
+				_portal.getLayoutFriendlyURL(
+					_layoutLocalService.fetchLayout(
+						layoutClassedModelUsage.getPlid()),
+					themeDisplay)
+			).setParameter(
+				"previewClassNameId",
+				String.valueOf(layoutClassedModelUsage.getClassNameId())
+			).setParameter(
+				"previewClassPK",
+				String.valueOf(layoutClassedModelUsage.getClassPK())
+			).setParameter(
+				"previewType", String.valueOf(previewType)
+			).setParameter(
+				"previewVersion", previewVersion
+			).build();
 		}
 		else {
 			layoutURL = PortletURLBuilder.create(
@@ -183,11 +184,11 @@ public class JournalArticleLayoutClassedModelUsageActionMenuContributor
 			).buildString();
 		}
 
-		String portletURLString = HttpComponentsUtil.setParameter(
-			layoutURL, "p_l_back_url", themeDisplay.getURLCurrent());
-
-		return portletURLString + "#portlet_" +
-			layoutClassedModelUsage.getContainerKey();
+		return URLBuilder.create(
+			layoutURL
+		).setParameter(
+			"p_l_back_url", themeDisplay.getURLCurrent()
+		).build() + "#portlet_" + layoutClassedModelUsage.getContainerKey();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

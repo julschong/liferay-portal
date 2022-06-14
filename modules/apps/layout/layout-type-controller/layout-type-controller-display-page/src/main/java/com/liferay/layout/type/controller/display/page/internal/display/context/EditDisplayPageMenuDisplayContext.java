@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -68,19 +68,17 @@ public class EditDisplayPageMenuDisplayContext {
 				_themeDisplay.getPermissionChecker(), _themeDisplay.getLayout(),
 				ActionKeys.UPDATE),
 			dropdownItem -> {
-				String editLayoutURL = PortalUtil.getLayoutFullURL(
-					LayoutLocalServiceUtil.fetchDraftLayout(
-						_themeDisplay.getPlid()),
-					_themeDisplay);
-
-				editLayoutURL = HttpComponentsUtil.setParameter(
-					editLayoutURL, "p_l_back_url",
-					_themeDisplay.getURLCurrent());
-
-				editLayoutURL = HttpComponentsUtil.setParameter(
-					editLayoutURL, "p_l_mode", Constants.EDIT);
-
-				dropdownItem.setHref(editLayoutURL);
+				dropdownItem.setHref(
+					URLBuilder.create(
+						PortalUtil.getLayoutFullURL(
+							LayoutLocalServiceUtil.fetchDraftLayout(
+								_themeDisplay.getPlid()),
+							_themeDisplay)
+					).setParameter(
+						"p_l_back_url", _themeDisplay.getURLCurrent()
+					).setParameter(
+						"p_l_mode", Constants.EDIT
+					).build());
 
 				ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 					"content.Language", _themeDisplay.getLocale(), getClass());

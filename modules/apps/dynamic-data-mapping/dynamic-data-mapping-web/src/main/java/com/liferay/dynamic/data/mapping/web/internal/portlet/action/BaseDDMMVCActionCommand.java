@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -182,17 +182,15 @@ public abstract class BaseDDMMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private String _getRedirect(ActionRequest actionRequest) {
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
+		URLBuilder redirectURLBuilder = URLBuilder.create(
+			ParamUtil.getString(actionRequest, "redirect"));
 
 		String closeRedirect = ParamUtil.getString(
 			actionRequest, "closeRedirect");
 
 		if (Validator.isNull(closeRedirect)) {
-			return redirect;
+			return redirectURLBuilder.build();
 		}
-
-		redirect = HttpComponentsUtil.setParameter(
-			redirect, "closeRedirect", closeRedirect);
 
 		SessionMessages.add(
 			actionRequest,
@@ -200,7 +198,9 @@ public abstract class BaseDDMMVCActionCommand extends BaseMVCActionCommand {
 				SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT,
 			closeRedirect);
 
-		return redirect;
+		return redirectURLBuilder.setParameter(
+			"closeRedirect", closeRedirect
+		).build();
 	}
 
 	private PortletPreferences _getStrictPortletSetup(

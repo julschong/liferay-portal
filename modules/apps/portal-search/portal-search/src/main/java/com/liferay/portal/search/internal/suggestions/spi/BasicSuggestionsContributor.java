@@ -31,10 +31,10 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -168,8 +168,11 @@ public class BasicSuggestionsContributor implements SuggestionsContributor {
 				(ThemeDisplay)liferayPortletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			return HttpComponentsUtil.setParameter(
-				viewURL, "p_l_back_url", themeDisplay.getURLCurrent());
+			return URLBuilder.create(
+				viewURL
+			).setParameter(
+				"p_l_back_url", themeDisplay.getURLCurrent()
+			).build();
 		}
 		catch (Exception exception) {
 			_log.error(

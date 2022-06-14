@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -68,22 +68,20 @@ public class AddLayoutConversionPreviewMVCActionCommand
 				_bulkLayoutConverter.generatePreviewLayout(
 					plid, themeDisplay.getLocale());
 
-			String layoutFullURL = _portal.getLayoutFullURL(
-				layoutConversionResult.getDraftLayout(), themeDisplay);
-
-			String redirect = ParamUtil.getString(actionRequest, "redirect");
-
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_back_url", redirect);
-
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_mode", Constants.EDIT);
-
 			MultiSessionMessages.add(
 				actionRequest, "layoutConversionWarningMessages",
 				layoutConversionResult.getConversionWarningMessages());
 
-			httpServletResponse.sendRedirect(layoutFullURL);
+			httpServletResponse.sendRedirect(
+				URLBuilder.create(
+					_portal.getLayoutFullURL(
+						layoutConversionResult.getDraftLayout(), themeDisplay)
+				).setParameter(
+					"p_l_back_url",
+					ParamUtil.getString(actionRequest, "redirect")
+				).setParameter(
+					"p_l_mode", Constants.EDIT
+				).build());
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

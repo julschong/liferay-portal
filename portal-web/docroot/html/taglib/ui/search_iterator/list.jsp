@@ -163,8 +163,13 @@ String url = urlBuilder.build();
 									<c:when test="<%= Validator.isNull(orderByJS) %>">
 
 										<%
-										url = HttpComponentsUtil.setParameter(url, namespace + searchContainer.getOrderByColParam(), orderKey);
-										url = HttpComponentsUtil.setParameter(url, namespace + searchContainer.getOrderByTypeParam(), orderByType);
+										url = URLBuilder.create(
+											url
+										).setParameter(
+											namespace + searchContainer.getOrderByColParam(), orderKey
+										).setParameter(
+											namespace + searchContainer.getOrderByTypeParam(), orderByType
+										).build();
 										%>
 
 										<a href="<%= url %>">

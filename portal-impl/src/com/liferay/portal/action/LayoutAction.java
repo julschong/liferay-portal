@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -130,13 +129,13 @@ public class LayoutAction implements Action {
 					).buildString();
 				}
 
-				authLoginURL = HttpComponentsUtil.setParameter(
-					authLoginURL, "p_p_id",
-					PropsValues.AUTH_LOGIN_PORTLET_NAME);
-
-				authLoginURL = HttpComponentsUtil.setParameter(
-					authLoginURL, redirectParam,
-					PortalUtil.getCurrentURL(httpServletRequest));
+				authLoginURL = URLBuilder.create(
+					authLoginURL
+				).setParameter(
+					"p_p_id", PropsValues.AUTH_LOGIN_PORTLET_NAME
+				).setParameter(
+					redirectParam, PortalUtil.getCurrentURL(httpServletRequest)
+				).build();
 
 				if (_log.isDebugEnabled()) {
 					_log.debug("Redirect requested layout to " + authLoginURL);

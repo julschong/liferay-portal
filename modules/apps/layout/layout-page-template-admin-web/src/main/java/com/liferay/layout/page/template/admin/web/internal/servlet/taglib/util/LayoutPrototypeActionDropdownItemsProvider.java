@@ -30,8 +30,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPrototypePermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.security.PermissionsURLTag;
@@ -244,8 +244,11 @@ public class LayoutPrototypeActionDropdownItemsProvider {
 		String layoutFullURL = layoutPrototypeGroup.getDisplayURL(
 			_themeDisplay, true);
 
-		return HttpComponentsUtil.setParameter(
-			layoutFullURL, "p_l_back_url", _themeDisplay.getURLCurrent());
+		return URLBuilder.create(
+			layoutFullURL
+		).setParameter(
+			"p_l_back_url", _themeDisplay.getURLCurrent()
+		).build();
 	}
 
 	private UnsafeConsumer<DropdownItem, Exception>

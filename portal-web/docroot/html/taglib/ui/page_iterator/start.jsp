@@ -77,7 +77,11 @@ else {
 }
 
 if (deltaConfigurable) {
-	url = HttpComponentsUtil.setParameter(url, namespace + deltaParam, String.valueOf(delta));
+	url = URLBuilder.create(
+		url
+	).setParameter(
+		namespace + deltaParam, String.valueOf(delta)
+	).build();
 }
 
 NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
@@ -207,7 +211,7 @@ NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 								<liferay-ui:icon
 									message="<%= String.valueOf(i) %>"
 									onClick='<%= forcePost ? _getOnClick(namespace, curParam, i) : "" %>'
-									url="<%= HtmlUtil.escapeJSLink(HttpComponentsUtil.setParameter(url + urlAnchor, namespace + curParam, i)) %>"
+									url="<%= HtmlUtil.escapeJSLink(URLBuilder.create(url + urlAnchor).setParameter(namespace + curParam, i).build()) %>"
 								/>
 
 							<%
@@ -238,7 +242,11 @@ NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 											continue;
 										}
 
-										String curDeltaURL = HttpComponentsUtil.setParameter(url + urlAnchor, namespace + deltaParam, curDelta);
+										String curDeltaURL = URLBuilder.create(
+											url + urlAnchor
+										).setParameter(
+											namespace + deltaParam, curDelta
+										).build();
 									%>
 
 										<liferay-ui:icon

@@ -59,9 +59,9 @@ import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -243,11 +243,11 @@ public class RolesAdminPortlet extends MVCPortlet {
 				roleTypeContributor.getClassName(), 0, name, titleMap,
 				descriptionMap, type, subtype, serviceContext);
 
-			String redirect = ParamUtil.getString(actionRequest, "redirect");
-
-			redirect = HttpComponentsUtil.setParameter(
-				redirect, actionResponse.getNamespace() + "roleId",
-				role.getRoleId());
+			String redirect = URLBuilder.create(
+				ParamUtil.getString(actionRequest, "redirect")
+			).setParameter(
+				actionResponse.getNamespace() + "roleId", role.getRoleId()
+			).build();
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
 

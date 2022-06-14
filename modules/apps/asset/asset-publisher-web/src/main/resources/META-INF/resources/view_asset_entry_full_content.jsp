@@ -57,7 +57,13 @@ if (print) {
 	viewFullContentURL.setParameter("viewMode", Constants.PRINT);
 }
 
-String viewInContextURL = assetRenderer.getURLViewInContext(liferayPortletRequest, liferayPortletResponse, HttpComponentsUtil.setParameter(viewFullContentURL.toString(), "redirect", currentURL));
+String viewInContextURL = assetRenderer.getURLViewInContext(
+	liferayPortletRequest, liferayPortletResponse,
+	URLBuilder.create(
+		viewFullContentURL.toString()
+	).setParameter(
+		"redirect", currentURL
+	).build());
 
 Map<String, Object> fragmentsEditorData = HashMapBuilder.<String, Object>put(
 	"fragments-editor-item-id", PortalUtil.getClassNameId(assetRenderer.getClassName()) + "-" + assetRenderer.getClassPK()

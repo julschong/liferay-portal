@@ -794,44 +794,44 @@ public class PortalImpl implements Portal {
 		ThemeDisplay themeDisplay, String url, boolean typeControlPanel,
 		boolean doAsUser) {
 
+		URLBuilder urlBuilder = URLBuilder.create(url);
+
 		if (doAsUser) {
 			if (Validator.isNotNull(themeDisplay.getDoAsUserId())) {
-				url = HttpComponentsUtil.setParameter(
-					url, "doAsUserId", themeDisplay.getDoAsUserId());
+				urlBuilder.setParameter(
+					"doAsUserId", themeDisplay.getDoAsUserId());
 			}
 
 			if (Validator.isNotNull(themeDisplay.getDoAsUserLanguageId())) {
-				url = HttpComponentsUtil.setParameter(
-					url, "doAsUserLanguageId",
-					themeDisplay.getDoAsUserLanguageId());
+				urlBuilder.setParameter(
+					"doAsUserLanguageId", themeDisplay.getDoAsUserLanguageId());
 			}
 		}
 
 		if (typeControlPanel) {
 			if (Validator.isNotNull(themeDisplay.getPpid())) {
-				url = HttpComponentsUtil.setParameter(
-					url, "p_p_id", themeDisplay.getPpid());
+				urlBuilder.setParameter("p_p_id", themeDisplay.getPpid());
 			}
 
 			if (themeDisplay.getDoAsGroupId() > 0) {
-				url = HttpComponentsUtil.setParameter(
-					url, "doAsGroupId", themeDisplay.getDoAsGroupId());
+				urlBuilder.setParameter(
+					"doAsGroupId", themeDisplay.getDoAsGroupId());
 			}
 
 			if (themeDisplay.getRefererGroupId() !=
 					GroupConstants.DEFAULT_PARENT_GROUP_ID) {
 
-				url = HttpComponentsUtil.setParameter(
-					url, "refererGroupId", themeDisplay.getRefererGroupId());
+				urlBuilder.setParameter(
+					"refererGroupId", themeDisplay.getRefererGroupId());
 			}
 
 			if (themeDisplay.getRefererPlid() != LayoutConstants.DEFAULT_PLID) {
-				url = HttpComponentsUtil.setParameter(
-					url, "refererPlid", themeDisplay.getRefererPlid());
+				urlBuilder.setParameter(
+					"refererPlid", themeDisplay.getRefererPlid());
 			}
 		}
 
-		return url;
+		return urlBuilder.build();
 	}
 
 	@Override

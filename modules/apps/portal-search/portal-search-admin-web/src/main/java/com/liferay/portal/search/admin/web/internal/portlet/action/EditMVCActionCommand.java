@@ -29,8 +29,8 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -105,17 +105,18 @@ public class EditMVCActionCommand extends BaseMVCActionCommand {
 			_reindexIndexReindexer(actionRequest);
 		}
 
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
-
-		redirect = HttpComponentsUtil.setParameter(
-			redirect, actionResponse.getNamespace() + "companyIds",
-			StringUtil.merge(
-				ParamUtil.getLongValues(actionRequest, "companyIds")));
-		redirect = HttpComponentsUtil.setParameter(
-			redirect, actionResponse.getNamespace() + "scope",
-			ParamUtil.getString(actionRequest, "scope"));
-
-		sendRedirect(actionRequest, actionResponse, redirect);
+		sendRedirect(
+			actionRequest, actionResponse,
+			URLBuilder.create(
+				ParamUtil.getString(actionRequest, "redirect")
+			).setParameter(
+				actionResponse.getNamespace() + "companyIds",
+				StringUtil.merge(
+					ParamUtil.getLongValues(actionRequest, "companyIds"))
+			).setParameter(
+				actionResponse.getNamespace() + "scope",
+				ParamUtil.getString(actionRequest, "scope")
+			).build());
 	}
 
 	@Reference(

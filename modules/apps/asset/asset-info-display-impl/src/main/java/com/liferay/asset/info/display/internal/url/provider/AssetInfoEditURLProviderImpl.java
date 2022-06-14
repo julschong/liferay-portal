@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -88,9 +88,11 @@ public class AssetInfoEditURLProviderImpl implements AssetInfoEditURLProvider {
 						_portal.getOriginalServletRequest(httpServletRequest),
 						"p_l_mode", Constants.VIEW);
 
-					redirect = HttpComponentsUtil.setParameter(
-						_portal.getLayoutRelativeURL(layout, themeDisplay),
-						"p_l_mode", mode);
+					redirect = URLBuilder.create(
+						_portal.getLayoutRelativeURL(layout, themeDisplay)
+					).setParameter(
+						"p_l_mode", mode
+					).build();
 				}
 			}
 

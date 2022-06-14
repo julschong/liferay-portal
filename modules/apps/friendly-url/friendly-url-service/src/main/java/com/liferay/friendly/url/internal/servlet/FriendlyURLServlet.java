@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.servlet.PortalMessages;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.struts.LastPath;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -395,8 +396,11 @@ public class FriendlyURLServlet extends HttpServlet {
 				String encDoAsUserId = encryptor.encrypt(
 					company.getKeyObj(), String.valueOf(userId));
 
-				actualURL = HttpComponentsUtil.setParameter(
-					actualURL, "doAsUserId", encDoAsUserId);
+				actualURL = URLBuilder.create(
+					actualURL
+				).setParameter(
+					"doAsUserId", encDoAsUserId
+				).build();
 			}
 			catch (EncryptorException encryptorException) {
 				if (_log.isDebugEnabled()) {

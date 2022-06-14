@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -66,9 +66,12 @@ public class EditAccountRoleMVCActionCommand extends BaseMVCActionCommand {
 			if (cmd.equals(Constants.ADD)) {
 				AccountRole accountRole = _addAccountRole(actionRequest);
 
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, actionResponse.getNamespace() + "accountRoleId",
-					accountRole.getAccountRoleId());
+				redirect = URLBuilder.create(
+					redirect
+				).setParameter(
+					actionResponse.getNamespace() + "accountRoleId",
+					accountRole.getAccountRoleId()
+				).build();
 			}
 			else if (cmd.equals(Constants.UPDATE)) {
 				_updateAccountRole(actionRequest);

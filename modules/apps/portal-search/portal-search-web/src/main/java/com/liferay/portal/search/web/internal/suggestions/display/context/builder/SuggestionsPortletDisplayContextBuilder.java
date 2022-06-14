@@ -17,8 +17,8 @@ package com.liferay.portal.search.web.internal.suggestions.display.context.build
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Html;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.web.internal.search.suggest.KeywordsSuggestionHolder;
 import com.liferay.portal.search.web.internal.suggestions.display.context.SuggestionDisplayContext;
@@ -153,11 +153,14 @@ public class SuggestionsPortletDisplayContextBuilder {
 	private String _buildSearchURL(
 		KeywordsSuggestionHolder keywordsSuggestionHolder) {
 
-		String parameterValue = StringUtil.merge(
-			keywordsSuggestionHolder.getSuggestedKeywords(), StringPool.SPACE);
-
-		return HttpComponentsUtil.setParameter(
-			_searchURL, _keywordsParameterName, parameterValue);
+		return URLBuilder.create(
+			_searchURL
+		).setParameter(
+			_keywordsParameterName,
+			StringUtil.merge(
+				keywordsSuggestionHolder.getSuggestedKeywords(),
+				StringPool.SPACE)
+		).build();
 	}
 
 	private SuggestionDisplayContext _buildSuggestionDisplayContext(

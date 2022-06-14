@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -105,13 +105,17 @@ public class ViewFileEntryContentDashboardItemAction
 					String backURL = ParamUtil.getString(
 						_httpServletRequest, "backURL");
 
+					URLBuilder urlBuilder = URLBuilder.create(url);
+
 					if (Validator.isNotNull(backURL)) {
-						return HttpComponentsUtil.setParameter(
-							url, "p_l_back_url", backURL);
+						return urlBuilder.setParameter(
+							"p_l_back_url", backURL
+						).build();
 					}
 
-					return HttpComponentsUtil.setParameter(
-						url, "p_l_back_url", themeDisplay.getURLCurrent());
+					return urlBuilder.setParameter(
+						"p_l_back_url", themeDisplay.getURLCurrent()
+					).build();
 				}
 			).orElse(
 				StringPool.BLANK

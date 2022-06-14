@@ -61,10 +61,10 @@ import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -245,9 +245,11 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 						redirect, themeDisplay.getI18nPath(), i18nPath);
 				}
 
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, actionResponse.getNamespace() + "p_u_i_d",
-					user.getUserId());
+				redirect = URLBuilder.create(
+					redirect
+				).setParameter(
+					actionResponse.getNamespace() + "p_u_i_d", user.getUserId()
+				).build();
 			}
 
 			Group scopeGroup = themeDisplay.getScopeGroup();
@@ -256,10 +258,13 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 				(userLocalService.fetchUserById(scopeGroup.getClassPK()) ==
 					null)) {
 
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, "doAsGroupId", 0);
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, "refererPlid", 0);
+				redirect = URLBuilder.create(
+					redirect
+				).setParameter(
+					"doAsGroupId", 0
+				).setParameter(
+					"refererPlid", 0
+				).build();
 			}
 
 			sendRedirect(actionRequest, actionResponse, redirect);

@@ -33,8 +33,8 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -111,11 +111,10 @@ public class AddMasterLayoutMVCActionCommand extends BaseMVCActionCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String layoutFullURL = _portal.getLayoutFullURL(
-			draftLayout, themeDisplay);
-
-		layoutFullURL = HttpComponentsUtil.setParameter(
-			layoutFullURL, "p_l_back_url",
+		return URLBuilder.create(
+			_portal.getLayoutFullURL(draftLayout, themeDisplay)
+		).setParameter(
+			"p_l_back_url",
 			PortletURLBuilder.create(
 				PortletURLFactoryUtil.create(
 					actionRequest,
@@ -123,10 +122,10 @@ public class AddMasterLayoutMVCActionCommand extends BaseMVCActionCommand {
 					PortletRequest.RENDER_PHASE)
 			).setTabs1(
 				"master-layouts"
-			).buildString());
-
-		return HttpComponentsUtil.setParameter(
-			layoutFullURL, "p_l_mode", Constants.EDIT);
+			).buildString()
+		).setParameter(
+			"p_l_mode", Constants.EDIT
+		).build();
 	}
 
 	@Reference

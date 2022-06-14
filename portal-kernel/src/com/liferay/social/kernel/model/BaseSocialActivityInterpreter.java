@@ -39,8 +39,8 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.trash.helper.TrashHelper;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
@@ -141,8 +141,11 @@ public abstract class BaseSocialActivityInterpreter
 			return url;
 		}
 
-		return HttpComponentsUtil.setParameter(
-			url, "noSuchEntryRedirect", viewEntryURL);
+		return URLBuilder.create(
+			url
+		).setParameter(
+			"noSuchEntryRedirect", viewEntryURL
+		).build();
 	}
 
 	protected String buildLink(String link, String text) {

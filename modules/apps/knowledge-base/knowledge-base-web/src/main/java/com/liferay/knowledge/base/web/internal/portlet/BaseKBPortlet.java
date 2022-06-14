@@ -556,24 +556,23 @@ public abstract class BaseKBPortlet extends MVCPortlet {
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
-		String editURL = portal.getLayoutFullURL(themeDisplay);
-
-		editURL = HttpComponentsUtil.setParameter(
-			editURL, "p_p_id", portletDisplay.getId());
-		editURL = HttpComponentsUtil.setParameter(
-			editURL, actionResponse.getNamespace() + "mvcPath",
-			templatePath + "edit_article.jsp");
-		editURL = HttpComponentsUtil.setParameter(
-			editURL, actionResponse.getNamespace() + "redirect",
-			getRedirect(actionRequest, actionResponse));
-		editURL = HttpComponentsUtil.setParameter(
-			editURL, actionResponse.getNamespace() + "resourcePrimKey",
-			kbArticle.getResourcePrimKey());
-		editURL = HttpComponentsUtil.setParameter(
-			editURL, actionResponse.getNamespace() + "status",
-			WorkflowConstants.STATUS_ANY);
-
-		return editURL;
+		return URLBuilder.create(
+			portal.getLayoutFullURL(themeDisplay)
+		).setParameter(
+			"p_p_id", portletDisplay.getId()
+		).setParameter(
+			actionResponse.getNamespace() + "mvcPath",
+			templatePath + "edit_article.jsp"
+		).setParameter(
+			actionResponse.getNamespace() + "redirect",
+			getRedirect(actionRequest, actionResponse)
+		).setParameter(
+			actionResponse.getNamespace() + "resourcePrimKey",
+			kbArticle.getResourcePrimKey()
+		).setParameter(
+			actionResponse.getNamespace() + "status",
+			WorkflowConstants.STATUS_ANY
+		).build();
 	}
 
 	protected void checkExceededSizeLimit(PortletRequest portletRequest)

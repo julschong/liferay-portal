@@ -33,8 +33,8 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -110,14 +110,14 @@ public class MasterLayoutVerticalCard
 			Layout layout = LayoutLocalServiceUtil.getLayout(
 				_layoutPageTemplateEntry.getPlid());
 
-			String layoutFullURL = PortalUtil.getLayoutFullURL(
-				layout.fetchDraftLayout(), _themeDisplay);
-
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_mode", Constants.EDIT);
-
-			return HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_back_url", _themeDisplay.getURLCurrent());
+			return URLBuilder.create(
+				PortalUtil.getLayoutFullURL(
+					layout.fetchDraftLayout(), _themeDisplay)
+			).setParameter(
+				"p_l_mode", Constants.EDIT
+			).setParameter(
+				"p_l_back_url", _themeDisplay.getURLCurrent()
+			).build();
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

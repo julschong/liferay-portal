@@ -37,8 +37,8 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -135,19 +135,18 @@ public class AddLayoutPrototypeMVCActionCommand extends BaseMVCActionCommand {
 
 			Group layoutPrototypeGroup = layoutPrototype.getGroup();
 
-			String redirectURL = layoutPrototypeGroup.getDisplayURL(
-				themeDisplay, true);
+			URLBuilder redirectURLBuilder = URLBuilder.create(
+				layoutPrototypeGroup.getDisplayURL(themeDisplay, true));
 
 			String backURL = ParamUtil.getString(actionRequest, "backURL");
 
 			if (Validator.isNotNull(backURL)) {
-				redirectURL = HttpComponentsUtil.setParameter(
-					redirectURL, "p_l_back_url", backURL);
+				redirectURLBuilder.setParameter("p_l_back_url", backURL);
 			}
 
 			JSONPortletResponseUtil.writeJSON(
 				actionRequest, actionResponse,
-				JSONUtil.put("redirectURL", redirectURL));
+				JSONUtil.put("redirectURL", redirectURLBuilder.build()));
 		}
 		catch (Throwable throwable) {
 			if (_log.isDebugEnabled()) {

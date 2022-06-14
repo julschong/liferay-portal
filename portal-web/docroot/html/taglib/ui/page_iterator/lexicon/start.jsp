@@ -63,7 +63,11 @@ if (end > total) {
 }
 
 if (deltaConfigurable) {
-	url = HttpComponentsUtil.setParameter(url, namespace + deltaParam, String.valueOf(delta));
+	url = URLBuilder.create(
+		url
+	).setParameter(
+		namespace + deltaParam, String.valueOf(delta)
+	).build();
 }
 
 NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
@@ -101,7 +105,11 @@ NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 							continue;
 						}
 
-						String curDeltaURL = HttpComponentsUtil.setParameter(url + urlAnchor, namespace + deltaParam, curDelta);
+						String curDeltaURL = URLBuilder.create(
+							url + urlAnchor
+						).setParameter(
+							namespace + deltaParam, curDelta
+						).build();
 					%>
 
 						<li>

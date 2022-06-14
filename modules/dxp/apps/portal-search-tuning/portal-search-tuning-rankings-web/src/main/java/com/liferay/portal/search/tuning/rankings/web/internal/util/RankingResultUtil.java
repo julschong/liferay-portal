@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -126,8 +126,11 @@ public class RankingResultUtil {
 				(ThemeDisplay)resourceRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			viewURL = HttpComponentsUtil.setParameter(
-				viewURL, "inheritRedirect", viewInContext);
+			viewURL = URLBuilder.create(
+				viewURL
+			).setParameter(
+				"inheritRedirect", viewInContext
+			).build();
 
 			Layout layout = themeDisplay.getLayout();
 
@@ -136,8 +139,11 @@ public class RankingResultUtil {
 			if (Validator.isNotNull(assetEntryLayoutUuid) &&
 				!assetEntryLayoutUuid.equals(layout.getUuid())) {
 
-				viewURL = HttpComponentsUtil.setParameter(
-					viewURL, "redirect", currentURL);
+				viewURL = URLBuilder.create(
+					viewURL
+				).setParameter(
+					"redirect", currentURL
+				).build();
 			}
 
 			return viewURL;

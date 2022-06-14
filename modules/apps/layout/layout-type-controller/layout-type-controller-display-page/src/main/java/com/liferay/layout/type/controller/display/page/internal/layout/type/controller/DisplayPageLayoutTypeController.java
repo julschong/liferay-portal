@@ -40,8 +40,8 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.TransferHeadersHelper;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -215,11 +215,12 @@ public class DisplayPageLayoutTypeController
 				httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			}
 			else {
-				String signInURL = themeDisplay.getURLSignIn();
-
 				httpServletResponse.sendRedirect(
-					HttpComponentsUtil.setParameter(
-						signInURL, "redirect", themeDisplay.getURLCurrent()));
+					URLBuilder.create(
+						themeDisplay.getURLSignIn()
+					).setParameter(
+						"redirect", themeDisplay.getURLCurrent()
+					).build());
 			}
 		}
 

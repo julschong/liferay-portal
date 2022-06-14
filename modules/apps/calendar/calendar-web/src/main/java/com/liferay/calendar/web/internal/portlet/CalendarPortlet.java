@@ -100,12 +100,12 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -555,7 +555,8 @@ public class CalendarPortlet extends MVCPortlet {
 			remindersType, instanceIndex, updateCalendarBookingInstance,
 			allFollowing, serviceContext);
 
-		String redirect = getRedirect(actionRequest, actionResponse);
+		URLBuilder redirectBuilder = URLBuilder.create(
+			getRedirect(actionRequest, actionResponse));
 
 		int workflowAction = ParamUtil.getInteger(
 			actionRequest, "workflowAction",
@@ -564,16 +565,17 @@ public class CalendarPortlet extends MVCPortlet {
 		if ((calendarBooking != null) &&
 			(workflowAction == WorkflowConstants.ACTION_SAVE_DRAFT)) {
 
-			redirect = _getSaveAndContinueRedirect(
-				actionRequest, calendarBooking, redirect);
+			redirectBuilder = URLBuilder.create(
+				_getSaveAndContinueRedirect(
+					actionRequest, calendarBooking, redirectBuilder.build()));
 		}
 		else {
-			redirect = HttpComponentsUtil.setParameter(
-				redirect, actionResponse.getNamespace() + "calendarBookingId",
+			redirectBuilder.setParameter(
+				actionResponse.getNamespace() + "calendarBookingId",
 				calendarBooking.getCalendarBookingId());
 		}
 
-		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+		actionRequest.setAttribute(WebKeys.REDIRECT, redirectBuilder.build());
 	}
 
 	public void updateSchedulerCalendarBooking(
@@ -874,22 +876,19 @@ public class CalendarPortlet extends MVCPortlet {
 
 		String namespace = actionResponse.getNamespace();
 
-		editCalendarURL = HttpComponentsUtil.setParameter(
-			editCalendarURL, "p_p_id", themeDisplay.getPpid());
-		editCalendarURL = HttpComponentsUtil.setParameter(
-			editCalendarURL, namespace + "mvcPath",
-			templatePath + "edit_calendar.jsp");
-		editCalendarURL = HttpComponentsUtil.setParameter(
-			editCalendarURL, namespace + "redirect",
-			getRedirect(actionRequest, actionResponse));
-		editCalendarURL = HttpComponentsUtil.setParameter(
-			editCalendarURL, namespace + "backURL",
-			ParamUtil.getString(actionRequest, "backURL"));
-		editCalendarURL = HttpComponentsUtil.setParameter(
-			editCalendarURL, namespace + "calendarId",
-			calendar.getCalendarId());
-
-		return editCalendarURL;
+		return URLBuilder.create(
+			editCalendarURL
+		).setParameter(
+			"p_p_id", themeDisplay.getPpid()
+		).setParameter(
+			namespace + "mvcPath", templatePath + "edit_calendar.jsp"
+		).setParameter(
+			namespace + "redirect", getRedirect(actionRequest, actionResponse)
+		).setParameter(
+			namespace + "backURL", ParamUtil.getString(actionRequest, "backURL")
+		).setParameter(
+			namespace + "calendarId", calendar.getCalendarId()
+		).build();
 	}
 
 	private String _getErrorMessageForException(

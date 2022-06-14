@@ -398,15 +398,16 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
-
 		String namespace = actionResponse.getNamespace();
 
-		redirect = HttpComponentsUtil.setParameter(
-			redirect, namespace + "redirectToLastFriendlyURL", false);
-
 		sendRedirect(
-			actionRequest, actionResponse, _portal.escapeRedirect(redirect));
+			actionRequest, actionResponse,
+			_portal.escapeRedirect(
+				URLBuilder.create(
+					ParamUtil.getString(actionRequest, "redirect")
+				).setParameter(
+					namespace + "redirectToLastFriendlyURL", false
+				).build()));
 	}
 
 	private void _subscribe(ActionRequest actionRequest) throws Exception {

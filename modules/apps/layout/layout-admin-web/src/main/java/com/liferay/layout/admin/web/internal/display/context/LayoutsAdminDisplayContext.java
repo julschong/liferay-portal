@@ -81,6 +81,7 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -1315,27 +1316,29 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getViewLayoutURL(Layout layout) throws PortalException {
-		String layoutFullURL = null;
+		URLBuilder layoutFullURLBuilder = null;
 
 		if (layout.isDenied() || layout.isPending()) {
-			layoutFullURL = PortalUtil.getLayoutFullURL(
-				layout.fetchDraftLayout(), themeDisplay);
+			layoutFullURLBuilder = URLBuilder.create(
+				PortalUtil.getLayoutFullURL(
+					layout.fetchDraftLayout(), themeDisplay));
 		}
 		else {
-			layoutFullURL = PortalUtil.getLayoutFullURL(layout, themeDisplay);
+			layoutFullURLBuilder = URLBuilder.create(
+				PortalUtil.getLayoutFullURL(layout, themeDisplay));
 		}
 
 		try {
-			layoutFullURL = HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_back_url", _getBackURL());
+			layoutFullURLBuilder.setParameter("p_l_back_url", _getBackURL());
 		}
 		catch (Exception exception) {
 			_log.error(
-				"Unable to generate view layout URL for " + layoutFullURL,
+				"Unable to generate view layout URL for " +
+					layoutFullURLBuilder.build(),
 				exception);
 		}
 
-		return layoutFullURL;
+		return layoutFullURLBuilder.build();
 	}
 
 	public String getVirtualHostname() {
@@ -1969,12 +1972,13 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	private String _getDraftLayoutURL(Layout layout) throws Exception {
-		String layoutFullURL = HttpComponentsUtil.setParameter(
-			PortalUtil.getLayoutFullURL(getDraftLayout(layout), themeDisplay),
-			"p_l_back_url", _getBackURL());
-
-		return HttpComponentsUtil.setParameter(
-			layoutFullURL, "p_l_mode", Constants.EDIT);
+		return URLBuilder.create(
+			PortalUtil.getLayoutFullURL(getDraftLayout(layout), themeDisplay)
+		).setParameter(
+			"p_l_back_url", _getBackURL()
+		).setParameter(
+			"p_l_mode", Constants.EDIT
+		).build();
 	}
 
 	private long[] _getGroupIds() {

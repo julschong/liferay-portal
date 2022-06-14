@@ -18,8 +18,8 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManagerUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.LanguageEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -167,15 +167,12 @@ public class LanguageTag extends IncludeTag {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		formAction =
+		return URLBuilder.create(
 			themeDisplay.getPathMain() + "/portal/update_language?p_l_id=" +
-				themeDisplay.getPlid();
-
-		formAction = HttpComponentsUtil.setParameter(
-			formAction, "redirect",
-			PortalUtil.getCurrentURL(httpServletRequest));
-
-		return formAction;
+				themeDisplay.getPlid()
+		).setParameter(
+			"redirect", PortalUtil.getCurrentURL(httpServletRequest)
+		).build();
 	}
 
 	protected List<LanguageEntry> getLanguageEntries(
@@ -229,8 +226,11 @@ public class LanguageTag extends IncludeTag {
 			String url = null;
 
 			if (!LocaleUtil.equals(locale, currentLocale)) {
-				url = HttpComponentsUtil.setParameter(
-					formAction, parameterName, LocaleUtil.toLanguageId(locale));
+				url = URLBuilder.create(
+					formAction
+				).setParameter(
+					parameterName, LocaleUtil.toLanguageId(locale)
+				).build();
 			}
 			else if (!displayCurrentLocale) {
 				disabled = true;

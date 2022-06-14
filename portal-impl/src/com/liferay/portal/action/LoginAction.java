@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -179,12 +179,15 @@ public class LoginAction implements Action {
 				String loginRedirectParameter =
 					loginPortletNamespace + "redirect";
 
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, "p_p_id", PropsValues.AUTH_LOGIN_PORTLET_NAME);
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, "p_p_lifecycle", "0");
-				redirect = HttpComponentsUtil.setParameter(
-					redirect, loginRedirectParameter, loginRedirect);
+				redirect = URLBuilder.create(
+					redirect
+				).setParameter(
+					"p_p_id", PropsValues.AUTH_LOGIN_PORTLET_NAME
+				).setParameter(
+					"p_p_lifecycle", "0"
+				).setParameter(
+					loginRedirectParameter, loginRedirect
+				).build();
 			}
 		}
 

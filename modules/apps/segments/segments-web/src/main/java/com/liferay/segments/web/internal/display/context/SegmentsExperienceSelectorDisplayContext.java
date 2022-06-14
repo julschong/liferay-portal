@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -207,10 +207,12 @@ public class SegmentsExperienceSelectorDisplayContext {
 			segmentsExperience.getName(_themeDisplay.getLocale())
 		).put(
 			"url",
-			HttpComponentsUtil.setParameter(
-				PortalUtil.getCurrentURL(_httpServletRequest),
+			URLBuilder.create(
+				PortalUtil.getCurrentURL(_httpServletRequest)
+			).setParameter(
 				"segmentsExperienceId",
-				segmentsExperience.getSegmentsExperienceId())
+				segmentsExperience.getSegmentsExperienceId()
+			).build()
 		);
 	}
 

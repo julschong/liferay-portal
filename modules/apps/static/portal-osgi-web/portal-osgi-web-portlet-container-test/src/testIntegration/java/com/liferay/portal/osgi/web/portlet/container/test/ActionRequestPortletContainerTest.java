@@ -219,16 +219,16 @@ public class ActionRequestPortletContainerTest
 
 		// Make an action request using the portal authentication token
 
-		String url = String.valueOf(
-			PortletURLFactoryUtil.create(
-				httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
-				PortletRequest.ACTION_PHASE));
-
-		url = HttpComponentsUtil.setParameter(
-			url, "p_auth", response.getBody());
-
 		response = PortletContainerTestUtil.request(
-			url, Collections.singletonMap("Cookie", response.getCookies()));
+			URLBuilder.create(
+				String.valueOf(
+					PortletURLFactoryUtil.create(
+						httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
+						PortletRequest.ACTION_PHASE))
+			).setParameter(
+				"p_auth", response.getBody()
+			).build(),
+			Collections.singletonMap("Cookie", response.getCookies()));
 
 		Assert.assertEquals(200, response.getCode());
 

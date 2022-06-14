@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -91,11 +91,11 @@ public class LayoutPrototypeVerticalCard
 		try {
 			Group layoutPrototypeGroup = _layoutPrototype.getGroup();
 
-			String layoutFullURL = layoutPrototypeGroup.getDisplayURL(
-				_themeDisplay, true);
-
-			return HttpComponentsUtil.setParameter(
-				layoutFullURL, "p_l_back_url", _themeDisplay.getURLCurrent());
+			return URLBuilder.create(
+				layoutPrototypeGroup.getDisplayURL(_themeDisplay, true)
+			).setParameter(
+				"p_l_back_url", _themeDisplay.getURLCurrent()
+			).build();
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

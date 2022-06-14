@@ -20,7 +20,11 @@
 String tabs1 = ParamUtil.getString(request, "tabs1", "published");
 
 String redirect = ParamUtil.getString(request, "redirect");
-String backURL = HttpComponentsUtil.setParameter(currentURL, liferayPortletResponse.getNamespace() + "historyKey", "workflow");
+String backURL = URLBuilder.create(
+	currentURL
+).setParameter(
+	liferayPortletResponse.getNamespace() + "historyKey", "workflow"
+).build();
 
 KaleoProcess kaleoProcess = (KaleoProcess)request.getAttribute(KaleoFormsWebKeys.KALEO_PROCESS);
 

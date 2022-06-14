@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -69,9 +69,11 @@ public class KaleoFormsAdminFieldsDisplayContext {
 			return _backURL;
 		}
 
-		_backURL = HttpComponentsUtil.setParameter(
-			PortalUtil.getCurrentURL(_httpServletRequest),
-			_liferayPortletResponse.getNamespace() + "historyKey", "fields");
+		_backURL = URLBuilder.create(
+			PortalUtil.getCurrentURL(_httpServletRequest)
+		).setParameter(
+			_liferayPortletResponse.getNamespace() + "historyKey", "fields"
+		).build();
 
 		return _backURL;
 	}

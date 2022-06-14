@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -356,9 +356,11 @@ public class ViewDisplayContextFactory {
 					dropdownItem.setActive(
 						Objects.equals(selectedLanguageId, languageId));
 					dropdownItem.setHref(
-						HttpComponentsUtil.setParameter(
-							currentURL, namespace + "selectedLanguageId",
-							languageId));
+						URLBuilder.create(
+							currentURL
+						).setParameter(
+							namespace + "selectedLanguageId", languageId
+						).build());
 					dropdownItem.setIcon(icon);
 					dropdownItem.setLabel(
 						TextFormatter.format(languageId, TextFormatter.O));

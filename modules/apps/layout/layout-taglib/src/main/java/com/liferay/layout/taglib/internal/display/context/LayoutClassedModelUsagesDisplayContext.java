@@ -51,7 +51,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -290,20 +289,20 @@ public class LayoutClassedModelUsagesDisplayContext {
 				(ThemeDisplay)_renderRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			layoutURL = PortalUtil.getLayoutFriendlyURL(
-				LayoutLocalServiceUtil.fetchLayout(
-					layoutClassedModelUsage.getPlid()),
-				themeDisplay);
-
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "previewClassNameId",
-				String.valueOf(layoutClassedModelUsage.getClassNameId()));
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "previewClassPK",
-				String.valueOf(layoutClassedModelUsage.getClassPK()));
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "previewType",
-				String.valueOf(AssetRendererFactory.TYPE_LATEST));
+			layoutURL = URLBuilder.create(
+				PortalUtil.getLayoutFriendlyURL(
+					LayoutLocalServiceUtil.fetchLayout(
+						layoutClassedModelUsage.getPlid()),
+					themeDisplay)
+			).setParameter(
+				"previewClassNameId",
+				String.valueOf(layoutClassedModelUsage.getClassNameId())
+			).setParameter(
+				"previewClassPK",
+				String.valueOf(layoutClassedModelUsage.getClassPK())
+			).setParameter(
+				"previewType", String.valueOf(AssetRendererFactory.TYPE_LATEST)
+			).build();
 		}
 		else {
 			layoutURL = PortletURLBuilder.create(
