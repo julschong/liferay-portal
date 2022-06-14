@@ -23,8 +23,8 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.users.admin.management.toolbar.FilterContributor;
 
@@ -56,16 +56,16 @@ public class FiltersManagementToolbarDisplayContextWrapper
 
 	@Override
 	public String getClearResultsURL() {
-		String clearResultsURL = super.getClearResultsURL();
+		URLBuilder clearResultsURLBuilder = URLBuilder.create(
+			super.getClearResultsURL());
 
 		for (FilterContributor filterContributor : _filterContributors) {
-			clearResultsURL = HttpComponentsUtil.removeParameter(
-				clearResultsURL,
+			clearResultsURLBuilder.removeParameter(
 				liferayPortletResponse.getNamespace() +
 					filterContributor.getParameter());
 		}
 
-		return clearResultsURL;
+		return clearResultsURLBuilder.build();
 	}
 
 	@Override

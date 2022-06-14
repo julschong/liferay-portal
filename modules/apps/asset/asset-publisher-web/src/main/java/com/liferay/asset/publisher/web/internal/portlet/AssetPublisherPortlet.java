@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -264,10 +265,12 @@ public class AssetPublisherPortlet extends MVCPortlet {
 			HttpServletResponse httpServletResponse =
 				portal.getHttpServletResponse(resourceResponse);
 
-			String redirectURL = HttpComponentsUtil.removeParameter(
-				currentURL, "p_p_cacheability");
-
-			httpServletResponse.sendRedirect(redirectURL);
+			httpServletResponse.sendRedirect(
+				URLBuilder.create(
+					currentURL
+				).removeParameter(
+					"p_p_cacheability"
+				).build());
 
 			return;
 		}

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -95,8 +96,11 @@ public class GetPersonalMenuItemsMVCResourceCommand
 		User realUser = themeDisplay.getRealUser();
 		User user = themeDisplay.getUser();
 
-		String realUserURL = HttpComponentsUtil.removeParameter(
-			ParamUtil.getString(portletRequest, "currentURL"), "doAsUserId");
+		String realUserURL = URLBuilder.create(
+			ParamUtil.getString(portletRequest, "currentURL")
+		).removeParameter(
+			"doAsUserId"
+		).build();
 
 		String userProfileURL = HttpComponentsUtil.getPath(
 			user.getDisplayURL(themeDisplay, false));

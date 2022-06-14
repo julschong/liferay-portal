@@ -372,7 +372,7 @@ NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 					namespace: '<%= namespace %>',
 					pages: '<%= pages %>',
 					randomNamespace: '<%= randomNamespace %>',
-					url: '<%= HtmlUtil.escapeJS(HttpComponentsUtil.removeParameter(url, namespace + curParam)) %>',
+					url: '<%= HtmlUtil.escapeJS(URLBuilder.create(url).removeParameter(namespace + curParam).build()) %>',
 					urlAnchor: '<%= urlAnchor %>'
 				}
 			),

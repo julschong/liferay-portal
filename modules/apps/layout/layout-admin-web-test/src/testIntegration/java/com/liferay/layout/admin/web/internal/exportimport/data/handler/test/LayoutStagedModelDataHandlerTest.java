@@ -52,12 +52,12 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.DateTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.xml.Document;
@@ -343,8 +343,16 @@ public class LayoutStagedModelDataHandlerTest
 			typeSettingsUnicodeProperties.getProperty("url"));
 
 		Assert.assertEquals(
-			HttpComponentsUtil.removeParameter(livePreviewURL, "t"),
-			HttpComponentsUtil.removeParameter(liveLinkedURL, "t"));
+			URLBuilder.create(
+				livePreviewURL
+			).removeParameter(
+				"t"
+			).build(),
+			URLBuilder.create(
+				liveLinkedURL
+			).removeParameter(
+				"t"
+			).build());
 	}
 
 	@Override

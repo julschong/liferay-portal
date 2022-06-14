@@ -44,8 +44,8 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -268,9 +268,11 @@ public class DLViewEntriesDisplayContext {
 		).setMVCRenderCommandName(
 			"/document_library/view_file_entry"
 		).setRedirect(
-			HttpComponentsUtil.removeParameter(
-				_dlRequestHelper.getCurrentURL(),
-				_liferayPortletResponse.getNamespace() + "ajax")
+			URLBuilder.create(
+				_dlRequestHelper.getCurrentURL()
+			).removeParameter(
+				_liferayPortletResponse.getNamespace() + "ajax"
+			).build()
 		).setParameter(
 			"fileEntryId", fileEntry.getFileEntryId()
 		).buildString();

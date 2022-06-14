@@ -29,13 +29,15 @@ SearchContainer<WikiPage> wikiPagesSearchContainer = wikiPageItemSelectorViewDis
 </style>
 
 <%
-String searchURL = HttpComponentsUtil.removeParameter(
+String searchURL = URLBuilder.create(
 	PortletURLBuilder.create(
 		PortletURLUtil.clone(currentURLObj, liferayPortletResponse)
 	).setParameter(
 		"resetCur", true
-	).buildString(),
-	liferayPortletResponse.getNamespace() + "keywords");
+	).buildString()
+).removeParameter(
+	liferayPortletResponse.getNamespace() + "keywords"
+).build();
 %>
 
 <clay:management-toolbar

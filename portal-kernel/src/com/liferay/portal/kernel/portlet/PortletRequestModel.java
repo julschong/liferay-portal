@@ -18,8 +18,8 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -837,13 +837,13 @@ public class PortletRequestModel implements Serializable {
 
 			ResourceURL resourceURL = mimeResponse.createResourceURL();
 
-			String resourceURLString = HttpComponentsUtil.removeParameter(
-				resourceURL.toString(), _portletNamespace + "struts_action");
-
-			resourceURLString = HttpComponentsUtil.removeParameter(
-				resourceURLString, _portletNamespace + "redirect");
-
-			_resourceURL = resourceURLString;
+			_resourceURL = URLBuilder.create(
+				resourceURL.toString()
+			).removeParameter(
+				_portletNamespace + "struts_action"
+			).removeParameter(
+				_portletNamespace + "redirect"
+			).build();
 		}
 	}
 

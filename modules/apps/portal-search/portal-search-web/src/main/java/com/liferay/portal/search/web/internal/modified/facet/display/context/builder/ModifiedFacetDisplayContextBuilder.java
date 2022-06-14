@@ -24,9 +24,9 @@ import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.DateFormatFactory;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.modified.facet.builder.DateRangeFactory;
@@ -328,28 +328,31 @@ public class ModifiedFacetDisplayContextBuilder implements Serializable {
 
 		String from = format.format(calendar.getTime());
 
-		String rangeURL = HttpComponentsUtil.removeParameter(
-			_currentURL, "modified");
-
-		rangeURL = HttpComponentsUtil.removeParameter(
-			rangeURL, _paginationStartParameterName);
-
-		rangeURL = HttpComponentsUtil.setParameter(
-			rangeURL, "modifiedFrom", from);
-
-		return HttpComponentsUtil.setParameter(rangeURL, "modifiedTo", to);
+		return URLBuilder.create(
+			_currentURL
+		).removeParameter(
+			"modified"
+		).removeParameter(
+			_paginationStartParameterName
+		).setParameter(
+			"modifiedFrom", from
+		).setParameter(
+			"modifiedTo", to
+		).build();
 	}
 
 	private String _getLabeledRangeURL(String label) {
-		String rangeURL = HttpComponentsUtil.removeParameter(
-			_currentURL, "modifiedFrom");
-
-		rangeURL = HttpComponentsUtil.removeParameter(rangeURL, "modifiedTo");
-
-		rangeURL = HttpComponentsUtil.removeParameter(
-			rangeURL, _paginationStartParameterName);
-
-		return HttpComponentsUtil.setParameter(rangeURL, "modified", label);
+		return URLBuilder.create(
+			_currentURL
+		).removeParameter(
+			"modifiedFrom"
+		).removeParameter(
+			"modifiedTo"
+		).removeParameter(
+			_paginationStartParameterName
+		).setParameter(
+			"modified", label
+		).build();
 	}
 
 	private JSONArray _getRangesJSONArray() {

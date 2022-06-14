@@ -107,7 +107,11 @@ public abstract class BaseMessageBodyWriter<T> implements MessageBodyWriter<T> {
 	}
 
 	protected String removeParameter(String url, String name) {
-		return HttpComponentsUtil.removeParameter(url, "oauth2_" + name);
+		return URLBuilder.create(
+			url
+		).removeParameter(
+			"oauth2_" + name
+		).build();
 	}
 
 	protected String setParameter(String url, String name, String value) {

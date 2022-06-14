@@ -79,7 +79,11 @@ else {
 			).setMVCRenderCommandName(
 				"/document_library/view_file_entry"
 			).setRedirect(
-				HttpComponentsUtil.removeParameter(currentURL, liferayPortletResponse.getNamespace() + "ajax")
+				URLBuilder.create(
+					currentURL
+				).removeParameter(
+					liferayPortletResponse.getNamespace() + "ajax"
+				).build()
 			).setParameter(
 				"fileEntryId", fileEntry.getFileEntryId()
 			).buildString()

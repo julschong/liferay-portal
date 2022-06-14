@@ -30,8 +30,8 @@ import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -489,9 +489,11 @@ public class SearchResultsPortlet extends MVCPortlet {
 	private String _getURLString(
 		RenderRequest renderRequest, String paginationStartParameterName) {
 
-		return HttpComponentsUtil.removeParameter(
-			portletSharedRequestHelper.getCompleteURL(renderRequest),
-			paginationStartParameterName);
+		return URLBuilder.create(
+			portletSharedRequestHelper.getCompleteURL(renderRequest)
+		).removeParameter(
+			paginationStartParameterName
+		).build();
 	}
 
 	@Reference

@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -344,8 +344,11 @@ public class CPSearchResultsDisplayContext {
 	}
 
 	private String _getURLString() {
-		return HttpComponentsUtil.removeParameter(
-			PortalUtil.getCurrentURL(_cpRequestHelper.getRequest()), "start");
+		return URLBuilder.create(
+			PortalUtil.getCurrentURL(_cpRequestHelper.getRequest())
+		).removeParameter(
+			"start"
+		).build();
 	}
 
 	private final CPContentListEntryRendererRegistry

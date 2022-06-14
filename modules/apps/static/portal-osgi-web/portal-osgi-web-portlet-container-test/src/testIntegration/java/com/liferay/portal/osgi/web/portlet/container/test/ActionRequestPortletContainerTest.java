@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.AuthTokenWhitelist;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -310,15 +311,15 @@ public class ActionRequestPortletContainerTest
 
 		// Make an action request using the portal authentication token
 
-		String url = String.valueOf(
-			PortletURLFactoryUtil.create(
-				httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
-				PortletRequest.ACTION_PHASE));
-
-		url = HttpComponentsUtil.removeParameter(url, "p_auth");
-
 		response = PortletContainerTestUtil.request(
-			url,
+			URLBuilder.create(
+				String.valueOf(
+					PortletURLFactoryUtil.create(
+						httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
+						PortletRequest.ACTION_PHASE))
+			).removeParameter(
+				"p_auth"
+			).build(),
 			HashMapBuilder.<String, List<String>>put(
 				"Cookie", response.getCookies()
 			).put(

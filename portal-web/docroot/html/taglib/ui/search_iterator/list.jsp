@@ -34,15 +34,21 @@ if ((rowChecker != null) && (headerNames != null)) {
 	normalizedHeaderNames.add(0, "rowChecker");
 }
 
-String url = StringPool.BLANK;
+URLBuilder urlBuilder = URLBuilder.create(StringPool.BLANK);
 
 PortletURL iteratorURL = searchContainer.getIteratorURL();
 
 if (iteratorURL != null) {
-	url = iteratorURL.toString();
-	url = HttpComponentsUtil.removeParameter(url, namespace + searchContainer.getOrderByColParam());
-	url = HttpComponentsUtil.removeParameter(url, namespace + searchContainer.getOrderByTypeParam());
+	urlBuilder = URLBuilder.create(
+		iteratorURL.toString()
+	).removeParameter(
+		namespace + searchContainer.getOrderByColParam()
+	).removeParameter(
+		namespace + searchContainer.getOrderByTypeParam()
+	);
 }
+
+String url = urlBuilder.build();
 %>
 
 <c:if test="<%= emptyResultsMessage != null %>">

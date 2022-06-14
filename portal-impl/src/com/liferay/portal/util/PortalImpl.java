@@ -162,6 +162,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
@@ -6474,13 +6475,15 @@ public class PortalImpl implements Portal {
 		Map<String, String[]> parameterMap = HttpComponentsUtil.getParameterMap(
 			url);
 
+		URLBuilder urlBuilder = URLBuilder.create(url);
+
 		for (String name : parameterMap.keySet()) {
 			if (name.startsWith(portletNamespace)) {
-				url = HttpComponentsUtil.removeParameter(url, name);
+				urlBuilder.removeParameter(name);
 			}
 		}
 
-		return url;
+		return urlBuilder.build();
 	}
 
 	@Override
@@ -7894,13 +7897,15 @@ public class PortalImpl implements Portal {
 		Map<String, String[]> parameterMap = HttpComponentsUtil.getParameterMap(
 			HttpComponentsUtil.getQueryString(url));
 
+		URLBuilder urlBuilder = URLBuilder.create(url);
+
 		for (String parameter : parameterMap.keySet()) {
 			if (parameter.endsWith("redirect")) {
-				url = HttpComponentsUtil.removeParameter(url, parameter);
+				urlBuilder.removeParameter(parameter);
 			}
 		}
 
-		return url;
+		return urlBuilder.build();
 	}
 
 	protected void resetThemeDisplayI18n(

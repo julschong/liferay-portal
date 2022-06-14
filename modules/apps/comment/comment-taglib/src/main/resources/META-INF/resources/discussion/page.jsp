@@ -56,7 +56,11 @@ StagingGroupHelper stagingGroupHelper = StagingGroupHelperUtil.getStagingGroupHe
 				<%
 				String contentURL = PortalUtil.getCanonicalURL(discussionTaglibHelper.getRedirect(), themeDisplay, layout);
 
-				contentURL = HttpComponentsUtil.removeParameter(contentURL, namespace + "skipEditorLoading");
+				contentURL = URLBuilder.create(
+					contentURL
+				).removeParameter(
+					namespace + "skipEditorLoading"
+				).build();
 				%>
 
 				<input name="contentURL" type="hidden" value="<%= contentURL %>" />
