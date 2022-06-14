@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.url;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -57,8 +56,9 @@ public class URLBuilderTest {
 		).addParameter(
 			_TEST_KEY, _TEST_VALUE
 		).build();
-		String expected = HttpComponentsUtil.addParameter(
-			_TEST_URL, _TEST_KEY, _TEST_VALUE);
+		String expected = StringBundler.concat(
+			_TEST_URL, StringPool.QUESTION, _TEST_KEY, StringPool.EQUAL,
+			_TEST_VALUE);
 
 		Assert.assertEquals(expected, actual);
 
@@ -67,8 +67,10 @@ public class URLBuilderTest {
 		).addParameter(
 			_TEST_KEY, _TEST_VALUE
 		).build();
-		expected = HttpComponentsUtil.addParameter(
-			expected, _TEST_KEY, _TEST_VALUE);
+
+		expected = StringBundler.concat(
+			expected, StringPool.AMPERSAND, _TEST_KEY, StringPool.EQUAL,
+			_TEST_VALUE);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -80,8 +82,10 @@ public class URLBuilderTest {
 		).addParameter(
 			_TEST_KEY, _TEST_VALUE
 		).build();
-		String expected = HttpComponentsUtil.addParameter(
-			_TEST_URL + _TEST_ANCHOR, _TEST_KEY, _TEST_VALUE);
+
+		String expected = StringBundler.concat(
+			_TEST_URL, StringPool.QUESTION, _TEST_KEY, StringPool.EQUAL,
+			_TEST_VALUE, _TEST_ANCHOR);
 
 		Assert.assertEquals(expected, actual);
 
@@ -90,8 +94,11 @@ public class URLBuilderTest {
 		).addParameter(
 			_TEST_KEY, _TEST_VALUE
 		).build();
-		expected = HttpComponentsUtil.addParameter(
-			expected, _TEST_KEY, _TEST_VALUE);
+
+		expected = StringBundler.concat(
+			_TEST_URL, StringPool.QUESTION, _TEST_KEY, StringPool.EQUAL,
+			_TEST_VALUE, StringPool.AMPERSAND, _TEST_KEY, StringPool.EQUAL,
+			_TEST_VALUE, _TEST_ANCHOR);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -110,35 +117,25 @@ public class URLBuilderTest {
 
 	@Test
 	public void testRemoveParameter() {
-		String testURLWithParam = _TEST_URL + "?tesKey=testValue";
-
-		String actual = URLBuilder.create(
-			testURLWithParam
-		).removeParameter(
-			_TEST_KEY
-		).build();
-
-		String expected = HttpComponentsUtil.removeParameter(
-			testURLWithParam, _TEST_KEY);
-
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(
+			_TEST_URL,
+			URLBuilder.create(
+				_TEST_URL + "?testKey=testValue"
+			).removeParameter(
+				_TEST_KEY
+			).build());
 	}
 
 	@Test
 	public void testRemoveParameterWithAnchor() {
-		String testURLWithParam = StringBundler.concat(
-			_TEST_URL, "?tesKey=testValue", _TEST_ANCHOR);
-
-		String actual = URLBuilder.create(
-			testURLWithParam
-		).removeParameter(
-			_TEST_KEY
-		).build();
-
-		String expected = HttpComponentsUtil.removeParameter(
-			testURLWithParam, _TEST_KEY);
-
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(
+			_TEST_URL + _TEST_ANCHOR,
+			URLBuilder.create(
+				StringBundler.concat(
+					_TEST_URL, "?testKey=testValue", _TEST_ANCHOR)
+			).removeParameter(
+				_TEST_KEY
+			).build());
 	}
 
 	@Test
@@ -151,11 +148,9 @@ public class URLBuilderTest {
 			_TEST_KEY, _TEST_VALUE
 		).build();
 
-		String expected = HttpComponentsUtil.setParameter(
-			_TEST_URL, _TEST_KEY, _TEST_VALUE);
-
-		expected = HttpComponentsUtil.setParameter(
-			expected, _TEST_KEY, _TEST_VALUE);
+		String expected = StringBundler.concat(
+			_TEST_URL, StringPool.QUESTION, _TEST_KEY, StringPool.EQUAL,
+			_TEST_VALUE);
 
 		Assert.assertEquals(expected, actual);
 	}
@@ -170,13 +165,11 @@ public class URLBuilderTest {
 			_TEST_KEY, _TEST_VALUE
 		).build();
 
-		String expected = HttpComponentsUtil.setParameter(
-			_TEST_URL + _TEST_ANCHOR, _TEST_KEY, _TEST_VALUE);
-
-		expected = HttpComponentsUtil.setParameter(
-			expected, _TEST_KEY, _TEST_VALUE);
-
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(
+			StringBundler.concat(
+				_TEST_URL, StringPool.QUESTION, _TEST_KEY, StringPool.EQUAL,
+				_TEST_VALUE, _TEST_ANCHOR),
+			actual);
 	}
 
 	/**
