@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.web.internal.display.context.PortletRequestThemeDisplaySupplier;
 import com.liferay.portal.search.web.internal.display.context.ThemeDisplaySupplier;
@@ -81,8 +81,11 @@ public class RedirectSuggestionsMVCActionCommand extends BaseMVCActionCommand {
 			portletRequest.getParameter(parameterName));
 
 		Optional<String> urlOptional = parameterValueOptional.map(
-			parameterValue -> HttpComponentsUtil.addParameter(
-				url, parameterName, parameterValue));
+			parameterValue -> URLBuilder.create(
+				url
+			).addParameter(
+				parameterName, parameterValue
+			).build());
 
 		return urlOptional.orElse(url);
 	}

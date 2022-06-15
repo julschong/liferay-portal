@@ -174,6 +174,7 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
@@ -184,7 +185,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -7013,14 +7013,15 @@ public class JournalArticleLocalServiceImpl
 			PortletProviderUtil.getPortletId(
 				JournalArticle.class.getName(), PortletProvider.Action.EDIT));
 
-		articleURL = HttpComponentsUtil.addParameter(
-			articleURL, namespace + "groupId", groupId);
-		articleURL = HttpComponentsUtil.addParameter(
-			articleURL, namespace + "folderId", folderId);
-		articleURL = HttpComponentsUtil.addParameter(
-			articleURL, namespace + "articleId", articleId);
-
-		return articleURL;
+		return URLBuilder.create(
+			articleURL
+		).addParameter(
+			namespace + "groupId", groupId
+		).addParameter(
+			namespace + "folderId", folderId
+		).addParameter(
+			namespace + "articleId", articleId
+		).build();
 	}
 
 	protected SearchContext buildSearchContext(
@@ -7305,18 +7306,22 @@ public class JournalArticleLocalServiceImpl
 			String portletId = PortletProviderUtil.getPortletId(
 				JournalArticle.class.getName(), PortletProvider.Action.EDIT);
 
-			String articleURL = _portal.getControlPanelFullURL(
-				article.getGroupId(), portletId, null);
+			URLBuilder articleURLBuilder = URLBuilder.create(
+				_portal.getControlPanelFullURL(
+					article.getGroupId(), portletId, null));
 
-			articleURL = HttpComponentsUtil.addParameter(
-				articleURL, _portal.getPortletNamespace(portletId) + "mvcPath",
+			articleURLBuilder.addParameter(
+				_portal.getPortletNamespace(portletId) + "mvcPath",
 				"/edit_article.jsp");
 
-			articleURL = buildArticleURL(
-				articleURL, article.getGroupId(), article.getFolderId(),
-				article.getArticleId());
-
-			sendEmail(article, articleURL, "review", new ServiceContext());
+			sendEmail(
+				article,
+				URLBuilder.create(
+					buildArticleURL(
+						articleURLBuilder.build(), article.getGroupId(),
+						article.getFolderId(), article.getArticleId())
+				).build(),
+				"review", new ServiceContext());
 		}
 	}
 

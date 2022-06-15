@@ -108,13 +108,15 @@ boolean hasUpdateLayoutPermission = GetterUtil.getBoolean(request.getAttribute(C
 
 				String resetCustomizationsViewURLString = "javascript:if (confirm('" + UnicodeLanguageUtil.get(resourceBundle, "are-you-sure-you-want-to-reset-your-customizations-to-default") + "')){submitForm(document.hrefFm, '" + HtmlUtil.escapeJS(resetCustomizationViewURL) + "');}";
 
-				String toggleCustomizationViewURL = HttpComponentsUtil.addParameter(
+				String toggleCustomizationViewURL = URLBuilder.create(
 					PortletURLBuilder.create(
 						PortletURLFactoryUtil.create(request, LayoutAdminPortletKeys.GROUP_PAGES, PortletRequest.ACTION_PHASE)
 					).setActionName(
 						"/layout_admin/toggle_customized_view"
-					).buildString(),
-					"customized_view", !layoutTypePortlet.isCustomizedView());
+					).buildString()
+				).addParameter(
+					"customized_view", !layoutTypePortlet.isCustomizedView()
+				).build();
 				%>
 
 				<li class="control-menu-nav-item d-md-block d-none flex-shrink-0 ml-2">

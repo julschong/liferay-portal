@@ -128,13 +128,13 @@ import com.liferay.portal.kernel.service.persistence.WebDAVPropsPersistence;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -2659,29 +2659,30 @@ public class DLFileEntryLocalServiceImpl
 		String portletId = PortletProviderUtil.getPortletId(
 			FileEntry.class.getName(), PortletProvider.Action.MANAGE);
 
-		String entryURL = PortalUtil.getControlPanelFullURL(
-			fileVersion.getGroupId(), portletId, null);
-
 		String namespace = PortalUtil.getPortletNamespace(portletId);
 
-		entryURL = HttpComponentsUtil.addParameter(
-			entryURL, namespace + "mvcRenderCommandName",
-			"/document_library/edit_file_entry");
-		entryURL = HttpComponentsUtil.addParameter(
-			entryURL, namespace + "redirect",
-			HttpComponentsUtil.addParameter(
+		return URLBuilder.create(
+			PortalUtil.getControlPanelFullURL(
+				fileVersion.getGroupId(), portletId, null)
+		).addParameter(
+			namespace + "mvcRenderCommandName",
+			"/document_library/edit_file_entry"
+		).addParameter(
+			namespace + "redirect",
+			URLBuilder.create(
 				PortalUtil.getControlPanelFullURL(
-					fileVersion.getGroupId(), portletId, null),
-				namespace + "folderId", fileVersion.getFolderId()));
-		entryURL = HttpComponentsUtil.addParameter(
-			entryURL, namespace + "groupId", fileVersion.getGroupId());
-		entryURL = HttpComponentsUtil.addParameter(
-			entryURL, namespace + "folderId", fileVersion.getFolderId());
-		entryURL = HttpComponentsUtil.addParameter(
-			entryURL, namespace + "fileEntryId",
-			String.valueOf(fileVersion.getFileEntryId()));
-
-		return entryURL;
+					fileVersion.getGroupId(), portletId, null)
+			).addParameter(
+				namespace + "folderId", fileVersion.getFolderId()
+			).build()
+		).addParameter(
+			namespace + "groupId", fileVersion.getGroupId()
+		).addParameter(
+			namespace + "folderId", fileVersion.getFolderId()
+		).addParameter(
+			namespace + "fileEntryId",
+			String.valueOf(fileVersion.getFileEntryId())
+		).build();
 	}
 
 	private void _checkFileEntriesByExpirationDate(Date expirationDate)

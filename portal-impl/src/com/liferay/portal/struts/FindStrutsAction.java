@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -94,11 +95,13 @@ public abstract class FindStrutsAction implements StrutsAction {
 					ActionKeys.VIEW)) {
 
 				if (!themeDisplay.isSignedIn() && result.isSignInRequired()) {
-					String redirect = HttpComponentsUtil.addParameter(
-						PortalUtil.getPathMain() + "/portal/login", "redirect",
-						PortalUtil.getCurrentCompleteURL(httpServletRequest));
-
-					httpServletResponse.sendRedirect(redirect);
+					httpServletResponse.sendRedirect(
+						URLBuilder.create(
+							PortalUtil.getPathMain() + "/portal/login"
+						).addParameter(
+							"redirect",
+							PortalUtil.getCurrentCompleteURL(httpServletRequest)
+						).build());
 
 					return null;
 				}

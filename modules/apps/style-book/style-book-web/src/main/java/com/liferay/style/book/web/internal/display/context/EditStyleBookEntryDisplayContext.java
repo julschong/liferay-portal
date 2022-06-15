@@ -55,10 +55,10 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -452,21 +452,20 @@ public class EditStyleBookEntryDisplayContext {
 	private String _getPreviewFragmentCollectionURL(
 		String fragmentCollectionKey, long groupId) {
 
-		String url = ResourceURLBuilder.createResourceURL(
-			_renderResponse
-		).setResourceID(
-			"/style_book/preview_fragment_collection"
-		).buildString();
-
 		String portletNamespace = PortalUtil.getPortletNamespace(
 			StyleBookPortletKeys.STYLE_BOOK);
 
-		url = HttpComponentsUtil.addParameter(
-			url, portletNamespace + "groupId", groupId);
-
-		return HttpComponentsUtil.addParameter(
-			url, portletNamespace + "fragmentCollectionKey",
-			fragmentCollectionKey);
+		return URLBuilder.create(
+			ResourceURLBuilder.createResourceURL(
+				_renderResponse
+			).setResourceID(
+				"/style_book/preview_fragment_collection"
+			).buildString()
+		).addParameter(
+			portletNamespace + "groupId", groupId
+		).addParameter(
+			portletNamespace + "fragmentCollectionKey", fragmentCollectionKey
+		).build();
 	}
 
 	private long _getPreviewItemsGroupId() {
@@ -483,16 +482,15 @@ public class EditStyleBookEntryDisplayContext {
 
 	private String _getPreviewURL(Layout layout) {
 		try {
-			String layoutURL = HttpComponentsUtil.addParameter(
-				PortalUtil.getLayoutFullURL(layout, _themeDisplay), "p_l_mode",
-				Constants.PREVIEW);
-
-			layoutURL = HttpComponentsUtil.addParameter(
-				layoutURL, "p_p_auth",
-				AuthTokenUtil.getToken(_httpServletRequest));
-
-			return HttpComponentsUtil.addParameter(
-				layoutURL, "styleBookEntryPreview", true);
+			return URLBuilder.create(
+				PortalUtil.getLayoutFullURL(layout, _themeDisplay)
+			).addParameter(
+				"p_l_mode", Constants.PREVIEW
+			).addParameter(
+				"p_p_auth", AuthTokenUtil.getToken(_httpServletRequest)
+			).addParameter(
+				"styleBookEntryPreview", true
+			).build();
 		}
 		catch (PortalException portalException) {
 			_log.error(portalException);
@@ -525,12 +523,13 @@ public class EditStyleBookEntryDisplayContext {
 				getPagePreviewURL.setResourceID(
 					"/layout_content_page_editor/get_page_preview");
 
-				String url = HttpComponentsUtil.addParameter(
-					getPagePreviewURL.toString(), "p_l_mode",
-					Constants.PREVIEW);
-
-				return HttpComponentsUtil.addParameter(
-					url, "styleBookEntryPreview", true);
+				return URLBuilder.create(
+					getPagePreviewURL.toString()
+				).addParameter(
+					"p_l_mode", Constants.PREVIEW
+				).addParameter(
+					"styleBookEntryPreview", true
+				).build();
 			}
 
 			return _getPreviewURL(layout);

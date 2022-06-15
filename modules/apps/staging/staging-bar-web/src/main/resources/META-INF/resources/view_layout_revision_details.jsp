@@ -113,10 +113,13 @@ else {
 				<%
 				WorkflowTask workflowTask = StagingUtil.getWorkflowTask(user.getUserId(), layoutRevision);
 
-				String layoutURL = PortalUtil.getLayoutFriendlyURL(layout, themeDisplay);
-
-				layoutURL = HttpComponentsUtil.addParameter(layoutURL, "layoutSetBranchId", layoutRevision.getLayoutSetBranchId());
-				layoutURL = HttpComponentsUtil.addParameter(layoutURL, "layoutRevisionId", layoutRevision.getLayoutRevisionId());
+				String layoutURL = URLBuilder.create(
+					PortalUtil.getLayoutFriendlyURL(layout, themeDisplay)
+				).addParameter(
+					"layoutSetBranchId", layoutRevision.getLayoutSetBranchId()
+				).addParameter(
+					"layoutRevisionId", layoutRevision.getLayoutRevisionId()
+				).build();
 				%>
 
 				<liferay-ui:icon

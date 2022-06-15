@@ -111,6 +111,7 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.social.SocialActivityManagerUtil;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
@@ -119,7 +120,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -2100,11 +2100,12 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			_mbDiscussionLocalService.getThreadDiscussion(
 				message.getThreadId());
 
-		String contentURL = (String)serviceContext.getAttribute("contentURL");
-
-		contentURL = HttpComponentsUtil.addParameter(
-			contentURL, serviceContext.getAttribute("namespace") + "messageId",
-			message.getMessageId());
+		String contentURL = URLBuilder.create(
+			(String)serviceContext.getAttribute("contentURL")
+		).addParameter(
+			serviceContext.getAttribute("namespace") + "messageId",
+			message.getMessageId()
+		).build();
 
 		String userAddress = StringPool.BLANK;
 		String userName = (String)serviceContext.getAttribute(

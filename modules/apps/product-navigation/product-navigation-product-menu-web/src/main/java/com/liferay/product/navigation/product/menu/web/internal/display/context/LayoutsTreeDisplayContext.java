@@ -48,9 +48,9 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SessionClicks;
@@ -768,10 +768,12 @@ public class LayoutsTreeDisplayContext {
 			url = StringPool.POUND;
 		}
 		else if (Validator.isNotNull(url)) {
-			url = HttpComponentsUtil.addParameter(
-				url,
+			url = URLBuilder.create(
+				url
+			).addParameter(
 				getNamespace() + _SITE_NAVIGATION_MENU_ITEM_ID_PARAMETER_NAME,
-				siteNavigationMenuItem.getSiteNavigationMenuItemId());
+				siteNavigationMenuItem.getSiteNavigationMenuItemId()
+			).build();
 		}
 
 		return url;

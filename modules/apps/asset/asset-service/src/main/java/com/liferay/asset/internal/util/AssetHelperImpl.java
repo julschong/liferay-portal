@@ -55,9 +55,9 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -247,8 +247,11 @@ public class AssetHelperImpl implements AssetHelper {
 			return liferayPortletURL.toString();
 		}
 
-		return HttpComponentsUtil.addParameter(
-			addPortletURL.toString(), "refererPlid", plid);
+		return URLBuilder.create(
+			addPortletURL.toString()
+		).addParameter(
+			"refererPlid", plid
+		).build();
 	}
 
 	@Override

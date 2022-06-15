@@ -46,22 +46,23 @@ if (!portletName.equals(UsersAdminPortletKeys.MY_ACCOUNT)) {
 	renderResponse.setTitle((selUser == null) ? LanguageUtil.get(request, "add-user") : LanguageUtil.format(request, "edit-user-x", selUser.getFullName(), false));
 }
 
-String redirect = ParamUtil.getString(request, "redirect");
+URLBuilder redirectBuilder = URLBuilder.create(ParamUtil.getString(request, "redirect"));
 
-if (Validator.isNull(redirect)) {
-	redirect = PortletURLBuilder.createRenderURL(
-		renderResponse
-	).setMVCRenderCommandName(
-		"/users_admin/edit_user"
-	).setBackURL(
-		backURL
-	).setParameter(
-		"p_u_i_d", selUserId
-	).buildString();
+if (Validator.isNull(redirectBuilder.build())) {
+	redirectBuilder = URLBuilder.create(
+		PortletURLBuilder.createRenderURL(
+			renderResponse
+		).setMVCRenderCommandName(
+			"/users_admin/edit_user"
+		).setBackURL(
+			backURL
+		).setParameter(
+			"p_u_i_d", selUserId
+		).buildString());
 }
 
-redirect = HttpComponentsUtil.addParameter(redirect, liferayPortletResponse.getNamespace() + "screenNavigationCategoryKey", screenNavigationCategoryKey);
-redirect = HttpComponentsUtil.addParameter(redirect, liferayPortletResponse.getNamespace() + "screenNavigationEntryKey", screenNavigationEntryKey);
+redirectBuilder.addParameter(liferayPortletResponse.getNamespace() + "screenNavigationCategoryKey", screenNavigationCategoryKey);
+redirectBuilder.addParameter(liferayPortletResponse.getNamespace() + "screenNavigationEntryKey", screenNavigationEntryKey);
 %>
 
 <liferay-ui:success key="userAdded" message="the-user-was-created-successfully" />
@@ -70,7 +71,7 @@ redirect = HttpComponentsUtil.addParameter(redirect, liferayPortletResponse.getN
 
 <aui:form action="<%= actionCommandURL %>" cssClass="portlet-users-admin-edit-user" data-senna-off="true" method="post" name="fm">
 	<aui:input name="p_u_i_d" type="hidden" value="<%= selUserId %>" />
-	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirectBuilder.build() %>" />
 	<aui:input name="screenNavigationCategoryKey" type="hidden" value="<%= screenNavigationCategoryKey %>" />
 	<aui:input name="screenNavigationEntryKey" type="hidden" value="<%= screenNavigationEntryKey %>" />
 

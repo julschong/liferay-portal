@@ -39,11 +39,11 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
@@ -256,10 +256,12 @@ public class AnalyticsBatchExportImportManagerImpl
 			_analyticsConfigurationTracker.getAnalyticsConfiguration(companyId);
 
 		options.setLocation(
-			HttpComponentsUtil.addParameter(
+			URLBuilder.create(
 				analyticsConfiguration.liferayAnalyticsEndpointURL() +
-					"/dxp-batch-entities",
-				"resourceName", resourceName));
+					"/dxp-batch-entities"
+			).addParameter(
+				"resourceName", resourceName
+			).build());
 
 		try (InputStream inputStream = _http.URLtoInputStream(options)) {
 			Http.Response response = options.getResponse();

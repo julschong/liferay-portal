@@ -47,9 +47,9 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -270,12 +270,13 @@ public class SelectAssetDisplayPageDisplayContext {
 				assetRendererFactory.getAssetRenderer(
 					_classPK, AssetRendererFactory.TYPE_LATEST);
 
-			String viewInContextURL = assetRenderer.getURLViewInContext(
-				_liferayPortletRequest, _liferayPortletResponse,
-				themeDisplay.getURLCurrent());
-
-			return HttpComponentsUtil.addParameter(
-				viewInContextURL, "p_l_mode", Constants.PREVIEW);
+			return URLBuilder.create(
+				assetRenderer.getURLViewInContext(
+					_liferayPortletRequest, _liferayPortletResponse,
+					themeDisplay.getURLCurrent())
+			).addParameter(
+				"p_l_mode", Constants.PREVIEW
+			).build();
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

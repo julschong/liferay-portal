@@ -17,11 +17,11 @@ package com.liferay.saml.addon.keep.alive.web.internal.struts;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.struts.StrutsAction;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -98,12 +98,15 @@ public class KeepAliveStrutsAction implements StrutsAction {
 		List<String> keepAliveURLs = _getSPsKeepAliveURLs(httpServletRequest);
 
 		for (String keepAliveURL : keepAliveURLs) {
-			keepAliveURL = HttpComponentsUtil.addParameter(
-				keepAliveURL, "r", randomString);
-
 			printWriter.write("document.write('<img alt=\"\" src=\"");
 			printWriter.write(
-				HtmlUtil.escapeJS(HtmlUtil.escapeHREF(keepAliveURL)));
+				HtmlUtil.escapeJS(
+					HtmlUtil.escapeHREF(
+						URLBuilder.create(
+							keepAliveURL
+						).addParameter(
+							"r", randomString
+						).build())));
 			printWriter.write("\"/>');");
 		}
 	}

@@ -33,8 +33,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -250,12 +250,12 @@ public class GetFileActionHelper {
 			return;
 		}
 
-		String redirect = PortalUtil.getPathMain() + "/portal/login";
-
-		redirect = HttpComponentsUtil.addParameter(
-			redirect, "redirect", PortalUtil.getCurrentURL(httpServletRequest));
-
-		httpServletResponse.sendRedirect(redirect);
+		httpServletResponse.sendRedirect(
+			URLBuilder.create(
+				PortalUtil.getPathMain() + "/portal/login"
+			).addParameter(
+				"redirect", PortalUtil.getCurrentURL(httpServletRequest)
+			).build());
 	}
 
 }

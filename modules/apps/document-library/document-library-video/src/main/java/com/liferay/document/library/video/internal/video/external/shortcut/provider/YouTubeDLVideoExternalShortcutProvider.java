@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -74,20 +75,21 @@ public class YouTubeDLVideoExternalShortcutProvider
 
 			@Override
 			public String renderHTML(HttpServletRequest httpServletRequest) {
-				String iframeSrc =
-					"https://www.youtube.com/embed/" + youTubeVideoId +
-						"?rel=0";
 				String start = HttpComponentsUtil.getParameter(url, "t", false);
 
+				URLBuilder iframeSrcBuilder = URLBuilder.create(
+					"https://www.youtube.com/embed/" + youTubeVideoId +
+						"?rel=0");
+
 				if (Validator.isNotNull(start)) {
-					iframeSrc = HttpComponentsUtil.addParameter(
-						iframeSrc, "start", start);
+					iframeSrcBuilder.addParameter("start", start);
 				}
 
 				return StringBundler.concat(
 					"<iframe allow=\"autoplay; encrypted-media\" ",
 					"allowfullscreen height=\"315\" frameborder=\"0\" ",
-					"src=\"", iframeSrc, "\" width=\"560\"></iframe>");
+					"src=\"", iframeSrcBuilder.build(),
+					"\" width=\"560\"></iframe>");
 			}
 
 		};

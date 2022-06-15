@@ -25,10 +25,10 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -148,14 +148,16 @@ public class SegmentsExperimentDisplayContext {
 	}
 
 	private String _getContentPageEditorActionURL(String action) {
-		return HttpComponentsUtil.addParameter(
+		return URLBuilder.create(
 			PortletURLBuilder.createActionURL(
 				_portal.getLiferayPortletResponse(_renderResponse),
 				ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET
 			).setActionName(
 				action
-			).buildString(),
-			"p_l_mode", Constants.EDIT);
+			).buildString()
+		).addParameter(
+			"p_l_mode", Constants.EDIT
+		).build();
 	}
 
 	private String _getContentPageEditorPortletNamespace() {
@@ -216,27 +218,28 @@ public class SegmentsExperimentDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			draftLayout, _themeDisplay);
+		URLBuilder layoutFullURLBuilder = URLBuilder.create(
+			PortalUtil.getLayoutFullURL(draftLayout, _themeDisplay));
 
-		String layoutURL = _portal.getLayoutURL(_themeDisplay);
+		URLBuilder layoutURLBuilder = URLBuilder.create(
+			_portal.getLayoutURL(_themeDisplay));
 
 		long segmentsExperienceId = _getSegmentsExperienceId();
 
 		if (segmentsExperienceId != -1) {
-			layoutURL = HttpComponentsUtil.setParameter(
-				layoutURL, "segmentsExperienceId", segmentsExperienceId);
+			layoutURLBuilder.setParameter(
+				"segmentsExperienceId", segmentsExperienceId);
 		}
 
-		layoutFullURL = HttpComponentsUtil.setParameter(
-			layoutFullURL, "p_l_back_url", layoutURL);
+		layoutFullURLBuilder.setParameter(
+			"p_l_back_url", layoutURLBuilder.build()
+		).setParameter(
+			"p_l_mode", Constants.EDIT
+		).setParameter(
+			"redirect", layoutFullURLBuilder.build()
+		);
 
-		layoutFullURL = HttpComponentsUtil.setParameter(
-			layoutFullURL, "p_l_mode", Constants.EDIT);
-		layoutFullURL = HttpComponentsUtil.setParameter(
-			layoutFullURL, "redirect", layoutFullURL);
-
-		return layoutFullURL;
+		return layoutFullURLBuilder.build();
 	}
 
 	private String _getEditSegmentsVariantURL() {
@@ -430,13 +433,15 @@ public class SegmentsExperimentDisplayContext {
 	}
 
 	private String _getSegmentsExperimentActionURL(String action) {
-		return HttpComponentsUtil.addParameter(
+		return URLBuilder.create(
 			PortletURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				action
-			).buildString(),
-			"p_l_mode", Constants.VIEW);
+			).buildString()
+		).addParameter(
+			"p_l_mode", Constants.VIEW
+		).build();
 	}
 
 	private JSONArray _getSegmentsExperimentGoalsJSONArray(Locale locale) {

@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -211,29 +212,29 @@ public class LayoutAction implements Action {
 				layout, themeDisplay);
 		}
 
-		String forwardURL = layoutFriendlyURL;
+		URLBuilder forwardURLBuilder = URLBuilder.create(layoutFriendlyURL);
 
-		if (Validator.isNull(forwardURL)) {
-			forwardURL =
-				themeDisplay.getPathMain() + "/portal/layout?p_l_id=" + plid;
+		if (Validator.isNull(forwardURLBuilder.build())) {
+			forwardURLBuilder = URLBuilder.create(
+				themeDisplay.getPathMain() + "/portal/layout?p_l_id=" + plid);
 		}
 
 		if (Validator.isNotNull(themeDisplay.getDoAsUserId())) {
-			forwardURL = HttpComponentsUtil.addParameter(
-				forwardURL, "doAsUserId", themeDisplay.getDoAsUserId());
+			forwardURLBuilder.addParameter(
+				"doAsUserId", themeDisplay.getDoAsUserId());
 		}
 
 		if (Validator.isNotNull(themeDisplay.getDoAsUserLanguageId())) {
-			forwardURL = HttpComponentsUtil.addParameter(
-				forwardURL, "doAsUserLanguageId",
-				themeDisplay.getDoAsUserLanguageId());
+			forwardURLBuilder.addParameter(
+				"doAsUserLanguageId", themeDisplay.getDoAsUserLanguageId());
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Forward layout to " + forwardURL);
+			_log.debug("Forward layout to " + forwardURLBuilder.build());
 		}
 
-		httpServletRequest.setAttribute(WebKeys.FORWARD_URL, forwardURL);
+		httpServletRequest.setAttribute(
+			WebKeys.FORWARD_URL, forwardURLBuilder.build());
 	}
 
 	protected String getRenderStateJSON(

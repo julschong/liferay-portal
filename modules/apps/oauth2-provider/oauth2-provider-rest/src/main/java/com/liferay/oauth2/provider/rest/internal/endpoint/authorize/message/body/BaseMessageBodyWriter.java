@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -114,7 +115,11 @@ public abstract class BaseMessageBodyWriter<T> implements MessageBodyWriter<T> {
 			return url;
 		}
 
-		return HttpComponentsUtil.addParameter(url, "oauth2_" + name, value);
+		return URLBuilder.create(
+			url
+		).addParameter(
+			"oauth2_" + name, value
+		).build();
 	}
 
 	protected abstract String writeTo(T t, String authorizeScreenURL);

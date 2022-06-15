@@ -43,9 +43,9 @@ import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
@@ -97,11 +97,13 @@ public class DLURLHelperImpl implements DLURLHelper {
 			return url;
 		}
 
-		return HttpComponentsUtil.addParameter(
+		return URLBuilder.create(
 			getPreviewURL(
 				fileEntry, fileVersion, themeDisplay, queryString,
-				appendVersion, absoluteURL),
-			"download", true);
+				appendVersion, absoluteURL)
+		).addParameter(
+			"download", true
+		).build();
 	}
 
 	@Override

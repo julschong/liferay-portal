@@ -26,8 +26,8 @@ import com.liferay.portal.kernel.parsers.bbcode.BBCodeTranslatorUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HtmlParser;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -108,10 +108,12 @@ public class MentionsMessageServiceWrapper
 		else {
 			serviceContext.setAttribute(
 				"contentURL",
-				HttpComponentsUtil.addParameter(
-					contentURL,
+				URLBuilder.create(
+					contentURL
+				).addParameter(
 					serviceContext.getAttribute("namespace") + "messageId",
-					message.getMessageId()));
+					message.getMessageId()
+				).build());
 		}
 
 		_mentionsNotifier.notify(

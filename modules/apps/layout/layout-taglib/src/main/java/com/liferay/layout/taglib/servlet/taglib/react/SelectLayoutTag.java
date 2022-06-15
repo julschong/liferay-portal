@@ -30,10 +30,10 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -357,15 +357,13 @@ public class SelectLayoutTag extends IncludeTag {
 				"plid", layout.getPlid()
 			).put(
 				"previewURL",
-				() -> {
-					String layoutURL = HttpComponentsUtil.addParameter(
-						PortalUtil.getLayoutFullURL(layout, themeDisplay),
-						"p_l_mode", Constants.PREVIEW);
-
-					return HttpComponentsUtil.addParameter(
-						layoutURL, "p_p_auth",
-						AuthTokenUtil.getToken(getRequest()));
-				}
+				() -> URLBuilder.create(
+					PortalUtil.getLayoutFullURL(layout, themeDisplay)
+				).addParameter(
+					"p_l_mode", Constants.PREVIEW
+				).addParameter(
+					"p_p_auth", AuthTokenUtil.getToken(getRequest())
+				).build()
 			).put(
 				"private", layout.isPrivateLayout()
 			).put(

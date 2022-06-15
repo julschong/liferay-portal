@@ -115,7 +115,7 @@ renderResponse.setTitle(layoutsAdminDisplayContext.getConfigurationTitle(selLayo
 			<portlet:param name="mvcRenderCommandName" value="/layout_admin/edit_layout" />
 		</portlet:actionURL>
 
-		<aui:form action='<%= HttpComponentsUtil.addParameter(editLayoutURL, "refererPlid", plid) %>' enctype="multipart/form-data" method="post" name="editLayoutFm" onSubmit="event.preventDefault();">
+		<aui:form action='<%= URLBuilder.create(editLayoutURL).addParameter("refererPlid", plid).build() %>' enctype="multipart/form-data" method="post" name="editLayoutFm" onSubmit="event.preventDefault();">
 			<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="portletResource" type="hidden" value="<%= portletResource %>" />

@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -119,11 +119,12 @@ public class LayoutAssetRenderer extends BaseJSPAssetRenderer<Layout> {
 				return PortalUtil.getLayoutFriendlyURL(_layout, themeDisplay);
 			}
 
-			String previewURL = PortalUtil.getLayoutFriendlyURL(
-				_layout.fetchDraftLayout(), themeDisplay);
-
-			return HttpComponentsUtil.addParameter(
-				previewURL, "p_l_back_url", themeDisplay.getURLCurrent());
+			return URLBuilder.create(
+				PortalUtil.getLayoutFriendlyURL(
+					_layout.fetchDraftLayout(), themeDisplay)
+			).addParameter(
+				"p_l_back_url", themeDisplay.getURLCurrent()
+			).build();
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

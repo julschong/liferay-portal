@@ -101,6 +101,7 @@ page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
 page import="com.liferay.portal.kernel.servlet.taglib.ui.MenuItem" %><%@
 page import="com.liferay.portal.kernel.template.StringTemplateResource" %><%@
 page import="com.liferay.portal.kernel.theme.ThemeDisplay" %><%@
+page import="com.liferay.portal.kernel.url.URLBuilder" %><%@
 page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.CalendarUtil" %><%@

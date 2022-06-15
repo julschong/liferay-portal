@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
 import com.liferay.portal.kernel.servlet.taglib.util.OutputData;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -185,16 +185,16 @@ public class ClientExtensionEntryPortlet extends MVCPortlet {
 
 		printWriter.print("<iframe src=\"");
 
-		String iFrameURL = _iFrameCET.getURL();
+		URLBuilder iFrameURLBuilder = URLBuilder.create(_iFrameCET.getURL());
 
 		Properties properties = _getProperties(renderRequest);
 
 		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-			iFrameURL = HttpComponentsUtil.addParameter(
-				iFrameURL, (String)entry.getKey(), (String)entry.getValue());
+			iFrameURLBuilder.addParameter(
+				(String)entry.getKey(), (String)entry.getValue());
 		}
 
-		printWriter.print(iFrameURL);
+		printWriter.print(iFrameURLBuilder.build());
 
 		printWriter.print("\"></iframe>");
 

@@ -37,9 +37,9 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -318,8 +318,11 @@ public class AssetBrowserManagementToolbarDisplayContext
 
 		addPortletURL.setParameter("groupId", String.valueOf(groupId));
 
-		return HttpComponentsUtil.addParameter(
-			addPortletURL.toString(), "refererPlid", _themeDisplay.getPlid());
+		return URLBuilder.create(
+			addPortletURL.toString()
+		).addParameter(
+			"refererPlid", _themeDisplay.getPlid()
+		).build();
 	}
 
 	private String _getCurrentScopeLabel() {

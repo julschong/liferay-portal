@@ -29,10 +29,10 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -88,14 +88,13 @@ public class RemoteMVCPortlet extends MVCPortlet {
 
 		oAuthManager.updateRequestToken(themeDisplay.getUser(), requestToken);
 
-		String redirect = oAuthService.getAuthorizationUrl(requestToken);
-
-		String callbackURL = ParamUtil.getString(actionRequest, "callbackURL");
-
-		redirect = HttpComponentsUtil.addParameter(
-			redirect, OAuthConstants.CALLBACK, callbackURL);
-
-		actionResponse.sendRedirect(redirect);
+		actionResponse.sendRedirect(
+			URLBuilder.create(
+				oAuthService.getAuthorizationUrl(requestToken)
+			).addParameter(
+				OAuthConstants.CALLBACK,
+				ParamUtil.getString(actionRequest, "callbackURL")
+			).build());
 	}
 
 	public void deauthorize(

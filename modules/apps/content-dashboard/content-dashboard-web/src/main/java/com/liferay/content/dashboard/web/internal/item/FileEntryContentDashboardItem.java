@@ -39,9 +39,9 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -499,10 +499,12 @@ public class FileEntryContentDashboardItem
 					String portletNamespace = _portal.getPortletNamespace(
 						DLPortletKeys.DOCUMENT_LIBRARY_ADMIN);
 
-					return HttpComponentsUtil.addParameter(
+					return URLBuilder.create(
 						_dlURLHelper.getFileEntryControlPanelLink(
-							portletRequest, _fileEntry.getFileEntryId()),
-						portletNamespace + "redirect", backURL);
+							portletRequest, _fileEntry.getFileEntryId())
+					).addParameter(
+						portletNamespace + "redirect", backURL
+					).build();
 				}
 				catch (PortalException portalException) {
 					_log.error(portalException);

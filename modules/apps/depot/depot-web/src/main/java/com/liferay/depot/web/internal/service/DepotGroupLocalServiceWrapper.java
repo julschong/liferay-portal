@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.GroupServiceWrapper;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.permission.GroupPermission;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Portal;
 
 import org.osgi.service.component.annotations.Component;
@@ -49,23 +49,22 @@ public class DepotGroupLocalServiceWrapper extends GroupServiceWrapper {
 				GuestOrUserUtil.getPermissionChecker(), group,
 				ActionKeys.UPDATE);
 
-			String controlPanelFullURL = _portal.getControlPanelFullURL(
-				groupId, DepotPortletKeys.DEPOT_ADMIN, null);
-
 			DepotEntry depotEntry = _depotEntryLocalService.getGroupDepotEntry(
 				group.getGroupId());
 
 			String namespace = _portal.getPortletNamespace(
 				DepotPortletKeys.DEPOT_ADMIN);
 
-			controlPanelFullURL = HttpComponentsUtil.addParameter(
-				controlPanelFullURL, namespace + "mvcRenderCommandName",
-				"/depot/view_depot_dashboard");
-			controlPanelFullURL = HttpComponentsUtil.addParameter(
-				controlPanelFullURL, namespace + "depotEntryId",
-				String.valueOf(depotEntry.getDepotEntryId()));
-
-			return controlPanelFullURL;
+			return URLBuilder.create(
+				_portal.getControlPanelFullURL(
+					groupId, DepotPortletKeys.DEPOT_ADMIN, null)
+			).addParameter(
+				namespace + "mvcRenderCommandName",
+				"/depot/view_depot_dashboard"
+			).addParameter(
+				namespace + "depotEntryId",
+				String.valueOf(depotEntry.getDepotEntryId())
+			).build();
 		}
 
 		return super.getGroupDisplayURL(

@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -113,6 +114,8 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 			String redirect = _portal.escapeRedirect(
 				ParamUtil.getString(actionRequest, "redirect"));
 
+			URLBuilder redirectURLBuilder = URLBuilder.create(redirect);
+
 			if (Validator.isNotNull(redirect)) {
 				if (cmd.equals(Constants.ADD) && (entry != null)) {
 					String portletId = HttpComponentsUtil.getParameter(
@@ -121,16 +124,16 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 					String namespace = _portal.getPortletNamespace(portletId);
 
 					if (Validator.isNotNull(portletId)) {
-						redirect = HttpComponentsUtil.addParameter(
-							redirect, namespace + "className",
+						redirectURLBuilder.addParameter(
+							namespace + "className",
 							BookmarksEntry.class.getName());
-						redirect = HttpComponentsUtil.addParameter(
-							redirect, namespace + "classPK",
-							entry.getEntryId());
+						redirectURLBuilder.addParameter(
+							namespace + "classPK", entry.getEntryId());
 					}
 				}
 
-				actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+				actionRequest.setAttribute(
+					WebKeys.REDIRECT, redirectURLBuilder.build());
 			}
 		}
 		catch (Exception exception) {

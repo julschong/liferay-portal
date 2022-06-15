@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.facebook.connect.configuration.FacebookConnectConfiguration;
@@ -63,20 +63,22 @@ public class FacebookConnectImpl implements FacebookConnect {
 		FacebookConnectConfiguration facebookConnectConfiguration =
 			_getFacebookConnectConfiguration(companyId);
 
-		String url = facebookConnectConfiguration.oauthTokenURL();
+		URLBuilder urlBuilder = URLBuilder.create(
+			facebookConnectConfiguration.oauthTokenURL());
 
-		url = HttpComponentsUtil.addParameter(
-			url, "client_id", facebookConnectConfiguration.appId());
-		url = HttpComponentsUtil.addParameter(
-			url, "client_secret", facebookConnectConfiguration.appSecret());
-		url = HttpComponentsUtil.addParameter(url, "code", code);
-		url = HttpComponentsUtil.addParameter(
-			url, "redirect_uri",
-			facebookConnectConfiguration.oauthRedirectURL());
+		urlBuilder.addParameter(
+			"client_id", facebookConnectConfiguration.appId()
+		).addParameter(
+			"client_secret", facebookConnectConfiguration.appSecret()
+		).addParameter(
+			"code", code
+		).addParameter(
+			"redirect_uri", facebookConnectConfiguration.oauthRedirectURL()
+		);
 
 		Http.Options options = new Http.Options();
 
-		options.setLocation(url);
+		options.setLocation(urlBuilder.build());
 
 		try {
 			String content = _http.URLtoString(options);
@@ -94,8 +96,8 @@ public class FacebookConnectImpl implements FacebookConnect {
 				String appSecret = facebookConnectConfiguration.appSecret();
 
 				if (!appSecret.isEmpty()) {
-					url = HttpComponentsUtil.setParameter(
-						url, "client_secret",
+					urlBuilder.setParameter(
+						"client_secret",
 						StringBundler.concat(
 							appSecret.charAt(0), "...redacted...",
 							appSecret.charAt(appSecret.length() - 1)));
@@ -103,8 +105,8 @@ public class FacebookConnectImpl implements FacebookConnect {
 
 				_log.debug(
 					StringBundler.concat(
-						"Unable to get access token for URL ", url,
-						" because of response:", content));
+						"Unable to get access token for URL ",
+						urlBuilder.build(), " because of response:", content));
 			}
 		}
 		catch (Exception exception) {
@@ -154,16 +156,19 @@ public class FacebookConnectImpl implements FacebookConnect {
 		try {
 			String graphURL = getGraphURL(companyId);
 
-			String url = HttpComponentsUtil.addParameter(
-				graphURL.concat(path), "access_token", accessToken);
+			URLBuilder urlBuilder = URLBuilder.create(
+				graphURL.concat(path)
+			).addParameter(
+				"access_token", accessToken
+			);
 
 			if (Validator.isNotNull(fields)) {
-				url = HttpComponentsUtil.addParameter(url, "fields", fields);
+				urlBuilder.addParameter("fields", fields);
 			}
 
 			Http.Options options = new Http.Options();
 
-			options.setLocation(url);
+			options.setLocation(urlBuilder.build());
 
 			String json = _http.URLtoString(options);
 

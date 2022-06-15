@@ -55,6 +55,7 @@ import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.upload.LiferayFileItemException;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -590,12 +591,14 @@ public class UpdateArticleMVCActionCommand extends BaseMVCActionCommand {
 				actionName.equals("/journal/add_article") &&
 				(article != null) && Validator.isNotNull(namespace)) {
 
-				redirect = HttpComponentsUtil.addParameter(
-					redirect, namespace + "className",
-					JournalArticle.class.getName());
-				redirect = HttpComponentsUtil.addParameter(
-					redirect, namespace + "classPK",
-					JournalArticleAssetRenderer.getClassPK(article));
+				redirect = URLBuilder.create(
+					redirect
+				).addParameter(
+					namespace + "className", JournalArticle.class.getName()
+				).addParameter(
+					namespace + "classPK",
+					JournalArticleAssetRenderer.getClassPK(article)
+				).build();
 			}
 		}
 

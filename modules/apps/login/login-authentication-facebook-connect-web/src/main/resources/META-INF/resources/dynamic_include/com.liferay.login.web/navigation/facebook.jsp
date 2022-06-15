@@ -22,7 +22,7 @@
 
 <%
 String facebookAuthRedirectURL = (String)request.getAttribute(FacebookConnectWebKeys.FACEBOOK_AUTH_REDIRECT_URL);
-String facebookAuthURL = (String)request.getAttribute(FacebookConnectWebKeys.FACEBOOK_AUTH_URL);
+URLBuilder facebookAuthURLBuilder = URLBuilder.create((String)request.getAttribute(FacebookConnectWebKeys.FACEBOOK_AUTH_URL));
 String facebookAppId = (String)request.getAttribute(FacebookConnectWebKeys.FACEBOOK_APP_ID);
 
 HttpSession portalSession = PortalSessionThreadLocal.getHttpSession();
@@ -31,9 +31,9 @@ String nonce = PwdGenerator.getPassword(GetterUtil.getInteger(PropsUtil.get(Prop
 
 portalSession.setAttribute(WebKeys.FACEBOOK_NONCE, nonce);
 
-facebookAuthURL = HttpComponentsUtil.addParameter(facebookAuthURL, "client_id", facebookAppId);
-facebookAuthURL = HttpComponentsUtil.addParameter(facebookAuthURL, "redirect_uri", facebookAuthRedirectURL);
-facebookAuthURL = HttpComponentsUtil.addParameter(facebookAuthURL, "scope", "email");
+facebookAuthURLBuilder.addParameter("client_id", facebookAppId);
+facebookAuthURLBuilder.addParameter("redirect_uri", facebookAuthRedirectURL);
+facebookAuthURLBuilder.addParameter("scope", "email");
 
 JSONObject stateJSONObject = JSONUtil.put(
 	"redirect", loginRedirectURL
@@ -41,9 +41,9 @@ JSONObject stateJSONObject = JSONUtil.put(
 	"stateNonce", nonce
 );
 
-facebookAuthURL = HttpComponentsUtil.addParameter(facebookAuthURL, "state", stateJSONObject.toString());
+facebookAuthURLBuilder.addParameter("state", stateJSONObject.toString());
 
-String taglibOpenFacebookConnectLoginWindow = "javascript:var facebookConnectLoginWindow = window.open('" + URLCodec.encodeURL(facebookAuthURL) + "', 'facebook', 'align=center,directories=no,height=560,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1000'); void(''); facebookConnectLoginWindow.focus();";
+String taglibOpenFacebookConnectLoginWindow = "javascript:var facebookConnectLoginWindow = window.open('" + URLCodec.encodeURL(facebookAuthURLBuilder.build()) + "', 'facebook', 'align=center,directories=no,height=560,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1000'); void(''); facebookConnectLoginWindow.focus();";
 %>
 
 <liferay-ui:icon

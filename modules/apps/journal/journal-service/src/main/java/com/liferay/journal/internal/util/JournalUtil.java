@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -209,21 +210,21 @@ public class JournalUtil {
 		}
 
 		try {
-			String articleURL = PortalUtil.getControlPanelFullURL(
-				groupId,
-				PortletProviderUtil.getPortletId(
-					JournalArticle.class.getName(),
-					PortletProvider.Action.EDIT),
-				null);
-
 			String namespace = PortalUtil.getPortletNamespace(
 				JournalPortletKeys.JOURNAL);
 
-			articleURL = HttpComponentsUtil.addParameter(
-				articleURL, namespace + "groupId", groupId);
-
-			return HttpComponentsUtil.addParameter(
-				articleURL, namespace + "folderId", folderId);
+			return URLBuilder.create(
+				PortalUtil.getControlPanelFullURL(
+					groupId,
+					PortletProviderUtil.getPortletId(
+						JournalArticle.class.getName(),
+						PortletProvider.Action.EDIT),
+					null)
+			).addParameter(
+				namespace + "groupId", groupId
+			).addParameter(
+				namespace + "folderId", folderId
+			).build();
 		}
 		catch (PortalException portalException) {
 			_log.error(portalException);

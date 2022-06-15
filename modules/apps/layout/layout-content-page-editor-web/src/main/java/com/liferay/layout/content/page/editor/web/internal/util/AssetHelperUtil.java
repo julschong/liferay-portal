@@ -34,8 +34,8 @@ import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -216,12 +216,7 @@ public class AssetHelperUtil {
 			ThemeDisplay themeDisplay)
 		throws Exception {
 
-		String currentURL = HttpComponentsUtil.addParameter(
-			_portal.getLayoutRelativeURL(
-				themeDisplay.getLayout(), themeDisplay),
-			"p_l_mode", Constants.EDIT);
-
-		return HttpComponentsUtil.addParameter(
+		return URLBuilder.create(
 			PortletURLBuilder.create(
 				PortalUtil.getControlPanelPortletURL(
 					httpServletRequest,
@@ -231,13 +226,20 @@ public class AssetHelperUtil {
 			).setActionName(
 				"/control_menu/add_collection_item"
 			).setRedirect(
-				currentURL
+				URLBuilder.create(
+					_portal.getLayoutRelativeURL(
+						themeDisplay.getLayout(), themeDisplay)
+				).addParameter(
+					"p_l_mode", Constants.EDIT
+				).build()
 			).setParameter(
 				"assetListEntryId", assetListEntryId
-			).buildString(),
+			).buildString()
+		).addParameter(
 			"portletResource",
 			ProductNavigationControlMenuPortletKeys.
-				PRODUCT_NAVIGATION_CONTROL_MENU);
+				PRODUCT_NAVIGATION_CONTROL_MENU
+		).build();
 	}
 
 	private static AssetHelper _assetHelper;

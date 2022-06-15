@@ -39,10 +39,10 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -236,15 +236,15 @@ public class PortalImplCanonicalURLTest {
 
 		themeDisplay.setLayoutSet(layoutSet);
 
-		String completeURL =
-			Http.HTTP_WITH_SLASH + "test.com:8080" + _layout4.getFriendlyURL();
+		URLBuilder completeURLBuilder = URLBuilder.create(
+			Http.HTTP_WITH_SLASH + "test.com:8080" + _layout4.getFriendlyURL());
 
 		Assert.assertEquals(
-			completeURL,
+			completeURLBuilder.build(),
 			_portal.getCanonicalURL(
-				HttpComponentsUtil.addParameter(
-					completeURL, "_ga",
-					"2.237928582.786466685.1515402734-1365236376"),
+				completeURLBuilder.addParameter(
+					"_ga", "2.237928582.786466685.1515402734-1365236376"
+				).build(),
 				themeDisplay, _layout4, false, false));
 	}
 
@@ -258,23 +258,30 @@ public class PortalImplCanonicalURLTest {
 		for (String urlSeparator :
 				FriendlyURLResolverRegistryUtil.getURLSeparators()) {
 
-			String completeURL = _generateURL(
-				portalDomain, "8080", StringPool.BLANK, _group.getFriendlyURL(),
-				urlSeparator + "content-name", false);
+			String completeURL = URLBuilder.create(
+				_generateURL(
+					portalDomain, "8080", StringPool.BLANK,
+					_group.getFriendlyURL(), urlSeparator + "content-name",
+					false)
+			).build();
 
 			Assert.assertEquals(
 				completeURL,
 				_portal.getCanonicalURL(
-					HttpComponentsUtil.addParameter(
-						completeURL, "_ga",
-						"2.237928582.786466685.1515402734-1365236376"),
+					URLBuilder.create(
+						completeURL
+					).addParameter(
+						"_ga", "2.237928582.786466685.1515402734-1365236376"
+					).build(),
 					themeDisplay, _layout1, false, false));
 			Assert.assertEquals(
 				completeURL,
 				_portal.getCanonicalURL(
-					HttpComponentsUtil.addParameter(
-						completeURL, "_ga",
-						"2.237928582.786466685.1515402734-1365236376"),
+					URLBuilder.create(
+						completeURL
+					).addParameter(
+						"_ga", "2.237928582.786466685.1515402734-1365236376"
+					).build(),
 					themeDisplay, _layout3, false, false));
 		}
 	}
@@ -302,17 +309,20 @@ public class PortalImplCanonicalURLTest {
 		for (String urlSeparator :
 				FriendlyURLResolverRegistryUtil.getURLSeparators()) {
 
-			String completeURL = _generateURL(
-				portalDomain, "8080", StringPool.BLANK, _group.getFriendlyURL(),
-				_layout1.getFriendlyURL() + urlSeparator + "blogs/content-name",
-				false);
+			URLBuilder completeURLBuilder = URLBuilder.create(
+				_generateURL(
+					portalDomain, "8080", StringPool.BLANK,
+					_group.getFriendlyURL(),
+					_layout1.getFriendlyURL() + urlSeparator +
+						"blogs/content-name",
+					false));
 
 			Assert.assertEquals(
-				completeURL,
+				completeURLBuilder.build(),
 				_portal.getCanonicalURL(
-					HttpComponentsUtil.addParameter(
-						completeURL, "_ga",
-						"2.237928582.786466685.1515402734-1365236376"),
+					completeURLBuilder.addParameter(
+						"_ga", "2.237928582.786466685.1515402734-1365236376"
+					).build(),
 					themeDisplay, _layout1, false, false));
 		}
 	}
@@ -321,20 +331,24 @@ public class PortalImplCanonicalURLTest {
 	public void testCanonicalURLWithoutQueryString() throws Exception {
 		String portalDomain = "localhost";
 
-		String completeURL = HttpComponentsUtil.addParameter(
+		String completeURL = URLBuilder.create(
 			_generateURL(
 				portalDomain, "8080", "/en", _group.getFriendlyURL(),
-				_layout1.getFriendlyURL(), false),
-			"_ga", "2.237928582.786466685.1515402734-1365236376");
+				_layout1.getFriendlyURL(), false)
+		).addParameter(
+			"_ga", "2.237928582.786466685.1515402734-1365236376"
+		).build();
 
 		ThemeDisplay themeDisplay = _createThemeDisplay(
 			portalDomain, _group, 8080, false);
 
 		Assert.assertEquals(
-			HttpComponentsUtil.removeParameter(
+			URLBuilder.create(
 				_portal.getCanonicalURL(
-					completeURL, themeDisplay, _layout1, true, true),
-				"_ga"),
+					completeURL, themeDisplay, _layout1, true, true)
+			).removeParameter(
+				"_ga"
+			).build(),
 			_portal.getCanonicalURL(
 				completeURL, themeDisplay, _layout1, true, false));
 	}

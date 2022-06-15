@@ -56,11 +56,11 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ThemeLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LayoutTypePortletFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -1657,16 +1657,18 @@ public class LayoutImpl extends LayoutBaseImpl {
 			return url;
 		}
 
+		URLBuilder urlBuilder = URLBuilder.create(url);
+
 		if (PropsValues.LAYOUT_DEFAULT_P_L_RESET && !resetRenderParameters) {
-			url = HttpComponentsUtil.addParameter(url, "p_l_reset", 0);
+			urlBuilder.addParameter("p_l_reset", 0);
 		}
 		else if (!PropsValues.LAYOUT_DEFAULT_P_L_RESET &&
 				 resetRenderParameters) {
 
-			url = HttpComponentsUtil.addParameter(url, "p_l_reset", 1);
+			urlBuilder.addParameter("p_l_reset", 1);
 		}
 
-		return url;
+		return urlBuilder.build();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LayoutImpl.class);

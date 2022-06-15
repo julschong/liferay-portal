@@ -20,7 +20,7 @@ import com.liferay.document.library.repository.authorization.oauth2.OAuth2Author
 import com.liferay.document.library.repository.authorization.oauth2.Token;
 import com.liferay.document.library.repository.authorization.oauth2.TokenStore;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -141,22 +141,20 @@ public class SharepointRepositoryAuthorizationCapability
 	private String _getGrantURL(
 		HttpServletRequest httpServletRequest, String state) {
 
-		String url =
+		return URLBuilder.create(
 			_sharepointRepositoryOAuth2Configuration.
-				authorizationGrantEndpoint();
-
-		url = HttpComponentsUtil.addParameter(
-			url, "client_id",
-			_sharepointRepositoryOAuth2Configuration.clientId());
-
-		url = HttpComponentsUtil.addParameter(
-			url, "redirect_uri", _getRedirectURI(httpServletRequest));
-		url = HttpComponentsUtil.addParameter(url, "response_type", "code");
-		url = HttpComponentsUtil.addParameter(
-			url, "scope", _sharepointRepositoryOAuth2Configuration.scope());
-		url = HttpComponentsUtil.addParameter(url, "state", state);
-
-		return url;
+				authorizationGrantEndpoint()
+		).addParameter(
+			"client_id", _sharepointRepositoryOAuth2Configuration.clientId()
+		).addParameter(
+			"redirect_uri", _getRedirectURI(httpServletRequest)
+		).addParameter(
+			"response_type", "code"
+		).addParameter(
+			"scope", _sharepointRepositoryOAuth2Configuration.scope()
+		).addParameter(
+			"state", state
+		).build();
 	}
 
 	private String _getRedirectURI(HttpServletRequest httpServletRequest) {

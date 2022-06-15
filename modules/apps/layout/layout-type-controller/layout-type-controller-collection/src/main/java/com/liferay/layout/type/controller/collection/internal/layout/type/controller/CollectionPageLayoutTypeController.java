@@ -32,8 +32,8 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.TransferHeadersHelper;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -146,8 +146,8 @@ public class CollectionPageLayoutTypeController
 				_portal.getClassNameId(Layout.class), layout.getPlid());
 
 			if (layoutMode.equals(Constants.EDIT) && (draftLayout != null)) {
-				String layoutFullURL = _portal.getLayoutFullURL(
-					draftLayout, themeDisplay);
+				URLBuilder layoutFullURLBuilder = URLBuilder.create(
+					_portal.getLayoutFullURL(draftLayout, themeDisplay));
 
 				HttpServletRequest originalHttpServletRequest =
 					_portal.getOriginalServletRequest(httpServletRequest);
@@ -156,13 +156,13 @@ public class CollectionPageLayoutTypeController
 					"p_l_back_url");
 
 				if (Validator.isNotNull(backURL)) {
-					layoutFullURL = HttpComponentsUtil.addParameter(
-						layoutFullURL, "p_l_back_url", backURL);
+					layoutFullURLBuilder.addParameter("p_l_back_url", backURL);
 				}
 
 				httpServletResponse.sendRedirect(
-					HttpComponentsUtil.addParameter(
-						layoutFullURL, "p_l_mode", Constants.EDIT));
+					layoutFullURLBuilder.addParameter(
+						"p_l_mode", Constants.EDIT
+					).build());
 			}
 			else {
 				requestDispatcher.include(httpServletRequest, servletResponse);

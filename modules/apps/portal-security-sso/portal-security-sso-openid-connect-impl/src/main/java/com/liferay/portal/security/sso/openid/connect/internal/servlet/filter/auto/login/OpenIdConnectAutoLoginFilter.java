@@ -17,8 +17,8 @@ package com.liferay.portal.security.sso.openid.connect.internal.servlet.filter.a
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnect;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectAuthenticationHandler;
@@ -90,8 +90,9 @@ public class OpenIdConnectAutoLoginFilter extends AutoLoginFilter {
 			return;
 		}
 
-		String actionURL = (String)httpSession.getAttribute(
-			OpenIdConnectWebKeys.OPEN_ID_CONNECT_ACTION_URL);
+		URLBuilder actionURLBuilder = URLBuilder.create(
+			(String)httpSession.getAttribute(
+				OpenIdConnectWebKeys.OPEN_ID_CONNECT_ACTION_URL));
 
 		try {
 			_openIdConnectAuthenticationHandler.processAuthenticationResponse(
@@ -104,10 +105,9 @@ public class OpenIdConnectAutoLoginFilter extends AutoLoginFilter {
 
 			Class<?> clazz = exception.getClass();
 
-			actionURL = HttpComponentsUtil.addParameter(
-				actionURL, "error", clazz.getSimpleName());
+			actionURLBuilder.addParameter("error", clazz.getSimpleName());
 
-			httpServletResponse.sendRedirect(actionURL);
+			httpServletResponse.sendRedirect(actionURLBuilder.build());
 		}
 		catch (Exception exception) {
 			_portal.sendError(
@@ -117,8 +117,8 @@ public class OpenIdConnectAutoLoginFilter extends AutoLoginFilter {
 		if (httpServletResponse.isCommitted()) {
 			return;
 		}
-		else if (actionURL != null) {
-			httpServletResponse.sendRedirect(actionURL);
+		else if (actionURLBuilder.build() != null) {
+			httpServletResponse.sendRedirect(actionURLBuilder.build());
 
 			return;
 		}

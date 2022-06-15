@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -106,26 +106,20 @@ public class LayoutReportsDataProvider {
 
 		Http.Options options = new Http.Options();
 
-		String googlePageSpeedURL =
+		URLBuilder googlePageSpeedURLBuilder = URLBuilder.create(
 			"https://content-pagespeedonline.googleapis.com/pagespeedonline" +
-				"/v5/runPagespeed";
+				"/v5/runPagespeed");
 
-		googlePageSpeedURL = HttpComponentsUtil.addParameter(
-			googlePageSpeedURL, "category", "ACCESSIBILITY");
-		googlePageSpeedURL = HttpComponentsUtil.addParameter(
-			googlePageSpeedURL, "category", "BEST_PRACTICES");
-		googlePageSpeedURL = HttpComponentsUtil.addParameter(
-			googlePageSpeedURL, "category", "SEO");
-		googlePageSpeedURL = HttpComponentsUtil.addParameter(
-			googlePageSpeedURL, "key", _apiKey);
-		googlePageSpeedURL = HttpComponentsUtil.addParameter(
-			googlePageSpeedURL, "locale", LanguageUtil.getLanguageId(locale));
-		googlePageSpeedURL = HttpComponentsUtil.addParameter(
-			googlePageSpeedURL, "strategy", _strategy);
-		googlePageSpeedURL = HttpComponentsUtil.addParameter(
-			googlePageSpeedURL, "url", url);
+		googlePageSpeedURLBuilder.addParameter("category", "ACCESSIBILITY");
+		googlePageSpeedURLBuilder.addParameter("category", "BEST_PRACTICES");
+		googlePageSpeedURLBuilder.addParameter("category", "SEO");
+		googlePageSpeedURLBuilder.addParameter("key", _apiKey);
+		googlePageSpeedURLBuilder.addParameter(
+			"locale", LanguageUtil.getLanguageId(locale));
+		googlePageSpeedURLBuilder.addParameter("strategy", _strategy);
+		googlePageSpeedURLBuilder.addParameter("url", url);
 
-		options.setLocation(googlePageSpeedURL);
+		options.setLocation(googlePageSpeedURLBuilder.build());
 
 		options.setTimeout(120000);
 

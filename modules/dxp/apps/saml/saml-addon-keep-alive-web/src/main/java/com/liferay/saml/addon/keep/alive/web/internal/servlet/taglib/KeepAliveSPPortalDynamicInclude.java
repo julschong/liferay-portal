@@ -22,9 +22,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -71,23 +71,24 @@ public class KeepAliveSPPortalDynamicInclude extends BaseDynamicInclude {
 			return;
 		}
 
-		String keepAliveURL = _getConfiguredKeepAliveURL(httpServletRequest);
+		URLBuilder keepAliveURLBuilder = URLBuilder.create(
+			_getConfiguredKeepAliveURL(httpServletRequest));
 
-		if (Validator.isBlank(keepAliveURL)) {
+		if (Validator.isBlank(keepAliveURLBuilder.build())) {
 			return;
 		}
 
 		SamlProviderConfiguration samlProviderConfiguration =
 			_samlProviderConfigurationHelper.getSamlProviderConfiguration();
 
-		keepAliveURL = HttpComponentsUtil.addParameter(
-			keepAliveURL, "entityId", samlProviderConfiguration.entityId());
+		keepAliveURLBuilder.addParameter(
+			"entityId", samlProviderConfiguration.entityId());
 
 		try {
 			PrintWriter printWriter = httpServletResponse.getWriter();
 
 			printWriter.write("<script src=\"");
-			printWriter.write(HtmlUtil.escapeHREF(keepAliveURL));
+			printWriter.write(HtmlUtil.escapeHREF(keepAliveURLBuilder.build()));
 			printWriter.write("\" type=\"text/javascript\"></script>");
 		}
 		catch (IOException ioException) {

@@ -53,11 +53,11 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -724,16 +724,15 @@ public class JournalArticleActionDropdownItemsProvider {
 		if (AssetDisplayPageUtil.hasAssetDisplayPage(
 				_themeDisplay.getScopeGroupId(), assetEntry)) {
 
-			String previewURL =
+			return URLBuilder.create(
 				_assetDisplayPageFriendlyURLProvider.getFriendlyURL(
 					assetEntry.getClassName(), assetEntry.getClassPK(),
-					_themeDisplay);
-
-			previewURL = HttpComponentsUtil.addParameter(
-				previewURL, "p_l_mode", Constants.PREVIEW);
-
-			return HttpComponentsUtil.addParameter(
-				previewURL, "version", _article.getId());
+					_themeDisplay)
+			).addParameter(
+				"p_l_mode", Constants.PREVIEW
+			).addParameter(
+				"version", _article.getId()
+			).build();
 		}
 
 		if (Validator.isNull(_article.getDDMTemplateKey())) {

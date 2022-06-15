@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Namespace;
@@ -90,15 +90,19 @@ public class OpenSearchUtil {
 
 		link.addAttribute("rel", rel);
 
-		searchURL = HttpComponentsUtil.addParameter(
-			searchURL, "keywords", URLCodec.encodeURL(keywords));
-		searchURL = HttpComponentsUtil.addParameter(searchURL, "p", page);
-		searchURL = HttpComponentsUtil.addParameter(
-			searchURL, "c", itemsPerPage);
-		searchURL = HttpComponentsUtil.addParameter(
-			searchURL, "format", "atom");
-
-		link.addAttribute("href", searchURL);
+		link.addAttribute(
+			"href",
+			URLBuilder.create(
+				searchURL
+			).addParameter(
+				"keywords", URLCodec.encodeURL(keywords)
+			).addParameter(
+				"p", page
+			).addParameter(
+				"c", itemsPerPage
+			).addParameter(
+				"format", "atom"
+			).build());
 
 		link.addAttribute("type", "application/atom+xml");
 	}

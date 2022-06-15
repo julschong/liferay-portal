@@ -40,8 +40,8 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -137,10 +137,12 @@ public class LayoutAssetRendererTest {
 			WorkflowConstants.STATUS_PENDING, layout.getStatus());
 
 		Assert.assertEquals(
-			HttpComponentsUtil.addParameter(
+			URLBuilder.create(
 				_portal.getLayoutFriendlyURL(
-					layout.fetchDraftLayout(), _themeDisplay),
-				"p_l_back_url", _themeDisplay.getURLCurrent()),
+					layout.fetchDraftLayout(), _themeDisplay)
+			).addParameter(
+				"p_l_back_url", _themeDisplay.getURLCurrent()
+			).build(),
 			assetRenderer.getURLViewInContext(
 				_getLiferayPortletRequest(_themeDisplay), null, null));
 
@@ -165,10 +167,12 @@ public class LayoutAssetRendererTest {
 			WorkflowConstants.STATUS_DENIED, layout.getStatus());
 
 		Assert.assertEquals(
-			HttpComponentsUtil.addParameter(
+			URLBuilder.create(
 				_portal.getLayoutFriendlyURL(
-					layout.fetchDraftLayout(), _themeDisplay),
-				"p_l_back_url", _themeDisplay.getURLCurrent()),
+					layout.fetchDraftLayout(), _themeDisplay)
+			).addParameter(
+				"p_l_back_url", _themeDisplay.getURLCurrent()
+			).build(),
 			assetRenderer.getURLViewInContext(
 				_getLiferayPortletRequest(_themeDisplay), null, null));
 

@@ -111,10 +111,10 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -442,13 +442,12 @@ public class ContentPageEditorDisplayContext {
 							"/components/App.css")
 			).put(
 				"getIframeContentURL",
-				() -> {
-					String layoutURL = PortalUtil.getLayoutFriendlyURL(
-						themeDisplay.getLayout(), themeDisplay);
-
-					return HttpComponentsUtil.addParameter(
-						layoutURL, "p_l_mode", Constants.PREVIEW);
-				}
+				() -> URLBuilder.create(
+					PortalUtil.getLayoutFriendlyURL(
+						themeDisplay.getLayout(), themeDisplay)
+				).addParameter(
+					"p_l_mode", Constants.PREVIEW
+				).build()
 			).put(
 				"getInfoItemFieldValueURL",
 				_getResourceURL(
@@ -808,7 +807,7 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	protected String getFragmentEntryActionURL(String action, String command) {
-		return HttpComponentsUtil.addParameter(
+		return URLBuilder.create(
 			PortletURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
@@ -821,8 +820,10 @@ public class ContentPageEditorDisplayContext {
 
 					return null;
 				}
-			).buildString(),
-			"p_l_mode", Constants.EDIT);
+			).buildString()
+		).addParameter(
+			"p_l_mode", Constants.EDIT
+		).build();
 	}
 
 	protected long getGroupId() {
@@ -1009,9 +1010,11 @@ public class ContentPageEditorDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		return HttpComponentsUtil.addParameter(
-			infoListSelectorURL.toString(), "refererPlid",
-			themeDisplay.getPlid());
+		return URLBuilder.create(
+			infoListSelectorURL.toString()
+		).addParameter(
+			"refererPlid", themeDisplay.getPlid()
+		).build();
 	}
 
 	private Map<String, Object> _getDefaultConfigurations() {
@@ -1629,9 +1632,11 @@ public class ContentPageEditorDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		return HttpComponentsUtil.addParameter(
-			infoListSelectorURL.toString(), "refererPlid",
-			themeDisplay.getPlid());
+		return URLBuilder.create(
+			infoListSelectorURL.toString()
+		).addParameter(
+			"refererPlid", themeDisplay.getPlid()
+		).build();
 	}
 
 	private String _getItemSelectorURL() {
@@ -1916,8 +1921,11 @@ public class ContentPageEditorDisplayContext {
 
 		resourceURL.setResourceID(resourceID);
 
-		return HttpComponentsUtil.addParameter(
-			resourceURL.toString(), "p_l_mode", Constants.EDIT);
+		return URLBuilder.create(
+			resourceURL.toString()
+		).addParameter(
+			"p_l_mode", Constants.EDIT
+		).build();
 	}
 
 	private String _getResourceURL(String resourceID, boolean doAsGuest)

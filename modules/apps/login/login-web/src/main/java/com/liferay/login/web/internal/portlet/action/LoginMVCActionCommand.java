@@ -38,8 +38,8 @@ import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManager;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -214,9 +214,11 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 			if (!themeDisplay.isSignedIn()) {
 				actionRequest.setAttribute(
 					WebKeys.REDIRECT,
-					HttpComponentsUtil.addParameter(
-						_portal.getPathMain() + "/portal/login", "redirect",
-						redirect));
+					URLBuilder.create(
+						_portal.getPathMain() + "/portal/login"
+					).addParameter(
+						"redirect", redirect
+					).build());
 
 				return;
 			}

@@ -36,11 +36,11 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -248,23 +248,22 @@ public class NotificationTemplateContextFactory {
 
 		String layoutActualURL = PortalUtil.getLayoutActualURL(layout);
 
-		String url = portalURL + layoutActualURL;
-
 		String namespace = PortalUtil.getPortletNamespace(
 			CalendarPortletKeys.CALENDAR);
 
-		url = HttpComponentsUtil.addParameter(
-			url, namespace + "mvcPath", "/view_calendar_booking.jsp");
-
-		url = HttpComponentsUtil.addParameter(
-			url, "p_p_id", CalendarPortletKeys.CALENDAR);
-		url = HttpComponentsUtil.addParameter(url, "p_p_lifecycle", "0");
-		url = HttpComponentsUtil.addParameter(
-			url, "p_p_state", WindowState.MAXIMIZED.toString());
-		url = HttpComponentsUtil.addParameter(
-			url, namespace + "calendarBookingId", calendarBookingId);
-
-		return url;
+		return URLBuilder.create(
+			portalURL + layoutActualURL
+		).addParameter(
+			namespace + "mvcPath", "/view_calendar_booking.jsp"
+		).addParameter(
+			"p_p_id", CalendarPortletKeys.CALENDAR
+		).addParameter(
+			"p_p_lifecycle", "0"
+		).addParameter(
+			"p_p_state", WindowState.MAXIMIZED.toString()
+		).addParameter(
+			namespace + "calendarBookingId", calendarBookingId
+		).build();
 	}
 
 	private static String _getPortalURL(long companyId, long groupId)

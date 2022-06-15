@@ -401,7 +401,7 @@ NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 <%!
 private String _getHREF(String formName, String curParam, int cur, String jsCall, String url, String urlAnchor) throws Exception {
 	if (Validator.isNotNull(url)) {
-		return HtmlUtil.escapeHREF(HttpComponentsUtil.addParameter(HttpComponentsUtil.removeParameter(url, curParam) + urlAnchor, curParam, cur));
+		return HtmlUtil.escapeHREF(URLBuilder.create(url + urlAnchor).setParameter(curParam, cur).build());
 	}
 
 	return "javascript:document." + formName + "." + curParam + ".value = '" + cur + "'; " + jsCall;

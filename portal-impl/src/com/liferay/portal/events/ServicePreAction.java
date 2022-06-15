@@ -76,6 +76,7 @@ import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
@@ -1569,17 +1570,17 @@ public class ServicePreAction extends Action {
 
 		// URLs
 
-		String urlControlPanel = friendlyURLPrivateGroupPath.concat(
-			GroupConstants.CONTROL_PANEL_FRIENDLY_URL);
+		URLBuilder urlControlPanelBuilder = URLBuilder.create(
+			friendlyURLPrivateGroupPath.concat(
+				GroupConstants.CONTROL_PANEL_FRIENDLY_URL));
 
 		if (Validator.isNotNull(doAsUserId)) {
-			urlControlPanel = HttpComponentsUtil.addParameter(
-				urlControlPanel, "doAsUserId", doAsUserId);
+			urlControlPanelBuilder.addParameter("doAsUserId", doAsUserId);
 		}
 
 		if (refererGroupId > 0) {
-			urlControlPanel = HttpComponentsUtil.addParameter(
-				urlControlPanel, "refererGroupId", refererGroupId);
+			urlControlPanelBuilder.addParameter(
+				"refererGroupId", refererGroupId);
 		}
 		else if (scopeGroupId > 0) {
 			Layout refererLayout = LayoutLocalServiceUtil.fetchLayout(plid);
@@ -1588,20 +1589,20 @@ public class ServicePreAction extends Action {
 				Group refererLayoutGroup = refererLayout.getGroup();
 
 				if (refererLayoutGroup.isUserGroup()) {
-					urlControlPanel = HttpComponentsUtil.addParameter(
-						urlControlPanel, "refererGroupId", scopeGroupId);
+					urlControlPanelBuilder.addParameter(
+						"refererGroupId", scopeGroupId);
 				}
 			}
 		}
 
 		if (refererPlid > 0) {
-			urlControlPanel = HttpComponentsUtil.addParameter(
-				urlControlPanel, "refererPlid", refererPlid);
+			urlControlPanelBuilder.addParameter("refererPlid", refererPlid);
 		}
 		else if (plid > 0) {
-			urlControlPanel = HttpComponentsUtil.addParameter(
-				urlControlPanel, "refererPlid", plid);
+			urlControlPanelBuilder.addParameter("refererPlid", plid);
 		}
+
+		String urlControlPanel = urlControlPanelBuilder.build();
 
 		if (themeDisplay.isAddSessionIdToURL()) {
 			urlControlPanel = PortalUtil.getURLWithSessionId(
@@ -1732,15 +1733,15 @@ public class ServicePreAction extends Action {
 		String securePortalURL = PortalUtil.getPortalURL(
 			httpServletRequest, secure);
 
-		String urlSignIn = StringBundler.concat(
-			securePortalURL, mainPath, _PATH_PORTAL_LOGIN);
+		URLBuilder urlSignInBuilder = URLBuilder.create(
+			StringBundler.concat(
+				securePortalURL, mainPath, _PATH_PORTAL_LOGIN));
 
 		if (layout != null) {
-			urlSignIn = HttpComponentsUtil.addParameter(
-				urlSignIn, "p_l_id", layout.getPlid());
+			urlSignInBuilder.addParameter("p_l_id", layout.getPlid());
 		}
 
-		themeDisplay.setURLSignIn(urlSignIn);
+		themeDisplay.setURLSignIn(urlSignInBuilder.build());
 
 		themeDisplay.setURLSignOut(mainPath.concat(_PATH_PORTAL_LOGOUT));
 

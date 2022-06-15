@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -130,18 +130,15 @@ public class LayoutRevisionAssetRenderer
 				(ThemeDisplay)liferayPortletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			String layoutURL = PortalUtil.getLayoutURL(
-				LayoutLocalServiceUtil.getLayout(_layoutRevision.getPlid()),
-				themeDisplay);
-
-			layoutURL = HttpComponentsUtil.addParameter(
-				layoutURL, "layoutSetBranchId",
-				_layoutRevision.getLayoutSetBranchId());
-			layoutURL = HttpComponentsUtil.addParameter(
-				layoutURL, "layoutRevisionId",
-				_layoutRevision.getLayoutRevisionId());
-
-			return layoutURL;
+			return URLBuilder.create(
+				PortalUtil.getLayoutURL(
+					LayoutLocalServiceUtil.getLayout(_layoutRevision.getPlid()),
+					themeDisplay)
+			).addParameter(
+				"layoutSetBranchId", _layoutRevision.getLayoutSetBranchId()
+			).addParameter(
+				"layoutRevisionId", _layoutRevision.getLayoutRevisionId()
+			).build();
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

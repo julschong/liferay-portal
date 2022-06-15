@@ -85,6 +85,7 @@ page import="com.liferay.portal.kernel.service.TeamLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.UserGroupLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.permission.PortalPermissionUtil" %><%@
+page import="com.liferay.portal.kernel.url.URLBuilder" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@

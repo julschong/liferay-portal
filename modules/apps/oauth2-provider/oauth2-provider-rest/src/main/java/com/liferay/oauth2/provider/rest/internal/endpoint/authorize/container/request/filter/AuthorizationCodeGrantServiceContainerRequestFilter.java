@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.ProtectedPrincipal;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -136,21 +137,6 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 			return;
 		}
 
-		String loginURL = null;
-
-		try {
-			loginURL = _getLoginURL();
-		}
-		catch (ConfigurationException configurationException) {
-			_log.error(
-				"Unable to locate configuration", configurationException);
-
-			throw new WebApplicationException(
-				Response.status(
-					Response.Status.INTERNAL_SERVER_ERROR
-				).build());
-		}
-
 		URI requestURI = uriInfo.getRequestUri();
 
 		String requestURIString = requestURI.toASCIIString();
@@ -168,15 +154,28 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 			StringUtil.replace(
 				"?" + requestURI.getRawQuery(), CharPool.COLON, "%3a"));
 
-		loginURL = HttpComponentsUtil.addParameter(
-			loginURL, "redirect", requestURIString);
+		try {
+			containerRequestContext.abortWith(
+				Response.status(
+					Response.Status.FOUND
+				).location(
+					URI.create(
+						URLBuilder.create(
+							_getLoginURL()
+						).addParameter(
+							"redirect", requestURIString
+						).build())
+				).build());
+		}
+		catch (ConfigurationException configurationException) {
+			_log.error(
+				"Unable to locate configuration", configurationException);
 
-		containerRequestContext.abortWith(
-			Response.status(
-				Response.Status.FOUND
-			).location(
-				URI.create(loginURL)
-			).build());
+			throw new WebApplicationException(
+				Response.status(
+					Response.Status.INTERNAL_SERVER_ERROR
+				).build());
+		}
 	}
 
 	private boolean _containsOAuth2ApplicationViewPermission(

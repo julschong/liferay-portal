@@ -107,7 +107,7 @@ Set<String> contextNames = JSONWebServiceActionsManagerUtil.getContextNames();
 				%>
 
 					<li class="lfr-api-signature <%= serviceSignature.equals(signature) ? "border border-primary my-2 rounded selected" : StringPool.BLANK %>">
-						<a class="d-block lfr-api-service-result method-name px-2 py-1 rounded" data-metaData="<%= jsonWebServiceClassName %>" href="<%= HttpComponentsUtil.addParameter(jsonWSContextPath, "signature", serviceSignature) %>">
+						<a class="d-block lfr-api-service-result method-name px-2 py-1 rounded" data-metaData="<%= jsonWebServiceClassName %>" href="<%= URLBuilder.create(jsonWSContextPath).addParameter("signature", serviceSignature).build() %>">
 							<%= path %>
 						</a>
 					</li>

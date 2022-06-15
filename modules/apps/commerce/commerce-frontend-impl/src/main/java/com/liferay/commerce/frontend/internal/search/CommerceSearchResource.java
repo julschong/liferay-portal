@@ -51,11 +51,11 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -127,11 +127,13 @@ public class CommerceSearchResource {
 					_searchOrders(queryString, themeDisplay, commerceAccount));
 			}
 
-			String url = _commerceSearchUtil.getSearchFriendlyURL(themeDisplay);
+			String url = URLBuilder.create(
+				_commerceSearchUtil.getSearchFriendlyURL(themeDisplay)
+			).addParameter(
+				"q", queryString
+			).build();
 
 			if (Validator.isNotNull(url)) {
-				url = HttpComponentsUtil.addParameter(url, "q", queryString);
-
 				SearchItemModel searchItemModel = new SearchItemModel(
 					"category",
 					LanguageUtil.get(themeDisplay.getLocale(), "all-content"));
@@ -237,12 +239,13 @@ public class CommerceSearchResource {
 			searchItemModels.add(searchItemModel);
 		}
 
-		String url = _commerceSearchUtil.getAccountManagementFriendlyURL(
-			themeDisplay);
+		String url = URLBuilder.create(
+			_commerceSearchUtil.getAccountManagementFriendlyURL(themeDisplay)
+		).addParameter(
+			"q", queryString
+		).build();
 
 		if (Validator.isNotNull(url)) {
-			url = HttpComponentsUtil.addParameter(url, "q", queryString);
-
 			SearchItemModel searchItemModel = new SearchItemModel(
 				"category",
 				LanguageUtil.get(themeDisplay.getLocale(), "accounts"));
@@ -292,11 +295,13 @@ public class CommerceSearchResource {
 			searchItemModels.add(searchItemModel);
 		}
 
-		String url = _commerceSearchUtil.getOrdersFriendlyURL(themeDisplay);
+		String url = URLBuilder.create(
+			_commerceSearchUtil.getOrdersFriendlyURL(themeDisplay)
+		).addParameter(
+			"q", queryString
+		).build();
 
 		if (Validator.isNotNull(url)) {
-			url = HttpComponentsUtil.addParameter(url, "q", queryString);
-
 			SearchItemModel searchItemModel = new SearchItemModel(
 				"category",
 				LanguageUtil.get(themeDisplay.getLocale(), "orders"));
@@ -379,11 +384,13 @@ public class CommerceSearchResource {
 					commerceAccountId, cpCatalogEntry, themeDisplay));
 		}
 
-		String url = _commerceSearchUtil.getCatalogFriendlyURL(themeDisplay);
+		String url = URLBuilder.create(
+			_commerceSearchUtil.getCatalogFriendlyURL(themeDisplay)
+		).addParameter(
+			"q", queryString
+		).build();
 
 		if (Validator.isNotNull(url)) {
-			url = HttpComponentsUtil.addParameter(url, "q", queryString);
-
 			SearchItemModel searchItemModel = new SearchItemModel(
 				"category", LanguageUtil.get(resourceBundle, "catalog"));
 

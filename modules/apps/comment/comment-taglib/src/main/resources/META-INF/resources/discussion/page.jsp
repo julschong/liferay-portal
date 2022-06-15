@@ -253,13 +253,19 @@ StagingGroupHelper stagingGroupHelper = StagingGroupHelperUtil.getStagingGroupHe
 			LiferayWindowState.POP_UP
 		).buildPortletURL();
 
-		String editorURL = GetterUtil.getString(request.getAttribute("liferay-comment:discussion:editorURL"));
+		String editorURL = URLBuilder.create(
+			GetterUtil.getString(request.getAttribute("liferay-comment:discussion:editorURL"))
+		).addParameter(
+			"namespace", namespace
+		).build();
 
-		editorURL = HttpComponentsUtil.addParameter(editorURL, "namespace", namespace);
-
-		String paginationURL = HttpComponentsUtil.addParameter(discussionTaglibHelper.getPaginationURL(), "namespace", namespace);
-
-		paginationURL = HttpComponentsUtil.addParameter(paginationURL, "skipEditorLoading", "true");
+		String paginationURL = URLBuilder.create(
+			discussionTaglibHelper.getPaginationURL()
+		).addParameter(
+			"namespace", namespace
+		).addParameter(
+			"skipEditorLoading", "true"
+		).build();
 		%>
 
 		<liferay-frontend:component

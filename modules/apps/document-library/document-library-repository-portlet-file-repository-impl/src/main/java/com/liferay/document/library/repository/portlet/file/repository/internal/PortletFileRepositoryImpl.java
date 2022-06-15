@@ -45,10 +45,10 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -424,10 +424,12 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		ThemeDisplay themeDisplay, FileEntry fileEntry, String queryString,
 		boolean absoluteURL) {
 
-		return HttpComponentsUtil.addParameter(
+		return URLBuilder.create(
 			getPortletFileEntryURL(
-				themeDisplay, fileEntry, queryString, absoluteURL),
-			"download", true);
+				themeDisplay, fileEntry, queryString, absoluteURL)
+		).addParameter(
+			"download", true
+		).build();
 	}
 
 	@Override

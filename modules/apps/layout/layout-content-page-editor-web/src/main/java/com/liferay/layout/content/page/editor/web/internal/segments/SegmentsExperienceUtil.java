@@ -41,8 +41,8 @@ import com.liferay.portal.kernel.service.PortletPreferenceValueLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -335,11 +335,13 @@ public class SegmentsExperienceUtil {
 		ThemeDisplay themeDisplay, String layoutFullURL,
 		long segmentsExperienceId) {
 
-		HttpComponentsUtil.addParameter(
-			layoutFullURL, "p_l_back_url", themeDisplay.getURLCurrent());
-
-		return HttpComponentsUtil.addParameter(
-			layoutFullURL, "segmentsExperienceId", segmentsExperienceId);
+		return URLBuilder.create(
+			layoutFullURL
+		).addParameter(
+			"p_l_back_url", themeDisplay.getURLCurrent()
+		).addParameter(
+			"segmentsExperienceId", segmentsExperienceId
+		).build();
 	}
 
 	private static JSONObject _updateLayoutDataJSONObject(

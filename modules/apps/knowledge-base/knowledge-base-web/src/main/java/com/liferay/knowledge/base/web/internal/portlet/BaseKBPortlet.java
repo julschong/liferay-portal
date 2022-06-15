@@ -58,6 +58,7 @@ import com.liferay.portal.kernel.upload.LiferayFileItemException;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -726,11 +727,14 @@ public abstract class BaseKBPortlet extends MVCPortlet {
 
 		String namespace = PortalUtil.getPortletNamespace(portletId);
 
+		URLBuilder redirectURLBuilder = URLBuilder.create(redirect);
+
 		if (Validator.isNotNull(portletId)) {
-			redirect = HttpComponentsUtil.addParameter(
-				redirect, namespace + "className", clazz.getName());
-			redirect = HttpComponentsUtil.addParameter(
-				redirect, namespace + "classPK", classPK);
+			redirectURLBuilder.addParameter(
+				namespace + "className", clazz.getName()
+			).addParameter(
+				namespace + "classPK", classPK
+			);
 		}
 
 		return redirect;

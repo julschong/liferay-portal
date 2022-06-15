@@ -53,11 +53,11 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.TrashRenderer;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -379,12 +379,14 @@ public class JournalArticleAssetRenderer
 					themeDisplay);
 
 			if (Validator.isNotNull(friendlyURL)) {
+				URLBuilder friendlyURLBuilder = URLBuilder.create(friendlyURL);
+
 				if (!_article.isApproved()) {
-					friendlyURL = HttpComponentsUtil.addParameter(
-						friendlyURL, "version", _article.getId());
+					friendlyURLBuilder.addParameter(
+						"version", _article.getId());
 				}
 
-				return friendlyURL;
+				return friendlyURLBuilder.build();
 			}
 		}
 
@@ -394,16 +396,17 @@ public class JournalArticleAssetRenderer
 			return noSuchEntryRedirect;
 		}
 
-		String friendlyURL = JournalHelperUtil.createURLPattern(
-			_article, themeDisplay.getLocale(), layout.isPrivateLayout(),
-			JournalArticleConstants.CANONICAL_URL_SEPARATOR, themeDisplay);
+		URLBuilder friendlyURLBuilder = URLBuilder.create(
+			JournalHelperUtil.createURLPattern(
+				_article, themeDisplay.getLocale(), layout.isPrivateLayout(),
+				JournalArticleConstants.CANONICAL_URL_SEPARATOR, themeDisplay));
 
 		if (!_article.isApproved()) {
-			friendlyURL = HttpComponentsUtil.addParameter(
-				friendlyURL, "version", _article.getId());
+			friendlyURLBuilder.addParameter("version", _article.getId());
 		}
 
-		return PortalUtil.addPreservedParameters(themeDisplay, friendlyURL);
+		return PortalUtil.addPreservedParameters(
+			themeDisplay, friendlyURLBuilder.build());
 	}
 
 	@Override

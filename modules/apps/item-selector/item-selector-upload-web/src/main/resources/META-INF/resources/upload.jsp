@@ -23,12 +23,12 @@ ItemSelectorReturnTypeResolver<?, ?> itemSelectorReturnTypeResolver = itemSelect
 
 Class<?> itemSelectorReturnTypeClass = itemSelectorReturnTypeResolver.getItemSelectorReturnTypeClass();
 
-String uploadURL = itemSelectorUploadViewDisplayContext.getURL();
+URLBuilder uploadURLBuilder = URLBuilder.create(itemSelectorUploadViewDisplayContext.getURL());
 
 String namespace = itemSelectorUploadViewDisplayContext.getNamespace();
 
 if (Validator.isNotNull(namespace)) {
-	uploadURL = HttpComponentsUtil.addParameter(uploadURL, namespace + "returnType", itemSelectorReturnTypeClass.getName());
+	uploadURLBuilder.addParameter(namespace + "returnType", itemSelectorReturnTypeClass.getName());
 }
 %>
 
@@ -64,7 +64,7 @@ if (Validator.isNotNull(namespace)) {
 		HashMapBuilder.<String, Object>put(
 			"closeCaption", itemSelectorUploadViewDisplayContext.getTitle(locale)
 		).put(
-			"editImageURL", uploadURL
+			"editImageURL", uploadURLBuilder.build()
 		).put(
 			"eventName", itemSelectorUploadViewDisplayContext.getItemSelectedEventName()
 		).put(
@@ -74,7 +74,7 @@ if (Validator.isNotNull(namespace)) {
 		).put(
 			"uploadItemReturnType", HtmlUtil.escapeAttribute(itemSelectorReturnTypeClass.getName())
 		).put(
-			"uploadItemURL", uploadURL
+			"uploadItemURL", uploadURLBuilder.build()
 		).put(
 			"validExtensions", ArrayUtil.isEmpty(itemSelectorUploadViewDisplayContext.getExtensions()) ? "*" : StringUtil.merge(itemSelectorUploadViewDisplayContext.getExtensions())
 		).build()

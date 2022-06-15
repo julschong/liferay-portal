@@ -34,8 +34,8 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -155,12 +155,15 @@ public class SalesforceObjectEntryManagerImpl
 
 		JSONObject responseJSONObject1 = _salesforceHttp.get(
 			companyId, getGroupId(objectDefinition, scopeKey),
-			HttpComponentsUtil.addParameter(
-				"query", "q",
+			URLBuilder.create(
+				"query"
+			).addParameter(
+				"q",
 				StringBundler.concat(
 					"SELECT FIELDS(ALL) FROM ",
 					_getSalesforceObjectName(objectDefinition.getName()),
-					_getSalesforcePagination(pagination))));
+					_getSalesforcePagination(pagination))
+			).build());
 
 		if ((responseJSONObject1 == null) ||
 			(responseJSONObject1.length() == 0)) {
@@ -170,10 +173,13 @@ public class SalesforceObjectEntryManagerImpl
 
 		JSONObject responseJSONObject2 = _salesforceHttp.get(
 			companyId, getGroupId(objectDefinition, scopeKey),
-			HttpComponentsUtil.addParameter(
-				"query", "q",
+			URLBuilder.create(
+				"query"
+			).addParameter(
+				"q",
 				"SELECT COUNT(Id) FROM " +
-					_getSalesforceObjectName(objectDefinition.getName())));
+					_getSalesforceObjectName(objectDefinition.getName())
+			).build());
 
 		JSONArray jsonArray = responseJSONObject2.getJSONArray("records");
 

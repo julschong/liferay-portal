@@ -96,6 +96,7 @@ import com.liferay.portal.kernel.upload.LiferayFileItemException;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -330,6 +331,9 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 						ParamUtil.getString(actionRequest, "redirect"));
 
 					if (Validator.isNotNull(redirect)) {
+						URLBuilder redirectURLBuilder = URLBuilder.create(
+							redirect);
+
 						if (cmd.equals(Constants.ADD) && (fileEntry != null)) {
 							String portletResource =
 								HttpComponentsUtil.getParameter(
@@ -339,16 +343,17 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 								portletResource);
 
 							if (Validator.isNotNull(portletResource)) {
-								redirect = HttpComponentsUtil.addParameter(
-									redirect, namespace + "className",
+								redirectURLBuilder.addParameter(
+									namespace + "className",
 									DLFileEntry.class.getName());
-								redirect = HttpComponentsUtil.addParameter(
-									redirect, namespace + "classPK",
+								redirectURLBuilder.addParameter(
+									namespace + "classPK",
 									fileEntry.getFileEntryId());
 							}
 						}
 
-						actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
+						actionRequest.setAttribute(
+							WebKeys.REDIRECT, redirectURLBuilder.build());
 					}
 				}
 			}

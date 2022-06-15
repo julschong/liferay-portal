@@ -32,8 +32,8 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -191,17 +191,17 @@ public class EditLayoutAction extends JSONAction {
 			layoutType.getConfigurationActionUpdate(), httpServletRequest,
 			httpServletResponse);
 
-		String layoutURL = PortalUtil.getLayoutURL(layout, themeDisplay);
+		URLBuilder layoutURLBuilder = URLBuilder.create(
+			PortalUtil.getLayoutURL(layout, themeDisplay));
 
 		if (Validator.isNotNull(doAsUserId)) {
-			layoutURL = HttpComponentsUtil.addParameter(
-				layoutURL, "doAsUserId", themeDisplay.getDoAsUserId());
+			layoutURLBuilder.addParameter(
+				"doAsUserId", themeDisplay.getDoAsUserId());
 		}
 
 		if (Validator.isNotNull(doAsUserLanguageId)) {
-			layoutURL = HttpComponentsUtil.addParameter(
-				layoutURL, "doAsUserLanguageId",
-				themeDisplay.getDoAsUserLanguageId());
+			layoutURLBuilder.addParameter(
+				"doAsUserLanguageId", themeDisplay.getDoAsUserLanguageId());
 		}
 
 		boolean deleteable = LayoutPermissionUtil.contains(
@@ -215,7 +215,7 @@ public class EditLayoutAction extends JSONAction {
 			themeDisplay.getPermissionChecker(), layout, ActionKeys.UPDATE);
 
 		return new String[] {
-			String.valueOf(layout.getLayoutId()), layoutURL,
+			String.valueOf(layout.getLayoutId()), layoutURLBuilder.build(),
 			String.valueOf(deleteable), String.valueOf(sortable),
 			String.valueOf(updateable)
 		};

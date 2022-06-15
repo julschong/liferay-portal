@@ -17,6 +17,7 @@ package com.liferay.portal.servlet;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -91,11 +92,12 @@ public class ComboServletStaticURLGenerator {
 		}
 
 		if (sb.length() > 0) {
-			String url = _urlPrefix + sb.toString();
-
-			url = HttpComponentsUtil.addParameter(url, "t", timestamp);
-
-			urls.add(url);
+			urls.add(
+				URLBuilder.create(
+					_urlPrefix + sb.toString()
+				).addParameter(
+					"t", timestamp
+				).build());
 		}
 
 		return urls;

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -277,19 +277,20 @@ public class ItemSelectorImplTest {
 			_itemSelectorImpl.getItemSelectorParameters(
 				itemSelectedEventName, itemSelectorCriteria);
 
-		String itemSelectorURL = StringBundler.concat(
-			"http://localhost/select/",
-			Stream.of(
-				itemSelectorCriteria
-			).map(
-				itemSelectorCriterion ->
-					ItemSelectorKeyUtil.getItemSelectorCriterionKey(
-						itemSelectorCriterion.getClass())
-			).collect(
-				Collectors.joining(StringPool.COMMA)
-			),
-			StringPool.SLASH, itemSelectedEventName,
-			"?p_p_state=popup&p_p_mode=view");
+		URLBuilder itemSelectorURLBuilder = URLBuilder.create(
+			StringBundler.concat(
+				"http://localhost/select/",
+				Stream.of(
+					itemSelectorCriteria
+				).map(
+					itemSelectorCriterion ->
+						ItemSelectorKeyUtil.getItemSelectorCriterionKey(
+							itemSelectorCriterion.getClass())
+				).collect(
+					Collectors.joining(StringPool.COMMA)
+				),
+				StringPool.SLASH, itemSelectedEventName,
+				"?p_p_state=popup&p_p_mode=view"));
 
 		String namespace = PortalUtil.getPortletNamespace(
 			ItemSelectorPortletKeys.ITEM_SELECTOR);
@@ -297,12 +298,11 @@ public class ItemSelectorImplTest {
 		for (Map.Entry<String, String[]> entry :
 				itemSelectorParameters.entrySet()) {
 
-			itemSelectorURL = HttpComponentsUtil.addParameter(
-				itemSelectorURL, namespace + entry.getKey(),
-				entry.getValue()[0]);
+			itemSelectorURLBuilder.addParameter(
+				namespace + entry.getKey(), entry.getValue()[0]);
 		}
 
-		return itemSelectorURL;
+		return itemSelectorURLBuilder.build();
 	}
 
 	private void _setUpItemSelectionCriterionHandlers() {

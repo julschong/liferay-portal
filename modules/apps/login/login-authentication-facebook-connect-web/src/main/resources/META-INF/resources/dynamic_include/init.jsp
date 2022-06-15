@@ -22,8 +22,8 @@
 page import="com.liferay.portal.kernel.json.JSONUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.servlet.PortalSessionThreadLocal" %><%@
+page import="com.liferay.portal.kernel.url.URLBuilder" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
-page import="com.liferay.portal.kernel.util.HttpComponentsUtil" %><%@
 page import="com.liferay.portal.kernel.util.PropsKeys" %><%@
 page import="com.liferay.portal.kernel.util.PropsUtil" %><%@
 page import="com.liferay.portal.kernel.util.PwdGenerator" %><%@

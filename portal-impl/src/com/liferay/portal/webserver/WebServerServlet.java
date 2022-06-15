@@ -93,6 +93,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.trash.helper.TrashHelper;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -854,12 +855,12 @@ public class WebServerServlet extends HttpServlet {
 			return;
 		}
 
-		String redirect = PortalUtil.getPathMain() + "/portal/login";
-
-		redirect = HttpComponentsUtil.addParameter(
-			redirect, "redirect", PortalUtil.getCurrentURL(httpServletRequest));
-
-		httpServletResponse.sendRedirect(redirect);
+		httpServletResponse.sendRedirect(
+			URLBuilder.create(
+				PortalUtil.getPathMain() + "/portal/login"
+			).addParameter(
+				"redirect", PortalUtil.getCurrentURL(httpServletRequest)
+			).build());
 	}
 
 	protected void sendDocumentLibrary(

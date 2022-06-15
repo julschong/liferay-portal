@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -289,7 +290,11 @@ public class MemberRequestLocalServiceImpl
 			name = PortalUtil.getPortletNamespace(portletId) + name;
 		}
 
-		return HttpComponentsUtil.addParameter(url, name, value);
+		return URLBuilder.create(
+			url
+		).addParameter(
+			name, value
+		).build();
 	}
 
 	protected String getCreateAccountURL(
@@ -337,8 +342,11 @@ public class MemberRequestLocalServiceImpl
 		redirectURL = addParameterWithPortletNamespace(
 			redirectURL, "key", memberRequest.getKey());
 
-		return HttpComponentsUtil.addParameter(
-			loginURL, "redirect", redirectURL);
+		return URLBuilder.create(
+			loginURL
+		).addParameter(
+			"redirect", redirectURL
+		).build();
 	}
 
 	protected String getRedirectURL(ServiceContext serviceContext) {

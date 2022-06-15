@@ -36,7 +36,7 @@ String widgetURL = ParamUtil.getString(request, "widgetURL");
 		<p>
 			<aui:a
 				href='<%=
-			HttpComponentsUtil.addParameter("http://eco.netvibes.com/apps/submit/info", "url", netvibesURL) %>' target="_blank"><liferay-ui:message key="add-this-application-to-netvibes" /></aui:a
+			URLBuilder.create("http://eco.netvibes.com/apps/submit/info").addParameter("url", netvibesURL).build() %>' target="_blank"><liferay-ui:message key="add-this-application-to-netvibes" /></aui:a
 			>
 		</p>
 

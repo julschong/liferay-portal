@@ -36,8 +36,8 @@ import com.liferay.portal.kernel.service.permission.LayoutPermission;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.TransferHeadersHelper;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -184,8 +184,8 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 			Layout draftLayout = layout.fetchDraftLayout();
 
 			if (layoutMode.equals(Constants.EDIT) && (draftLayout != null)) {
-				String layoutFullURL = _portal.getLayoutFullURL(
-					draftLayout, themeDisplay);
+				URLBuilder layoutFullURLBuilder = URLBuilder.create(
+					_portal.getLayoutFullURL(draftLayout, themeDisplay));
 
 				HttpServletRequest originalHttpServletRequest =
 					_portal.getOriginalServletRequest(httpServletRequest);
@@ -194,23 +194,20 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 					"p_l_back_url");
 
 				if (Validator.isNotNull(backURL)) {
-					layoutFullURL = HttpComponentsUtil.addParameter(
-						layoutFullURL, "p_l_back_url", backURL);
+					layoutFullURLBuilder.addParameter("p_l_back_url", backURL);
 				}
 
-				layoutFullURL = HttpComponentsUtil.addParameter(
-					layoutFullURL, "p_l_mode", Constants.EDIT);
+				layoutFullURLBuilder.addParameter("p_l_mode", Constants.EDIT);
 
 				long segmentsExperienceId = ParamUtil.getLong(
 					httpServletRequest, "segmentsExperienceId", -1);
 
 				if (segmentsExperienceId != -1) {
-					layoutFullURL = HttpComponentsUtil.setParameter(
-						layoutFullURL, "segmentsExperienceId",
-						segmentsExperienceId);
+					layoutFullURLBuilder.setParameter(
+						"segmentsExperienceId", segmentsExperienceId);
 				}
 
-				httpServletResponse.sendRedirect(layoutFullURL);
+				httpServletResponse.sendRedirect(layoutFullURLBuilder.build());
 			}
 			else {
 				requestDispatcher.include(httpServletRequest, servletResponse);

@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.url.URLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -319,8 +320,11 @@ public class LayoutClassedModelUsagesDisplayContext {
 			).buildString();
 		}
 
-		String portletURLString = HttpComponentsUtil.addParameter(
-			layoutURL, "p_l_mode", Constants.PREVIEW);
+		String portletURLString = URLBuilder.create(
+			layoutURL
+		).addParameter(
+			"p_l_mode", Constants.PREVIEW
+		).build();
 
 		return portletURLString + "#portlet_" +
 			layoutClassedModelUsage.getContainerKey();
