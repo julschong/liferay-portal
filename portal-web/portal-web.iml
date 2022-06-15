@@ -33,7 +33,6 @@
 		<orderEntry type="module" module-name="petra-function" scope="PROVIDED" />
 		<orderEntry type="module" module-name="petra-io" scope="PROVIDED" />
 		<orderEntry type="module" module-name="petra-lang" scope="PROVIDED" />
-		<orderEntry type="module" module-name="petra-log4j" scope="PROVIDED" />
 		<orderEntry type="module" module-name="petra-mail" scope="PROVIDED" />
 		<orderEntry type="module" module-name="petra-memory" scope="PROVIDED" />
 		<orderEntry type="module" module-name="petra-nio" scope="PROVIDED" />
@@ -47,6 +46,7 @@
 		<orderEntry type="module" module-name="petra-xml" scope="PROVIDED" />
 		<orderEntry type="module" module-name="portal-kernel" scope="PROVIDED" />
 		<orderEntry type="module" module-name="portal-impl" />
+		<orderEntry type="module" module-name="portal-log4j" scope="PROVIDED" />
 		<orderEntry type="module" module-name="util-java" />
 		<orderEntry type="module" module-name="util-taglib" />
 		<orderEntry type="library" scope="PROVIDED" name="development" level="project" />
