@@ -388,7 +388,7 @@ public class PropsUtil {
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Portal web directory " + portalWebDir);
+			_log.debug("Portal web directory: " + portalWebDir);
 		}
 
 		SystemProperties.set(PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);

@@ -55,7 +55,6 @@ import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
-import javax.portlet.WindowStateException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -82,10 +81,9 @@ public class CommercePaymentMethodTableFDSView
 			long groupId, HttpServletRequest httpServletRequest, Object model)
 		throws PortalException {
 
-		PaymentMethod paymentMethod = (PaymentMethod)model;
-
 		long commerceChannelId = ParamUtil.getLong(
 			httpServletRequest, "commerceChannelId");
+		PaymentMethod paymentMethod = (PaymentMethod)model;
 
 		DropdownItemList dropdownItemList = DropdownItemListBuilder.add(
 			dropdownItem -> {
@@ -227,7 +225,7 @@ public class CommercePaymentMethodTableFDSView
 			String paymentMethodKey, HttpServletRequest httpServletRequest)
 		throws PortalException {
 
-		PortletURL portletURL = PortletURLBuilder.create(
+		return PortletURLBuilder.create(
 			_portal.getControlPanelPortletURL(
 				httpServletRequest,
 				"com_liferay_portlet_configuration_web_portlet_" +
@@ -247,16 +245,9 @@ public class CommercePaymentMethodTableFDSView
 		).setParameter(
 			"resourcePrimKey",
 			commercePaymentMethodGroupRel.getCommercePaymentMethodGroupRelId()
+		).setWindowState(
+			LiferayWindowState.POP_UP
 		).buildPortletURL();
-
-		try {
-			portletURL.setWindowState(LiferayWindowState.POP_UP);
-		}
-		catch (WindowStateException windowStateException) {
-			throw new PortalException(windowStateException);
-		}
-
-		return portletURL;
 	}
 
 	private boolean _isActive(
