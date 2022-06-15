@@ -103,6 +103,8 @@ public class LibraryReferenceTest {
 
 	@Test
 	public void testIntelliJLibPreModules() {
+		StringBundler errorMessageSB = new StringBundler();
+
 		for (Map.Entry<String, List<String>> entry :
 				_intelliJModuleSourceModules.entrySet()) {
 
@@ -123,11 +125,20 @@ public class LibraryReferenceTest {
 				}
 			}
 
-			Assert.assertTrue(
-				intelliJFileName +
-					" is missing orderEntry elements for modules " +
-						missingModules,
-				missingModules.isEmpty());
+			try {
+				Assert.assertTrue(missingModules.isEmpty());
+			}
+			catch (AssertionError assertionError) {
+				errorMessageSB.append(intelliJFileName);
+				errorMessageSB.append(
+					" is missing orderEntry elements for modules: ");
+				errorMessageSB.append(missingModules);
+				errorMessageSB.append(StringPool.NEW_LINE);
+			}
+		}
+
+		if (errorMessageSB.length() > 0) {
+			Assert.fail(errorMessageSB.toString());
 		}
 	}
 
