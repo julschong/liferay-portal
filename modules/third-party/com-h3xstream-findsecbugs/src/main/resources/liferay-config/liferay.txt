@@ -66,18 +66,6 @@ com/liferay/portal/kernel/util/UnicodeFormatter.parseString(Ljava/lang/String;)L
 com/liferay/portal/kernel/util/UnicodeFormatter.toString([C)Ljava/lang/String;:0|+XSS_SAFE
 com/liferay/portal/kernel/util/UnicodeFormatter.toString(Ljava/lang/String;)Ljava/lang/String;:0|+XSS_SAFE
 
-com/liferay/portal/kernel/util/HttpComponentsUtil.addParameter(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;:1,2
-com/liferay/portal/kernel/util/HttpComponentsUtil.addParameter(Ljava/lang/String;Ljava/lang/String;D)Ljava/lang/String;:2,3
-com/liferay/portal/kernel/util/HttpComponentsUtil.addParameter(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;:1,2
-com/liferay/portal/kernel/util/HttpComponentsUtil.addParameter(Ljava/lang/String;Ljava/lang/String;J)Ljava/lang/String;:2,3
-com/liferay/portal/kernel/util/HttpComponentsUtil.addParameter(Ljava/lang/String;Ljava/lang/String;S)Ljava/lang/String;:1,2
-com/liferay/portal/kernel/util/HttpComponentsUtil.addParameter(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;:0,1,2
-com/liferay/portal/kernel/util/HttpComponentsUtil.setParameter(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;:1,2
-com/liferay/portal/kernel/util/HttpComponentsUtil.setParameter(Ljava/lang/String;Ljava/lang/String;D)Ljava/lang/String;:2,3
-com/liferay/portal/kernel/util/HttpComponentsUtil.setParameter(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;:1,2
-com/liferay/portal/kernel/util/HttpComponentsUtil.setParameter(Ljava/lang/String;Ljava/lang/String;J)Ljava/lang/String;:2,3
-com/liferay/portal/kernel/util/HttpComponentsUtil.setParameter(Ljava/lang/String;Ljava/lang/String;S)Ljava/lang/String;:1,2
-com/liferay/portal/kernel/util/HttpComponentsUtil.setParameter(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;:0,1,2
 com/liferay/portal/kernel/util/HttpComponentsUtil.encodeURL(Ljava/lang/String;)Ljava/lang/String;:0|+CR_ENCODED,+LF_ENCODED,+QUOTE_ENCODED,+LT_ENCODED
 com/liferay/portal/kernel/util/HttpComponentsUtil.decodeURL(Ljava/lang/String;)Ljava/lang/String;:0|-XSS_SAFE,-CR_ENCODED,-LF_ENCODED,-QUOTE_ENCODED,-LT_ENCODED
 com/liferay/portal/kernel/util/HttpComponentsUtil.getCompleteURL(Ljavax/servlet/http/HttpServletRequest;)Ljava/lang/String;:TAINTED|+CR_ENCODED,+LF_ENCODED,+QUOTE_ENCODED,+LT_ENCODED
@@ -87,6 +75,19 @@ com/liferay/portal/kernel/util/URLCodec.decodeURL(Ljava/lang/String;Ljava/lang/S
 com/liferay/portal/kernel/util/URLCodec.encodeURL(Ljava/lang/String;)Ljava/lang/String;:0|+CR_ENCODED,+LF_ENCODED,+QUOTE_ENCODED,+LT_ENCODED
 com/liferay/portal/kernel/util/URLCodec.encodeURL(Ljava/lang/String;Z)Ljava/lang/String;:1|+CR_ENCODED,+LF_ENCODED,+QUOTE_ENCODED,+LT_ENCODED
 com/liferay/portal/kernel/util/URLCodec.encodeURL(Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;:1|+CR_ENCODED,+LF_ENCODED,+QUOTE_ENCODED,+LT_ENCODED
+
+com/liferay/portal/kernel/url/URLBuilder.addParameter(Ljava/lang/String;Z)Lcom/liferay/portal/kernel/url/URLBuilder;:1
+com/liferay/portal/kernel/url/URLBuilder.addParameter(Ljava/lang/String;D)Lcom/liferay/portal/kernel/url/URLBuilder;:2
+com/liferay/portal/kernel/url/URLBuilder.addParameter(Ljava/lang/String;I)Lcom/liferay/portal/kernel/url/URLBuilder;:1
+com/liferay/portal/kernel/url/URLBuilder.addParameter(Ljava/lang/String;J)Lcom/liferay/portal/kernel/url/URLBuilder;:2
+com/liferay/portal/kernel/url/URLBuilder.addParameter(Ljava/lang/String;S)Lcom/liferay/portal/kernel/url/URLBuilder;:1
+com/liferay/portal/kernel/url/URLBuilder.addParameter(Ljava/lang/String;Ljava/lang/String;)Lcom/liferay/portal/kernel/url/URLBuilder;:0,1
+com/liferay/portal/kernel/url/URLBuilder.setParameter(Ljava/lang/String;Z)Lcom/liferay/portal/kernel/url/URLBuilder;:1
+com/liferay/portal/kernel/url/URLBuilder.setParameter(Ljava/lang/String;D)Lcom/liferay/portal/kernel/url/URLBuilder;:2
+com/liferay/portal/kernel/url/URLBuilder.setParameter(Ljava/lang/String;I)Lcom/liferay/portal/kernel/url/URLBuilder;:1
+com/liferay/portal/kernel/url/URLBuilder.setParameter(Ljava/lang/String;J)Lcom/liferay/portal/kernel/url/URLBuilder;:2
+com/liferay/portal/kernel/url/URLBuilder.setParameter(Ljava/lang/String;S)Lcom/liferay/portal/kernel/url/URLBuilder;:1
+com/liferay/portal/kernel/url/URLBuilder.setParameter(Ljava/lang/String;Ljava/lang/String;)Lcom/liferay/portal/kernel/url/URLBuilder;:0,1
 
 ------ TAINT HINTS ------
 
