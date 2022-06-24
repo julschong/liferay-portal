@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
@@ -136,7 +137,12 @@ public class NotificationQueueEntryLocalServiceImpl
 				mailMessage.setCC(
 					_toInternetAddresses(notificationQueueEntry.getCc()));
 
-				_mailSender.sendEmail(mailMessage);
+				TransactionCommitCallbackUtil.registerCallback(
+					() -> {
+						_mailSender.sendEmail(mailMessage);
+
+						return null;
+					});
 
 				notificationQueueEntryLocalService.updateSent(
 					notificationQueueEntry.getNotificationQueueEntryId(), true);

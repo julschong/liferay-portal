@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -569,7 +570,12 @@ public class WebFormPortlet extends MVCPortlet {
 
 			mailMessage.setTo(toAddresses);
 
-			_mailSender.sendEmail(mailMessage);
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					_mailSender.sendEmail(mailMessage);
+
+					return null;
+				});
 
 			return true;
 		}

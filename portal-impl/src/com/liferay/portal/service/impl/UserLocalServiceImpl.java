@@ -7085,7 +7085,12 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				PortalUtil.getMailId(
 					company.getMx(), "user", System.currentTimeMillis()));
 
-			MailSenderUtil.sendEmail(mailMessage);
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					MailSenderUtil.sendEmail(mailMessage);
+
+					return null;
+				});
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);

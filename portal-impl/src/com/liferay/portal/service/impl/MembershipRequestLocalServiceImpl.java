@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -478,7 +479,12 @@ public class MembershipRequestLocalServiceImpl
 					company.getMx(), "membership_request",
 					membershipRequest.getMembershipRequestId()));
 
-			MailSenderUtil.sendEmail(mailMessage);
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					MailSenderUtil.sendEmail(mailMessage);
+
+					return null;
+				});
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);

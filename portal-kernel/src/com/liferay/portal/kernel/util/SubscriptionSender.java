@@ -934,7 +934,12 @@ public class SubscriptionSender implements Serializable {
 
 		processMailMessage(mailMessage, locale);
 
-		MailSenderUtil.sendEmail(mailMessage);
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				MailSenderUtil.sendEmail(mailMessage);
+
+				return null;
+			});
 	}
 
 	protected void sendEmailNotification(User user) throws Exception {

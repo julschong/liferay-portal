@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
@@ -223,20 +222,15 @@ public class MailSenderImpl implements IdentifiableOSGiService, MailSender {
 
 	@Override
 	public void sendEmail(MailMessage mailMessage) {
-		TransactionCommitCallbackUtil.registerCallback(
-			() -> {
-				if (_log.isDebugEnabled()) {
-					_log.debug("sendEmail");
-				}
+		if (_log.isDebugEnabled()) {
+			_log.debug("sendEmail");
+		}
 
-				Message message = new Message();
+		Message message = new Message();
 
-				message.setPayload(message);
+		message.setPayload(message);
 
-				_messageBus.sendMessage(DestinationNames.MAIL, message);
-
-				return null;
-			});
+		_messageBus.sendMessage(DestinationNames.MAIL, message);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(MailSenderImpl.class);

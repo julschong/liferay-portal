@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -276,8 +277,12 @@ public class CommerceNotificationQueueEntryLocalServiceImpl
 				ccInternetAddresses.toArray(new InternetAddress[0]));
 
 			try {
-				_mailSender.sendEmail(mailMessage);
+				TransactionCommitCallbackUtil.registerCallback(
+					() -> {
+						_mailSender.sendEmail(mailMessage);
 
+						return null;
+					});
 				commerceNotificationQueueEntryLocalService.updateSent(
 					commerceNotificationQueueEntry.
 						getCommerceNotificationQueueEntryId(),

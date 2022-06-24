@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -432,7 +433,12 @@ public class MemberRequestLocalServiceImpl
 		MailMessage mailMessage = new MailMessage(
 			from, to, subject, body, true);
 
-		_mailSender.sendEmail(mailMessage);
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				_mailSender.sendEmail(mailMessage);
+
+				return null;
+			});
 	}
 
 	protected void sendNotificationEvent(MemberRequest memberRequest)

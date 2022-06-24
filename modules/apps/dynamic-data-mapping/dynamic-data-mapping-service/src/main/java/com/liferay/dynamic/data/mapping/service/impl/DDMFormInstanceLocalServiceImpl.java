@@ -55,6 +55,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -394,7 +395,12 @@ public class DDMFormInstanceLocalServiceImpl
 
 		mailMessage.setTo(internetAddresses.toArray(new InternetAddress[0]));
 
-		_mailSender.sendEmail(mailMessage);
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				_mailSender.sendEmail(mailMessage);
+
+				return null;
+			});
 	}
 
 	@Override

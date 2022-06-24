@@ -17,6 +17,7 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.notification;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -126,7 +127,12 @@ public class EmailNotificationSender
 					notificationRecipients.get(NotificationReceptionType.BCC),
 					UserNotificationDeliveryConstants.TYPE_EMAIL)));
 
-		_mailSender.sendEmail(mailMessage);
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				_mailSender.sendEmail(mailMessage);
+
+				return null;
+			});
 	}
 
 	private InternetAddress[] _getInternetAddresses(

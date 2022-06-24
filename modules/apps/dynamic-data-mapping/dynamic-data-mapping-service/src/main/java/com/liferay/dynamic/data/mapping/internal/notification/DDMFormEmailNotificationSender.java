@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlParser;
@@ -93,7 +94,12 @@ public class DDMFormEmailNotificationSender {
 			MailMessage mailMessage = _createMailMessage(
 				ddmFormInstanceRecord, serviceContext);
 
-			_mailSender.sendEmail(mailMessage);
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					_mailSender.sendEmail(mailMessage);
+
+					return null;
+				});
 		}
 		catch (Exception exception) {
 			_log.error("Unable to send form email", exception);

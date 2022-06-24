@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserGroupPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
@@ -721,7 +722,12 @@ public class AnnouncementsEntryLocalServiceImpl
 					company.getMx(), "announcements_entry",
 					entry.getEntryId()));
 
-			MailSenderUtil.sendEmail(mailMessage);
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					MailSenderUtil.sendEmail(mailMessage);
+
+					return null;
+				});
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);

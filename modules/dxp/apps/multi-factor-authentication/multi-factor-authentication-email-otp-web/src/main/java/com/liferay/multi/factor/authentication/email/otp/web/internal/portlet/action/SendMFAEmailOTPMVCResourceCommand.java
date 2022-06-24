@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -116,7 +117,12 @@ public class SendMFAEmailOTPMVCResourceCommand implements MVCResourceCommand {
 		mailMessage.setMessageId(
 			_portal.getMailId(company.getMx(), "user", toUser.getUserId()));
 
-		_mailSender.sendEmail(mailMessage);
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				_mailSender.sendEmail(mailMessage);
+
+				return null;
+			});
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
