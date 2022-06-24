@@ -31,13 +31,13 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -93,7 +93,7 @@ public class DDMFormEmailNotificationSender {
 			MailMessage mailMessage = _createMailMessage(
 				ddmFormInstanceRecord, serviceContext);
 
-			_mailService.sendEmail(mailMessage);
+			_mailSender.sendEmail(mailMessage);
 		}
 		catch (Exception exception) {
 			_log.error("Unable to send form email", exception);
@@ -179,8 +179,8 @@ public class DDMFormEmailNotificationSender {
 	}
 
 	@Reference(unbind = "-")
-	protected void setMailService(MailService mailService) {
-		_mailService = mailService;
+	protected void setMailService(MailSender mailSender) {
+		_mailSender = mailSender;
 	}
 
 	@Reference(unbind = "-")
@@ -584,7 +584,7 @@ public class DDMFormEmailNotificationSender {
 	@Reference
 	private HtmlParser _htmlParser;
 
-	private MailService _mailService;
+	private MailSender _mailSender;
 
 	@Reference
 	private Portal _portal;
