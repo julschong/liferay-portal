@@ -14,8 +14,30 @@
 
 package com.liferay.portal.kernel.mail.sender;
 
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
+
+import javax.mail.Session;
+
 /**
  * @author Julius Lee
  */
 public class MailSenderUtil {
+
+	public static void clearSession() {
+		_mailSender.clearSession();
+	}
+
+	public static Session getSession() {
+		return _mailSender.getSession();
+	}
+
+	public static void sendEmail(MailMessage mailMessage) {
+		_mailSender.sendEmail(mailMessage);
+	}
+
+	private static volatile MailSender _mailSender =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			MailSender.class, MailSenderUtil.class, "_mailSender", true);
+
 }

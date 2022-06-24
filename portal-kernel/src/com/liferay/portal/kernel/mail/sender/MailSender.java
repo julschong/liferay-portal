@@ -14,8 +14,24 @@
 
 package com.liferay.portal.kernel.mail.sender;
 
+import com.liferay.mail.kernel.model.MailMessage;
+
+import javax.mail.Session;
+
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * @author Julius Lee
  */
+@ProviderType
 public interface MailSender {
+
+	public void clearSession();
+
+	public void clearSession(long companyId);
+
+	public Session getSession();
+
+	public void sendEmail(MailMessage mailMessage);
+
 }

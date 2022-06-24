@@ -15,13 +15,10 @@
 package com.liferay.mail.kernel.service;
 
 import com.liferay.mail.kernel.model.Filter;
-import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 import java.util.List;
-
-import javax.mail.Session;
 
 /**
  * @author Brian Wing Shun Chan
@@ -53,10 +50,6 @@ public class MailServiceUtil {
 			companyId, userId, emailAddress, vacationMessage);
 	}
 
-	public static void clearSession() {
-		getService().clearSession();
-	}
-
 	public static void deleteEmailAddress(long companyId, long userId) {
 		getService().deleteEmailAddress(companyId, userId);
 	}
@@ -75,14 +68,6 @@ public class MailServiceUtil {
 		}
 
 		return _mailService;
-	}
-
-	public static Session getSession() {
-		return getService().getSession();
-	}
-
-	public static void sendEmail(MailMessage mailMessage) {
-		getService().sendEmail(mailMessage);
 	}
 
 	public static void updateBlocked(
