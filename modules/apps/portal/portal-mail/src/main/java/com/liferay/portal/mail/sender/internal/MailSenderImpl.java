@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.messaging.DestinationNames;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -48,11 +49,12 @@ import javax.mail.Session;
 import javax.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@Component
+@Component(service = {IdentifiableOSGiService.class, MailSender.class})
 public class MailSenderImpl implements IdentifiableOSGiService, MailSender {
 
 	@Clusterable
@@ -227,13 +229,20 @@ public class MailSenderImpl implements IdentifiableOSGiService, MailSender {
 					_log.debug("sendEmail");
 				}
 
-				MessageBusUtil.sendMessage(DestinationNames.MAIL, mailMessage);
+				Message message = new Message();
+
+				message.setPayload(message);
+
+				_messageBus.sendMessage(DestinationNames.MAIL, message);
 
 				return null;
 			});
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(MailSenderImpl.class);
+
+	@Reference
+	private MessageBus _messageBus;
 
 	private final Map<Long, Session> _sessions = new ConcurrentHashMap<>();
 
