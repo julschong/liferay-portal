@@ -342,19 +342,6 @@ public class PropsUtil {
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
 
 		if (portalShieldedContainerLibDirProperty != null) {
-			portalShieldedContainerLibDirProperty = StringUtil.replace(
-				portalShieldedContainerLibDirProperty, CharPool.BACK_SLASH,
-				CharPool.SLASH);
-
-			if (!portalShieldedContainerLibDirProperty.endsWith(
-					StringPool.SLASH)) {
-
-				portalShieldedContainerLibDirProperty += StringPool.SLASH;
-			}
-
-			SystemProperties.set(
-				PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
-				portalShieldedContainerLibDirProperty);
 
 			// Portal web director
 
