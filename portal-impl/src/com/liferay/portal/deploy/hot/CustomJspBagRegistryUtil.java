@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.url.URLContainer;
 import com.liferay.portal.kernel.util.CustomJspRegistryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -136,7 +136,7 @@ public class CustomJspBagRegistryUtil {
 		boolean customJspGlobal = customJspBag.isCustomJspGlobal();
 		List<String> customJsps = customJspBag.getCustomJsps();
 
-		String portalWebDir = PortalUtil.getPortalWebDir();
+		String portalWebDir = _getPortalWebDir();
 
 		for (String customJsp : customJsps) {
 			String portalJsp = getPortalJsp(customJsp, customJspDir);
@@ -246,6 +246,28 @@ public class CustomJspBagRegistryUtil {
 		throw new DuplicateCustomJspException();
 	}
 
+	private static String _getPortalWebDir() {
+		if (_portalWebDir != null) {
+			return _portalWebDir;
+		}
+
+		String portalShieldedContainerLibDirProperty = System.getProperty(
+			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
+
+		if (portalShieldedContainerLibDirProperty != null) {
+			String portalWebDir = portalShieldedContainerLibDirProperty;
+
+			if (portalWebDir.endsWith("/WEB-INF/shielded-container-lib/")) {
+				portalWebDir = portalWebDir.substring(
+					0, portalWebDir.length() - 31);
+			}
+
+			_portalWebDir = portalWebDir;
+		}
+
+		return _portalWebDir;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CustomJspBagRegistryUtil.class);
 
@@ -253,6 +275,7 @@ public class CustomJspBagRegistryUtil {
 		SystemBundleUtil.getBundleContext();
 	private static final Map<ServiceReference<CustomJspBag>, CustomJspBag>
 		_customJspBagsMap = new ConcurrentHashMap<>();
+	private static String _portalWebDir;
 	private static final ServiceTracker<CustomJspBag, CustomJspBag>
 		_serviceTracker;
 
@@ -374,7 +397,7 @@ public class CustomJspBagRegistryUtil {
 
 				if (customJspBag.isCustomJspGlobal()) {
 					File portalJspFile = new File(
-						PortalUtil.getPortalWebDir() + portalJsp);
+						_getPortalWebDir() + portalJsp);
 
 					File portalJspBackupFile = getPortalJspBackupFile(
 						portalJspFile);
@@ -403,7 +426,7 @@ public class CustomJspBagRegistryUtil {
 						contextId, portalJsp);
 
 					File portalJspFile = new File(
-						PortalUtil.getPortalWebDir() + portalJsp);
+						_getPortalWebDir() + portalJsp);
 
 					if (portalJspFile.exists()) {
 						portalJspFile.delete();
