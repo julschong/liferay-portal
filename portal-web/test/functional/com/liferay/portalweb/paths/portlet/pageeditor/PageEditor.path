@@ -784,6 +784,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DEVICE_TYPE_ACTIVE</td>
+	<td>//button[contains(@aria-label,'${key_deviceType}')][contains(@aria-pressed,'true')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MANAGEMENT_BAR</td>
 	<td>//div[contains(@class,'management-bar')]//ul[contains(@class,'end')]</td>
 	<td></td>

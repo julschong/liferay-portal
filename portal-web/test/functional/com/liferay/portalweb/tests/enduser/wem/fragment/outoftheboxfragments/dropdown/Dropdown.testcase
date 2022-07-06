@@ -254,7 +254,7 @@ definition {
 					locator1 = "Checkbox#ANY_CHECKBOX");
 			}
 
-			Pause(locator1 = "3000");
+			PageEditor.waitForAutoSave();
 
 			AssertNotChecked.assertNotCheckedNotVisible(
 				checkboxName = "Display on Hover",

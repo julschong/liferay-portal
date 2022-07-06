@@ -350,7 +350,7 @@ definition {
 				locator2 = "PageEditor#GRID_COLUMN",
 				value1 = "Web Content Display");
 
-			Pause(locator1 = "5000");
+			PageEditor.waitForAutoSave();
 
 			AssertElementPresent(
 				key_columnNumber = "1",

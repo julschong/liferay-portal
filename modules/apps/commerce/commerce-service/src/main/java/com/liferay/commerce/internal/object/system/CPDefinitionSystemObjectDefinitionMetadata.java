@@ -85,6 +85,11 @@ public class CPDefinitionSystemObjectDefinitionMetadata
 	}
 
 	@Override
+	public String getRESTDTOIdPropertyName() {
+		return "productId";
+	}
+
+	@Override
 	public String getScope() {
 		return ObjectDefinitionConstants.SCOPE_COMPANY;
 	}

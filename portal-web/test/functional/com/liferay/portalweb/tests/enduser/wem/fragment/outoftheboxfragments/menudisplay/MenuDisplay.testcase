@@ -105,8 +105,6 @@ definition {
 				locator1 = "NavigationMenusWidget#CHILD_TOGGLE");
 
 			while (IsElementNotPresent(key_pageName = "Test Parent Page", locator1 = "NavigationMenusWidget#OPEN_DROPDOWN_MENU")) {
-				Pause(locator1 = "3000");
-
 				MouseOver(
 					key_pageName = "Test Parent Page",
 					locator1 = "NavigationMenusWidget#CHILD_TOGGLE");
@@ -130,7 +128,9 @@ definition {
 		task ("Assert the All is shown in Sublevels field") {
 			PageEditor.clickConfigurableField(fragmentName = "Menu Display");
 
-			Pause(locator1 = "3000");
+			AssertVisible(
+				key_sidebarButton = "Browser",
+				locator1 = "PageEditor#FRAGMENT_SIDEBAR_TITLE");
 
 			AssertSelectedLabel(
 				key_fieldLabel = "Sublevels",
@@ -152,8 +152,6 @@ definition {
 				locator1 = "NavigationMenusWidget#CHILD_TOGGLE");
 
 			while (IsElementNotPresent(key_pageName = "Test Parent Page", locator1 = "NavigationMenusWidget#OPEN_DROPDOWN_MENU")) {
-				Pause(locator1 = "3000");
-
 				MouseOver(
 					key_pageName = "Test Parent Page",
 					locator1 = "NavigationMenusWidget#CHILD_TOGGLE");
@@ -247,8 +245,6 @@ definition {
 				locator1 = "NavigationMenusWidget#CHILD_TOGGLE");
 
 			while (IsElementNotPresent(key_pageName = "Test Parent Page", locator1 = "NavigationMenusWidget#OPEN_DROPDOWN_MENU")) {
-				Pause(locator1 = "3000");
-
 				MouseOver(
 					key_pageName = "Test Parent Page",
 					locator1 = "NavigationMenusWidget#CHILD_TOGGLE");
@@ -262,7 +258,9 @@ definition {
 		task ("Assert the Horizontal is shown in Display Style field") {
 			PageEditor.clickConfigurableField(fragmentName = "Menu Display");
 
-			Pause(locator1 = "3000");
+			AssertVisible(
+				key_sidebarButton = "Browser",
+				locator1 = "PageEditor#FRAGMENT_SIDEBAR_TITLE");
 
 			AssertSelectedLabel(
 				key_fieldLabel = "Display Style",

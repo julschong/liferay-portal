@@ -16,9 +16,9 @@ import i18n from '../../../../../common/I18n';
 import {useAppPropertiesContext} from '../../../../../common/contexts/AppPropertiesContext';
 import {getAccountSubscriptions} from '../../../../../common/services/liferay/graphql/queries';
 import CardSubscription from '../../../components/CardSubscription';
-import ProjectSupport from '../../../components/ProjectSupport';
 import SubscriptionsFilterByStatus from '../../../components/SubscriptionsFilterByStatus';
 import SubscriptionsNavbar from '../../../components/SubscriptionsNavbar';
+import SupportOverview from '../../../components/SupportOverview';
 import {useCustomerPortal} from '../../../context';
 import {actionTypes} from '../../../context/reducer';
 import {PRODUCT_TYPES, SUBSCRIPTIONS_STATUS} from '../../../utils/constants';
@@ -46,7 +46,7 @@ const Overview = () => {
 	] = useState([]);
 
 	const parseAccountSubscriptionGroupERC = (subscriptionName) => {
-		return subscriptionName.toLowerCase().replace(' ', '-');
+		return subscriptionName.toLowerCase().replaceAll(' ', '-');
 	};
 
 	const subscriptionsCards = accountSubscriptions.filter(
@@ -133,7 +133,7 @@ const Overview = () => {
 
 	return (
 		<>
-			<ProjectSupport />
+			<SupportOverview koroneikiAccount={project} />
 			<div className="d-flex flex-column mr-4 mt-6">
 				{!isPartnership && <h3>{i18n.translate('subscriptions')}</h3>}
 

@@ -65,6 +65,11 @@ public abstract class BaseSystemObjectDefinitionMetadata
 		return tableName;
 	}
 
+	@Override
+	public String getRESTDTOIdPropertyName() {
+		return "id";
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
 		_serviceRegistration = bundleContext.registerService(

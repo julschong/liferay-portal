@@ -226,6 +226,18 @@ public interface BaseProjectTemplatesTestCase {
 		return null;
 	}
 
+	public static boolean isWindows() {
+		String osName = System.getProperty("os.name");
+
+		osName = osName.toLowerCase();
+
+		if (osName.contains("win")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public default void addCssBuilderConfigurationElement(
 		Document document, String configurationName, String configurationText) {
 
@@ -880,13 +892,17 @@ public interface BaseProjectTemplatesTestCase {
 			String content = FileUtil.read(buildFilePath);
 
 			if (!content.contains("allprojects")) {
-				Path m2tmpPath = Paths.get(
-					System.getProperty("maven.repo.local") + "-tmp");
+				String m2tmpPathString = String.valueOf(
+					Paths.get(System.getProperty("maven.repo.local") + "-tmp"));
+
+				if (isWindows()) {
+					m2tmpPathString = m2tmpPathString.replaceAll("\\\\", "/");
+				}
 
 				StringBuilder sb = new StringBuilder();
 
 				sb.append("allprojects {\n\trepositories {\n\t\tmavenLocal()");
-				sb.append("\n\t\tmaven {\n\t\t\turl file(\"" + m2tmpPath);
+				sb.append("\n\t\tmaven {\n\t\t\turl file(\"" + m2tmpPathString);
 				sb.append("\").toURI()\n\t\t}\n\t\tmaven {\n\t\t\t");
 				sb.append("credentials {\n\t\t\t\tusername \"");
 				sb.append(System.getProperty("repository.private.username"));
@@ -935,11 +951,18 @@ public interface BaseProjectTemplatesTestCase {
 								mavenRepoString + "-tmp");
 
 							if (Files.exists(m2tmpPath)) {
+								String m2tmpPathString = m2tmpPath.toString();
+
+								if (isWindows()) {
+									m2tmpPathString =
+										m2tmpPathString.replaceAll("\\\\", "/");
+								}
+
 								content = content.replace(
 									"repositories {",
 									"repositories {\n\t\tmavenLocal()\n\t\t" +
-										"maven { \n\t\t\turl \"" + m2tmpPath +
-											"\"\n\t\t}");
+										"maven {\n\t\t\turl \"" +
+											m2tmpPathString + "\"\n\t\t}");
 							}
 						}
 

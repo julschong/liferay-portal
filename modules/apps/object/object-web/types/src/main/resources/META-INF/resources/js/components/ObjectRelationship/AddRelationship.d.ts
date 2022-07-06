@@ -18,6 +18,7 @@ export default function AddRelationship({
 	apiURL,
 	ffOneToOneRelationshipConfigurationEnabled,
 	objectDefinitionId,
+	parameterRequired,
 }: IProps): JSX.Element;
 interface IProps {
 	apiURL: string;
@@ -25,5 +26,6 @@ interface IProps {
 	objectDefinitionId: number;
 	observer: any;
 	onClose: () => void;
+	parameterRequired: boolean;
 }
 export {};

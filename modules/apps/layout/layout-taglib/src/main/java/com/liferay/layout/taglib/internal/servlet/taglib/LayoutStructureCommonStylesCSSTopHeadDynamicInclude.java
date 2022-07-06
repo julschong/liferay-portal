@@ -82,7 +82,12 @@ public class LayoutStructureCommonStylesCSSTopHeadDynamicInclude
 
 		Date modifiedDate = layout.getModifiedDate();
 
-		printWriter.print(modifiedDate.getTime());
+		if (modifiedDate != null) {
+			printWriter.print(modifiedDate.getTime());
+		}
+		else {
+			printWriter.print(System.currentTimeMillis());
+		}
 
 		printWriter.print("\" rel=\"stylesheet\" type=\"text/css\">");
 	}

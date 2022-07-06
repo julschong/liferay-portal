@@ -89,7 +89,7 @@ definition {
 				locator1 = "Select#GENERIC_SELECT_FIELD",
 				value1 = "Preview-1000x0");
 
-			Pause(locator1 = "3000");
+			PageEditor.waitForAutoSave();
 
 			AssertSelectedLabel(
 				key_fieldLabel = "Resolution",
@@ -160,7 +160,7 @@ definition {
 				locator1 = "Select#GENERIC_SELECT_FIELD",
 				value1 = "Thumbnail-300x300");
 
-			Pause(locator1 = "3000");
+			PageEditor.waitForAutoSave();
 
 			AssertSelectedLabel(
 				key_fieldLabel = "Resolution",
@@ -233,7 +233,9 @@ definition {
 				key_deviceType = "Tablet",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Tablet",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Take down the Width and File Size of image resolution in Tablet viewport") {
@@ -299,7 +301,9 @@ definition {
 				key_deviceType = "Portrait Phone",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Portrait Phone",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Take down the Width and File Size of image resolution in Portrait Phone viewport") {
@@ -385,14 +389,12 @@ definition {
 				entryTitle = "Web Content Title",
 				navItem = "Web Content");
 
-			Pause(locator1 = "3000");
+			PageEditor.waitForAutoSave();
 
 			Select(
 				key_fieldLabel = "Field",
 				locator1 = "Select#GENERIC_SELECT_FIELD",
 				value1 = "Image");
-
-			Pause(locator1 = "3000");
 
 			PageEditor.waitForAutoSave();
 		}
@@ -474,7 +476,9 @@ definition {
 				key_deviceType = "Portrait Phone",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Portrait Phone",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Take down the Width and File Size of image resolution in Portrait Phone viewport") {
@@ -654,8 +658,6 @@ definition {
 			Click(
 				key_deviceType = "Tablet",
 				locator1 = "PageEditor#DEVICE_TYPE");
-
-			Pause(locator1 = "3000");
 		}
 
 		task ("Take down the Width and File Size of image resolution in Tablet viewport") {
@@ -810,7 +812,9 @@ definition {
 				key_deviceType = "Landscape Phone",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Landscape Phone",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Assert Auto image resolution is selected") {
@@ -873,7 +877,9 @@ definition {
 				key_deviceType = "Tablet",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Tablet",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Assert Auto image resolution is selected") {
@@ -950,7 +956,9 @@ definition {
 				key_deviceType = "Tablet",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Tablet",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Assert Auto image resolution is selected") {
@@ -1075,7 +1083,9 @@ definition {
 				key_deviceType = "Tablet",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Tablet",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Assert Auto image resolution is selected") {
@@ -1149,7 +1159,9 @@ definition {
 				key_deviceType = "Tablet",
 				locator1 = "PageEditor#DEVICE_TYPE");
 
-			Pause(locator1 = "3000");
+			WaitForElementPresent(
+				key_deviceType = "Tablet",
+				locator1 = "PageEditor#DEVICE_TYPE_ACTIVE");
 		}
 
 		task ("Assert Auto image resolution is selected") {
