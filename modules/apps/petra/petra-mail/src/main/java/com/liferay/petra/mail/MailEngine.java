@@ -21,6 +21,7 @@ import com.liferay.mail.kernel.model.SMTPAccount;
 import com.liferay.mail.kernel.service.MailServiceUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -37,11 +38,14 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 
+import java.io.IOException;
 import java.net.SocketException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -53,13 +57,18 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 
 import javax.mail.Address;
+import javax.mail.Flags;
+import javax.mail.Folder;
 import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
 import javax.mail.Part;
 import javax.mail.SendFailedException;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.Transport;
+import javax.mail.URLName;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeBodyPart;
@@ -75,6 +84,102 @@ import javax.mail.internet.MimeMultipart;
  * @see    com.liferay.util.mail.MailEngine
  */
 public class MailEngine {
+
+
+	public static List<com.liferay.portal.kernel.messaging.Message> fetchMessagesAndDelete() {
+		fetchMessagesAndDelete(null, null);
+	}
+
+	public static List<com.liferay.portal.kernel.messaging.Message> fetchMessagesAndDelete(Account account, String folderName)
+	{
+		Session session = null;
+
+		URLName urlName = null;
+
+		List<com.liferay.portal.kernel.messaging.Message> messageList = null;
+
+		if (account == null) {
+			session = getSession();
+
+			try (Store store = _getStore()){
+				try(Folder folder = store.getDefaultFolder()) {
+
+					Message[] messages = folder.getMessages();
+
+					messageList = _wrapMessages(messages);
+
+					folder.setFlags(
+						messages, new Flags(Flags.Flag.DELETED), true);
+				}
+			}
+			catch (MessagingException | IOException e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			session = getSession(account);
+
+			urlName = new URLName(
+				account.getProtocol(), account.getHost(), account.getPort(), StringPool.BLANK, account.getUser(), account.getPassword());
+			try (Store store = session.getStore(urlName)){
+				try(Folder folder = _getFolder(folderName, store)) {
+
+					Message[] messages = folder.getMessages();
+
+					messageList = _wrapMessages(messages);
+
+					folder.setFlags(
+						messages, new Flags(Flags.Flag.DELETED), true);
+				}
+			}
+			catch (MessagingException | IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+
+
+
+		return messageList;
+
+	}
+
+	private static List<com.liferay.portal.kernel.messaging.Message> _wrapMessages(Message[] messages)
+		throws MessagingException, IOException {
+
+		List<com.liferay.portal.kernel.messaging.Message> messageList = new ArrayList<>();
+
+		for (Message message : messages) {
+			com.liferay.portal.kernel.messaging.Message copy = new com.liferay.portal.kernel.messaging.Message();
+
+			Map<String, String> headerMap = new HashMap<>();
+
+			Enumeration<Header> headerEnumeration = message.getAllHeaders();
+
+			while (headerEnumeration.hasMoreElements()) {
+				Header header = headerEnumeration.nextElement();
+				headerMap.put(header.getName(), header.getValue());
+			}
+
+			copy.put("headers", headerMap);
+			copy.put("subject", message.getSubject());
+			copy.put("from", Arrays.stream(message.getFrom()).map(Address::toString));
+			copy.put("recipients", Arrays.stream(message.getAllRecipients()).map(
+				Address::toString));
+			copy.put("reply-to", Arrays.stream(message.getReplyTo()).map(Address::toString));
+			copy.put("recieved-date", message.getReceivedDate());
+			copy.put("sent-date", message.getSentDate());
+			copy.put("description", message.getDescription());
+			copy.put("file-name", message.getFileName());
+			copy.put("content", message.getContent());
+			copy.put("content-type", message.getContentType());
+
+			messageList.add(copy);
+		}
+
+		return messageList;
+	}
 
 	public static Session getSession() {
 		Session session = null;
