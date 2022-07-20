@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,8 +11,7 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/html/taglib/ui/panel_container/init.jsp" %>
-
-<div aria-multiselectable="true" class="panel-group <%= cssClass %>" id="<%= id %>" role="tablist">
+declare module 'data-engine-js-components-web' {
+	export * from 'data-engine-js-components-web/src/main/resources/META-INF/resources/js/index';
+}
