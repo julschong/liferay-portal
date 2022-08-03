@@ -17,11 +17,11 @@ package com.liferay.content.dashboard.journal.internal.item.action;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemAction;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.util.Locale;
 
