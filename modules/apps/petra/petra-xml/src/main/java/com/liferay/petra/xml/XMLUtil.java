@@ -30,21 +30,6 @@ import org.dom4j.DocumentException;
  */
 public class XMLUtil {
 
-	public static String fixProlog(String xml) {
-
-		// LEP-1921
-
-		if (xml != null) {
-			int pos = xml.indexOf(CharPool.LESS_THAN);
-
-			if (pos > 0) {
-				xml = xml.substring(pos);
-			}
-		}
-
-		return xml;
-	}
-
 	public static String formatXML(Document document) {
 		try {
 			return document.formattedString(_XML_INDENT);
