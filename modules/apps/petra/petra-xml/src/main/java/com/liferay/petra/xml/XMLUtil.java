@@ -70,10 +70,6 @@ public class XMLUtil {
 		}
 	}
 
-	public static String fromCompactSafe(String xml) {
-		return StringUtil.replace(xml, "[$NEW_LINE$]", StringPool.NEW_LINE);
-	}
-
 	public static String stripInvalidChars(String xml) {
 		if (Validator.isNull(xml)) {
 			return xml;

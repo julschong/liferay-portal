@@ -15,6 +15,8 @@
 package com.liferay.portlet;
 
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -436,7 +438,7 @@ public class PortalPreferencesImpl
 			return null;
 		}
 
-		return XMLUtil.fromCompactSafe(value);
+		return StringUtil.replace(value, "[$NEW_LINE$]", StringPool.NEW_LINE);
 	}
 
 	private String[] _getActualValues(String[] values) {
