@@ -101,13 +101,13 @@ public class PropfindMethodImpl extends BasePropMethodImpl implements Method {
 				return generateProps(props);
 			}
 
+			Document document = SAXReaderUtil.read(xml);
+
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Request XML: \n" +
-						Dom4jUtil.toString(xml, StringPool.FOUR_SPACES));
+						document.formattedString(StringPool.FOUR_SPACES));
 			}
-
-			Document document = SAXReaderUtil.read(xml);
 
 			Element rootElement = document.getRootElement();
 

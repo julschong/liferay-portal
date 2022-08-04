@@ -127,15 +127,16 @@ public class ProppatchMethodImpl extends BasePropMethodImpl {
 				return newProps;
 			}
 
+			Document document = SAXReaderUtil.read(xml);
+
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Request XML: \n" +
-						Dom4jUtil.toString(xml, StringPool.FOUR_SPACES));
+						document.formattedString(StringPool.FOUR_SPACES));
 			}
 
 			WebDAVProps webDAVProps = getStoredProperties(webDAVRequest);
 
-			Document document = SAXReaderUtil.read(xml);
 
 			Element rootElement = document.getRootElement();
 
