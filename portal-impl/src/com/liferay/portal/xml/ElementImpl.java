@@ -362,23 +362,6 @@ public class ElementImpl extends BranchImpl implements Element {
 	}
 
 	@Override
-	public String formattedString() throws IOException {
-		return Dom4jUtil.toString(_element);
-	}
-
-	@Override
-	public String formattedString(String indent) throws IOException {
-		return Dom4jUtil.toString(_element, indent);
-	}
-
-	@Override
-	public String formattedString(String indent, boolean expandEmptyElements)
-		throws IOException {
-
-		return Dom4jUtil.toString(_element, indent, expandEmptyElements);
-	}
-
-	@Override
 	public Object getData() {
 		return _element.getData();
 	}

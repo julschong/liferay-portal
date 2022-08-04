@@ -113,16 +113,6 @@ public interface Element extends Branch {
 
 	public String elementTextTrim(String name);
 
-	@Override
-	public String formattedString() throws IOException;
-
-	@Override
-	public String formattedString(String indent) throws IOException;
-
-	@Override
-	public String formattedString(String indent, boolean expandEmptyElements)
-		throws IOException;
-
 	public Object getData();
 
 	public Namespace getNamespace();
