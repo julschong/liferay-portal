@@ -14,7 +14,6 @@
 
 package com.liferay.petra.xml;
 
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringUtil;

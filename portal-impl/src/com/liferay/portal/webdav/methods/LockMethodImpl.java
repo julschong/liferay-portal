@@ -15,7 +15,6 @@
 package com.liferay.portal.webdav.methods;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.lock.NoSuchLockException;
 import com.liferay.portal.kernel.log.Log;
@@ -77,6 +76,7 @@ public class LockMethodImpl implements Method {
 			// Create new lock
 
 			String owner = null;
+
 			String xml = new String(
 				FileUtil.getBytes(httpServletRequest.getInputStream()));
 
