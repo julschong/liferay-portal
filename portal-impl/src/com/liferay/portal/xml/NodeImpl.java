@@ -15,12 +15,12 @@
 package com.liferay.portal.xml;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.Visitor;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -118,19 +118,19 @@ public class NodeImpl implements Node {
 
 	@Override
 	public String formattedString() throws IOException {
-		return XMLUtil.toString(_node);
+		return XMLHelperUtil.toString(this);
 	}
 
 	@Override
 	public String formattedString(String indent) throws IOException {
-		return XMLUtil.toString(_node, indent);
+		return XMLHelperUtil.toString(this, indent);
 	}
 
 	@Override
 	public String formattedString(String indent, boolean expandEmptyElements)
 		throws IOException {
 
-		return XMLUtil.toString(_node, indent, expandEmptyElements);
+		return XMLHelperUtil.toString(this, indent, expandEmptyElements);
 	}
 
 	@Override
@@ -138,7 +138,8 @@ public class NodeImpl implements Node {
 			String indent, boolean expandEmptyElements, boolean trimText)
 		throws IOException {
 
-		return XMLUtil.toString(_node, indent, expandEmptyElements, trimText);
+		return XMLHelperUtil.toString(
+			this, indent, expandEmptyElements, trimText);
 	}
 
 	@Override

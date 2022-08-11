@@ -15,7 +15,6 @@
 package com.liferay.portlet;
 
 import com.liferay.petra.lang.HashUtil;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 import com.liferay.portal.kernel.xml.simple.Element;
 
 import java.io.IOException;
@@ -407,7 +407,7 @@ public class PortletPreferencesImpl
 			return null;
 		}
 
-		return XMLUtil.fromCompactSafe(value);
+		return XMLHelperUtil.fromCompactSafe(value);
 	}
 
 	private String[] _getActualValues(String[] values) {
@@ -443,7 +443,7 @@ public class PortletPreferencesImpl
 			return _NULL_VALUE;
 		}
 
-		return XMLUtil.toCompactSafe(value);
+		return XMLHelperUtil.toCompactSafe(value);
 	}
 
 	private String[] _getXMLSafeValues(String[] values) {

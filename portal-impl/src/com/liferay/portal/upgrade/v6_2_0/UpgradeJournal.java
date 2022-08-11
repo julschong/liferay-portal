@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 import com.liferay.portal.kernel.xml.XPath;
 import com.liferay.portal.upgrade.v6_2_0.util.RSSUtil;
 
@@ -370,7 +370,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				dynamicElementElement, defaultLocale.toString());
 		}
 
-		return XMLUtil.formatXML(document);
+		return XMLHelperUtil.formatXML(document);
 	}
 
 	protected Locale getDefaultLocale(long companyId) throws Exception {

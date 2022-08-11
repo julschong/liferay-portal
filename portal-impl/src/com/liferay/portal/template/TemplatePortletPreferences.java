@@ -16,11 +16,11 @@ package com.liferay.portal.template;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
 
 import java.util.Collection;
@@ -53,20 +53,20 @@ public class TemplatePortletPreferences {
 				for (Object value : (Collection)valueObject) {
 					if (value instanceof String) {
 						sb.append("<value>");
-						sb.append(XMLUtil.toCompactSafe((String)value));
+						sb.append(XMLHelperUtil.toCompactSafe((String)value));
 						sb.append("</value>");
 					}
 				}
 			}
 			else if (valueObject instanceof String) {
 				sb.append("<value>");
-				sb.append(XMLUtil.toCompactSafe((String)valueObject));
+				sb.append(XMLHelperUtil.toCompactSafe((String)valueObject));
 				sb.append("</value>");
 			}
 			else if (valueObject instanceof String[]) {
 				for (String value : (String[])valueObject) {
 					sb.append("<value>");
-					sb.append(XMLUtil.toCompactSafe(value));
+					sb.append(XMLHelperUtil.toCompactSafe(value));
 					sb.append("</value>");
 				}
 			}

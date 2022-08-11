@@ -15,7 +15,6 @@
 package com.liferay.portal.webdav.methods;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Namespace;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 import com.liferay.portal.webdav.InvalidRequestException;
 
 import java.util.HashSet;
@@ -104,7 +104,7 @@ public class PropfindMethodImpl extends BasePropMethodImpl implements Method {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Request XML: \n" +
-					XMLUtil.toString(xml, StringPool.FOUR_SPACES));
+						XMLHelperUtil.toString(xml, StringPool.FOUR_SPACES));
 			}
 
 			Document document = SAXReaderUtil.read(xml);

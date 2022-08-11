@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -66,7 +66,7 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 			}
 		}
 
-		return XMLUtil.formatXML(newDocument);
+		return XMLHelperUtil.formatXML(newDocument);
 	}
 
 	@Override

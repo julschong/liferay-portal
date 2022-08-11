@@ -15,7 +15,6 @@
 package com.liferay.portal.webdav.methods;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.log.Log;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Namespace;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 import com.liferay.portal.webdav.InvalidRequestException;
 import com.liferay.portal.webdav.LockException;
 
@@ -130,7 +130,7 @@ public class ProppatchMethodImpl extends BasePropMethodImpl {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Request XML: \n" +
-					XMLUtil.toString(xml, StringPool.FOUR_SPACES));
+						XMLHelperUtil.toString(xml, StringPool.FOUR_SPACES));
 			}
 
 			WebDAVProps webDAVProps = getStoredProperties(webDAVRequest);

@@ -14,7 +14,6 @@
 
 package com.liferay.portal.xml;
 
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.CDATA;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.Text;
 import com.liferay.portal.kernel.xml.Visitor;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 
 import java.io.IOException;
 
@@ -363,19 +363,19 @@ public class ElementImpl extends BranchImpl implements Element {
 
 	@Override
 	public String formattedString() throws IOException {
-		return XMLUtil.toString(_element);
+		return XMLHelperUtil.toString(this);
 	}
 
 	@Override
 	public String formattedString(String indent) throws IOException {
-		return XMLUtil.toString(_element, indent);
+		return XMLHelperUtil.toString(this, indent);
 	}
 
 	@Override
 	public String formattedString(String indent, boolean expandEmptyElements)
 		throws IOException {
 
-		return XMLUtil.toString(_element, indent, expandEmptyElements);
+		return XMLHelperUtil.toString(this, indent, expandEmptyElements);
 	}
 
 	@Override

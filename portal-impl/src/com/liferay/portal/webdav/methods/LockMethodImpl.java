@@ -15,7 +15,6 @@
 package com.liferay.portal.webdav.methods;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.lock.NoSuchLockException;
 import com.liferay.portal.kernel.log.Log;
@@ -35,6 +34,7 @@ import com.liferay.portal.kernel.webdav.methods.Method;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 
 import java.util.List;
 
@@ -82,7 +82,7 @@ public class LockMethodImpl implements Method {
 
 			if (Validator.isNotNull(xml)) {
 				if (_log.isDebugEnabled()) {
-					_log.debug("Request XML\n" + XMLUtil.toString(xml));
+					_log.debug("Request XML\n" + XMLHelperUtil.toString(xml));
 				}
 
 				Document document = SAXReaderUtil.read(xml);
@@ -225,7 +225,7 @@ public class LockMethodImpl implements Method {
 		sb.append("</D:lockdiscovery>");
 		sb.append("</D:prop>");
 
-		return XMLUtil.toString(sb.toString());
+		return XMLHelperUtil.toString(sb.toString());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LockMethodImpl.class);
