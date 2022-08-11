@@ -107,7 +107,6 @@ import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -207,6 +206,7 @@ import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelper;
 import com.liferay.portal.kernel.xml.XPath;
 import com.liferay.portal.validation.ModelValidator;
 import com.liferay.portal.validation.ModelValidatorRegistryUtil;
@@ -7670,7 +7670,7 @@ public class JournalArticleLocalServiceImpl
 
 			format(user, groupId, article, document.getRootElement());
 
-			content = XMLUtil.formatXML(document);
+			content = _xmlHelper.formatXML(document);
 		}
 		catch (DocumentException documentException) {
 			_log.error(documentException);
@@ -9517,5 +9517,8 @@ public class JournalArticleLocalServiceImpl
 
 	@Reference
 	private WorkflowInstanceLinkLocalService _workflowInstanceLinkLocalService;
+
+	@Reference
+	private XMLHelper _xmlHelper;
 
 }

@@ -27,7 +27,6 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -64,6 +63,7 @@ import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -421,7 +421,7 @@ public class JournalUtil {
 
 		_removeArticleLocale(rootElement, languageId);
 
-		return XMLUtil.formatXML(document);
+		return XMLHelperUtil.formatXML(document);
 	}
 
 	public static String transform(

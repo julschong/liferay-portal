@@ -15,7 +15,6 @@
 package com.liferay.journal.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -25,6 +24,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.InputStream;
 
+import com.liferay.portal.kernel.xml.XMLHelper;
+import com.liferay.portal.test.rule.Inject;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
@@ -57,7 +58,7 @@ public abstract class BaseJournalServiceTestCase {
 	protected String getDefultXsd() throws Exception {
 		String xsd = readText("test-journal-structure-all-fields.xml");
 
-		return XMLUtil.formatXML(xsd);
+		return _xmlHelper.formatXML(xsd);
 	}
 
 	protected ServiceContext getServiceContext() {
@@ -82,5 +83,8 @@ public abstract class BaseJournalServiceTestCase {
 
 	protected long companyId;
 	protected long groupId;
+
+	@Inject
+	private XMLHelper _xmlHelper;
 
 }

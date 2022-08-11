@@ -20,7 +20,6 @@ import com.liferay.journal.content.compatibility.converter.JournalContentCompati
 import com.liferay.layout.dynamic.data.mapping.form.field.type.constants.LayoutDDMFormFieldTypeConstants;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -40,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import com.liferay.portal.kernel.xml.XMLHelper;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -57,7 +57,7 @@ public class JournalContentCompatibilityConverterImpl
 		try {
 			Document document = SAXReaderUtil.read(content);
 
-			return XMLUtil.formatXML(_convert(document));
+			return _xmlHelper.formatXML(_convert(document));
 		}
 		catch (Exception exception) {
 			return content;
@@ -344,5 +344,8 @@ public class JournalContentCompatibilityConverterImpl
 
 	@Reference(unbind = "-")
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private XMLHelper _xmlHelper;
 
 }

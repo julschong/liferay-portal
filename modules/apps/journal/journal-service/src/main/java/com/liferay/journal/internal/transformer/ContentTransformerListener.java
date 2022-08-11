@@ -20,7 +20,6 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -38,9 +37,11 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import java.util.List;
 import java.util.Map;
 
+import com.liferay.portal.kernel.xml.XMLHelper;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -168,7 +169,7 @@ public class ContentTransformerListener extends BaseTransformerListener {
 
 			replace(document, tokens);
 
-			xml = XMLUtil.formatXML(document);
+			xml = _xmlHelper.formatXML(document);
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -255,5 +256,8 @@ public class ContentTransformerListener extends BaseTransformerListener {
 		ContentTransformerListener.class);
 
 	private volatile JournalServiceConfiguration _journalServiceConfiguration;
+
+	@Reference
+	private XMLHelper _xmlHelper;
 
 }

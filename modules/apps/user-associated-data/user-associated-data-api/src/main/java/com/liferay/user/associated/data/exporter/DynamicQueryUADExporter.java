@@ -16,7 +16,6 @@ package com.liferay.user.associated.data.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -24,6 +23,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.xml.XMLHelperUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
 import com.liferay.user.associated.data.util.UADDynamicQueryUtil;
@@ -116,7 +116,7 @@ public abstract class DynamicQueryUADExporter<T extends BaseModel>
 	protected abstract String[] doGetUserIdFieldNames();
 
 	protected String formatXML(String xml) {
-		return XMLUtil.formatXML(xml);
+		return XMLHelperUtil.formatXML(xml);
 	}
 
 	/**

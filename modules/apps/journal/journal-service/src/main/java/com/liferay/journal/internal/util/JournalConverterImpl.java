@@ -29,7 +29,6 @@ import com.liferay.journal.exception.ArticleContentException;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
@@ -61,6 +60,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import com.liferay.portal.kernel.xml.XMLHelper;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -104,9 +104,9 @@ public class JournalConverterImpl implements JournalConverter {
 		}
 
 		try {
-			String content = XMLUtil.stripInvalidChars(document.asXML());
+			String content = _xmlHelper.stripInvalidChars(document.asXML());
 
-			return XMLUtil.formatXML(content);
+			return _xmlHelper.formatXML(content);
 		}
 		catch (Exception exception) {
 			throw new ArticleContentException(
@@ -695,5 +695,8 @@ public class JournalConverterImpl implements JournalConverter {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private XMLHelper _xmlHelper;
 
 }
