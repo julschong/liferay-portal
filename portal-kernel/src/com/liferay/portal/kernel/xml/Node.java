@@ -97,9 +97,11 @@ public interface Node extends Serializable {
 
 	public String valueOf(String xPathExpression);
 
+	public void write(
+			OutputStream outputStream, String indent,
+			boolean expandEmptyElements, boolean trimText)
+		throws IOException;
+
 	public void write(Writer writer) throws IOException;
 
-	public void write(
-		OutputStream outputStream, String indent, boolean expandEmptyElements,
-		boolean trimText) throws IOException;
 }

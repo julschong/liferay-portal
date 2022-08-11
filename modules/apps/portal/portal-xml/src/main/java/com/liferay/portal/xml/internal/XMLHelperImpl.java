@@ -149,7 +149,8 @@ public class XMLHelperImpl implements XMLHelper {
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 			new UnsyncByteArrayOutputStream();
 
-		node.write(unsyncByteArrayOutputStream, indent, expandEmptyElements, trimText);
+		node.write(
+			unsyncByteArrayOutputStream, indent, expandEmptyElements, trimText);
 
 		String content = unsyncByteArrayOutputStream.toString(StringPool.UTF8);
 

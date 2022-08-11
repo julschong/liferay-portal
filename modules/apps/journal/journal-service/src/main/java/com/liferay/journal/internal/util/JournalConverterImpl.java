@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelper;
 
 import java.io.Serializable;
 
@@ -60,7 +61,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import com.liferay.portal.kernel.xml.XMLHelper;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 

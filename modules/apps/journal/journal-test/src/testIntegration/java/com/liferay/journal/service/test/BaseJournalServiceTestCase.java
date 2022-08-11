@@ -21,11 +21,11 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.xml.XMLHelper;
+import com.liferay.portal.test.rule.Inject;
 
 import java.io.InputStream;
 
-import com.liferay.portal.kernel.xml.XMLHelper;
-import com.liferay.portal.test.rule.Inject;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
