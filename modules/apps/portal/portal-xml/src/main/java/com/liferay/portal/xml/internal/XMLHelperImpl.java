@@ -18,24 +18,22 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.DocumentException;
+import com.liferay.portal.kernel.xml.Node;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.kernel.xml.XMLHelper;
 
 import java.io.IOException;
 
-import com.liferay.portal.kernel.xml.XMLHelper;
-import org.dom4j.DocumentException;
-import org.dom4j.Node;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
-import org.xml.sax.XMLReader;
+import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Leonardo Barros
+ * @author Julius Lee
  */
+@Component(service = XMLHelper.class)
 public class XMLHelperImpl implements XMLHelper {
 
 	public String formatXML(Document document) {
@@ -128,8 +126,6 @@ public class XMLHelperImpl implements XMLHelper {
 			new String[] {"[$NEW_LINE$]", "[$NEW_LINE$]", "[$NEW_LINE$]"});
 	}
 
-	private final String _XML_INDENT = "  ";
-
 	public String toString(Node node) throws IOException {
 		return toString(node, StringPool.TAB);
 	}
@@ -153,17 +149,7 @@ public class XMLHelperImpl implements XMLHelper {
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 			new UnsyncByteArrayOutputStream();
 
-		OutputFormat outputFormat = OutputFormat.createPrettyPrint();
-
-		outputFormat.setExpandEmptyElements(expandEmptyElements);
-		outputFormat.setIndent(indent);
-		outputFormat.setLineSeparator(StringPool.NEW_LINE);
-		outputFormat.setTrimText(trimText);
-
-		XMLWriter xmlWriter = new XMLWriter(
-			unsyncByteArrayOutputStream, outputFormat);
-
-		xmlWriter.write(node);
+		node.write(unsyncByteArrayOutputStream, indent, expandEmptyElements, trimText);
 
 		String content = unsyncByteArrayOutputStream.toString(StringPool.UTF8);
 
@@ -192,27 +178,18 @@ public class XMLHelperImpl implements XMLHelper {
 		return content;
 	}
 
-	public String toString(String xml)
-		throws DocumentException, IOException {
-
+	public String toString(String xml) throws DocumentException, IOException {
 		return toString(xml, StringPool.TAB);
 	}
 
 	public String toString(String xml, String indent)
 		throws DocumentException, IOException {
 
-		XMLReader xmlReader = null;
-
-		if (SecureXMLFactoryProviderUtil.getSecureXMLFactoryProvider() !=
-			null) {
-
-			xmlReader = SecureXMLFactoryProviderUtil.newXMLReader();
-		}
-
-		SAXReader saxReader = new SAXReader(xmlReader);
-
-		org.dom4j.Document document = saxReader.read(new UnsyncStringReader(xml));
+		Document document = SAXReaderUtil.read(new UnsyncStringReader(xml));
 
 		return toString(document, indent);
 	}
+
+	private static final String _XML_INDENT = "  ";
+
 }
