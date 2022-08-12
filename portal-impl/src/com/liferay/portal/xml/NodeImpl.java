@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.Visitor;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import java.util.List;
@@ -309,6 +311,22 @@ public class NodeImpl implements Node {
 	@Override
 	public void write(Writer writer) throws IOException {
 		_node.write(writer);
+	}
+
+	public void write(OutputStream outputStream, String indent, boolean expandEmptyElements,
+			boolean trimText) throws IOException {
+
+		OutputFormat outputFormat = OutputFormat.createPrettyPrint();
+
+		outputFormat.setExpandEmptyElements(expandEmptyElements);
+		outputFormat.setIndent(indent);
+		outputFormat.setLineSeparator(StringPool.NEW_LINE);
+		outputFormat.setTrimText(trimText);
+
+		XMLWriter xmlWriter = new XMLWriter(
+			outputStream, outputFormat);
+
+		xmlWriter.write(_node);
 	}
 
 	private final org.dom4j.Node _node;

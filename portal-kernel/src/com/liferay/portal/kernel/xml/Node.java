@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.xml;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
 
@@ -98,4 +99,7 @@ public interface Node extends Serializable {
 
 	public void write(Writer writer) throws IOException;
 
+	public void write(
+		OutputStream outputStream, String indent, boolean expandEmptyElements,
+		boolean trimText) throws IOException;
 }
