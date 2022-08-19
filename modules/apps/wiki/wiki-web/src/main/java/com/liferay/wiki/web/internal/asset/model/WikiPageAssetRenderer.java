@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
 import com.liferay.portal.kernel.portlet.PortletLayoutFinderRegistryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -218,7 +219,7 @@ public class WikiPageAssetRenderer
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, WikiPortletKeys.WIKI
 		).setActionName(
 			"/wiki/export_page"
@@ -235,7 +236,7 @@ public class WikiPageAssetRenderer
 			"title", _page.getTitle()
 		).setParameter(
 			"version", _page.getVersion()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -120,14 +121,14 @@ public class KBAttachmentItemSelectorViewDisplayContext {
 	public PortletURL getUploadURL(
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, KBPortletKeys.KNOWLEDGE_BASE_ADMIN
 		).setActionName(
 			"uploadKBArticleAttachments"
 		).setParameter(
 			"resourcePrimKey",
 			_kbAttachmentItemSelectorCriterion.getResourcePrimKey()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public boolean isSearch() {

@@ -17,7 +17,6 @@ package com.liferay.invitation.invite.members.web.internal.notifications;
 import com.liferay.invitation.invite.members.constants.InviteMembersPortletKeys;
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.invitation.invite.members.service.MemberRequestLocalService;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -31,6 +30,7 @@ import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.notifications.BaseUserNotificationHandler;
 import com.liferay.portal.kernel.notifications.UserNotificationHandler;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -117,7 +117,7 @@ public class InviteMembersUserNotificationHandler
 			},
 			new String[] {
 				serviceContext.translate("confirm"),
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					liferayPortletResponse,
 					InviteMembersPortletKeys.INVITE_MEMBERS
 				).setActionName(
@@ -133,7 +133,7 @@ public class InviteMembersUserNotificationHandler
 					WindowState.NORMAL
 				).buildString(),
 				serviceContext.translate("ignore"),
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					liferayPortletResponse,
 					InviteMembersPortletKeys.INVITE_MEMBERS
 				).setActionName(
