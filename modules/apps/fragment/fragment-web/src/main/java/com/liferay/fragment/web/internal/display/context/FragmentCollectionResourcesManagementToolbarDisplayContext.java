@@ -28,12 +28,12 @@ import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
 import com.liferay.item.selector.criteria.upload.criterion.UploadItemSelectorCriterion;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -81,7 +81,7 @@ public class FragmentCollectionResourcesManagementToolbarDisplayContext
 					"action", "deleteSelectedFragmentCollectionResources");
 				dropdownItem.putData(
 					"deleteFragmentCollectionResourcesURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/fragment/delete_fragment_collection_resources"
@@ -135,7 +135,7 @@ public class FragmentCollectionResourcesManagementToolbarDisplayContext
 		ItemSelectorCriterion itemSelectorCriterion =
 			new UploadItemSelectorCriterion(
 				FragmentPortletKeys.FRAGMENT,
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					liferayPortletResponse
 				).setActionName(
 					"/fragment/upload_fragment_collection_resource"

@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.model.LayoutType;
 import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil;
@@ -78,7 +79,7 @@ public class MillerColumnsDisplayContext {
 	}
 
 	public String getLayoutChildrenURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/layout_admin/get_layout_children"
@@ -476,7 +477,7 @@ public class MillerColumnsDisplayContext {
 						_httpServletRequest, layoutSetBranch.getName())
 				).put(
 					"url",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_liferayPortletResponse
 					).setActionName(
 						"/layout_admin/select_layout_set_branch"

@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
@@ -88,7 +89,7 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 					"action", "deactivateAccountUsers"
 				).putData(
 					"deactivateAccountUsersURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/account_admin/edit_account_users"
@@ -121,7 +122,7 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 					"action", "activateAccountUsers"
 				).putData(
 					"activateAccountUsersURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/account_admin/edit_account_users"
@@ -154,7 +155,7 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 					"action", "deleteAccountUsers"
 				).putData(
 					"deleteAccountUsersURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/account_admin/edit_account_users"

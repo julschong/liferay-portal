@@ -15,9 +15,9 @@
 package com.liferay.document.library.web.internal.display.context;
 
 import com.liferay.document.library.configuration.DLSizeLimitConfigurationProvider;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -46,7 +46,7 @@ public class DLSizeLimitConfigurationDisplayContext {
 	}
 
 	public String getEditDLSizeLimitConfigurationURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/instance_settings/edit_size_limits"

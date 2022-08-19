@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
@@ -257,7 +258,7 @@ public class JournalFolderActionDropdownItems {
 
 		String label = LanguageUtil.get(_httpServletRequest, "delete");
 
-		String deleteURL = PortletURLBuilder.createActionURL(
+		String deleteURL = ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			actionName
@@ -365,7 +366,7 @@ public class JournalFolderActionDropdownItems {
 			dropdownItem.putData("action", "publishFolderToLive");
 			dropdownItem.putData(
 				"publishFolderURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/publish_folder"

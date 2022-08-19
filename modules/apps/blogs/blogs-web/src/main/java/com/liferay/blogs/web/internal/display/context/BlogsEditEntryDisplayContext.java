@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -143,7 +144,7 @@ public class BlogsEditEntryDisplayContext {
 	}
 
 	public String getEditEntryURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/blogs/edit_entry"
@@ -247,7 +248,7 @@ public class BlogsEditEntryDisplayContext {
 			"descriptionLength", PropsValues.BLOGS_PAGE_ABSTRACT_LENGTH
 		).put(
 			"editEntryURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_liferayPortletResponse
 			).setActionName(
 				"/blogs/edit_entry"
@@ -302,7 +303,7 @@ public class BlogsEditEntryDisplayContext {
 	}
 
 	public String getUploadCoverImageURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/blogs/upload_cover_image"
@@ -310,7 +311,7 @@ public class BlogsEditEntryDisplayContext {
 	}
 
 	public String getUploadSmallImageURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/blogs/upload_small_image"

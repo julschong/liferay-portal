@@ -18,13 +18,13 @@ import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -142,7 +142,7 @@ public class SiteActionDropdownItemsProvider {
 			dropdownItem.putData("action", "activateSite");
 			dropdownItem.putData(
 				"activateSiteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_admin/activate_group"
@@ -177,7 +177,7 @@ public class SiteActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deactivateSite");
 			dropdownItem.putData(
 				"deactivateSiteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_admin/deactivate_group"
@@ -198,7 +198,7 @@ public class SiteActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteSite");
 			dropdownItem.putData(
 				"deleteSiteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_admin/delete_groups"
@@ -220,7 +220,7 @@ public class SiteActionDropdownItemsProvider {
 			dropdownItem.putData("action", "leaveSite");
 			dropdownItem.putData(
 				"leaveSiteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_admin/edit_group_assignments"

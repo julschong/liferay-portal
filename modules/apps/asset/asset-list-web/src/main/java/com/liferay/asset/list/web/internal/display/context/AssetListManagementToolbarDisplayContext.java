@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -122,7 +123,7 @@ public class AssetListManagementToolbarDisplayContext
 				dropdownItem.putData("action", "addAssetListEntry");
 				dropdownItem.putData(
 					"addAssetListEntryURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/asset_list/add_asset_list_entry"
@@ -143,7 +144,7 @@ public class AssetListManagementToolbarDisplayContext
 				dropdownItem.putData("action", "addAssetListEntry");
 				dropdownItem.putData(
 					"addAssetListEntryURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/asset_list/add_asset_list_entry"

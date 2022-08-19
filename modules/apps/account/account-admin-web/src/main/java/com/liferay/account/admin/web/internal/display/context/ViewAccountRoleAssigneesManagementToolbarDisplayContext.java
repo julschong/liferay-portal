@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -70,7 +71,7 @@ public class ViewAccountRoleAssigneesManagementToolbarDisplayContext
 				"action", "removeUsers"
 			).putData(
 				"removeUsersURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					liferayPortletResponse
 				).setActionName(
 					"/account_admin/remove_account_role_users"

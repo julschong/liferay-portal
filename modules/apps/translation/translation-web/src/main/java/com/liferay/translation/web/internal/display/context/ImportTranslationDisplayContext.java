@@ -14,10 +14,10 @@
 
 package com.liferay.translation.web.internal.display.context;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.servlet.MultiSessionErrors;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -76,7 +76,7 @@ public class ImportTranslationDisplayContext {
 	}
 
 	public PortletURL getImportTranslationURL() throws PortalException {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/translation/import_translation"
@@ -88,7 +88,7 @@ public class ImportTranslationDisplayContext {
 			"groupId", _groupId
 		).setParameter(
 			"title", getTitle()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public String getPublishButtonLabel() throws PortalException {

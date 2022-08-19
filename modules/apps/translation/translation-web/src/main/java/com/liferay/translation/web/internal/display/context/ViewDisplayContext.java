@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -108,7 +109,7 @@ public class ViewDisplayContext {
 				dropdownItem.putData("action", "delete");
 				dropdownItem.putData(
 					"delete-url",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_liferayPortletResponse
 					).setActionName(
 						"/translation/delete_translation_entry"

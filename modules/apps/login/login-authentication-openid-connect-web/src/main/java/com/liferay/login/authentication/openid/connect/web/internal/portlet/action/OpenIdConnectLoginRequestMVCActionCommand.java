@@ -14,12 +14,12 @@
 
 package com.liferay.login.authentication.openid.connect.web.internal.portlet.action;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -130,7 +130,7 @@ public class OpenIdConnectLoginRequestMVCActionCommand
 
 			httpSession.setAttribute(
 				OpenIdConnectWebKeys.OPEN_ID_CONNECT_ACTION_URL,
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_portal.getLiferayPortletResponse(actionResponse)
 				).setActionName(
 					OpenIdConnectWebKeys.OPEN_ID_CONNECT_RESPONSE_ACTION_NAME
