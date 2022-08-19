@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -146,7 +147,7 @@ public class BasicFragmentManagementToolbarDisplayContext
 
 		return HashMapBuilder.<String, Object>put(
 			"addFragmentEntryURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/fragment/add_fragment_entry"
@@ -156,7 +157,7 @@ public class BasicFragmentManagementToolbarDisplayContext
 			).buildString()
 		).put(
 			"copyFragmentEntryURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/fragment/copy_fragment_entry"
@@ -165,7 +166,7 @@ public class BasicFragmentManagementToolbarDisplayContext
 			).buildString()
 		).put(
 			"deleteFragmentCompositionsAndFragmentEntriesURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/fragment/delete_fragment_compositions_and_fragment_entries"
@@ -194,7 +195,7 @@ public class BasicFragmentManagementToolbarDisplayContext
 			"fragmentTypes", _getFragmentTypesJSONArray(themeDisplay)
 		).put(
 			"moveFragmentCompositionsAndFragmentEntriesURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/fragment/move_fragment_compositions_and_fragment_entries"
@@ -221,7 +222,7 @@ public class BasicFragmentManagementToolbarDisplayContext
 
 				dropdownItem.putData(
 					"addFragmentEntryURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/fragment/add_fragment_entry"

@@ -68,6 +68,7 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -217,7 +218,7 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getAddLayoutURL() {
-		PortletURL portletURL = PortletURLBuilder.createActionURL(
+		PortletURL portletURL = ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setMVCPath(
 			"/select_layout_page_template_entry.jsp"
@@ -237,7 +238,7 @@ public class LayoutsAdminDisplayContext {
 			"privateLayout", isPrivateLayout()
 		).setParameter(
 			"stagingGroupId", getStagingGroupId()
-		).buildPortletURL();
+		).buildActionURL();
 
 		String type = ParamUtil.getString(httpServletRequest, "type");
 
@@ -374,7 +375,7 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getCopyLayoutURL(long sourcePlid) {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/layout_admin/copy_layout"
@@ -394,7 +395,7 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getDeleteLayoutURL(Layout layout) throws PortalException {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/layout_admin/delete_layout"
@@ -414,7 +415,7 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getDiscardDraftURL(Layout layout) {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/layout_admin/discard_draft_layout"
@@ -629,7 +630,7 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getLayoutConversionPreviewURL(Layout layout) {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/layout_admin/add_layout_conversion_preview"
@@ -753,7 +754,7 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getMoveLayoutColumnItemURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/layout_admin/move_layout"

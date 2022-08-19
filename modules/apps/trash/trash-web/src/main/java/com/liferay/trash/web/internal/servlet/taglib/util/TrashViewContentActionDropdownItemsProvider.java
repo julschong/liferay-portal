@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
@@ -77,7 +78,7 @@ public class TrashViewContentActionDropdownItemsProvider {
 			"action", "deleteEntry"
 		).putData(
 			"deleteEntryURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_liferayPortletResponse
 			).setActionName(
 				"deleteEntries"

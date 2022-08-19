@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -118,7 +119,7 @@ public class StyleBookManagementToolbarDisplayContext
 	public Map<String, Object> getAdditionalProps() {
 		return HashMapBuilder.<String, Object>put(
 			"copyStyleBookEntryURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/style_book/copy_style_book_entry"
@@ -161,7 +162,7 @@ public class StyleBookManagementToolbarDisplayContext
 
 				dropdownItem.putData(
 					"addStyleBookEntryURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/style_book/add_style_book_entry"

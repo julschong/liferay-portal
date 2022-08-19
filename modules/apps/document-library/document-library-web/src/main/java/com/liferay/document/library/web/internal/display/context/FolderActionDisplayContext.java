@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCapability;
 import com.liferay.portal.kernel.repository.capabilities.TrashCapability;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -163,7 +164,7 @@ public class FolderActionDisplayContext {
 	}
 
 	public String getDeleteExpiredTemporaryFileEntriesURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_dlRequestHelper.getLiferayPortletResponse()
 		).setActionName(
 			"/document_library/edit_folder"
@@ -289,7 +290,7 @@ public class FolderActionDisplayContext {
 	}
 
 	public String getPublishFolderURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_dlRequestHelper.getLiferayPortletResponse()
 		).setActionName(
 			"/document_library/publish_folder"

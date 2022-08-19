@@ -21,10 +21,10 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemListBuilder;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -70,7 +70,7 @@ public class ExpandoDisplayContext {
 					(PortletResponse)_httpServletRequest.getAttribute(
 						JavaConstants.JAVAX_PORTLET_RESPONSE);
 
-				return PortletURLBuilder.createActionURL(
+				return ActionURLBuilder.createActionURL(
 					PortalUtil.getLiferayPortletResponse(portletResponse)
 				).setActionName(
 					"deleteExpandos"

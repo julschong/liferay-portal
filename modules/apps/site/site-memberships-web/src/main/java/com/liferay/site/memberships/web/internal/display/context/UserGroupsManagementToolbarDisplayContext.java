@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -110,7 +111,7 @@ public class UserGroupsManagementToolbarDisplayContext
 
 								dropdownItem.putData(
 									"editUserGroupsRolesURL",
-									PortletURLBuilder.createActionURL(
+									ActionURLBuilder.createActionURL(
 										liferayPortletResponse
 									).setActionName(
 										"editUserGroupsRoles"

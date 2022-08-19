@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -76,7 +77,7 @@ public class LayoutsAdminManagementToolbarDisplayContext
 				dropdownItem.putData("action", "convertSelectedPages");
 				dropdownItem.putData(
 					"convertLayoutURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/layout_admin/convert_layout"
@@ -115,7 +116,7 @@ public class LayoutsAdminManagementToolbarDisplayContext
 				dropdownItem.putData("action", "deleteSelectedPages");
 				dropdownItem.putData(
 					"deleteLayoutURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/layout_admin/delete_layout"

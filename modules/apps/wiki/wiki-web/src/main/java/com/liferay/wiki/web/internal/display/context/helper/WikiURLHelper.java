@@ -17,6 +17,7 @@ package com.liferay.wiki.web.internal.display.context.helper;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
@@ -90,13 +91,13 @@ public class WikiURLHelper {
 	}
 
 	public PortletURL getUndoTrashURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/wiki/edit_page"
 		).setCMD(
 			Constants.RESTORE
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public PortletURL getViewDraftPagesURL(WikiNode wikiNode) {

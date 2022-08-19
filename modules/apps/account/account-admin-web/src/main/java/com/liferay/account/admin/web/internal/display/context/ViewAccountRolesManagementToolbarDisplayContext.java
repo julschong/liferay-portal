@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -69,7 +70,7 @@ public class ViewAccountRolesManagementToolbarDisplayContext
 				"action", "deleteAccountRoles"
 			).putData(
 				"deleteAccountRolesURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					liferayPortletResponse
 				).setActionName(
 					"/account_admin/delete_account_roles"

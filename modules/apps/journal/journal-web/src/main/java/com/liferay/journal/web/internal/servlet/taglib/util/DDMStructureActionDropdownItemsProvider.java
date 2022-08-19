@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -161,12 +162,12 @@ public class DDMStructureActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteDDMStructure");
 			dropdownItem.putData(
 				"deleteDDMStructureURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
-				).setActionName(
-					"/journal/delete_data_definition"
 				).setMVCPath(
 					"/view_ddm_structures.jsp"
+				).setActionName(
+					"/journal/delete_data_definition"
 				).setRedirect(
 					_themeDisplay.getURLCurrent()
 				).setParameter(
@@ -252,7 +253,7 @@ public class DDMStructureActionDropdownItemsProvider {
 			dropdownItem.putData("action", "importAndOverrideDDMStructure");
 			dropdownItem.putData(
 				"importAndOverrideDDMStructureURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/import_and_override_data_definition"

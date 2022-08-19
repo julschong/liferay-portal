@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.taglib.security.PermissionsURLTag;
 
@@ -37,7 +38,7 @@ public class DepotEntryURLUtil {
 	public static ActionURL getAddDepotEntryActionURL(
 		String redirect, LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse
 		).setActionName(
 			"/depot/add_depot_entry"
@@ -50,7 +51,7 @@ public class DepotEntryURLUtil {
 		long depotEntryId, String redirect,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse
 		).setActionName(
 			"/depot/delete_depot_entry"
@@ -78,7 +79,7 @@ public class DepotEntryURLUtil {
 		long depotEntryGroupRelId, String redirect,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse
 		).setActionName(
 			"/depot/disconnect_depot_entry"
@@ -110,7 +111,7 @@ public class DepotEntryURLUtil {
 		long depotEntryGroupRelId, boolean ddmStructuresAvailable,
 		String redirect, LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse
 		).setActionName(
 			"/depot/update_ddm_structures_available"
@@ -127,7 +128,7 @@ public class DepotEntryURLUtil {
 		long depotEntryGroupRelId, boolean searchable, String redirect,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse
 		).setActionName(
 			"/depot/update_searchable"

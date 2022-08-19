@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -486,7 +487,7 @@ public class DefaultWikiListPagesDisplayContext
 				_trashHelper.isTrashEnabled(
 					_wikiRequestHelper.getScopeGroupId()));
 			deleteMenuItem.setURL(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()
 				).setActionName(
 					"/wiki/edit_page"
@@ -523,7 +524,7 @@ public class DefaultWikiListPagesDisplayContext
 			urlMenuItem.setKey(WikiUIItemKeys.DELETE);
 			urlMenuItem.setLabel("discard-draft");
 			urlMenuItem.setURL(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()
 				).setActionName(
 					"/wiki/edit_page"
@@ -704,7 +705,7 @@ public class DefaultWikiListPagesDisplayContext
 			urlMenuItem.setKey(WikiUIItemKeys.UNSUBSCRIBE);
 			urlMenuItem.setLabel("unsubscribe");
 			urlMenuItem.setURL(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()
 				).setActionName(
 					"/wiki/edit_page"
@@ -726,7 +727,7 @@ public class DefaultWikiListPagesDisplayContext
 			urlMenuItem.setKey(WikiUIItemKeys.SUBSCRIBE);
 			urlMenuItem.setLabel("subscribe");
 			urlMenuItem.setURL(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_wikiRequestHelper.getLiferayPortletResponse()
 				).setActionName(
 					"/wiki/edit_page"

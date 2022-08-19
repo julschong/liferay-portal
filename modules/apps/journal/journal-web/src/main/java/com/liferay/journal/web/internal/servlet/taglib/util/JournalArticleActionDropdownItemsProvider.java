@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
@@ -404,7 +405,7 @@ public class JournalArticleActionDropdownItemsProvider {
 				dropdownItem.putData("action", "copyArticle");
 				dropdownItem.putData(
 					"copyArticleURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_liferayPortletResponse
 					).setActionName(
 						"/journal/copy_article"
@@ -441,7 +442,7 @@ public class JournalArticleActionDropdownItemsProvider {
 			dropdownItem.putData("action", "delete");
 			dropdownItem.putData(
 				"deleteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/delete_article"
@@ -466,7 +467,7 @@ public class JournalArticleActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteArticleTranslations");
 			dropdownItem.putData(
 				"deleteArticleTranslationsURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/delete_article_translations"
@@ -506,7 +507,7 @@ public class JournalArticleActionDropdownItemsProvider {
 			dropdownItem.putData("action", "discardArticleDraft");
 			dropdownItem.putData(
 				"discardArticleDraftURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/discard_article_draft"
@@ -552,7 +553,7 @@ public class JournalArticleActionDropdownItemsProvider {
 			dropdownItem.putData("action", "expireArticles");
 			dropdownItem.putData(
 				"expireURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/expire_articles"
@@ -648,7 +649,7 @@ public class JournalArticleActionDropdownItemsProvider {
 			dropdownItem.putData("action", "delete");
 			dropdownItem.putData(
 				"deleteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/move_to_trash"
@@ -766,7 +767,7 @@ public class JournalArticleActionDropdownItemsProvider {
 			dropdownItem.putData("action", "publishArticleToLive");
 			dropdownItem.putData(
 				"publishArticleURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/publish_article"
@@ -816,7 +817,7 @@ public class JournalArticleActionDropdownItemsProvider {
 				dropdownItem.putData("action", "unsubscribeArticle");
 				dropdownItem.putData(
 					"unsubscribeArticleURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_liferayPortletResponse
 					).setActionName(
 						"/journal/unsubscribe_article"
@@ -835,7 +836,7 @@ public class JournalArticleActionDropdownItemsProvider {
 			dropdownItem.putData("action", "subscribeArticle");
 			dropdownItem.putData(
 				"subscribeArticleURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/journal/subscribe_article"
