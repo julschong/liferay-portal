@@ -117,7 +117,7 @@ public class InheritedFragmentManagementToolbarDisplayContext
 			ParamUtil.getLong(liferayPortletRequest, "fragmentCollectionId")
 		).put(
 			"selectFragmentCollectionURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> PortletURLBuilder.createRenderURL(
 				liferayPortletResponse
 			).setMVCRenderCommandName(
 				"/fragment/select_fragment_collection"
