@@ -101,7 +101,7 @@ public class ContributedFragmentManagementToolbarDisplayContext
 			}
 		).put(
 			"selectFragmentCollectionURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> PortletURLBuilder.createRenderURL(
 				liferayPortletResponse
 			).setMVCRenderCommandName(
 				"/fragment/select_fragment_collection"

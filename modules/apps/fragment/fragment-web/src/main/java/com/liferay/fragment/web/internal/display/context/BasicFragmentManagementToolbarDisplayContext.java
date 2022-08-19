@@ -203,7 +203,7 @@ public class BasicFragmentManagementToolbarDisplayContext
 			).buildString()
 		).put(
 			"selectFragmentCollectionURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> PortletURLBuilder.createRenderURL(
 				liferayPortletResponse
 			).setMVCRenderCommandName(
 				"/fragment/select_fragment_collection"
