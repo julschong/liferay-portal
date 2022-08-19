@@ -104,6 +104,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -1143,7 +1144,7 @@ public class DDMFormAdminDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			renderResponse
 		).setActionName(
 			"/admin/share_form_instance"

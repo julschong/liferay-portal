@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutType;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -161,13 +162,13 @@ public class LayoutSiteNavigationMenuItemType
 	public PortletURL getAddURL(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			renderResponse
 		).setActionName(
 			"/navigation_menu/add_layout_site_navigation_menu_item"
 		).setParameter(
 			"siteNavigationMenuItemType", getType()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	@Override

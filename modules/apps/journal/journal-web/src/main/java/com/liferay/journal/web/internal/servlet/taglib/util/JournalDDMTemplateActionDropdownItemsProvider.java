@@ -19,11 +19,11 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.journal.web.internal.security.permission.resource.DDMTemplatePermission;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -139,12 +139,12 @@ public class JournalDDMTemplateActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteDDMTemplate");
 			dropdownItem.putData(
 				"deleteDDMTemplateURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
-				).setActionName(
-					"/journal/delete_ddm_template"
 				).setMVCPath(
 					"/view_ddm_templates.jsp"
+				).setActionName(
+					"/journal/delete_ddm_template"
 				).setRedirect(
 					_themeDisplay.getURLCurrent()
 				).setParameter(

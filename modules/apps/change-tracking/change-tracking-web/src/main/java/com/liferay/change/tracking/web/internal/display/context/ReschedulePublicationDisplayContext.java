@@ -22,6 +22,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.frontend.icons.FrontendIconsUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -73,7 +74,7 @@ public class ReschedulePublicationDisplayContext {
 			"redirect", getRedirect()
 		).put(
 			"rescheduleURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/change_tracking/reschedule_publication"
@@ -108,7 +109,7 @@ public class ReschedulePublicationDisplayContext {
 			}
 		).put(
 			"unscheduleURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/change_tracking/unschedule_publication"

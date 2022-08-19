@@ -24,6 +24,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -140,7 +141,7 @@ public class DDMFormAdminActionDropdownItemsProvider {
 					"action", "delete"
 				).put(
 					"deleteFormInstanceURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_renderResponse
 					).setActionName(
 						"/dynamic_data_mapping_form/delete_form_instance"
@@ -162,7 +163,7 @@ public class DDMFormAdminActionDropdownItemsProvider {
 		return dropdownItem -> {
 			dropdownItem.setDisabled(_invalidDDMFormInstance);
 			dropdownItem.setHref(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/dynamic_data_mapping_form/copy_form_instance"

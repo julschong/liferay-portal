@@ -19,8 +19,8 @@ import com.liferay.fragment.web.internal.security.permission.resource.FragmentPe
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -68,7 +68,7 @@ public class FragmentCollectionResourceActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteFragmentCollectionResource");
 			dropdownItem.putData(
 				"deleteFragmentCollectionResourceURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/delete_fragment_collection_resources"

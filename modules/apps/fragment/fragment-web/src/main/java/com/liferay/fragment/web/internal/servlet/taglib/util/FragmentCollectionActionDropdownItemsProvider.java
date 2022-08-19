@@ -20,6 +20,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuil
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 
 import java.util.List;
 
@@ -132,7 +133,7 @@ public class FragmentCollectionActionDropdownItemsProvider {
 								"action", "deleteFragmentCollection");
 							dropdownItem.putData(
 								"deleteFragmentCollectionURL",
-								PortletURLBuilder.createActionURL(
+								ActionURLBuilder.createActionURL(
 									_renderResponse
 								).setActionName(
 									"/fragment/delete_fragment_collection"

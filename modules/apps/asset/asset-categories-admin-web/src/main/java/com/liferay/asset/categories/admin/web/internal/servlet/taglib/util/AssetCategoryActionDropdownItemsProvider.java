@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -197,7 +198,7 @@ public class AssetCategoryActionDropdownItemsProvider {
 
 							dropdownItem.putData(
 								"deleteCategoryURL",
-								PortletURLBuilder.createActionURL(
+								ActionURLBuilder.createActionURL(
 									_renderResponse
 								).setActionName(
 									"/asset_categories_admin" +

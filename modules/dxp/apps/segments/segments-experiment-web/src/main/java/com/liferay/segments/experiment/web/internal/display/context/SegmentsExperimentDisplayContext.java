@@ -15,7 +15,6 @@
 package com.liferay.segments.experiment.web.internal.display.context;
 
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -328,7 +327,7 @@ public class SegmentsExperimentDisplayContext {
 				_themeDisplay.getCompanyId(), _themeDisplay.getScopeGroupId())
 		).put(
 			"hideSegmentsExperimentPanelURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/segments_experiment/hide_segments_experiment_panel"
@@ -432,7 +431,7 @@ public class SegmentsExperimentDisplayContext {
 
 	private String _getSegmentsExperimentActionURL(String action) {
 		return HttpComponentsUtil.addParameter(
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				action

@@ -17,11 +17,11 @@ package com.liferay.frontend.icons.web.internal.display.context;
 import com.liferay.frontend.icons.web.internal.model.FrontendIconsResource;
 import com.liferay.frontend.icons.web.internal.model.FrontendIconsResourcePack;
 import com.liferay.frontend.icons.web.internal.repository.FrontendIconsResourcePackRepository;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -52,14 +52,14 @@ public class FrontendIconsConfigurationDisplayContext {
 	public Map<String, Object> getProps() {
 		return HashMapBuilder.<String, Object>put(
 			"deleteIconsPackResourceURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/instance_settings/delete_frontend_icons_pack_resource"
 			).buildString()
 		).put(
 			"deleteIconsPackURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/instance_settings/delete_frontend_icons_pack"
@@ -98,7 +98,7 @@ public class FrontendIconsConfigurationDisplayContext {
 			}
 		).put(
 			"saveFromExistingIconsActionURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/instance_settings" +
@@ -106,7 +106,7 @@ public class FrontendIconsConfigurationDisplayContext {
 			).buildString()
 		).put(
 			"saveFromSpritemapActionURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/instance_settings/save_frontend_icons_pack_from_spritemap"

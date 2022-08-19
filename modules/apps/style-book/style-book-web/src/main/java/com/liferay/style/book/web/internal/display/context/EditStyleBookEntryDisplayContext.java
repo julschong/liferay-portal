@@ -49,6 +49,7 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -187,7 +188,7 @@ public class EditStyleBookEntryDisplayContext {
 	}
 
 	private String _getActionURL(String actionName) {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			actionName

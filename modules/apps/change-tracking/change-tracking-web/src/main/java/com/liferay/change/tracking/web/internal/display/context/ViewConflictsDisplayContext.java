@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -123,7 +124,7 @@ public class ViewConflictsDisplayContext {
 			}
 		).put(
 			"publishURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/change_tracking/publish_ct_collection"
@@ -140,7 +141,7 @@ public class ViewConflictsDisplayContext {
 			"schedule", ParamUtil.getBoolean(_renderRequest, "schedule")
 		).put(
 			"scheduleURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"/change_tracking/schedule_publication"
@@ -265,7 +266,7 @@ public class ViewConflictsDisplayContext {
 					return null;
 				}
 
-				return PortletURLBuilder.createActionURL(
+				return ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/change_tracking/delete_ct_auto_resolution_info"

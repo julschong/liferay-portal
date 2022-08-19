@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
@@ -138,7 +139,7 @@ public class DLViewDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/document_library/edit_entry"
@@ -185,7 +186,7 @@ public class DLViewDisplayContext {
 	}
 
 	public String getRestoreTrashEntriesURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/document_library/edit_entry"
@@ -268,7 +269,7 @@ public class DLViewDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/document_library/edit_file_entry"

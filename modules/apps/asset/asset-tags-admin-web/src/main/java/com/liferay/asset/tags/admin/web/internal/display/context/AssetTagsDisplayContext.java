@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
@@ -120,7 +121,7 @@ public class AssetTagsDisplayContext {
 							dropdownItem.putData("action", "deleteTag");
 							dropdownItem.putData(
 								"deleteTagURL",
-								PortletURLBuilder.createActionURL(
+								ActionURLBuilder.createActionURL(
 									_renderResponse
 								).setActionName(
 									"deleteTag"
