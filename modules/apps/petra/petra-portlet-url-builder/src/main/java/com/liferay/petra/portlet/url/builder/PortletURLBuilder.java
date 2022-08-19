@@ -43,12 +43,6 @@ public class PortletURLBuilder {
 	}
 
 	public static PortletURLStep createActionURL(
-		LiferayPortletResponse liferayPortletResponse) {
-
-		return new PortletURLStep(liferayPortletResponse.createActionURL());
-	}
-
-	public static PortletURLStep createActionURL(
 		LiferayPortletResponse liferayPortletResponse, String portletName) {
 
 		return new PortletURLStep(
