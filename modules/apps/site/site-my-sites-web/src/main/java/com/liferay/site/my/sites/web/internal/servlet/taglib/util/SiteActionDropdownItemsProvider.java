@@ -17,11 +17,11 @@ package com.liferay.site.my.sites.web.internal.servlet.taglib.util;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.MembershipRequestConstants;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutServiceUtil;
@@ -114,7 +114,7 @@ public class SiteActionDropdownItemsProvider {
 			dropdownItem.putData("action", "joinSite");
 			dropdownItem.putData(
 				"joinSiteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"updateGroupUsers"
@@ -137,7 +137,7 @@ public class SiteActionDropdownItemsProvider {
 			dropdownItem.putData("action", "leaveSite");
 			dropdownItem.putData(
 				"leaveSiteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"updateGroupUsers"

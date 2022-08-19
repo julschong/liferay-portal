@@ -21,9 +21,9 @@ import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
 import com.liferay.item.selector.criteria.upload.criterion.UploadItemSelectorCriterion;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -133,7 +133,7 @@ public class StyleBookEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "copyStyleBookEntry");
 			dropdownItem.putData(
 				"copyStyleBookEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/style_book/copy_style_book_entry"
@@ -155,7 +155,7 @@ public class StyleBookEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteStyleBookEntry");
 			dropdownItem.putData(
 				"deleteStyleBookEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/style_book/delete_style_book_entry"
@@ -177,7 +177,7 @@ public class StyleBookEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteStyleBookEntryPreview");
 			dropdownItem.putData(
 				"deleteStyleBookEntryPreviewURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/style_book/delete_style_book_entry_preview"
@@ -201,7 +201,7 @@ public class StyleBookEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "discardDraftStyleBookEntry");
 			dropdownItem.putData(
 				"discardDraftStyleBookEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/style_book/discard_draft_style_book_entry"
@@ -253,7 +253,7 @@ public class StyleBookEntryActionDropdownItemsProvider {
 		ItemSelectorCriterion itemSelectorCriterion =
 			new UploadItemSelectorCriterion(
 				StyleBookPortletKeys.STYLE_BOOK,
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/style_book/upload_style_book_entry_preview"
@@ -280,7 +280,7 @@ public class StyleBookEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "markAsDefaultStyleBookEntry");
 			dropdownItem.putData(
 				"markAsDefaultStyleBookEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/style_book/update_style_book_entry_default"
@@ -330,7 +330,7 @@ public class StyleBookEntryActionDropdownItemsProvider {
 				"styleBookEntryName", _styleBookEntry.getName());
 			dropdownItem.putData(
 				"updateStyleBookEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/style_book/update_style_book_entry_name"

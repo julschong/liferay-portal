@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
@@ -109,7 +110,7 @@ public class UserActionDropdownItemsProvider {
 				).buildString());
 			dropdownItem.putData(
 				"editUserGroupRoleURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"editUserGroupRole"
@@ -128,7 +129,7 @@ public class UserActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteGroupUsers");
 			dropdownItem.putData(
 				"deleteGroupUsersURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"deleteGroupUsers"

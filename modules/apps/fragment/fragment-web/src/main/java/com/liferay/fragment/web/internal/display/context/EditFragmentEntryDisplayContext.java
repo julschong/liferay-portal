@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
@@ -531,7 +532,7 @@ public class EditFragmentEntryDisplayContext {
 				"current", _themeDisplay.getURLCurrent()
 			).put(
 				"edit",
-				() -> PortletURLBuilder.createActionURL(
+				() -> ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/edit_fragment_entry"

@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -128,7 +129,7 @@ public class AssetVocabularySiteNavigationMenuItemType
 	public PortletURL getAddURL(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			renderResponse
 		).setActionName(
 			"/navigation_menu" +
@@ -136,7 +137,7 @@ public class AssetVocabularySiteNavigationMenuItemType
 		).setParameter(
 			"siteNavigationMenuItemType",
 			SiteNavigationMenuItemTypeConstants.ASSET_VOCABULARY
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	@Override

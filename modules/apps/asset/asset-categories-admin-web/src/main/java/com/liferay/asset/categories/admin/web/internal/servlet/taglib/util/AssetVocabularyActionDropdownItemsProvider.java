@@ -23,6 +23,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -112,7 +113,7 @@ public class AssetVocabularyActionDropdownItemsProvider {
 							dropdownItem.putData("action", "deleteVocabulary");
 							dropdownItem.putData(
 								"deleteVocabularyURL",
-								PortletURLBuilder.createActionURL(
+								ActionURLBuilder.createActionURL(
 									_renderResponse
 								).setActionName(
 									"/asset_categories_admin" +

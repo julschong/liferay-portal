@@ -57,6 +57,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserTable;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -719,7 +720,7 @@ public class ViewChangesDisplayContext {
 					return null;
 				}
 
-				return PortletURLBuilder.createActionURL(
+				return ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/change_tracking/unschedule_publication"

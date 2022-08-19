@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.UserTable;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -153,7 +154,7 @@ public class ViewDiscardDisplayContext {
 	}
 
 	public String getSubmitURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/change_tracking/discard_changes"

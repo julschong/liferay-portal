@@ -25,10 +25,10 @@ import com.liferay.knowledge.base.web.internal.KBUtil;
 import com.liferay.knowledge.base.web.internal.display.context.helper.KBArticleURLHelper;
 import com.liferay.knowledge.base.web.internal.security.permission.resource.KBArticlePermission;
 import com.liferay.knowledge.base.web.internal.security.permission.resource.KBCommentPermission;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -95,7 +95,7 @@ public class KBViewSuggestionDisplayContext {
 	}
 
 	public String getDeleteKBCommentURL() throws PortalException {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/knowledge_base/delete_kb_comment"
@@ -174,7 +174,7 @@ public class KBViewSuggestionDisplayContext {
 	}
 
 	public String getNextStatusTransitionURL() throws PortalException {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/knowledge_base/update_kb_comment_status"
@@ -192,7 +192,7 @@ public class KBViewSuggestionDisplayContext {
 	}
 
 	public String getPreviousStatusTransitionURL() throws PortalException {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/knowledge_base/update_kb_comment_status"

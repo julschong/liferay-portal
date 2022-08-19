@@ -16,7 +16,7 @@ package com.liferay.change.tracking.web.internal.display.context;
 
 import com.liferay.change.tracking.configuration.CTSettingsConfiguration;
 import com.liferay.change.tracking.web.internal.configuration.helper.CTSettingsConfigurationHelper;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -52,7 +52,7 @@ public class PublicationsConfigurationDisplayContext {
 	}
 
 	public String getActionURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/change_tracking/update_global_publications_configuration"

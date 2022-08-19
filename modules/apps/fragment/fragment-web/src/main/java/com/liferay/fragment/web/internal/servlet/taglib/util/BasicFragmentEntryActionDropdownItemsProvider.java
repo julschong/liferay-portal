@@ -31,6 +31,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -174,7 +175,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "copyFragmentEntry");
 			dropdownItem.putData(
 				"copyFragmentEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/copy_fragment_entry"
@@ -209,7 +210,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteDraftFragmentEntry");
 			dropdownItem.putData(
 				"deleteDraftFragmentEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/delete_draft_fragment_entries"
@@ -230,7 +231,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteFragmentEntry");
 			dropdownItem.putData(
 				"deleteFragmentEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/delete_fragment_entries"
@@ -252,7 +253,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteFragmentEntryPreview");
 			dropdownItem.putData(
 				"deleteFragmentEntryPreviewURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/delete_fragment_entry_preview"
@@ -323,7 +324,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 		ItemSelectorCriterion itemSelectorCriterion =
 			new UploadItemSelectorCriterion(
 				FragmentPortletKeys.FRAGMENT,
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/upload_fragment_entry_preview"
@@ -356,7 +357,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 				String.valueOf(_fragmentEntry.getFragmentEntryId()));
 			dropdownItem.putData(
 				"moveFragmentEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/move_fragment_compositions_and_fragment_entries"
@@ -389,7 +390,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 			dropdownItem.putData("fragmentEntryName", _fragmentEntry.getName());
 			dropdownItem.putData(
 				"updateFragmentEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/fragment/update_fragment_entry"

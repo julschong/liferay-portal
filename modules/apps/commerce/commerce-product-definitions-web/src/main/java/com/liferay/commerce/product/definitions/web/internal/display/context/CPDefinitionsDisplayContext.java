@@ -155,7 +155,7 @@ public class CPDefinitionsDisplayContext
 	public List<DropdownItem> getBulkActionDropdownItems() {
 		return ListUtil.fromArray(
 			new FDSActionDropdownItem(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					cpRequestHelper.getRenderResponse()
 				).setActionName(
 					"/cp_definitions/edit_cp_definition"

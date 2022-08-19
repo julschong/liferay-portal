@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -154,7 +155,7 @@ public class DisplayPageTypeSiteNavigationMenuItemType
 	public PortletURL getAddURL(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			renderResponse
 		).setActionName(
 			() -> {
@@ -169,7 +170,7 @@ public class DisplayPageTypeSiteNavigationMenuItemType
 			}
 		).setParameter(
 			"siteNavigationMenuItemType", getType()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	@Override

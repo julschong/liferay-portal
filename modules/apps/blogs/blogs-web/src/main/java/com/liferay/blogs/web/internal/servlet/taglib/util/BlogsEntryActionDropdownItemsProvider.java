@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
@@ -195,7 +196,7 @@ public class BlogsEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "delete");
 			dropdownItem.putData(
 				"deleteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/blogs/edit_entry"
@@ -250,7 +251,7 @@ public class BlogsEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "delete");
 			dropdownItem.putData(
 				"deleteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/blogs/edit_entry"
@@ -299,7 +300,7 @@ public class BlogsEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "publishToLive");
 			dropdownItem.putData(
 				"publishEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/blogs/publish_entry"
