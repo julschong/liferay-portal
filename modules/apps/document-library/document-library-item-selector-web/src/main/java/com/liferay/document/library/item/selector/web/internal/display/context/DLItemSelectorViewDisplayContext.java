@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.capabilities.FileEntryTypeCapability;
@@ -128,13 +129,13 @@ public class DLItemSelectorViewDisplayContext<T extends ItemSelectorCriterion> {
 	public PortletURL getEditImageURL(
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, PortletKeys.DOCUMENT_LIBRARY
 		).setActionName(
 			"/document_library/image_editor"
 		).setParameter(
 			"folderId", _getFolderId()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public String[] getExtensions() {
@@ -308,13 +309,13 @@ public class DLItemSelectorViewDisplayContext<T extends ItemSelectorCriterion> {
 			}
 		}
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, PortletKeys.DOCUMENT_LIBRARY
 		).setActionName(
 			"/document_library/upload_file_entry"
 		).setParameter(
 			"folderId", _getFolderId()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public boolean isShowDragAndDropZone() throws PortalException {

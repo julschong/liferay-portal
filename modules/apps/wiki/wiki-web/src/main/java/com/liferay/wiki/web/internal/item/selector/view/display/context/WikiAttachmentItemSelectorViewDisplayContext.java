@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -81,7 +82,7 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 	public PortletURL getEditImageURL(
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, WikiPortletKeys.WIKI
 		).setActionName(
 			"/wiki/image_editor"
@@ -90,7 +91,7 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 		).setParameter(
 			"resourcePrimKey",
 			_wikiAttachmentItemSelectorCriterion.getWikiPageResourceId()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public String getItemSelectedEventName() {
@@ -147,7 +148,7 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 	public PortletURL getUploadURL(
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, WikiPortletKeys.WIKI
 		).setActionName(
 			"/wiki/upload_page_attachment"
@@ -156,7 +157,7 @@ public class WikiAttachmentItemSelectorViewDisplayContext {
 		).setParameter(
 			"resourcePrimKey",
 			_wikiAttachmentItemSelectorCriterion.getWikiPageResourceId()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public WikiAttachmentItemSelectorCriterion

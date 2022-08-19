@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -82,11 +83,11 @@ public class BlogsItemSelectorViewDisplayContext {
 	public PortletURL getEditImageURL(
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, PortletKeys.BLOGS
 		).setActionName(
 			"/blogs/image_editor"
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public String[] getImageExtensions() throws ConfigurationException {
@@ -141,11 +142,11 @@ public class BlogsItemSelectorViewDisplayContext {
 	public PortletURL getUploadURL(
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, PortletKeys.BLOGS
 		).setActionName(
 			"/blogs/upload_image"
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public boolean isSearch() {

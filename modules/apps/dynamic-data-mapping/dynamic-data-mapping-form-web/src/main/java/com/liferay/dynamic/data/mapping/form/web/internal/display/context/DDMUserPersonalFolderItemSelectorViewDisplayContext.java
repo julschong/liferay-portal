@@ -22,13 +22,13 @@ import com.liferay.dynamic.data.mapping.form.web.internal.item.selector.DDMUserP
 import com.liferay.item.selector.ItemSelectorReturnTypeResolver;
 import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
 import com.liferay.item.selector.taglib.servlet.taglib.util.RepositoryEntryBrowserTagUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.dao.search.SearchPaginationUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.RepositoryEntry;
@@ -138,7 +138,7 @@ public class DDMUserPersonalFolderItemSelectorViewDisplayContext {
 	public PortletURL getUploadURL(
 		LiferayPortletResponse liferayPortletResponse) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			liferayPortletResponse, DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM
 		).setActionName(
 			"/dynamic_data_mapping_form/upload_ddm_user_personal_folder"
@@ -148,7 +148,7 @@ public class DDMUserPersonalFolderItemSelectorViewDisplayContext {
 		).setParameter(
 			"repositoryId",
 			_ddmUserPersonalFolderItemSelectorCriterion.getRepositoryId()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public boolean isSearch() {
