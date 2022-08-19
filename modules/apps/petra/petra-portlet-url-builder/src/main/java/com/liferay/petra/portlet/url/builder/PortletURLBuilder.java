@@ -42,13 +42,6 @@ public class PortletURLBuilder {
 		return new PortletURLStep(portletURL);
 	}
 
-	public static PortletURLStep createActionURL(
-		LiferayPortletResponse liferayPortletResponse, String portletName) {
-
-		return new PortletURLStep(
-			liferayPortletResponse.createActionURL(portletName));
-	}
-
 	public static PortletURLStep createActionURL(MimeResponse mimeResponse) {
 		return new PortletURLStep(mimeResponse.createActionURL());
 	}
