@@ -91,17 +91,15 @@ if (group.isStaged() && group.isStagedRemotely()) {
 	cmd = Constants.PUBLISH_TO_REMOTE;
 }
 
-PortletURL portletURL = PortletURLBuilder.createActionURL(
+RenderURL renderURL = RenderURLBuilder.createRenderURL(
 	renderResponse
-).setActionName(
-	"/export_import/publish_layouts"
 ).setMVCRenderCommandName(
 	"/export_import/publish_layouts"
 ).setParameter(
 	"closeRedirect", closeRedirect
 ).setParameter(
 	"stagingGroupId", stagingGroupId
-).buildPortletURL();
+).buildRenderURL();
 
 PortletURL redirectURL = PortletURLBuilder.createRenderURL(
 	renderResponse
@@ -136,7 +134,7 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 		</c:if>
 	</c:if>
 
-	<aui:form action='<%= portletURL.toString() + "&etag=0&strip=0" %>' cssClass="lfr-export-dialog" method="post" name="publishPagesFm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "publishPages();" %>'>
+	<aui:form action='<%= renderURL.toString() + "&etag=0&strip=0" %>' cssClass="lfr-export-dialog" method="post" name="publishPagesFm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "publishPages();" %>'>
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= cmd %>" />
 		<aui:input name="originalCmd" type="hidden" value="<%= cmd %>" />
 		<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />

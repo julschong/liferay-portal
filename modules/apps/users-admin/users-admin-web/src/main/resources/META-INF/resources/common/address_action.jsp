@@ -50,7 +50,7 @@ long addressId = ParamUtil.getLong(request, "addressId");
 	/>
 
 	<%
-	PortletURL portletURL = PortletURLBuilder.createActionURL(
+	ActionURL actionURL = ActionURLBuilder.createActionURL(
 		renderResponse
 	).setActionName(
 		"/users_admin/update_contact_information"
@@ -64,14 +64,14 @@ long addressId = ParamUtil.getLong(request, "addressId");
 		"listType", ListTypeConstants.ADDRESS
 	).setParameter(
 		"primaryKey", addressId
-	).buildPortletURL();
+	).buildActionURL();
 	%>
 
 	<liferay-ui:icon
 		message="make-primary"
 		url='<%=
 			PortletURLBuilder.create(
-				PortletURLUtil.clone(portletURL, renderResponse)
+				PortletURLUtil.clone(actionURL, renderResponse)
 			).setCMD(
 				"makePrimary"
 			).buildString()
@@ -82,7 +82,7 @@ long addressId = ParamUtil.getLong(request, "addressId");
 		message="remove"
 		url="<%=
 			PortletURLBuilder.create(
-				PortletURLUtil.clone(portletURL, renderResponse)
+				PortletURLUtil.clone(actionURL, renderResponse)
 			).setCMD(
 				Constants.DELETE
 			).buildString()

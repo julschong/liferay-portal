@@ -34,7 +34,7 @@
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"importObjectDefinitionURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					renderResponse
 				).setActionName(
 					"/object_definitions/import_object_definition"
