@@ -30,20 +30,20 @@
 WikiNode node = (WikiNode)request.getAttribute(WikiWebKeys.WIKI_NODE);
 WikiPage wikiPage = (WikiPage)request.getAttribute(WikiWebKeys.WIKI_PAGE);
 
-PortletURL portletURL = PortletURLBuilder.createActionURL(
+ActionURL actionURL = ActionURLBuilder.createActionURL(
 	renderResponse
 ).setParameter(
 	"nodeId", node.getNodeId()
 ).setParameter(
 	"title", wikiPage.getTitle()
-).buildPortletURL();
+).buildActionURL();
 
-PortalUtil.addPortletBreadcrumbEntry(request, wikiPage.getTitle(), portletURL.toString());
+PortalUtil.addPortletBreadcrumbEntry(request, wikiPage.getTitle(), actionURL.toString());
 
-portletURL.setParameter(ActionRequest.ACTION_NAME, "/wiki/view_page_history");
-portletURL.setParameter("redirect", currentURL);
+actionURL.setParameter(ActionRequest.ACTION_NAME, "/wiki/view_page_history");
+actionURL.setParameter("redirect", currentURL);
 
-PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "history"), portletURL.toString());
+PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "history"), actionURL.toString());
 %>
 
 <div class="page-activities">

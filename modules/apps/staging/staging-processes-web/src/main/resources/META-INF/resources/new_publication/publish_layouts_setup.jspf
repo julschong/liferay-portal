@@ -130,15 +130,13 @@ if (group.isStaged() && group.isStagedRemotely()) {
 	cmd = Constants.PUBLISH_TO_REMOTE;
 }
 
-PortletURL portletURL = PortletURLBuilder.createActionURL(
+ActionURL actionURL = ActionURLBuilder.createActionURL(
 	renderResponse
 ).setActionName(
 	"/staging_processes/publish_layouts"
-).setMVCRenderCommandName(
-	"/staging_processes/publish_layouts"
 ).setParameter(
 	"stagingGroupId", stagingGroupId
-).buildPortletURL();
+).buildActionURL();
 
 renderResponse.setTitle(!configuredPublish ? LanguageUtil.get(request, "new-publish-process") : LanguageUtil.format(request, "new-publish-process-based-on-x", exportImportConfiguration.getName(), false));
 

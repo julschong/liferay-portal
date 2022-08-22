@@ -32,7 +32,7 @@
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"importDataDefinitionURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					renderResponse
 				).setActionName(
 					"/journal/import_data_definition"

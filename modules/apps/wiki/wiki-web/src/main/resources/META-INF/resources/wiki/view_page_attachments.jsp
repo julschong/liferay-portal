@@ -20,7 +20,7 @@
 WikiNode node = (WikiNode)request.getAttribute(WikiWebKeys.WIKI_NODE);
 WikiPage wikiPage = (WikiPage)request.getAttribute(WikiWebKeys.WIKI_PAGE);
 
-PortletURL portletURL = PortletURLBuilder.createActionURL(
+ActionURL actionURL = ActionURLBuilder.createActionURL(
 	renderResponse
 ).setActionName(
 	"/wiki/view"
@@ -28,13 +28,13 @@ PortletURL portletURL = PortletURLBuilder.createActionURL(
 	"nodeId", node.getNodeId()
 ).setParameter(
 	"title", wikiPage.getTitle()
-).buildPortletURL();
+).buildActionURL();
 
-PortalUtil.addPortletBreadcrumbEntry(request, wikiPage.getTitle(), portletURL.toString());
+PortalUtil.addPortletBreadcrumbEntry(request, wikiPage.getTitle(), actionURL.toString());
 
-portletURL.setParameter(ActionRequest.ACTION_NAME, "/wiki/view_page_attachments");
+actionURL.setParameter(ActionRequest.ACTION_NAME, "/wiki/view_page_attachments");
 
-PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "attachments"), portletURL.toString());
+PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "attachments"), actionURL.toString());
 %>
 
 <liferay-util:include page="/wiki/top_links.jsp" servletContext="<%= application %>" />

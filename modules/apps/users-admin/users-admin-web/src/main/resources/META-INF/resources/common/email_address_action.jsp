@@ -54,7 +54,7 @@ long emailAddressId = emailAddress.getEmailAddressId();
 	/>
 
 	<%
-	PortletURL portletURL = PortletURLBuilder.createActionURL(
+	ActionURL actionURL = ActionURLBuilder.createActionURL(
 		renderResponse
 	).setActionName(
 		"/users_admin/update_contact_information"
@@ -68,14 +68,14 @@ long emailAddressId = emailAddress.getEmailAddressId();
 		"listType", ListTypeConstants.EMAIL_ADDRESS
 	).setParameter(
 		"primaryKey", emailAddressId
-	).buildPortletURL();
+	).buildActionURL();
 	%>
 
 	<liferay-ui:icon
 		message="make-primary"
 		url='<%=
 			PortletURLBuilder.create(
-				PortletURLUtil.clone(portletURL, renderResponse)
+				PortletURLUtil.clone(actionURL, renderResponse)
 			).setCMD(
 				"makePrimary"
 			).buildString()
@@ -86,7 +86,7 @@ long emailAddressId = emailAddress.getEmailAddressId();
 		message="remove"
 		url="<%=
 			PortletURLBuilder.create(
-				PortletURLUtil.clone(portletURL, renderResponse)
+				PortletURLUtil.clone(actionURL, renderResponse)
 			).setCMD(
 				Constants.DELETE
 			).buildString()

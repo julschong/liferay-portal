@@ -112,6 +112,7 @@ page import="com.liferay.portal.kernel.portlet.PortletBag" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletBagPool" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLUtil" %><%@
+page import="com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder" %><%@
 page import="com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil" %><%@
 page import="com.liferay.portal.kernel.repository.model.FileEntry" %><%@
 page import="com.liferay.portal.kernel.security.auth.AuthException" %><%@
@@ -175,7 +176,8 @@ page import="java.util.ResourceBundle" %><%@
 page import="java.util.Set" %>
 
 <%@ page import="javax.portlet.PortletRequest" %><%@
-page import="javax.portlet.PortletURL" %>
+page import="javax.portlet.PortletURL" %><%@
+page import="javax.portlet.RenderURL" %>
 
 <liferay-frontend:defineObjects />
 

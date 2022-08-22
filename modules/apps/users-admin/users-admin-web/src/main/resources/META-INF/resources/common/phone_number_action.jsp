@@ -54,7 +54,7 @@ long phoneId = phone.getPhoneId();
 	/>
 
 	<%
-	PortletURL portletURL = PortletURLBuilder.createActionURL(
+	ActionURL actionURL = ActionURLBuilder.createActionURL(
 		renderResponse
 	).setActionName(
 		"/users_admin/update_contact_information"
@@ -68,14 +68,14 @@ long phoneId = phone.getPhoneId();
 		"listType", ListTypeConstants.PHONE
 	).setParameter(
 		"primaryKey", phoneId
-	).buildPortletURL();
+	).buildActionURL();
 	%>
 
 	<liferay-ui:icon
 		message="make-primary"
 		url='<%=
 			PortletURLBuilder.create(
-				PortletURLUtil.clone(portletURL, renderResponse)
+				PortletURLUtil.clone(actionURL, renderResponse)
 			).setCMD(
 				"makePrimary"
 			).buildString()
@@ -86,7 +86,7 @@ long phoneId = phone.getPhoneId();
 		message="remove"
 		url="<%=
 			PortletURLBuilder.create(
-				PortletURLUtil.clone(portletURL, renderResponse)
+				PortletURLUtil.clone(actionURL, renderResponse)
 			).setCMD(
 				Constants.DELETE
 			).buildString()

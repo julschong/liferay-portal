@@ -62,6 +62,7 @@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.portlet.PortalPreferences" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLUtil" %><%@
+page import="com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder" %><%@
 page import="com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil" %><%@
 page import="com.liferay.portal.kernel.repository.model.FileEntry" %><%@
 page import="com.liferay.portal.kernel.search.Hits" %><%@
@@ -120,6 +121,7 @@ page import="java.util.Map" %><%@
 page import="java.util.Set" %>
 
 <%@ page import="javax.portlet.ActionRequest" %><%@
+page import="javax.portlet.ActionURL" %><%@
 page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>

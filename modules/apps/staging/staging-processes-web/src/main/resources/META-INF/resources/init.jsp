@@ -52,6 +52,7 @@ page import="com.liferay.portal.kernel.model.ModelHintsUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.portlet.PortalPreferences" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder" %><%@
 page import="com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil" %><%@
 page import="com.liferay.portal.kernel.security.auth.AuthException" %><%@
 page import="com.liferay.portal.kernel.security.auth.RemoteAuthException" %><%@
@@ -90,7 +91,8 @@ page import="java.util.Date" %><%@
 page import="java.util.List" %><%@
 page import="java.util.Map" %>
 
-<%@ page import="javax.portlet.PortletMode" %><%@
+<%@ page import="javax.portlet.ActionURL" %><%@
+page import="javax.portlet.PortletMode" %><%@
 page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.PortletURL" %>
 

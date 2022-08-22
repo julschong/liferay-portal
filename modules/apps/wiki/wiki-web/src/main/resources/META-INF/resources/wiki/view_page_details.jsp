@@ -118,7 +118,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "details
 		<%
 		String[] conversions = DocumentConversionUtil.getConversions("html");
 
-		PortletURL exportPageURL = PortletURLBuilder.createActionURL(
+		ActionURL exportPageURL = ActionURLBuilder.createActionURL(
 			renderResponse
 		).setActionName(
 			"/wiki/export_page"
@@ -132,7 +132,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "details
 			"version", wikiPage.getVersion()
 		).setWindowState(
 			LiferayWindowState.EXCLUSIVE
-		).buildPortletURL();
+		).buildActionURL();
 		%>
 
 		<tr>

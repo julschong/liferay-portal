@@ -108,6 +108,7 @@ page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %>
 page import="com.liferay.portal.kernel.portlet.PortletProvider" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletProviderUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLUtil" %><%@
+page import="com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder" %><%@
 page import="com.liferay.portal.kernel.security.auth.ScreenNameValidator" %><%@
 page import="com.liferay.portal.kernel.security.ldap.LDAPSettingsUtil" %><%@
 page import="com.liferay.portal.kernel.security.membershippolicy.OrganizationMembershipPolicyUtil" %><%@
@@ -202,7 +203,8 @@ page import="java.util.Map" %><%@
 page import="java.util.Set" %><%@
 page import="java.util.TimeZone" %>
 
-<%@ page import="javax.portlet.PortletURL" %><%@
+<%@ page import="javax.portlet.ActionURL" %><%@
+page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
 
 <liferay-frontend:defineObjects />

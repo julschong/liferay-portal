@@ -22,7 +22,7 @@
 	<portlet:param name="mvcRenderCommandName" value="/staging_processes/view_processes_list" />
 </portlet:renderURL>
 
-<aui:form action='<%= portletURL.toString() + "&etag=0&strip=0" %>' cssClass="lfr-export-dialog" method="post" name="exportPagesFm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "publishPages();" %>'>
+<aui:form action='<%= actionURL.toString() + "&etag=0&strip=0" %>' cssClass="lfr-export-dialog" method="post" name="exportPagesFm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "publishPages();" %>'>
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= cmd %>" />
 	<aui:input name="exportImportConfigurationId" type="hidden" value="<%= exportImportConfigurationId %>" />
 	<aui:input name="originalCmd" type="hidden" value="<%= cmd %>" />
