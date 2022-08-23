@@ -1288,7 +1288,7 @@ public class PortletURLImpl
 
 		PortletApp portletApp = portlet.getPortletApp();
 
-		_portletSpecMajorVersion = portletApp.getSpecMajorVersion();
+		_portletSpecMajorVersion = 3;
 
 		if (_portletSpecMajorVersion < 3) {
 			_portletURLParameterMap = new LinkedHashMap<>();
