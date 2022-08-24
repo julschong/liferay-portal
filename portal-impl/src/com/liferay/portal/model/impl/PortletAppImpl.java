@@ -240,7 +240,7 @@ public class PortletAppImpl implements PortletApp {
 	private ServletContext _servletContext;
 	private final String _servletContextName;
 	private final Set<String> _servletURLPatterns = new LinkedHashSet<>();
-	private int _specMajorVersion = 2;
+	private int _specMajorVersion = 3;
 	private int _specMinorVersion;
 	private final Set<String> _userAttributes = new LinkedHashSet<>();
 	private boolean _warFile;

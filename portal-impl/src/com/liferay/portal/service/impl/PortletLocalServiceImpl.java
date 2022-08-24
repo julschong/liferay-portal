@@ -2381,7 +2381,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		portletApp.addServletURLPatterns(servletURLPatterns);
 		portletApp.setServletContext(servletContext);
-		portletApp.setSpecMajorVersion(2);
+		portletApp.setSpecMajorVersion(3);
 		portletApp.setSpecMinorVersion(0);
 
 		Attribute versionAttribute = rootElement.attribute("version");
@@ -2392,7 +2392,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			if (versionAttributeParts.length > 0) {
 				portletApp.setSpecMajorVersion(
-					GetterUtil.getInteger(versionAttributeParts[0], 2));
+					GetterUtil.getInteger(versionAttributeParts[0], 3));
 
 				if (versionAttributeParts.length > 1) {
 					portletApp.setSpecMinorVersion(

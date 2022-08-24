@@ -390,7 +390,7 @@ public class PortletTracker
 				"javax.portlet.version");
 
 			if (jxPortletVersion == null) {
-				portletApp.setSpecMajorVersion(2);
+				portletApp.setSpecMajorVersion(3);
 				portletApp.setSpecMinorVersion(0);
 			}
 			else {
@@ -399,7 +399,7 @@ public class PortletTracker
 
 				if (jxPortletVersionParts.length > 0) {
 					portletApp.setSpecMajorVersion(
-						GetterUtil.getInteger(jxPortletVersionParts[0], 2));
+						GetterUtil.getInteger(jxPortletVersionParts[0], 3));
 
 					if (jxPortletVersionParts.length > 1) {
 						portletApp.setSpecMinorVersion(
