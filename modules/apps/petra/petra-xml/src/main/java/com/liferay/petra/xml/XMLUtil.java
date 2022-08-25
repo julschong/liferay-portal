@@ -18,7 +18,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.xml.Document;
 
 import java.io.IOException;
 
@@ -28,15 +27,6 @@ import org.dom4j.DocumentException;
  * @author Leonardo Barros
  */
 public class XMLUtil {
-
-	public static String formatXML(Document document) {
-		try {
-			return document.formattedString(StringPool.DOUBLE_SPACE);
-		}
-		catch (IOException ioException) {
-			throw new SystemException(ioException);
-		}
-	}
 
 	public static String formatXML(String xml) {
 
