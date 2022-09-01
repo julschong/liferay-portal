@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -83,7 +84,7 @@ public class ViewAccountEntriesManagementToolbarDisplayContext
 					"action", "deactivateAccountEntries"
 				).putData(
 					"deactivateAccountEntriesURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/account_admin/update_account_entry_status"
@@ -109,7 +110,7 @@ public class ViewAccountEntriesManagementToolbarDisplayContext
 					"action", "activateAccountEntries"
 				).putData(
 					"activateAccountEntriesURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/account_admin/update_account_entry_status"
@@ -130,7 +131,7 @@ public class ViewAccountEntriesManagementToolbarDisplayContext
 				"action", "deleteAccountEntries"
 			).putData(
 				"deleteAccountEntriesURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					liferayPortletResponse
 				).setActionName(
 					"/account_admin/delete_account_entry"
