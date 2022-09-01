@@ -6,6 +6,7 @@ import ${entity.UADPackagePath}.uad.constants.${entity.UADApplicationName}UADCon
 import ${serviceBuilder.getCompatJavaClassName("StringBundler")};
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
@@ -51,8 +52,12 @@ public abstract class Base${entity.name}UADExporter extends DynamicQueryUADExpor
 		<#list entity.UADEntityColumns as entityColumn>
 			<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
 				sb.append("<column><column-name>${entityColumn.name}</column-name><column-value><![CDATA[");
-				sb.append(${entity.variableName}.get${entityColumn.methodName}());
-				sb.append("]]></column-value></column>");
+				<#if serviceBuilder.isVersionGTE_7_4_0() && stringUtil.equals(entityColumn.type, "String")>
+					sb.append(StringUtil.replace(${entity.variableName}.get${entityColumn.methodName}(), "]]>", "]]]]><![CDATA[>"));
+				<#else>
+					sb.append(${entity.variableName}.get${entityColumn.methodName}());
+				</#if>
+					sb.append("]]></column-value></column>");
 			</#if>
 		</#list>
 
