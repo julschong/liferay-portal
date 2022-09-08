@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.servlet.taglib.ui.Menu;
@@ -152,11 +153,11 @@ public class ViewSharedAssetsDisplayContext {
 				navigationItem.setActive(_isIncoming());
 
 				navigationItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						_liferayPortletResponse
 					).setParameter(
 						"incoming", true
-					).buildPortletURL());
+					).buildRenderURL());
 
 				navigationItem.setLabel(
 					LanguageUtil.get(_httpServletRequest, "shared-with-me"));
@@ -166,11 +167,11 @@ public class ViewSharedAssetsDisplayContext {
 				navigationItem.setActive(!_isIncoming());
 
 				navigationItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						_liferayPortletResponse
 					).setParameter(
 						"incoming", false
-					).buildPortletURL());
+					).buildRenderURL());
 
 				navigationItem.setLabel(
 					LanguageUtil.get(_httpServletRequest, "shared-by-me"));
