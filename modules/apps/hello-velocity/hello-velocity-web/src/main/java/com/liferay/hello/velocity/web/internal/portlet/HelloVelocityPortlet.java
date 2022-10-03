@@ -20,11 +20,9 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portlet.VelocityPortlet;
 
 import java.io.IOException;
@@ -74,20 +72,21 @@ public class HelloVelocityPortlet extends VelocityPortlet {
 			PortletResponse portletResponse)
 		throws Exception {
 
+		if (templateId.indexOf(StringPool.SLASH) != 0) {
+			templateId = StringPool.SLASH.concat(templateId);
+		}
+
+		String content = _getContent(templateId);
+
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_VM, _getTemplateResource(templateId),
-			false);
+			TemplateConstants.LANG_TYPE_VM, templateId, content, false);
 
 		prepareTemplate(template, portletRequest, portletResponse);
 
 		mergeTemplate(templateId, template, portletRequest, portletResponse);
 	}
 
-	private TemplateResource _getTemplateResource(String templateId) {
-		if (templateId.indexOf(StringPool.SLASH) != 0) {
-			templateId = StringPool.SLASH.concat(templateId);
-		}
-
+	private String _getContent(String templateId) {
 		String content = null;
 
 		try {
@@ -102,7 +101,7 @@ public class HelloVelocityPortlet extends VelocityPortlet {
 				ioException);
 		}
 
-		return new StringTemplateResource(templateId, content);
+		return content;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

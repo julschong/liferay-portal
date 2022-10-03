@@ -91,8 +91,6 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -129,8 +127,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -262,17 +258,6 @@ public class WebServerServlet extends HttpServlet {
 
 		_lastModified = GetterUtil.getBoolean(
 			servletConfig.getInitParameter("last_modified"), true);
-
-		Class<?> clazz = getClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
-
-		String templateId =
-			"com/liferay/portal/webserver/dependencies/template.ftl";
-
-		URL url = classLoader.getResource(templateId);
-
-		_templateResource = new URLTemplateResource(templateId, url);
 	}
 
 	@Override
@@ -1234,8 +1219,16 @@ public class WebServerServlet extends HttpServlet {
 			List<WebServerEntry> webServerEntries)
 		throws Exception {
 
+		String templateId =
+			"com/liferay/portal/webserver/dependencies/template.ftl";
+
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL, _templateResource, true);
+			TemplateConstants.LANG_TYPE_FTL, templateId,
+			classLoader.getResource(templateId), true);
 
 		template.put("entries", webServerEntries);
 		template.put("path", HttpComponentsUtil.encodePath(path));
@@ -1855,6 +1848,5 @@ public class WebServerServlet extends HttpServlet {
 			"_userFileUploadsSettings", false);
 
 	private boolean _lastModified = true;
-	private TemplateResource _templateResource;
 
 }

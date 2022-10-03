@@ -654,11 +654,8 @@ public class JournalTransformer {
 	private Template _getTemplate(String templateId, String script)
 		throws Exception {
 
-		TemplateResource templateResource = new StringTemplateResource(
-			templateId, script);
-
 		return TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL, templateResource, true);
+			TemplateConstants.LANG_TYPE_FTL, templateId, script, true);
 	}
 
 	private String _getTemplateId(

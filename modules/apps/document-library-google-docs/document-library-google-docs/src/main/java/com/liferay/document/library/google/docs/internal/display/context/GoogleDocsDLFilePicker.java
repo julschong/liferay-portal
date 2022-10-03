@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
 
@@ -89,11 +88,9 @@ public class GoogleDocsDLFilePicker implements DLFilePicker {
 
 		Class<?> clazz = getClass();
 
-		URLTemplateResource templateResource = new URLTemplateResource(
-			templateId, clazz.getResource(templateId));
-
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL, templateResource, false);
+			TemplateConstants.LANG_TYPE_FTL, templateId,
+			clazz.getResource(templateId), false);
 
 		template.put(
 			"googleAppsAPIKey",

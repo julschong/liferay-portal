@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.servlet.taglib.ui.URLUIItem;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -176,11 +175,9 @@ public class UIItemsBuilder {
 
 		Class<?> clazz = getClass();
 
-		URLTemplateResource urlTemplateResource = new URLTemplateResource(
-			javaScript, clazz.getResource(javaScript));
-
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL, urlTemplateResource, false);
+			TemplateConstants.LANG_TYPE_FTL, javaScript,
+			clazz.getResource(javaScript), false);
 
 		template.put("namespace", _getNamespace());
 

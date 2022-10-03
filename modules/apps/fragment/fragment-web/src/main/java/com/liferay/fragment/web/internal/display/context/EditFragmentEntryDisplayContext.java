@@ -390,15 +390,9 @@ public class EditFragmentEntryDisplayContext {
 	}
 
 	private Map<String, Object> _getProps() throws Exception {
-		TemplateManager templateManager =
-			TemplateManagerUtil.getTemplateManager(
-				TemplateConstants.LANG_TYPE_FTL);
-
-		Template template = templateManager.getTemplate(
-			new StringTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL,
-				TemplateConstants.LANG_TYPE_FTL),
-			true);
+		Template template = TemplateManagerUtil.getTemplate(
+			TemplateConstants.LANG_TYPE_FTL, TemplateConstants.LANG_TYPE_FTL,
+			TemplateConstants.LANG_TYPE_FTL,true);
 
 		template.prepare(_httpServletRequest);
 

@@ -46,8 +46,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlParser;
@@ -204,9 +202,15 @@ public class DDMFormEmailNotificationSender {
 			DDMFormInstanceRecord ddmFormInstanceRecord)
 		throws Exception {
 
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		URL templateURL = classLoader.getResource(_TEMPLATE_PATH);
+
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL,
-			_getTemplateResource(_TEMPLATE_PATH), false);
+			TemplateConstants.LANG_TYPE_FTL, templateURL.getPath(), templateURL,
+			false);
 
 		_populateParameters(
 			template, serviceContext, ddmFormInstance, ddmFormInstanceRecord);
@@ -431,16 +435,6 @@ public class DDMFormEmailNotificationSender {
 		}
 
 		return StringPool.BLANK;
-	}
-
-	private TemplateResource _getTemplateResource(String templatePath) {
-		Class<?> clazz = getClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
-
-		URL templateURL = classLoader.getResource(templatePath);
-
-		return new URLTemplateResource(templateURL.getPath(), templateURL);
 	}
 
 	private String _getUserName(
