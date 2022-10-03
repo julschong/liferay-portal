@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
+import java.net.URL;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +42,26 @@ public class TemplateManagerUtil {
 		}
 
 		_templateManagers.clear();
+	}
+
+	public static Template getTemplate(
+			String templateManagerName, String templateId, String content,
+			boolean restricted)
+		throws TemplateException {
+
+		return getTemplate(
+			templateManagerName,
+			new StringTemplateResource(templateId, content), restricted);
+	}
+
+	public static Template getTemplate(
+			String templateManagerName, String templateId, URL url,
+			boolean restricted)
+		throws TemplateException {
+
+		return getTemplate(
+			templateManagerName, new URLTemplateResource(templateId, url),
+			restricted);
 	}
 
 	public static Template getTemplate(
