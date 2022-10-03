@@ -27,6 +27,9 @@ public interface TemplateManager {
 	public String[] getRestrictedVariables();
 
 	public Template getTemplate(
+		String templateId, String content, boolean restricted);
+
+	public Template getTemplate(
 		TemplateResource templateResource, boolean restricted);
 
 	public void init() throws TemplateException;

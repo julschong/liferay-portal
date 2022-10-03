@@ -14,6 +14,7 @@
 
 package com.liferay.portal.template;
 
+import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
@@ -28,6 +29,14 @@ public abstract class BaseTemplateManager implements TemplateManager {
 	@Override
 	public String[] getRestrictedVariables() {
 		return new String[0];
+	}
+
+	@Override
+	public Template getTemplate(
+		String templateId, String content, boolean restricted) {
+
+		return getTemplate(
+			new StringTemplateResource(templateId, content), restricted);
 	}
 
 	@Override

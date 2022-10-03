@@ -43,6 +43,17 @@ public class TemplateManagerUtil {
 	}
 
 	public static Template getTemplate(
+			String templateManagerName, String templateId, String content,
+			boolean restricted)
+		throws TemplateException {
+
+		TemplateManager templateManager = _getTemplateManagerChecked(
+			templateManagerName);
+
+		return templateManager.getTemplate(templateId, content, restricted);
+	}
+
+	public static Template getTemplate(
 			String templateManagerName, TemplateResource templateResource,
 			boolean restricted)
 		throws TemplateException {
