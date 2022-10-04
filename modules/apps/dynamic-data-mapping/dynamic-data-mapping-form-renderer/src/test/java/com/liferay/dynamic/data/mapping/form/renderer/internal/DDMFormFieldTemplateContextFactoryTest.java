@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.language.constants.LanguageConstants;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlParser;
@@ -397,16 +396,8 @@ public class DDMFormFieldTemplateContextFactoryTest {
 	private DDMFormFieldRenderer _getTextDDMFormFieldRenderer() {
 		return new BaseDDMFormFieldRenderer() {
 
-			public String getTemplateLanguage() {
-				return null;
-			}
-
 			public String getTemplateNamespace() {
 				return "ddm.text";
-			}
-
-			public TemplateResource getTemplateResource() {
-				return null;
 			}
 
 		};
