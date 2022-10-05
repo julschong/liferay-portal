@@ -16,8 +16,10 @@ package com.liferay.adaptive.media.web.internal.background.task.display;
 
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.display.BaseBackgroundTaskDisplay;
-import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.template.URLTemplateResource;
+import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.template.TemplateException;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Map;
@@ -40,13 +42,13 @@ public class OptimizeImagesBackgroundTaskDisplay
 	}
 
 	@Override
-	protected TemplateResource getTemplateResource() {
+	protected Template getTemplate() throws TemplateException {
 		Class<?> clazz = getClass();
 
 		ClassLoader classLoader = clazz.getClassLoader();
 
-		return new URLTemplateResource(
-			_PROGRESS_TEMPLATE, classLoader.getResource(_PROGRESS_TEMPLATE));
+		return TemplateManagerUtil.getTemplate(TemplateConstants.LANG_TYPE_FTL,
+			_PROGRESS_TEMPLATE, classLoader.getResource(_PROGRESS_TEMPLATE), true);
 	}
 
 	@Override

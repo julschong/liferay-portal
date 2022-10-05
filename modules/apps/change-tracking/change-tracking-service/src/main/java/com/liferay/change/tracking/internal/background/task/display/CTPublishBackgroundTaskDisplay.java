@@ -16,6 +16,8 @@ package com.liferay.change.tracking.internal.background.task.display;
 
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.display.BaseBackgroundTaskDisplay;
+import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
 
 import java.util.Collections;
@@ -36,7 +38,7 @@ public class CTPublishBackgroundTaskDisplay extends BaseBackgroundTaskDisplay {
 	}
 
 	@Override
-	protected TemplateResource getTemplateResource() {
+	protected Template getTemplate() throws TemplateException {
 		return null;
 	}
 

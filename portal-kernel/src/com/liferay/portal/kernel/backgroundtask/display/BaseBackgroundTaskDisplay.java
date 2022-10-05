@@ -101,17 +101,15 @@ public abstract class BaseBackgroundTaskDisplay
 
 	@Override
 	public String renderDisplayTemplate(Locale locale) {
-		TemplateResource templateResource = getTemplateResource();
+		Template template;
 
-		if (templateResource == null) {
+		try {
+			template = getTemplate();
+		}
+		catch (Exception exception) {
+			_log.error(exception.getMessage());
 			return StringPool.BLANK;
 		}
-
-		TemplateManager templateManager =
-			TemplateManagerUtil.getTemplateManager(
-				TemplateConstants.LANG_TYPE_FTL);
-
-		Template template = templateManager.getTemplate(templateResource, true);
 
 		template.put("backgroundTask", backgroundTask);
 		template.put("backgroundTaskDisplay", this);
@@ -177,7 +175,7 @@ public abstract class BaseBackgroundTaskDisplay
 		return translateJSON(jsonObject, locale);
 	}
 
-	protected abstract TemplateResource getTemplateResource();
+	protected abstract Template getTemplate() throws TemplateException;
 
 	protected abstract Map<String, Object> getTemplateVars();
 
