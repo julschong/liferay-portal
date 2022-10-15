@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -72,7 +73,9 @@ public abstract class BasePasswordPolicyUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(passwordPolicy.getUserName());
+		sb.append(
+			StringUtil.replace(
+				passwordPolicy.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

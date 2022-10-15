@@ -16,6 +16,7 @@ package com.liferay.wiki.uad.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
@@ -71,7 +72,9 @@ public abstract class BaseWikiPageUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getStatusByUserName());
+		sb.append(
+			StringUtil.replace(
+				wikiPage.getStatusByUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -79,19 +82,26 @@ public abstract class BaseWikiPageUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getUserName());
+		sb.append(
+			StringUtil.replace(
+				wikiPage.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getTitle());
+		sb.append(
+			StringUtil.replace(wikiPage.getTitle(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>content</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getContent());
+		sb.append(
+			StringUtil.replace(
+				wikiPage.getContent(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>summary</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getSummary());
+		sb.append(
+			StringUtil.replace(
+				wikiPage.getSummary(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

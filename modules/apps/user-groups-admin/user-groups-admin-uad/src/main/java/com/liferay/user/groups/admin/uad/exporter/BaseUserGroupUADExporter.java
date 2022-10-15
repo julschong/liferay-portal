@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.groups.admin.uad.constants.UserGroupsAdminUADConstants;
 
@@ -71,7 +72,9 @@ public abstract class BaseUserGroupUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(userGroup.getUserName());
+		sb.append(
+			StringUtil.replace(
+				userGroup.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

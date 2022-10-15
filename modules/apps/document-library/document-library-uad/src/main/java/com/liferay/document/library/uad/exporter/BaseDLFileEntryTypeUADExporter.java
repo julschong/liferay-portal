@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.document.library.uad.constants.DLUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -71,7 +72,9 @@ public abstract class BaseDLFileEntryTypeUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntryType.getUserName());
+		sb.append(
+			StringUtil.replace(
+				dlFileEntryType.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

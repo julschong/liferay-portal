@@ -19,6 +19,7 @@ import com.liferay.contacts.service.EntryLocalService;
 import com.liferay.contacts.uad.constants.ContactsUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -71,19 +72,24 @@ public abstract class BaseEntryUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(entry.getUserName());
+		sb.append(
+			StringUtil.replace(entry.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>fullName</column-name><column-value><![CDATA[");
-		sb.append(entry.getFullName());
+		sb.append(
+			StringUtil.replace(entry.getFullName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>emailAddress</column-name><column-value><![CDATA[");
-		sb.append(entry.getEmailAddress());
+		sb.append(
+			StringUtil.replace(
+				entry.getEmailAddress(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>comments</column-name><column-value><![CDATA[");
-		sb.append(entry.getComments());
+		sb.append(
+			StringUtil.replace(entry.getComments(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

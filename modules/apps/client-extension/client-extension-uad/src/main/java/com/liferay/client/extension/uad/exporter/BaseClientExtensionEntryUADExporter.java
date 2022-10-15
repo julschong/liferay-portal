@@ -19,6 +19,7 @@ import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
 import com.liferay.client.extension.uad.constants.ClientExtensionUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -72,7 +73,10 @@ public abstract class BaseClientExtensionEntryUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getStatusByUserName());
+		sb.append(
+			StringUtil.replace(
+				clientExtensionEntry.getStatusByUserName(), "]]>",
+				"]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -80,7 +84,9 @@ public abstract class BaseClientExtensionEntryUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getUserName());
+		sb.append(
+			StringUtil.replace(
+				clientExtensionEntry.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

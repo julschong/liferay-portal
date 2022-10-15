@@ -19,6 +19,7 @@ import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -71,7 +72,9 @@ public abstract class BaseMBMessageUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getStatusByUserName());
+		sb.append(
+			StringUtil.replace(
+				mbMessage.getStatusByUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -79,19 +82,26 @@ public abstract class BaseMBMessageUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUserName());
+		sb.append(
+			StringUtil.replace(
+				mbMessage.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>subject</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getSubject());
+		sb.append(
+			StringUtil.replace(
+				mbMessage.getSubject(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>urlSubject</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUrlSubject());
+		sb.append(
+			StringUtil.replace(
+				mbMessage.getUrlSubject(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>body</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getBody());
+		sb.append(
+			StringUtil.replace(mbMessage.getBody(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

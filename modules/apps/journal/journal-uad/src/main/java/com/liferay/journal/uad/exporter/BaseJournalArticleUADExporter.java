@@ -19,6 +19,7 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.uad.constants.JournalUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -71,7 +72,10 @@ public abstract class BaseJournalArticleUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getStatusByUserName());
+		sb.append(
+			StringUtil.replace(
+				journalArticle.getStatusByUserName(), "]]>",
+				"]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -79,11 +83,15 @@ public abstract class BaseJournalArticleUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getUserName());
+		sb.append(
+			StringUtil.replace(
+				journalArticle.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>urlTitle</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getUrlTitle());
+		sb.append(
+			StringUtil.replace(
+				journalArticle.getUrlTitle(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

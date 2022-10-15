@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.document.library.uad.constants.DLUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -71,23 +72,33 @@ public abstract class BaseDLFileEntryUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getUserName());
+		sb.append(
+			StringUtil.replace(
+				dlFileEntry.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>fileName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getFileName());
+		sb.append(
+			StringUtil.replace(
+				dlFileEntry.getFileName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>extension</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getExtension());
+		sb.append(
+			StringUtil.replace(
+				dlFileEntry.getExtension(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getTitle());
+		sb.append(
+			StringUtil.replace(
+				dlFileEntry.getTitle(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getDescription());
+		sb.append(
+			StringUtil.replace(
+				dlFileEntry.getDescription(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

@@ -19,6 +19,7 @@ import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.blogs.uad.constants.BlogsUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -71,7 +72,9 @@ public abstract class BaseBlogsEntryUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getStatusByUserName());
+		sb.append(
+			StringUtil.replace(
+				blogsEntry.getStatusByUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -79,27 +82,39 @@ public abstract class BaseBlogsEntryUADExporter
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getUserName());
+		sb.append(
+			StringUtil.replace(
+				blogsEntry.getUserName(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getTitle());
+		sb.append(
+			StringUtil.replace(
+				blogsEntry.getTitle(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>subtitle</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getSubtitle());
+		sb.append(
+			StringUtil.replace(
+				blogsEntry.getSubtitle(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>urlTitle</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getUrlTitle());
+		sb.append(
+			StringUtil.replace(
+				blogsEntry.getUrlTitle(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getDescription());
+		sb.append(
+			StringUtil.replace(
+				blogsEntry.getDescription(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>content</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getContent());
+		sb.append(
+			StringUtil.replace(
+				blogsEntry.getContent(), "]]>", "]]]]><![CDATA[>"));
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>smallImage</column-name><column-value><![CDATA[");
