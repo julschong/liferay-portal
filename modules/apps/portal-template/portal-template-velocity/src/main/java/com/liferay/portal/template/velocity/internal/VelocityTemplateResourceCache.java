@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.template.BaseTemplateResourceCache;
+import com.liferay.portal.template.engine.resource.BaseTemplateResourceCache;
 import com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration;
 
 import java.util.Map;
