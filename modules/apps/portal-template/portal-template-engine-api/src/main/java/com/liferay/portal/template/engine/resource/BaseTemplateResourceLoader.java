@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.template;
+package com.liferay.portal.template.engine.resource;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.template.TemplateResourceParser;
 
 import java.util.Set;
 
