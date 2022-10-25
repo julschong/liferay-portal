@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.template.TemplateResourceParser;
-import com.liferay.portal.template.URLResourceParser;
+import com.liferay.portal.template.engine.resource.parser.URLResourceParser;
 
 import java.net.URL;
 
