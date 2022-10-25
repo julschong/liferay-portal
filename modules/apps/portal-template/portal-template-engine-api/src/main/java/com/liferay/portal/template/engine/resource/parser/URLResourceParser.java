@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.template;
+package com.liferay.portal.template.engine.resource.parser;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.template.TemplateResourceParser;
 
 import java.io.IOException;
 
