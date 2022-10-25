@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.template;
+package com.liferay.portal.template.engine.resource.parser;
 
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
