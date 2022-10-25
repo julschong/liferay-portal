@@ -3,4 +3,5 @@ Bundle-SymbolicName: com.liferay.portal.template.engine.api
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.portal.template.engine,\
-	com.liferay.portal.template.engine.resource
+	com.liferay.portal.template.engine.resource,\
+	com.liferay.portal.template.engine.resource.parser
