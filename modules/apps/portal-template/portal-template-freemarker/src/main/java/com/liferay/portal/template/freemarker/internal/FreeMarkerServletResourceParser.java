@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.template.TemplateResourceParser;
+import com.liferay.portal.template.engine.resource.parser.TemplateResourceParser;
 import com.liferay.portal.template.engine.resource.parser.URLResourceParser;
 
 import java.io.IOException;

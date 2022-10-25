@@ -18,7 +18,7 @@ import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
-import com.liferay.portal.template.TemplateResourceParser;
+import com.liferay.portal.template.engine.resource.parser.TemplateResourceParser;
 import com.liferay.portal.template.engine.resource.parser.URLResourceParser;
 
 import java.net.URL;
