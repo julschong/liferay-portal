@@ -16,8 +16,8 @@ package com.liferay.portal.template.velocity.internal;
 
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
-import com.liferay.portal.template.TemplateResourceParser;
 import com.liferay.portal.template.engine.resource.BaseTemplateResourceLoader;
+import com.liferay.portal.template.engine.resource.parser.TemplateResourceParser;
 
 import java.util.Collections;
 import java.util.Map;

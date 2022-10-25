@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.template.TemplateResourceParser;
+import com.liferay.portal.template.engine.resource.parser.TemplateResourceParser;
 
 import java.util.Set;
 
