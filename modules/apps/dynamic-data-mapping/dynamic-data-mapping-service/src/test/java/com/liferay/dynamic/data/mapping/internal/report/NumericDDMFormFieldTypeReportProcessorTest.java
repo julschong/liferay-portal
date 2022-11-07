@@ -23,10 +23,12 @@ import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -62,6 +64,10 @@ public class NumericDDMFormFieldTypeReportProcessorTest {
 		_numericDDMFormFieldTypeReportProcessor.
 			ddmFormInstanceRecordLocalService =
 				_ddmFormInstanceRecordLocalService;
+
+		ReflectionTestUtil.setFieldValue(
+			_numericDDMFormFieldTypeReportProcessor, "_jsonFactory",
+			new JSONFactoryImpl());
 	}
 
 	@Test

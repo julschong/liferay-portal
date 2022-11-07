@@ -31,7 +31,7 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -116,7 +116,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 			if (contentDashboardItemFactory == null) {
 				JSONPortletResponseUtil.writeJSON(
 					resourceRequest, resourceResponse,
-					JSONFactoryUtil.createJSONArray());
+					_jsonFactory.createJSONArray());
 
 				return;
 			}
@@ -266,7 +266,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	private JSONArray _getAssetTagsJSONArray(
 		ContentDashboardItem contentDashboardItem) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		List<AssetTag> assetTags = contentDashboardItem.getAssetTags();
 
@@ -302,7 +302,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 			assetCategoryTitles.add(assetCategory.getTitle(locale));
 		}
 
-		return JSONFactoryUtil.createJSONObject(assetVocabularyMaps);
+		return _jsonFactory.createJSONObject(assetVocabularyMaps);
 	}
 
 	private Map<String, Object> _getAssetVocabularyMap(
@@ -401,7 +401,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	private JSONArray _getLatestContentDashboardItemVersionsJSONArray(
 		ContentDashboardItem contentDashboardItem, Locale locale) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		List<ContentDashboardItemVersion> latestContentDashboardItemVersions =
 			contentDashboardItem.getLatestContentDashboardItemVersions(locale);
@@ -467,7 +467,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	private JSONObject _getSpecificFieldsJSONObject(
 		ContentDashboardItem contentDashboardItem, Locale locale) {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		Map<String, Object> specificInformation =
 			contentDashboardItem.getSpecificInformation(locale);
@@ -605,7 +605,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 		ContentDashboardItem contentDashboardItem,
 		HttpServletRequest httpServletRequest) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		List<ContentDashboardItemAction> contentDashboardItemActions =
 			contentDashboardItem.getContentDashboardItemActions(
@@ -681,6 +681,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;
