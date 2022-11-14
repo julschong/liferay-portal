@@ -55,15 +55,14 @@ public class AssetEntriesSearchFacetTest {
 		assetEntriesSearchFacet = new AssetEntriesSearchFacet();
 
 		ReflectionTestUtil.setFieldValue(
-			assetEntriesSearchFacet,
-			"_searchableAssetClassNamesProvider",
+			assetEntriesSearchFacet, "_searchableAssetClassNamesProvider",
 			new SearchableAssetClassNamesProviderImpl() {
-			{
-				assetRendererFactoryRegistry =
-					_assetRendererFactoryRegistry;
-				searchEngineHelper = _searchEngineHelper;
-			}
-		});
+				{
+					assetRendererFactoryRegistry =
+						_assetRendererFactoryRegistry;
+					searchEngineHelper = _searchEngineHelper;
+				}
+			});
 
 		_mockAssetRendererFactoryGetClassName(
 			assetRendererFactory1, CLASS_NAME_1);

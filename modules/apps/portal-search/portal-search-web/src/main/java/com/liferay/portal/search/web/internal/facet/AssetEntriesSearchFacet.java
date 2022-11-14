@@ -223,6 +223,9 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 		return _servletContext;
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntriesSearchFacet.class);
+
 	@Reference
 	private AssetEntriesFacetFactory _assetEntriesFacetFactory;
 
@@ -232,9 +235,6 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 	@Reference
 	private SearchableAssetClassNamesProvider
 		_searchableAssetClassNamesProvider;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AssetEntriesSearchFacet.class);
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.portal.search.web)")
 	private ServletContext _servletContext;
