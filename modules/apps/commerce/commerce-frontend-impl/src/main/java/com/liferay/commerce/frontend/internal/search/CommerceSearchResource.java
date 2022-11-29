@@ -53,8 +53,8 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HtmlParser;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -179,7 +179,7 @@ public class CommerceSearchResource {
 		throws PortalException {
 
 		SearchItemModel searchItemModel = new SearchItemModel(
-			"item", HtmlUtil.escape(cpCatalogEntry.getName()));
+			"item", _html.escape(cpCatalogEntry.getName()));
 
 		searchItemModel.setImage(
 			_cpDefinitionHelper.getDefaultImageFileURL(
@@ -426,6 +426,9 @@ public class CommerceSearchResource {
 
 	@Reference
 	private CPDefinitionHelper _cpDefinitionHelper;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private HtmlParser _htmlParser;

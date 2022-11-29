@@ -39,7 +39,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -105,8 +105,8 @@ public class CommerceSubscriptionOrderItemFDSDataProvider
 			CommerceMoney finalPriceCommerceMoney =
 				commerceProductPrice.getFinalPrice();
 
-			price = HtmlUtil.escape(unitPriceCommerceMoney.format(locale));
-			total = HtmlUtil.escape(finalPriceCommerceMoney.format(locale));
+			price = _html.escape(unitPriceCommerceMoney.format(locale));
+			total = _html.escape(finalPriceCommerceMoney.format(locale));
 
 			CommerceDiscountValue discountValue =
 				commerceProductPrice.getDiscountValue();
@@ -115,7 +115,7 @@ public class CommerceSubscriptionOrderItemFDSDataProvider
 				CommerceMoney discountAmountCommerceMoney =
 					discountValue.getDiscountAmount();
 
-				discount = HtmlUtil.escape(
+				discount = _html.escape(
 					discountAmountCommerceMoney.format(locale));
 			}
 		}
@@ -318,6 +318,9 @@ public class CommerceSubscriptionOrderItemFDSDataProvider
 
 	@Reference
 	private CPSubscriptionTypeRegistry _cpSubscriptionTypeRegistry;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Language _language;

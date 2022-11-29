@@ -20,7 +20,7 @@ import com.liferay.layout.display.page.constants.LayoutDisplayPageWebKeys;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.TreeMapBuilder;
 
@@ -84,7 +84,7 @@ public class AnalyticsRenderFragmentLayoutPreDynamicInclude
 			"data-analytics-asset-id", displayObject -> String.valueOf(classPK)
 		).put(
 			"data-analytics-asset-title",
-			displayObject -> HtmlUtil.escapeAttribute(title)
+			displayObject -> _html.escapeAttribute(title)
 		).put(
 			"data-analytics-asset-type",
 			displayObject -> analyticsAssetType.getType()
@@ -140,6 +140,9 @@ public class AnalyticsRenderFragmentLayoutPreDynamicInclude
 
 		printWriter.print(sb);
 	}
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Portal _portal;

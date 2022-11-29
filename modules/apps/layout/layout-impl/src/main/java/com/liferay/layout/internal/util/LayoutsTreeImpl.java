@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.servlet.BrowserSniffer;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SessionClicks;
@@ -724,7 +724,7 @@ public class LayoutsTreeImpl implements LayoutsTree {
 			).put(
 				"target",
 				GetterUtil.getString(
-					HtmlUtil.escape(layout.getTypeSettingsProperty("target")),
+					_html.escape(layout.getTypeSettingsProperty("target")),
 					"_self")
 			).put(
 				"type", layout.getType()
@@ -853,6 +853,9 @@ public class LayoutsTreeImpl implements LayoutsTree {
 
 	@Reference
 	private GroupPermission _groupPermission;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private JSONFactory _jsonFactory;

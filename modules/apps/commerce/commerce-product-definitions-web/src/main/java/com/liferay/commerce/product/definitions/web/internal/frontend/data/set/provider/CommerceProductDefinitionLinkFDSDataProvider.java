@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -95,7 +95,7 @@ public class CommerceProductDefinitionLinkFDSDataProvider
 							name, "rounded", "lg",
 							cpDefinition.getDefaultImageThumbnailSrc(
 								CommerceAccountConstants.ACCOUNT_ID_ADMIN)),
-						HtmlUtil.escape(name),
+						_html.escape(name),
 						_language.get(
 							httpServletRequest, cpDefinitionLink.getType()),
 						cpDefinitionLink.getPriority(),
@@ -131,6 +131,9 @@ public class CommerceProductDefinitionLinkFDSDataProvider
 
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Language _language;

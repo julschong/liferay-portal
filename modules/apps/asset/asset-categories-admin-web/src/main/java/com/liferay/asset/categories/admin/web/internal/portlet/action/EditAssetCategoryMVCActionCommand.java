@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -101,7 +101,7 @@ public class EditAssetCategoryMVCActionCommand extends BaseMVCActionCommand {
 					_portal.getHttpServletRequest(actionRequest),
 					"x-was-created-successfully",
 					new Object[] {
-						HtmlUtil.escape(titleMap.get(themeDisplay.getLocale()))
+						_html.escape(titleMap.get(themeDisplay.getLocale()))
 					}));
 		}
 		else {
@@ -122,7 +122,7 @@ public class EditAssetCategoryMVCActionCommand extends BaseMVCActionCommand {
 					_portal.getHttpServletRequest(actionRequest),
 					"x-was-updated-successfully",
 					new Object[] {
-						HtmlUtil.escape(titleMap.get(themeDisplay.getLocale()))
+						_html.escape(titleMap.get(themeDisplay.getLocale()))
 					}));
 		}
 
@@ -163,6 +163,9 @@ public class EditAssetCategoryMVCActionCommand extends BaseMVCActionCommand {
 	@Reference
 	private AssetDisplayPageEntryFormProcessor
 		_assetDisplayPageEntryFormProcessor;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Language _language;

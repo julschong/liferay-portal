@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -123,6 +123,9 @@ public class CPDefinitionItemSelectorView
 	private CPDefinitionLocalService _cpDefinitionLocalService;
 
 	@Reference
+	private Html _html;
+
+	@Reference
 	private ItemSelectorViewDescriptorRenderer<InfoItemItemSelectorCriterion>
 		_itemSelectorViewDescriptorRenderer;
 
@@ -198,7 +201,7 @@ public class CPDefinitionItemSelectorView
 						locale,
 						System.currentTimeMillis() - modifiedDate.getTime(),
 						true),
-					HtmlUtil.escape(_cpDefinition.getUserName())
+					_html.escape(_cpDefinition.getUserName())
 				});
 		}
 

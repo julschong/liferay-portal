@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -196,7 +196,7 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 			webImage -> {
 				long portraitId = GetterUtil.getLong(
 					HttpComponentsUtil.getParameter(
-						HtmlUtil.escape(webImage.getUrl()), "img_id"));
+						_html.escape(webImage.getUrl()), "img_id"));
 
 				if (portraitId > 0) {
 					return JSONUtil.put(
@@ -626,6 +626,9 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference
 	private AnalyticsReportsInfoItemRegistry _analyticsReportsInfoItemRegistry;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Http _http;

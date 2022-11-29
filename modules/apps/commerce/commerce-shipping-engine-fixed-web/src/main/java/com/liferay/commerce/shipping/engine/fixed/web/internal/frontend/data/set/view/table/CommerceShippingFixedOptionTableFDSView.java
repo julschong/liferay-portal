@@ -43,7 +43,7 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -157,10 +157,10 @@ public class CommerceShippingFixedOptionTableFDSView
 
 			shippingFixedOptions.add(
 				new ShippingFixedOption(
-					HtmlUtil.escape(
+					_html.escape(
 						commerceShippingFixedOption.getDescription(
 							themeDisplay.getLocale())),
-					HtmlUtil.escape(
+					_html.escape(
 						commerceShippingFixedOption.getName(
 							themeDisplay.getLocale())),
 					commerceShippingFixedOption.getPriority(),
@@ -249,6 +249,9 @@ public class CommerceShippingFixedOptionTableFDSView
 
 	@Reference
 	private FDSTableSchemaBuilderFactory _fdsTableSchemaBuilderFactory;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Language _language;

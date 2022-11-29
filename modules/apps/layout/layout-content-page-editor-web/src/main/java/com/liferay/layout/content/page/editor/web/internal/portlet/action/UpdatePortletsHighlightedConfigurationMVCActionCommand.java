@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -109,7 +109,7 @@ public class UpdatePortletsHighlightedConfigurationMVCActionCommand
 				).put(
 					"portletItemId", portletItem.getPortletItemId()
 				).put(
-					"title", HtmlUtil.escape(portletItem.getName())
+					"title", _html.escape(portletItem.getName())
 				));
 		}
 
@@ -286,6 +286,9 @@ public class UpdatePortletsHighlightedConfigurationMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		UpdatePortletsHighlightedConfigurationMVCActionCommand.class);
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private JSONFactory _jsonFactory;

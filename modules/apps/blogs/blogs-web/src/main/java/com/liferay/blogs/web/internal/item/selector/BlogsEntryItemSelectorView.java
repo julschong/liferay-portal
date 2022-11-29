@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -114,6 +114,9 @@ public class BlogsEntryItemSelectorView
 
 	@Reference
 	private BlogsEntryService _blogsEntryService;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private ItemSelectorViewDescriptorRenderer<InfoItemItemSelectorCriterion>
@@ -204,7 +207,7 @@ public class BlogsEntryItemSelectorView
 				locale, "x-ago-by-x",
 				new Object[] {
 					modifiedDateDescription,
-					HtmlUtil.escape(_blogsEntry.getUserName())
+					_html.escape(_blogsEntry.getUserName())
 				});
 		}
 

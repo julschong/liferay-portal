@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -290,7 +290,7 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 				).put(
 					"portletItemId", portletItem.getPortletItemId()
 				).put(
-					"title", HtmlUtil.escape(portletItem.getName())
+					"title", _html.escape(portletItem.getName())
 				));
 		}
 
@@ -400,6 +400,9 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletCategoryManagerImpl.class);
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private JSONFactory _jsonFactory;

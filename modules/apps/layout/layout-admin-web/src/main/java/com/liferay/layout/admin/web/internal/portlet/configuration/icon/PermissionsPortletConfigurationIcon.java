@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.security.PermissionsURLTag;
@@ -77,7 +77,7 @@ public class PermissionsPortletConfigurationIcon
 		try {
 			url = PermissionsURLTag.doTag(
 				StringPool.BLANK, Layout.class.getName(),
-				HtmlUtil.escape(layout.getName(themeDisplay.getLocale())), null,
+				_html.escape(layout.getName(themeDisplay.getLocale())), null,
 				String.valueOf(layout.getPlid()),
 				LiferayWindowState.POP_UP.toString(), null,
 				themeDisplay.getRequest());
@@ -138,6 +138,9 @@ public class PermissionsPortletConfigurationIcon
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PermissionsPortletConfigurationIcon.class);
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private Language _language;

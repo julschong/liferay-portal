@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -134,6 +134,9 @@ public class KBArticleItemSelectorView
 			new InfoItemItemSelectorReturnType());
 
 	@Reference
+	private Html _html;
+
+	@Reference
 	private KBArticleLocalService _kbArticleLocalService;
 
 	@Reference
@@ -206,7 +209,7 @@ public class KBArticleItemSelectorView
 						locale,
 						System.currentTimeMillis() - modifiedDate.getTime(),
 						true),
-					HtmlUtil.escape(_kbArticle.getUserName())
+					_html.escape(_kbArticle.getUserName())
 				});
 		}
 

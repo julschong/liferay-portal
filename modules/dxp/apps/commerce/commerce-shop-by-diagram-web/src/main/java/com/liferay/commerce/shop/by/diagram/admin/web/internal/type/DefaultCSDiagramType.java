@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -111,7 +111,7 @@ public class DefaultCSDiagramType implements CSDiagramType {
 
 		Group group = layout.getGroup();
 
-		String siteBaseURL = HtmlUtil.escape(
+		String siteBaseURL = _html.escape(
 			group.getDisplayURL(themeDisplay, layout.isPrivateLayout()));
 
 		String productURLSeparator = _cpFriendlyURL.getProductURLSeparator(
@@ -206,6 +206,9 @@ public class DefaultCSDiagramType implements CSDiagramType {
 
 	@Reference
 	private DLURLHelper _dlURLHelper;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private JSPRenderer _jspRenderer;
