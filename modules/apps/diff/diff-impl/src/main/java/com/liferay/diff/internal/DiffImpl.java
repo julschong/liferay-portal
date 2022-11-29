@@ -17,7 +17,7 @@ package com.liferay.diff.internal;
 import com.liferay.diff.DiffResult;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 
 import java.io.Reader;
 
@@ -28,6 +28,7 @@ import org.incava.util.diff.Diff;
 import org.incava.util.diff.Difference;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * This class can compare two different versions of a text. Source refers to the
@@ -93,8 +94,8 @@ public class DiffImpl implements com.liferay.diff.Diff {
 
 		// Convert the texts to Lists where each element are lines of the texts.
 
-		List<String> sourceStringList = FileUtil.toList(source);
-		List<String> targetStringList = FileUtil.toList(target);
+		List<String> sourceStringList = _file.toList(source);
+		List<String> targetStringList = _file.toList(target);
 
 		// Make a a Diff of these lines and iterate over their Differences.
 
@@ -584,5 +585,8 @@ public class DiffImpl implements com.liferay.diff.Diff {
 	}
 
 	private static final int _DIFF_MAX_LINE_LENGTH = 5000;
+
+	@Reference
+	private File _file;
 
 }

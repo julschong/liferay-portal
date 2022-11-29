@@ -19,9 +19,11 @@ import com.liferay.document.library.internal.configuration.admin.service.DLSizeL
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelper;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.FileImpl;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,6 +64,9 @@ public class DLValidatorImplTest {
 
 		dlValidatorImpl.setUploadServletRequestConfigurationHelper(
 			_uploadServletRequestConfigurationHelper);
+
+		ReflectionTestUtil.setFieldValue(
+			dlValidatorImpl, "_file", new FileImpl());
 
 		_dlValidator = dlValidatorImpl;
 	}

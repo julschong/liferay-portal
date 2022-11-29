@@ -17,7 +17,10 @@ package com.liferay.diff.internal;
 import com.liferay.diff.Diff;
 import com.liferay.diff.DiffResult;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.Reader;
@@ -26,8 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+
+import org.mockito.Mockito;
 
 /**
  * @author Bruno Farache
@@ -37,6 +43,17 @@ public class DiffImplTest {
 	@ClassRule
 	public static LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@Before
+	public void setUp() {
+		_diffImpl = new DiffImpl();
+
+		File file = Mockito.mock(File.class);
+
+		_mockFileToList(file);
+
+		ReflectionTestUtil.setFieldValue(_diffImpl, "_file", file);
+	}
 
 	@Test
 	public void testEight() {
@@ -391,6 +408,30 @@ public class DiffImplTest {
 		Assert.assertEquals(expectedTarget, actual[1]);
 	}
 
-	private final DiffImpl _diffImpl = new DiffImpl();
+	private void _mockFileToList(File file) {
+		Mockito.when(
+			file.toList((Reader)Mockito.any())
+		).then(
+			input -> {
+				Reader reader = input.getArgument(0);
+
+				List<String> list = new ArrayList<>();
+
+				try (UnsyncBufferedReader unsyncBufferedReader =
+						new UnsyncBufferedReader(reader)) {
+
+					String line = null;
+
+					while ((line = unsyncBufferedReader.readLine()) != null) {
+						list.add(line);
+					}
+				}
+
+				return list;
+			}
+		);
+	}
+
+	private DiffImpl _diffImpl;
 
 }
