@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -127,9 +126,9 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 
 		for (FileEntry attachmentsFileEntry : attachmentsFileEntries) {
 			try {
-				file = FileUtil.createTempFile("lar");
+				file = _file.createTempFile("lar");
 
-				FileUtil.write(file, attachmentsFileEntry.getContentStream());
+				_file.write(file, attachmentsFileEntry.getContentStream());
 
 				TransactionInvokerUtil.invoke(
 					transactionConfig,
@@ -177,7 +176,7 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 			finally {
 				MergeLayoutPrototypesThreadLocal.setInProgress(false);
 
-				FileUtil.delete(file);
+				_file.delete(file);
 			}
 		}
 
@@ -229,6 +228,9 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 
 	@Reference
 	private ExportImportLocalService _exportImportLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private LayoutSetLocalService _layoutSetLocalService;

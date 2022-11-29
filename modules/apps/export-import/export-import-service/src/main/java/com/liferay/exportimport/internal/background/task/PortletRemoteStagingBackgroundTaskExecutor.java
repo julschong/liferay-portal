@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portlet.exportimport.service.http.StagingServiceHttp;
@@ -100,7 +99,7 @@ public class PortletRemoteStagingBackgroundTaskExecutor
 			file = _exportImportLocalService.exportPortletInfoAsFile(
 				exportImportConfiguration);
 
-			String checksum = FileUtil.getMD5Checksum(file);
+			String checksum = _file.getMD5Checksum(file);
 
 			Map<String, Serializable> taskContextMap =
 				backgroundTask.getTaskContextMap();
@@ -194,6 +193,9 @@ public class PortletRemoteStagingBackgroundTaskExecutor
 
 	@Reference
 	private ExportImportLocalService _exportImportLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private Staging _staging;

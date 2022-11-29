@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -109,7 +108,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(bytes);
+			file = _file.createTempFile(bytes);
 
 			return addPortletFileEntry(
 				null, groupId, userId, className, classPK, portletId, folderId,
@@ -120,7 +119,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 				"Unable to write temporary file", ioException);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -191,7 +190,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(inputStream);
+			file = _file.createTempFile(inputStream);
 
 			return addPortletFileEntry(
 				externalReferenceCode, groupId, userId, className, classPK,
@@ -202,7 +201,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 				"Unable to write temporary file", ioException);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -665,7 +664,7 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 				break;
 			}
 
-			uniqueFileName = FileUtil.appendParentheticalSuffix(
+			uniqueFileName = _file.appendParentheticalSuffix(
 				fileName, String.valueOf(i));
 		}
 
@@ -806,6 +805,9 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 
 	@Reference
 	private DLTrashLocalService _dlTrashLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

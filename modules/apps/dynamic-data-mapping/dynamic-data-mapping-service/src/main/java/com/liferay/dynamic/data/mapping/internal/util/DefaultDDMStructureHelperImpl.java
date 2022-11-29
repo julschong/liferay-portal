@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -271,8 +271,7 @@ public class DefaultDDMStructureHelperImpl
 
 			String script = StringUtil.read(
 				classLoader,
-				FileUtil.getPath(fileName) + StringPool.SLASH +
-					templateFileName);
+				_file.getPath(fileName) + StringPool.SLASH + templateFileName);
 
 			boolean cacheable = GetterUtil.getBoolean(
 				templateElement.elementText("cacheable"));
@@ -398,6 +397,9 @@ public class DefaultDDMStructureHelperImpl
 
 	@Reference
 	private DDMTemplateLocalService _ddmTemplateLocalService;
+
+	@Reference
+	private File _file;
 
 	@Reference(target = "(ddm.form.deserializer.type=json)")
 	private DDMFormDeserializer _jsonDDMFormDeserializer;

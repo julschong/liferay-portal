@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.io.File;
@@ -165,7 +164,7 @@ public class UploadGoogleDriveDocumentBackgroundTaskExecutor
 
 	private File _getFileEntryFile(FileVersion fileVersion) throws Exception {
 		try (InputStream inputStream = fileVersion.getContentStream(false)) {
-			return FileUtil.createTempFile(inputStream);
+			return _file.createTempFile(inputStream);
 		}
 	}
 
@@ -269,6 +268,9 @@ public class UploadGoogleDriveDocumentBackgroundTaskExecutor
 	@Reference
 	private DLOpenerFileEntryReferenceLocalService
 		_dlOpenerFileEntryReferenceLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private OAuth2Manager _oAuth2Manager;

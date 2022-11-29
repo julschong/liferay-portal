@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -193,11 +193,10 @@ public class DDMUserPersonalFolderUploadFileEntryHandler
 		String value = objectFieldSetting.getValue();
 
 		if (!ArrayUtil.contains(
-				value.split("\\s*,\\s*"), FileUtil.getExtension(fileName),
-				true)) {
+				value.split("\\s*,\\s*"), _file.getExtension(fileName), true)) {
 
 			throw new ObjectEntryValuesException.InvalidFileExtension(
-				FileUtil.getExtension(fileName), fileName);
+				_file.getExtension(fileName), fileName);
 		}
 	}
 
@@ -214,6 +213,9 @@ public class DDMUserPersonalFolderUploadFileEntryHandler
 
 	@Reference
 	private DLValidator _dlValidator;
+
+	@Reference
+	private File _file;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.portal.kernel.repository.model.Folder)"

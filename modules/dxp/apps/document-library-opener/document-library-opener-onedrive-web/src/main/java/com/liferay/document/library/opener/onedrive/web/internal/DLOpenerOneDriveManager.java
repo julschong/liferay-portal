@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -330,7 +329,7 @@ public class DLOpenerOneDriveManager {
 				).buildRequest();
 
 			try (InputStream inputStream = iDriveItemStreamRequest.get()) {
-				return FileUtil.createTempFile(inputStream);
+				return _file.createTempFile(inputStream);
 			}
 		}
 		catch (GraphServiceException graphServiceException) {
@@ -403,6 +402,9 @@ public class DLOpenerOneDriveManager {
 	@Reference
 	private DLOpenerFileEntryReferenceLocalService
 		_dlOpenerFileEntryReferenceLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private OAuth2Manager _oAuth2Manager;

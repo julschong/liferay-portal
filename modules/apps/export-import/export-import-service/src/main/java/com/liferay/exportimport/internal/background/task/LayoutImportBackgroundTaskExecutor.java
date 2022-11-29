@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
@@ -76,9 +75,9 @@ public class LayoutImportBackgroundTaskExecutor
 
 		for (FileEntry attachmentsFileEntry : attachmentsFileEntries) {
 			try {
-				file = FileUtil.createTempFile("lar");
+				file = _file.createTempFile("lar");
 
-				FileUtil.write(file, attachmentsFileEntry.getContentStream());
+				_file.write(file, attachmentsFileEntry.getContentStream());
 
 				TransactionInvokerUtil.invoke(
 					transactionConfig,
@@ -107,7 +106,7 @@ public class LayoutImportBackgroundTaskExecutor
 				throw new SystemException(throwable);
 			}
 			finally {
-				FileUtil.delete(file);
+				_file.delete(file);
 			}
 		}
 
@@ -116,6 +115,9 @@ public class LayoutImportBackgroundTaskExecutor
 
 	@Reference
 	private ExportImportLocalService _exportImportLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	private class LayoutImportCallable implements Callable<Void> {
 

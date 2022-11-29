@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SortedArrayList;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -53,6 +52,7 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Bruno Farache
@@ -135,7 +135,7 @@ public class DocumentConversionImpl implements DocumentConversion {
 			inputStream, inputDocumentFormat, unsyncByteArrayOutputStream,
 			outputDocumentFormat);
 
-		FileUtil.write(
+		_file.write(
 			file, unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
 			unsyncByteArrayOutputStream.size());
 
@@ -316,6 +316,10 @@ public class DocumentConversionImpl implements DocumentConversion {
 		DocumentConversionImpl.class);
 
 	private DocumentConverter _documentConverter;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
+
 	private volatile OpenOfficeConfiguration _openOfficeConfiguration;
 	private OpenOfficeConnection _openOfficeConnection;
 

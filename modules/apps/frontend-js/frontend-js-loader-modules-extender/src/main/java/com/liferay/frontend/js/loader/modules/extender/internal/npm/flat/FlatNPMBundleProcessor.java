@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -228,7 +227,7 @@ public class FlatNPMBundleProcessor implements JSBundleProcessor {
 		if (cacheFile.exists()) {
 			try {
 				Deserializer deserializer = new Deserializer(
-					ByteBuffer.wrap(FileUtil.getBytes(cacheFile)));
+					ByteBuffer.wrap(_file.getBytes(cacheFile)));
 
 				if (deserializer.readLong() == bundle.getLastModified()) {
 					Map<URL, JSONObject> jsonObjects = new HashMap<>();
@@ -341,7 +340,7 @@ public class FlatNPMBundleProcessor implements JSBundleProcessor {
 		if (cacheFile.exists()) {
 			try {
 				Deserializer deserializer = new Deserializer(
-					ByteBuffer.wrap(FileUtil.getBytes(cacheFile)));
+					ByteBuffer.wrap(_file.getBytes(cacheFile)));
 
 				if (deserializer.readLong() == bundle.getLastModified()) {
 					Map<URL, Collection<String>> moduleDependenciesMap =
@@ -782,6 +781,9 @@ public class FlatNPMBundleProcessor implements JSBundleProcessor {
 		FlatNPMBundleProcessor.class);
 
 	private ExecutorService _executorService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private JSONFactory _jsonFactory;

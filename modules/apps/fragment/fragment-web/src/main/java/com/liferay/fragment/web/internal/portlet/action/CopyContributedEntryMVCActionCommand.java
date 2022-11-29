@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -192,10 +192,10 @@ public class CopyContributedEntryMVCActionCommand extends BaseMVCActionCommand {
 			byte[] bytes = null;
 
 			try (InputStream inputStream = url.openStream()) {
-				bytes = FileUtil.getBytes(inputStream);
+				bytes = _file.getBytes(inputStream);
 			}
 
-			String shortFileName = FileUtil.getShortFileName(imagePreviewURL);
+			String shortFileName = _file.getShortFileName(imagePreviewURL);
 
 			Repository repository =
 				PortletFileRepositoryUtil.fetchPortletRepository(
@@ -230,6 +230,9 @@ public class CopyContributedEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CopyContributedEntryMVCActionCommand.class);
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private FragmentCollectionContributorRegistry

@@ -96,7 +96,7 @@ import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Html;
@@ -474,7 +474,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 			String uniqueFileTitle = DLUtil.getUniqueTitle(
 				tempFileEntry.getGroupId(), folderId,
-				FileUtil.stripExtension(originalSelectedFileName));
+				_file.stripExtension(originalSelectedFileName));
 
 			FileEntry fileEntry = _dlAppService.addFileEntry(
 				null, repositoryId, folderId, uniqueFileName,
@@ -1325,7 +1325,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 				_validateFileName(
 					sourceFileName,
-					FileUtil.getExtension(
+					_file.getExtension(
 						uploadPortletRequest.getFileName("file")));
 
 				fileEntry = _dlAppService.addFileEntry(
@@ -1343,7 +1343,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 				String uniqueFileTitle = DLUtil.getUniqueTitle(
 					themeDisplay.getScopeGroupId(), folderId,
-					FileUtil.stripExtension(sourceFileName));
+					_file.stripExtension(sourceFileName));
 
 				fileEntry = _dlAppService.addFileEntry(
 					null, repositoryId, folderId, uniqueFileName, contentType,
@@ -1410,7 +1410,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		if (Validator.isNotNull(extension) &&
 			(Validator.isNull(sourceFileName) ||
-			 Validator.isNull(FileUtil.getExtension(sourceFileName)))) {
+			 Validator.isNull(_file.getExtension(sourceFileName)))) {
 
 			throw new FileNameExtensionException(
 				"The file name cannot be empty or without extension");
@@ -1445,6 +1445,9 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLTrashService _dlTrashService;
+
+	@Reference
+	private File _file;
 
 	@Reference
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;

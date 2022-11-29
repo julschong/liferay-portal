@@ -22,7 +22,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -43,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Adolfo Pérez
@@ -57,7 +57,7 @@ public class DLAudioFFMPEGAudioConverter implements AudioConverter {
 	public InputStream generateAudioPreview(File file, String format)
 		throws Exception {
 
-		File destinationFile = FileUtil.createTempFile(format);
+		File destinationFile = _file.createTempFile(format);
 
 		Properties audioProperties = PropsUtil.getProperties(
 			PropsKeys.DL_FILE_ENTRY_PREVIEW_AUDIO, false);
@@ -163,5 +163,8 @@ public class DLAudioFFMPEGAudioConverter implements AudioConverter {
 
 	private volatile DLAudioFFMPEGAudioConverterConfiguration
 		_dlAudioFFMPEGAudioConverterConfiguration;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

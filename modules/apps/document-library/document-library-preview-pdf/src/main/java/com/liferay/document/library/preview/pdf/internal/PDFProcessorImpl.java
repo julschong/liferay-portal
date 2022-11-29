@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.repository.event.FileVersionPreviewEventListene
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -94,14 +93,14 @@ public class PDFProcessorImpl
 
 	@Override
 	public void afterPropertiesSet() {
-		FileUtil.mkdirs(DECRYPT_TMP_PATH);
-		FileUtil.mkdirs(PREVIEW_TMP_PATH);
-		FileUtil.mkdirs(THUMBNAIL_TMP_PATH);
+		_file.mkdirs(DECRYPT_TMP_PATH);
+		_file.mkdirs(PREVIEW_TMP_PATH);
+		_file.mkdirs(THUMBNAIL_TMP_PATH);
 	}
 
 	@Override
 	public void destroy() {
-		FileUtil.deltree(TMP_PATH);
+		_file.deltree(TMP_PATH);
 	}
 
 	@Override
@@ -447,7 +446,7 @@ public class PDFProcessorImpl
 							DocumentConversionUtil.getFilePath(
 								tempFileId, "pdf"));
 
-						FileUtil.delete(file);
+						_file.delete(file);
 					}
 
 					File file = DocumentConversionUtil.convert(
@@ -613,7 +612,7 @@ public class PDFProcessorImpl
 				storeThumbnailImages(fileVersion, thumbnailTempFile);
 			}
 			finally {
-				FileUtil.delete(thumbnailTempFile);
+				_file.delete(thumbnailTempFile);
 			}
 		}
 		else {
@@ -631,7 +630,7 @@ public class PDFProcessorImpl
 					_fileVersionPreviewEventListener.onSuccess(fileVersion);
 				}
 				finally {
-					FileUtil.delete(previewTempFile);
+					_file.delete(previewTempFile);
 				}
 			}
 		}
@@ -644,12 +643,12 @@ public class PDFProcessorImpl
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(inputStream);
+			file = _file.createTempFile(inputStream);
 
 			_generateImagesGS(fileVersion, file);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -800,7 +799,7 @@ public class PDFProcessorImpl
 					}
 					finally {
 						if (pdDocument.isEncrypted()) {
-							FileUtil.delete(decryptedFile);
+							_file.delete(decryptedFile);
 						}
 					}
 				}
@@ -856,10 +855,10 @@ public class PDFProcessorImpl
 			}
 		}
 		finally {
-			FileUtil.delete(thumbnailFile);
+			_file.delete(thumbnailFile);
 
 			for (File previewFile : previewFiles) {
-				FileUtil.delete(previewFile);
+				_file.delete(previewFile);
 			}
 		}
 
@@ -902,12 +901,12 @@ public class PDFProcessorImpl
 		File file = null;
 
 		try {
-			file = FileUtil.createTempFile(inputStream);
+			file = _file.createTempFile(inputStream);
 
 			_generateImagesPB(fileVersion, file);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -1043,6 +1042,9 @@ public class PDFProcessorImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PDFProcessorImpl.class);
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	private final List<Long> _fileVersionIds = new Vector<>();
 

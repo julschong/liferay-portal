@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -205,7 +204,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 			InputStream inputStream = fileEntry.getContentStream();
 
-			file = FileUtil.createTempFile(inputStream);
+			file = _file.createTempFile(inputStream);
 
 			ServiceContext serviceContext = _getServiceContext(
 				DLFileEntry.class.getName(), webDAVRequest);
@@ -222,7 +221,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 			_dlAppService.addFileEntry(
 				null, groupId, parentFolderId, fileName,
-				fileEntry.getMimeType(), FileUtil.stripExtension(fileName),
+				fileEntry.getMimeType(), _file.stripExtension(fileName),
 				StringPool.BLANK, fileEntry.getDescription(), StringPool.BLANK,
 				file, null, null, serviceContext);
 
@@ -262,7 +261,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 			throw new WebDAVException(exception);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -448,15 +447,14 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 				String contentType = _getContentType(
 					webDAVRequest.getHttpServletRequest(), null, fileName);
 
-				File file = FileUtil.createTempFile(
-					FileUtil.getExtension(fileName));
+				File file = _file.createTempFile(_file.getExtension(fileName));
 
 				file.createNewFile();
 
 				ServiceContext serviceContext = _getServiceContext(
 					DLFileEntry.class.getName(), webDAVRequest);
 
-				String title = FileUtil.stripExtension(fileName);
+				String title = _file.stripExtension(fileName);
 
 				FileEntry fileEntry = _dlAppService.addFileEntry(
 					null, webDAVRequest.getGroupId(), parentFolderId, fileName,
@@ -688,7 +686,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 					InputStream inputStream = fileEntry.getContentStream();
 
-					file = FileUtil.createTempFile(inputStream);
+					file = _file.createTempFile(inputStream);
 
 					_populateServiceContext(serviceContext, destFileEntry);
 
@@ -758,7 +756,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 			throw new WebDAVException(exception);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -779,9 +777,9 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 			ServiceContext serviceContext = _getServiceContext(
 				DLFileEntry.class.getName(), webDAVRequest);
 
-			file = FileUtil.createTempFile(FileUtil.getExtension(fileName));
+			file = _file.createTempFile(_file.getExtension(fileName));
 
-			FileUtil.write(file, httpServletRequest.getInputStream());
+			_file.write(file, httpServletRequest.getInputStream());
 
 			String contentType = _getContentType(
 				httpServletRequest, file, fileName);
@@ -815,7 +813,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 				serviceContext.setCommand(Constants.ADD_WEBDAV);
 
-				String title = FileUtil.stripExtension(fileName);
+				String title = _file.stripExtension(fileName);
 
 				_dlAppService.addFileEntry(
 					null, webDAVRequest.getGroupId(), parentFolderId, fileName,
@@ -862,7 +860,7 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 			throw new WebDAVException(exception);
 		}
 		finally {
-			FileUtil.delete(file);
+			_file.delete(file);
 		}
 	}
 
@@ -1279,5 +1277,8 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 	@Reference
 	private DLTrashService _dlTrashService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

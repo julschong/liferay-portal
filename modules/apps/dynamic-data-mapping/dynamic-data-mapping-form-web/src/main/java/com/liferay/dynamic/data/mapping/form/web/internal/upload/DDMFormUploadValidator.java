@@ -20,7 +20,6 @@ import com.liferay.document.library.kernel.exception.InvalidFileException;
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.DDMFormWebConfiguration;
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.activator.DDMFormWebConfigurationActivator;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
@@ -70,7 +69,7 @@ public class DDMFormUploadValidator {
 		Optional<String> guestUploadFileExtensionOptional =
 			guestUploadFileExtensionsStream.filter(
 				guestUploadFileExtension -> StringUtil.equalsIgnoreCase(
-					FileUtil.getExtension(fileName),
+					_file.getExtension(fileName),
 					StringUtil.trim(guestUploadFileExtension))
 			).findFirst();
 
@@ -116,5 +115,8 @@ public class DDMFormUploadValidator {
 	)
 	private volatile DDMFormWebConfigurationActivator
 		_ddmFormWebConfigurationActivator;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 }

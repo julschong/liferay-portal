@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsValues;
@@ -127,12 +127,12 @@ public class DLFileVersionCTDisplayRenderer
 				displayContext.getDownloadURL(
 					_AUDIO_PREVIEW + ",mp3",
 					_audioProcessor.getPreviewFileSize(fileVersion, "mp3"),
-					FileUtil.stripExtension(fileName) + ".mp3"),
+					_file.stripExtension(fileName) + ".mp3"),
 				"\" type=\"audio/mp3\"/><source src=\"",
 				displayContext.getDownloadURL(
 					_AUDIO_PREVIEW + ",ogg",
 					_audioProcessor.getPreviewFileSize(fileVersion, "ogg"),
-					FileUtil.stripExtension(fileName) + ".ogg"),
+					_file.stripExtension(fileName) + ".ogg"),
 				"\" type=\"audio/ogg\"/></audio>");
 		}
 
@@ -162,7 +162,7 @@ public class DLFileVersionCTDisplayRenderer
 			}
 
 			fileName = StringBundler.concat(
-				FileUtil.stripExtension(fileName), StringPool.PERIOD,
+				_file.stripExtension(fileName), StringPool.PERIOD,
 				PDFProcessor.PREVIEW_TYPE);
 
 			return StringBundler.concat(
@@ -186,7 +186,7 @@ public class DLFileVersionCTDisplayRenderer
 			}
 
 			fileName = StringBundler.concat(
-				FileUtil.stripExtension(fileName), StringPool.PERIOD,
+				_file.stripExtension(fileName), StringPool.PERIOD,
 				_imageProcessor.getPreviewType(fileVersion));
 
 			return StringBundler.concat(
@@ -218,12 +218,12 @@ public class DLFileVersionCTDisplayRenderer
 				displayContext.getDownloadURL(
 					_VIDEO_PREVIEW + ",mp4",
 					_audioProcessor.getPreviewFileSize(fileVersion, "mp4"),
-					FileUtil.stripExtension(fileName) + ".mp4"),
+					_file.stripExtension(fileName) + ".mp4"),
 				"\" type=\"video/mp4\"/><source src=\"",
 				displayContext.getDownloadURL(
 					_VIDEO_PREVIEW + ",ogv",
 					_audioProcessor.getPreviewFileSize(fileVersion, "ogv"),
-					FileUtil.stripExtension(fileName) + ".ogv"),
+					_file.stripExtension(fileName) + ".ogv"),
 				"\" type=\"video/ogv\"/></audio>");
 		}
 
@@ -354,6 +354,9 @@ public class DLFileVersionCTDisplayRenderer
 		target = "(component.name=com.liferay.document.library.preview.document.internal.DocumentPreviewRendererProvider)"
 	)
 	private DLPreviewRendererProvider _dlPreviewRendererProvider;
+
+	@Reference
+	private File _file;
 
 	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	private ImageProcessor _imageProcessor;

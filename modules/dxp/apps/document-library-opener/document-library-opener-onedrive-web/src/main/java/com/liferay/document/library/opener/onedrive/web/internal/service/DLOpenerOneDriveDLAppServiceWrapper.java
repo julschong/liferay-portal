@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.io.File;
@@ -213,7 +212,7 @@ public class DLOpenerOneDriveDLAppServiceWrapper extends DLAppServiceWrapper {
 				fileEntry.getGroupId(), fileEntry.getFolderId(),
 				mimeTypeExtension,
 				_dlValidator.fixName(
-					FileUtil.stripExtension(
+					_file.stripExtension(
 						dLOpenerOneDriveFileReference.getTitle())));
 
 			sourceFileName = title.concat(mimeTypeExtension);
@@ -249,6 +248,9 @@ public class DLOpenerOneDriveDLAppServiceWrapper extends DLAppServiceWrapper {
 
 	@Reference
 	private DLValidator _dlValidator;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private UniqueFileEntryTitleProvider _uniqueFileEntryTitleProvider;

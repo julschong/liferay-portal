@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
@@ -128,7 +127,7 @@ public class LayoutRemoteStagingBackgroundTaskExecutor
 				exportImportConfiguration, layoutIdMap, targetGroupId,
 				httpPrincipal);
 
-			String checksum = FileUtil.getMD5Checksum(file);
+			String checksum = _file.getMD5Checksum(file);
 
 			stagingRequestId = StagingServiceHttp.createStagingRequest(
 				httpPrincipal, targetGroupId, checksum);
@@ -326,6 +325,9 @@ public class LayoutRemoteStagingBackgroundTaskExecutor
 
 	@Reference
 	private ExportImportLocalService _exportImportLocalService;
+
+	@Reference
+	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
