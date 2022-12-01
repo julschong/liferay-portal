@@ -31,7 +31,6 @@ import com.liferay.dynamic.data.mapping.util.DDMFieldsCounter;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
-import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -44,10 +43,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
-import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
+import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -683,25 +681,17 @@ public class DDMFormFieldFreeMarkerRenderer implements DDMFormFieldRenderer {
 		return classLoader.getResource(name);
 	}
 
-	private TemplateResource _getTemplateResource(String resource)
-		throws Exception {
+	private TemplateResource _getTemplateResource(String resource) {
+		ClassLoader classLoader = getClass().getClassLoader();
 
-		Class<?> clazz = getClass();
+		URL url = classLoader.getResource(resource);
 
-		try {
-			return TemplateResourceLoaderUtil.getTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL,
-				StringBundler.concat(
-					ClassLoaderPool.getContextName(clazz.getClassLoader()),
-					TemplateConstants.CLASS_LOADER_SEPARATOR, resource));
+		if (url == null) {
+			return null;
 		}
-		catch (TemplateException templateException) {
-			_log.error(
-				"Unable to find template resource " + resource,
-				templateException);
 
-			throw new Exception("Unable to load template resource " + resource);
-		}
+		return new URLTemplateResource(
+			resource, classLoader.getResource(resource));
 	}
 
 	private String _processFTL(
