@@ -17,66 +17,67 @@ package com.liferay.portal.kernel.util;
 /**
  * @author Brian Wing Shun Chan
  */
-public class CalendarFactory_IW {
-	public static CalendarFactory_IW getInstance() {
+public class CalendarFactoryUtil_IW {
+	public static CalendarFactoryUtil_IW getInstance() {
 		return _instance;
 	}
 
 	public java.util.Calendar getCalendar() {
-		return CalendarFactory.getCalendar();
+		return CalendarFactoryUtil.getCalendar();
 	}
 
 	public java.util.Calendar getCalendar(int year, int month, int date) {
-		return CalendarFactory.getCalendar(year, month, date);
+		return CalendarFactoryUtil.getCalendar(year, month, date);
 	}
 
 	public java.util.Calendar getCalendar(int year, int month, int date,
 		int hour, int minute) {
-		return CalendarFactory.getCalendar(year, month, date, hour, minute);
+		return CalendarFactoryUtil.getCalendar(year, month, date, hour, minute);
 	}
 
 	public java.util.Calendar getCalendar(int year, int month, int date,
 		int hour, int minute, int second) {
-		return CalendarFactory.getCalendar(year, month, date, hour, minute,
+		return CalendarFactoryUtil.getCalendar(year, month, date, hour, minute,
 			second);
 	}
 
 	public java.util.Calendar getCalendar(int year, int month, int date,
 		int hour, int minute, int second, int millisecond) {
-		return CalendarFactory.getCalendar(year, month, date, hour, minute,
+		return CalendarFactoryUtil.getCalendar(year, month, date, hour, minute,
 			second, millisecond);
 	}
 
 	public java.util.Calendar getCalendar(int year, int month, int date,
 		int hour, int minute, int second, int millisecond,
 		java.util.TimeZone timeZone) {
-		return CalendarFactory.getCalendar(year, month, date, hour, minute,
+		return CalendarFactoryUtil.getCalendar(year, month, date, hour, minute,
 			second, millisecond, timeZone);
 	}
 
 	public java.util.Calendar getCalendar(java.util.Locale locale) {
-		return CalendarFactory.getCalendar(locale);
+		return CalendarFactoryUtil.getCalendar(locale);
 	}
 
 	public java.util.Calendar getCalendar(long time) {
-		return CalendarFactory.getCalendar(time);
+		return CalendarFactoryUtil.getCalendar(time);
 	}
 
 	public java.util.Calendar getCalendar(long time, java.util.TimeZone timeZone) {
-		return CalendarFactory.getCalendar(time, timeZone);
+		return CalendarFactoryUtil.getCalendar(time, timeZone);
 	}
 
 	public java.util.Calendar getCalendar(java.util.TimeZone timeZone) {
-		return CalendarFactory.getCalendar(timeZone);
+		return CalendarFactoryUtil.getCalendar(timeZone);
 	}
 
 	public java.util.Calendar getCalendar(java.util.TimeZone timeZone,
 		java.util.Locale locale) {
-		return CalendarFactory.getCalendar(timeZone, locale);
+		return CalendarFactoryUtil.getCalendar(timeZone, locale);
 	}
 
-	private CalendarFactory_IW() {
+	private CalendarFactoryUtil_IW() {
 	}
 
-	private static CalendarFactory_IW _instance = new CalendarFactory_IW();
+	private static CalendarFactoryUtil_IW
+		_instance = new CalendarFactoryUtil_IW();
 }
