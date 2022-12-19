@@ -14,11 +14,11 @@
 
 package com.liferay.tld.formatter;
 
-import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.tools.ArgumentsUtil;
 import com.liferay.portal.xml.SAXReaderFactory;
+import com.liferay.util.xml.Dom4jDocUtil;
 
 import java.io.IOException;
 
@@ -129,7 +129,7 @@ public class TLDFormatter {
 			}
 		}
 
-		String newContent = Dom4jUtil.toString(document);
+		String newContent = Dom4jDocUtil.toString(document);
 
 		int x = newContent.indexOf("<tlib-version");
 		int y = newContent.indexOf("</taglib>");
