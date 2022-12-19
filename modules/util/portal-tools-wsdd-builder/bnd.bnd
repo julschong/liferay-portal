@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Tools WSDD Builder
 Bundle-SymbolicName: com.liferay.portal.tools.wsdd.builder
-Bundle-Version: 1.0.12
+Bundle-Version: 1.0.13
 Import-Package:\
 	!org.apache.maven.plugin.*,\
 	\
@@ -41,5 +41,6 @@ Main-Class: com.liferay.portal.tools.wsdd.builder.WSDDBuilder
 	@com.liferay.util.java-*.jar!/com/liferay/util/ant/AntUtil*,\
 	@com.liferay.util.java-*.jar!/com/liferay/util/ant/DeleteTask.class,\
 	@com.liferay.util.java-*.jar!/com/liferay/util/ant/Java2WsddTask.class,\
+	@com.liferay.util.java-*.jar!/com/liferay/util/xml/Dom4jDocUtil.class,\
 	@com.liferay.util.java-*.jar!/com/liferay/util/xml/XMLSafeReader.class,\
 	@xercesImpl-[0-9.]*.jar!/org/apache/xerces/xni/XNIException.class
