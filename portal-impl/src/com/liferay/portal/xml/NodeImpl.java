@@ -15,12 +15,12 @@
 package com.liferay.portal.xml;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.Visitor;
+import com.liferay.util.xml.Dom4jDocUtil;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -116,19 +116,19 @@ public class NodeImpl implements Node {
 
 	@Override
 	public String formattedString() throws IOException {
-		return Dom4jUtil.toString(_node);
+		return Dom4jDocUtil.toString(_node);
 	}
 
 	@Override
 	public String formattedString(String indent) throws IOException {
-		return Dom4jUtil.toString(_node, indent);
+		return Dom4jDocUtil.toString(_node, indent);
 	}
 
 	@Override
 	public String formattedString(String indent, boolean expandEmptyElements)
 		throws IOException {
 
-		return Dom4jUtil.toString(_node, indent, expandEmptyElements);
+		return Dom4jDocUtil.toString(_node, indent, expandEmptyElements);
 	}
 
 	@Override
@@ -136,7 +136,8 @@ public class NodeImpl implements Node {
 			String indent, boolean expandEmptyElements, boolean trimText)
 		throws IOException {
 
-		return Dom4jUtil.toString(_node, indent, expandEmptyElements, trimText);
+		return Dom4jDocUtil.toString(
+			_node, indent, expandEmptyElements, trimText);
 	}
 
 	@Override
