@@ -24,8 +24,6 @@ import java.nio.file.Paths;
 
 import java.security.KeyStore;
 
-import java.util.stream.Stream;
-
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpHost;
@@ -220,13 +218,13 @@ public class RestHighLevelClientFactory {
 	}
 
 	private HttpHost[] _getHttpHosts() {
-		return Stream.of(
-			_networkHostAddresses
-		).map(
-			HttpHost::create
-		).toArray(
-			HttpHost[]::new
-		);
+		HttpHost[] httpHosts = new HttpHost[_networkHostAddresses.length];
+
+		for (int i = 0; i < _networkHostAddresses.length; i++) {
+			httpHosts[i] = HttpHost.create(_networkHostAddresses[i]);
+		}
+
+		return httpHosts;
 	}
 
 	private boolean _authenticationEnabled;
