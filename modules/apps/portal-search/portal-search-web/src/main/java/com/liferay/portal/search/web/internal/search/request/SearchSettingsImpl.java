@@ -71,8 +71,8 @@ public class SearchSettingsImpl implements SearchSettings {
 	}
 
 	@Override
-	public Optional<String> getKeywordsParameterName() {
-		return Optional.ofNullable(_keywordsParameterName);
+	public String getKeywordsParameterName() {
+		return _keywordsParameterName;
 	}
 
 	@Override

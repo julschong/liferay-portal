@@ -279,8 +279,8 @@ public class DepotSearchBarPortletSharedSearchContributorTest {
 			}
 
 			@Override
-			public Optional<String> getKeywordsParameterName() {
-				return Optional.empty();
+			public String getKeywordsParameterName() {
+				return null;
 			}
 
 			@Override

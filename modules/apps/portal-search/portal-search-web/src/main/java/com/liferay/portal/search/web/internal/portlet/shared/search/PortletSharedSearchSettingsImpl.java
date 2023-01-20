@@ -72,7 +72,7 @@ public class PortletSharedSearchSettingsImpl
 	}
 
 	@Override
-	public Optional<String> getKeywordsParameterName() {
+	public String getKeywordsParameterName() {
 		return _searchSettings.getKeywordsParameterName();
 	}
 

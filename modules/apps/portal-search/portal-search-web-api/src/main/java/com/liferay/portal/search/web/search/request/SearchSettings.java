@@ -38,7 +38,7 @@ public interface SearchSettings {
 	public SearchRequestBuilder getFederatedSearchRequestBuilder(
 		Optional<String> federatedSearchKeyOptional);
 
-	public Optional<String> getKeywordsParameterName();
+	public String getKeywordsParameterName();
 
 	public Optional<Integer> getPaginationDelta();
 
