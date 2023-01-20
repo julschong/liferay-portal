@@ -147,12 +147,12 @@ public class PortletSharedSearchSettingsImpl
 	}
 
 	@Override
-	public Optional<String> getScope() {
+	public String getScope() {
 		return _searchSettings.getScope();
 	}
 
 	@Override
-	public Optional<String> getScopeParameterName() {
+	public String getScopeParameterName() {
 		return _searchSettings.getScopeParameterName();
 	}
 

@@ -351,13 +351,13 @@ public class DepotSearchBarPortletSharedSearchContributorTest {
 			}
 
 			@Override
-			public Optional<String> getScope() {
+			public String getScope() {
 				return null;
 			}
 
 			@Override
-			public Optional<String> getScopeParameterName() {
-				return Optional.empty();
+			public String getScopeParameterName() {
+				return null;
 			}
 
 			@Override

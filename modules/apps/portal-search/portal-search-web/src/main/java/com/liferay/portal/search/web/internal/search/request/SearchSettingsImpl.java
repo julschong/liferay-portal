@@ -101,13 +101,13 @@ public class SearchSettingsImpl implements SearchSettings {
 	}
 
 	@Override
-	public Optional<String> getScope() {
-		return Optional.ofNullable(_scope);
+	public String getScope() {
+		return _scope;
 	}
 
 	@Override
-	public Optional<String> getScopeParameterName() {
-		return Optional.ofNullable(_scopeParameterName);
+	public String getScopeParameterName() {
+		return _scopeParameterName;
 	}
 
 	@Override

@@ -50,9 +50,9 @@ public interface SearchSettings {
 
 	public QueryConfig getQueryConfig();
 
-	public Optional<String> getScope();
+	public String getScope();
 
-	public Optional<String> getScopeParameterName();
+	public String getScopeParameterName();
 
 	public SearchContext getSearchContext();
 
