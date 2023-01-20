@@ -284,23 +284,23 @@ public class DepotSearchBarPortletSharedSearchContributorTest {
 			}
 
 			@Override
-			public Optional<Integer> getPaginationDelta() {
-				return Optional.empty();
+			public Integer getPaginationDelta() {
+				return null;
 			}
 
 			@Override
-			public Optional<String> getPaginationDeltaParameterName() {
-				return Optional.empty();
+			public String getPaginationDeltaParameterName() {
+				return null;
 			}
 
 			@Override
-			public Optional<Integer> getPaginationStart() {
-				return Optional.empty();
+			public Integer getPaginationStart() {
+				return null;
 			}
 
 			@Override
-			public Optional<String> getPaginationStartParameterName() {
-				return Optional.empty();
+			public String getPaginationStartParameterName() {
+				return null;
 			}
 
 			@Override

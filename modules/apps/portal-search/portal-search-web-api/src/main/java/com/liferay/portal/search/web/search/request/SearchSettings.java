@@ -40,13 +40,13 @@ public interface SearchSettings {
 
 	public String getKeywordsParameterName();
 
-	public Optional<Integer> getPaginationDelta();
+	public Integer getPaginationDelta();
 
-	public Optional<String> getPaginationDeltaParameterName();
+	public String getPaginationDeltaParameterName();
 
-	public Optional<Integer> getPaginationStart();
+	public Integer getPaginationStart();
 
-	public Optional<String> getPaginationStartParameterName();
+	public String getPaginationStartParameterName();
 
 	public QueryConfig getQueryConfig();
 

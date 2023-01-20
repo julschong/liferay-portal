@@ -77,22 +77,22 @@ public class PortletSharedSearchSettingsImpl
 	}
 
 	@Override
-	public Optional<Integer> getPaginationDelta() {
+	public Integer getPaginationDelta() {
 		return _searchSettings.getPaginationDelta();
 	}
 
 	@Override
-	public Optional<String> getPaginationDeltaParameterName() {
+	public String getPaginationDeltaParameterName() {
 		return _searchSettings.getPaginationDeltaParameterName();
 	}
 
 	@Override
-	public Optional<Integer> getPaginationStart() {
+	public Integer getPaginationStart() {
 		return _searchSettings.getPaginationStart();
 	}
 
 	@Override
-	public Optional<String> getPaginationStartParameterName() {
+	public String getPaginationStartParameterName() {
 		return _searchSettings.getPaginationStartParameterName();
 	}
 

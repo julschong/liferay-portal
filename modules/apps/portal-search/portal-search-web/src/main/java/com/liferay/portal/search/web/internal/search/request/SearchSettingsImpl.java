@@ -76,23 +76,23 @@ public class SearchSettingsImpl implements SearchSettings {
 	}
 
 	@Override
-	public Optional<Integer> getPaginationDelta() {
-		return Optional.ofNullable(_paginationDelta);
+	public Integer getPaginationDelta() {
+		return _paginationDelta;
 	}
 
 	@Override
-	public Optional<String> getPaginationDeltaParameterName() {
-		return Optional.ofNullable(_paginationDeltaParameterName);
+	public String getPaginationDeltaParameterName() {
+		return _paginationDeltaParameterName;
 	}
 
 	@Override
-	public Optional<Integer> getPaginationStart() {
-		return Optional.ofNullable(_paginationStart);
+	public Integer getPaginationStart() {
+		return _paginationStart;
 	}
 
 	@Override
-	public Optional<String> getPaginationStartParameterName() {
-		return Optional.ofNullable(_paginationStartParameterName);
+	public String getPaginationStartParameterName() {
+		return _paginationStartParameterName;
 	}
 
 	@Override
