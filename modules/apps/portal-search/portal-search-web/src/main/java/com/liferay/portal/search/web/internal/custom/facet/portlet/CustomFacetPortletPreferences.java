@@ -14,8 +14,6 @@
 
 package com.liferay.portal.search.web.internal.custom.facet.portlet;
 
-import java.util.Optional;
-
 /**
  * @author Wade Cao
  */
@@ -41,15 +39,15 @@ public interface CustomFacetPortletPreferences {
 
 	public static final String PREFERENCE_KEY_PARAMETER_NAME = "parameterName";
 
-	public Optional<String> getAggregationFieldOptional();
+	public String getAggregationField();
 
 	public String getAggregationFieldString();
 
-	public Optional<String> getCustomHeadingOptional();
+	public String getCustomHeading();
 
 	public String getCustomHeadingString();
 
-	public Optional<String> getFederatedSearchKeyOptional();
+	public String getFederatedSearchKey();
 
 	public String getFederatedSearchKeyString();
 
@@ -59,7 +57,7 @@ public interface CustomFacetPortletPreferences {
 
 	public String getOrder();
 
-	public Optional<String> getParameterNameOptional();
+	public String getParameterName();
 
 	public String getParameterNameString();
 

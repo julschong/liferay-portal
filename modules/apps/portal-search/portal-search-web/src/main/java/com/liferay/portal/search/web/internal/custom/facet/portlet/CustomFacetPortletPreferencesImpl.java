@@ -14,10 +14,8 @@
 
 package com.liferay.portal.search.web.internal.custom.facet.portlet;
 
-import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
-
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 
@@ -28,47 +26,43 @@ public class CustomFacetPortletPreferencesImpl
 	implements CustomFacetPortletPreferences {
 
 	public CustomFacetPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional.orElse(null));
+			portletPreferences);
 	}
 
 	@Override
-	public Optional<String> getAggregationFieldOptional() {
+	public String getAggregationField() {
 		return _portletPreferencesHelper.getString(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_FIELD);
 	}
 
 	@Override
 	public String getAggregationFieldString() {
-		Optional<String> optional = getAggregationFieldOptional();
-
-		return optional.orElse(StringPool.BLANK);
+		return GetterUtil.getString(getAggregationField());
 	}
 
 	@Override
-	public Optional<String> getCustomHeadingOptional() {
+	public String getCustomHeading() {
 		return _portletPreferencesHelper.getString(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING);
 	}
 
 	@Override
 	public String getCustomHeadingString() {
-		Optional<String> optional = getCustomHeadingOptional();
-
-		return optional.orElse(StringPool.BLANK);
+		return GetterUtil.getString(getCustomHeading());
 	}
 
 	@Override
-	public Optional<String> getFederatedSearchKeyOptional() {
+	public String getFederatedSearchKey() {
 		return _portletPreferencesHelper.getString(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY);
 	}
 
 	@Override
 	public String getFederatedSearchKeyString() {
-		return getFederatedSearchKeyOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getFederatedSearchKey());
 	}
 
 	@Override
@@ -92,16 +86,14 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getParameterNameOptional() {
+	public String getParameterName() {
 		return _portletPreferencesHelper.getString(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME);
 	}
 
 	@Override
 	public String getParameterNameString() {
-		Optional<String> optional = getParameterNameOptional();
-
-		return optional.orElse(StringPool.BLANK);
+		return GetterUtil.getString(getParameterName());
 	}
 
 	@Override
