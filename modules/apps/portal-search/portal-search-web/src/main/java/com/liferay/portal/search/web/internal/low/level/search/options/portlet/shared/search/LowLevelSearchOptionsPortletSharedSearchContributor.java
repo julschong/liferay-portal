@@ -31,6 +31,8 @@ import java.io.Serializable;
 
 import java.util.Optional;
 
+import javax.portlet.PortletPreferences;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -50,37 +52,36 @@ public class LowLevelSearchOptionsPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchSettings.getPortletPreferencesOptional();
+
 		LowLevelSearchOptionsPortletPreferences
 			lowLevelSearchOptionsPortletPreferences =
 				new LowLevelSearchOptionsPortletPreferencesImpl(
-					portletSharedSearchSettings.
-						getPortletPreferencesOptional());
-
-		Optional<String> connectionIdOptional =
-			lowLevelSearchOptionsPortletPreferences.getConnectionIdOptional();
+					portletPreferencesOptional.orElse(null));
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				lowLevelSearchOptionsPortletPreferences.
-					getFederatedSearchKeyOptional());
+				Optional.ofNullable(
+					lowLevelSearchOptionsPortletPreferences.
+						getFederatedSearchKey()));
 
 		searchRequestBuilder.connectionId(
-			connectionIdOptional.orElse(null)
+			lowLevelSearchOptionsPortletPreferences.getConnectionId()
 		).excludeContributors(
 			SearchStringUtil.splitAndUnquote(
 				lowLevelSearchOptionsPortletPreferences.
-					getContributorsToExcludeOptional())
+					getContributorsToExclude())
 		).fields(
 			SearchStringUtil.splitAndUnquote(
-				lowLevelSearchOptionsPortletPreferences.
-					getFieldsToReturnOptional())
+				lowLevelSearchOptionsPortletPreferences.getFieldsToReturn())
 		).includeContributors(
 			SearchStringUtil.splitAndUnquote(
 				lowLevelSearchOptionsPortletPreferences.
-					getContributorsToIncludeOptional())
+					getContributorsToInclude())
 		).indexes(
 			SearchStringUtil.splitAndUnquote(
-				lowLevelSearchOptionsPortletPreferences.getIndexesOptional())
+				lowLevelSearchOptionsPortletPreferences.getIndexes())
 		).withSearchContext(
 			searchContext -> {
 				if (Validator.isNull(
