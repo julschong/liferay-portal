@@ -27,7 +27,6 @@ import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 
@@ -39,23 +38,26 @@ public class TypeFacetPortletPreferencesImpl
 
 	public TypeFacetPortletPreferencesImpl(
 		ObjectDefinitionLocalService objectDefinitionLocalService,
-		Optional<PortletPreferences> portletPreferencesOptional,
+		PortletPreferences portletPreferences,
 		SearchableAssetClassNamesProvider searchableAssetClassNamesProvider) {
 
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_searchableAssetClassNamesProvider = searchableAssetClassNamesProvider;
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional.orElse(null));
+			portletPreferences);
 	}
 
 	@Override
-	public Optional<String[]> getAssetTypesArray() {
-		Optional<String> assetTypesOptional =
-			_portletPreferencesHelper.getString(
-				TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES);
+	public String[] getAssetTypesArray() {
+		String assetTypes = _portletPreferencesHelper.getString(
+			TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES);
 
-		return assetTypesOptional.map(StringUtil::split);
+		if (assetTypes == null) {
+			return null;
+		}
+
+		return StringUtil.split(assetTypes);
 	}
 
 	@Override
@@ -69,11 +71,13 @@ public class TypeFacetPortletPreferencesImpl
 	public List<KeyValuePair> getAvailableAssetTypes(
 		long companyId, Locale locale) {
 
-		Optional<String[]> assetTypesOptional = getAssetTypesArray();
-
 		String[] allAssetTypes = getAllAssetTypes(companyId);
 
-		String[] assetTypes = assetTypesOptional.orElse(allAssetTypes);
+		String[] assetTypes = getAssetTypesArray();
+
+		if (assetTypes == null) {
+			assetTypes = allAssetTypes;
+		}
 
 		List<KeyValuePair> availableAssetTypes = new ArrayList<>();
 
@@ -103,9 +107,13 @@ public class TypeFacetPortletPreferencesImpl
 
 	@Override
 	public String[] getCurrentAssetTypesArray(long companyId) {
-		Optional<String[]> assetTypesOptional = getAssetTypesArray();
+		String[] assetTypes = getAssetTypesArray();
 
-		return assetTypesOptional.orElseGet(() -> getAllAssetTypes(companyId));
+		if (assetTypes == null) {
+			assetTypes = getAllAssetTypes(companyId);
+		}
+
+		return assetTypes;
 	}
 
 	@Override
