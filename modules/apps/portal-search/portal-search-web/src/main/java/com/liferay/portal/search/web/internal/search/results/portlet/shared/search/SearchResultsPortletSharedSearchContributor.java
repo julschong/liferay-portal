@@ -59,8 +59,11 @@ public class SearchResultsPortletSharedSearchContributor
 		if (searchResultsPortletPreferences.isHighlightEnabled()) {
 			searchRequestBuilder.highlightEnabled(true);
 
+			Optional<String> fieldsToDisplayOptional =
+				searchResultsPortletPreferences.getFieldsToDisplayOptional();
+
 			String[] fieldsToDisplay = SearchStringUtil.splitAndUnquote(
-				searchResultsPortletPreferences.getFieldsToDisplayOptional());
+				fieldsToDisplayOptional.orElse(null));
 
 			searchRequestBuilder.highlightFields(fieldsToDisplay);
 		}
