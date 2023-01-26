@@ -83,7 +83,7 @@ public class SearchBarPortletDisplayContextFactory {
 
 		SearchBarPortletPreferences searchBarPortletPreferences =
 			new SearchBarPortletPreferencesImpl(
-				Optional.ofNullable(_renderRequest.getPreferences()));
+				_renderRequest.getPreferences());
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -417,7 +417,8 @@ public class SearchBarPortletDisplayContextFactory {
 		SearchBarPortletPreferences searchBarPortletPreferences) {
 
 		return portletSharedSearchResponse.getFederatedSearchResponse(
-			searchBarPortletPreferences.getFederatedSearchKeyOptional());
+			Optional.ofNullable(
+				searchBarPortletPreferences.getFederatedSearchKey()));
 	}
 
 	private String _getURLCurrentPath(ThemeDisplay themeDisplay) {

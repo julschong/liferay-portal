@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -56,13 +58,17 @@ public class SearchBarPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchSettings.getPortletPreferencesOptional();
+
 		SearchBarPortletPreferences searchBarPortletPreferences =
 			new SearchBarPortletPreferencesImpl(
-				portletSharedSearchSettings.getPortletPreferencesOptional());
+				portletPreferencesOptional.orElse(null));
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				searchBarPortletPreferences.getFederatedSearchKeyOptional());
+				Optional.ofNullable(
+					searchBarPortletPreferences.getFederatedSearchKey()));
 
 		if (!_shouldContributeToCurrentPageSearch(
 				searchBarPortletPreferences, portletSharedSearchSettings)) {
@@ -123,7 +129,7 @@ public class SearchBarPortletSharedSearchContributor
 
 	private SearchScope _getDefaultSearchScope() {
 		SearchBarPortletPreferences searchBarPortletPreferences =
-			new SearchBarPortletPreferencesImpl(Optional.empty());
+			new SearchBarPortletPreferencesImpl(null);
 
 		SearchScopePreference searchScopePreference =
 			searchBarPortletPreferences.getSearchScopePreference();
