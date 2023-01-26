@@ -21,6 +21,10 @@ import com.liferay.portal.search.web.internal.search.options.portlet.SearchOptio
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
+import java.util.Optional;
+
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -37,14 +41,17 @@ public class SearchOptionsPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchSettings.getPortletPreferencesOptional();
+
 		SearchOptionsPortletPreferences searchOptionsPortletPreferences =
 			new SearchOptionsPortletPreferencesImpl(
-				portletSharedSearchSettings.getPortletPreferencesOptional());
+				portletPreferencesOptional.orElse(null));
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				searchOptionsPortletPreferences.
-					getFederatedSearchKeyOptional());
+				Optional.ofNullable(
+					searchOptionsPortletPreferences.getFederatedSearchKey()));
 
 		searchRequestBuilder.basicFacetSelection(
 			searchOptionsPortletPreferences.isBasicFacetSelection()
