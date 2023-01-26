@@ -28,6 +28,8 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -45,13 +47,17 @@ public class CustomFilterPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchSettings.getPortletPreferencesOptional();
+
 		CustomFilterPortletPreferences customFilterPortletPreferences =
 			new CustomFilterPortletPreferencesImpl(
-				portletSharedSearchSettings.getPortletPreferencesOptional());
+				portletPreferencesOptional.orElse(null));
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				customFilterPortletPreferences.getFederatedSearchKeyOptional());
+				Optional.ofNullable(
+					customFilterPortletPreferences.getFederatedSearchKey()));
 
 		searchRequestBuilder.addComplexQueryPart(
 			_complexQueryPartBuilderFactory.builder(
@@ -78,35 +84,23 @@ public class CustomFilterPortletSharedSearchContributor
 	private Float _getBoost(
 		CustomFilterPortletPreferences customFilterPortletPreferences) {
 
-		Optional<String> optional =
-			customFilterPortletPreferences.getBoostOptional();
+		String boost = customFilterPortletPreferences.getBoost();
 
-		return optional.map(
-			GetterUtil::getFloat
-		).orElse(
-			null
-		);
+		if (boost == null) {
+			return null;
+		}
+
+		return GetterUtil.getFloat(boost);
 	}
 
 	private String _getFilterValue(
 		PortletSharedSearchSettings portletSharedSearchSettings,
 		CustomFilterPortletPreferences customFilterPortletPreferences) {
 
-		Optional<String> optional = _getFilterValueOptional(
-			customFilterPortletPreferences, portletSharedSearchSettings);
-
-		return optional.orElse(null);
-	}
-
-	private Optional<String> _getFilterValueOptional(
-		CustomFilterPortletPreferences customFilterPortletPreferences,
-		PortletSharedSearchSettings portletSharedSearchSettings) {
-
-		Optional<String> filterValueOptional =
-			customFilterPortletPreferences.getFilterValueOptional();
+		String filterValue = customFilterPortletPreferences.getFilterValue();
 
 		if (customFilterPortletPreferences.isImmutable()) {
-			return filterValueOptional;
+			return filterValue;
 		}
 
 		Optional<String> parameterValueOptional =
@@ -114,9 +108,9 @@ public class CustomFilterPortletSharedSearchContributor
 				CustomFilterPortletUtil.getParameterName(
 					customFilterPortletPreferences));
 
-		return Optional.ofNullable(
-			SearchOptionalUtil.findFirstPresent(
-				Stream.of(parameterValueOptional, filterValueOptional), null));
+		return SearchOptionalUtil.findFirstPresent(
+			Stream.of(parameterValueOptional, Optional.ofNullable(filterValue)),
+			null);
 	}
 
 	@Reference

@@ -28,8 +28,11 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRe
 
 import java.io.IOException;
 
+import java.util.Optional;
+
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -74,10 +77,12 @@ public class CustomFilterPortlet extends MVCPortlet {
 		PortletSharedSearchResponse portletSharedSearchResponse =
 			portletSharedSearchRequest.search(renderRequest);
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchResponse.getPortletPreferences(renderRequest);
+
 		CustomFilterPortletPreferences customFilterPortletPreferences =
 			new CustomFilterPortletPreferencesImpl(
-				portletSharedSearchResponse.getPortletPreferences(
-					renderRequest));
+				portletPreferencesOptional.orElse(null));
 
 		CustomFilterDisplayContext customFilterDisplayContext =
 			_createCustomFilterDisplayContext(
@@ -120,22 +125,23 @@ public class CustomFilterPortlet extends MVCPortlet {
 
 		return CustomFilterDisplayContextBuilder.builder(
 		).customHeadingOptional(
-			customFilterPortletPreferences.getCustomHeadingOptional()
+			Optional.ofNullable(
+				customFilterPortletPreferences.getCustomHeading())
 		).disabled(
 			customFilterPortletPreferences.isDisabled()
 		).filterFieldOptional(
-			customFilterPortletPreferences.getFilterFieldOptional()
+			Optional.ofNullable(customFilterPortletPreferences.getFilterField())
 		).immutable(
 			customFilterPortletPreferences.isImmutable()
 		).filterValueOptional(
-			customFilterPortletPreferences.getFilterValueOptional()
+			Optional.ofNullable(customFilterPortletPreferences.getFilterValue())
 		).parameterName(
 			parameterName
 		).parameterValueOptional(
 			portletSharedSearchResponse.getParameter(
 				parameterName, renderRequest)
 		).queryNameOptional(
-			customFilterPortletPreferences.getQueryNameOptional()
+			Optional.ofNullable(customFilterPortletPreferences.getQueryName())
 		).renderNothing(
 			_isRenderNothing(searchRequest)
 		).themeDisplay(
@@ -163,7 +169,8 @@ public class CustomFilterPortlet extends MVCPortlet {
 		CustomFilterPortletPreferences customFilterPortletPreferences) {
 
 		return portletSharedSearchResponse.getFederatedSearchResponse(
-			customFilterPortletPreferences.getFederatedSearchKeyOptional());
+			Optional.ofNullable(
+				customFilterPortletPreferences.getFederatedSearchKey()));
 	}
 
 	private boolean _isRenderNothing(SearchRequest searchRequest) {

@@ -16,6 +16,7 @@ package com.liferay.portal.search.web.internal.custom.filter.portlet;
 
 import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -28,8 +29,10 @@ public class CustomFilterPortletUtil {
 
 		return SearchOptionalUtil.findFirstPresent(
 			Stream.of(
-				customFilterPortletPreferences.getParameterNameOptional(),
-				customFilterPortletPreferences.getFilterFieldOptional()),
+				Optional.ofNullable(
+					customFilterPortletPreferences.getParameterName()),
+				Optional.ofNullable(
+					customFilterPortletPreferences.getFilterField())),
 			"customfilter");
 	}
 
