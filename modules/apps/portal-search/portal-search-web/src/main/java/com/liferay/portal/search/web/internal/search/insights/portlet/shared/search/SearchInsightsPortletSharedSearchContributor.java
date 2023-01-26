@@ -21,6 +21,10 @@ import com.liferay.portal.search.web.internal.search.insights.portlet.SearchInsi
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
+import java.util.Optional;
+
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -37,14 +41,17 @@ public class SearchInsightsPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchSettings.getPortletPreferencesOptional();
+
 		SearchInsightsPortletPreferences searchInsightsPortletPreferences =
 			new SearchInsightsPortletPreferencesImpl(
-				portletSharedSearchSettings.getPortletPreferencesOptional());
+				portletPreferencesOptional.orElse(null));
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				searchInsightsPortletPreferences.
-					getFederatedSearchKeyOptional());
+				Optional.ofNullable(
+					searchInsightsPortletPreferences.getFederatedSearchKey()));
 
 		searchRequestBuilder.explain(
 			searchInsightsPortletPreferences.isExplain()

@@ -39,6 +39,7 @@ import java.util.ResourceBundle;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -83,10 +84,12 @@ public class SearchInsightsPortlet extends MVCPortlet {
 		PortletSharedSearchResponse portletSharedSearchResponse =
 			_portletSharedSearchRequest.search(renderRequest);
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchResponse.getPortletPreferences(renderRequest);
+
 		SearchInsightsPortletPreferences searchInsightsPortletPreferences =
 			new SearchInsightsPortletPreferencesImpl(
-				portletSharedSearchResponse.getPortletPreferences(
-					renderRequest));
+				portletPreferencesOptional.orElse(null));
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -114,8 +117,8 @@ public class SearchInsightsPortlet extends MVCPortlet {
 
 		SearchResponse searchResponse =
 			portletSharedSearchResponse.getFederatedSearchResponse(
-				searchInsightsPortletPreferences.
-					getFederatedSearchKeyOptional());
+				Optional.ofNullable(
+					searchInsightsPortletPreferences.getFederatedSearchKey()));
 
 		if (_isCompanyAdmin() &&
 			(_isRequestStringPresent(searchResponse) ||
