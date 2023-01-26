@@ -26,6 +26,8 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 
 import java.util.Optional;
 
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -43,14 +45,17 @@ public class SearchResultsPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchSettings.getPortletPreferencesOptional();
+
 		SearchResultsPortletPreferences searchResultsPortletPreferences =
 			new SearchResultsPortletPreferencesImpl(
-				portletSharedSearchSettings.getPortletPreferencesOptional());
+				portletPreferencesOptional.orElse(null));
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
-				searchResultsPortletPreferences.
-					getFederatedSearchKeyOptional());
+				Optional.ofNullable(
+					searchResultsPortletPreferences.getFederatedSearchKey()));
 
 		_paginate(
 			searchResultsPortletPreferences, portletSharedSearchSettings,
@@ -59,13 +64,9 @@ public class SearchResultsPortletSharedSearchContributor
 		if (searchResultsPortletPreferences.isHighlightEnabled()) {
 			searchRequestBuilder.highlightEnabled(true);
 
-			Optional<String> fieldsToDisplayOptional =
-				searchResultsPortletPreferences.getFieldsToDisplayOptional();
-
-			String[] fieldsToDisplay = SearchStringUtil.splitAndUnquote(
-				fieldsToDisplayOptional.orElse(null));
-
-			searchRequestBuilder.highlightFields(fieldsToDisplay);
+			searchRequestBuilder.highlightFields(
+				SearchStringUtil.splitAndUnquote(
+					searchResultsPortletPreferences.getFieldsToDisplay()));
 		}
 	}
 

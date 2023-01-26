@@ -641,13 +641,10 @@ public class SearchResultSummaryDisplayContextBuilder {
 	private SearchResultSummaryDisplayContext _buildFromPlainDocument()
 		throws PortletException {
 
-		Optional<String> fieldsToDisplayOptional =
-			_searchResultPreferences.getFieldsToDisplayOptional();
-
 		Set<String> set = new LinkedHashSet<>(
 			Arrays.asList(
 				SearchStringUtil.splitAndUnquote(
-					fieldsToDisplayOptional.orElse(null))));
+					_searchResultPreferences.getFieldsToDisplay())));
 
 		boolean star = set.remove(StringPool.STAR);
 
