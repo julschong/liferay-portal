@@ -14,11 +14,9 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
-import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
-
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 
@@ -29,34 +27,32 @@ public class SearchBarPortletPreferencesImpl
 	implements SearchBarPortletPreferences {
 
 	public SearchBarPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional.orElse(null));
+			portletPreferences);
 	}
 
 	@Override
-	public Optional<String> getDestinationOptional() {
+	public String getDestination() {
 		return _portletPreferencesHelper.getString(
 			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION);
 	}
 
 	@Override
 	public String getDestinationString() {
-		Optional<String> valueOptional = getDestinationOptional();
-
-		return valueOptional.orElse(StringPool.BLANK);
+		return GetterUtil.getString(getDestination());
 	}
 
 	@Override
-	public Optional<String> getFederatedSearchKeyOptional() {
+	public String getFederatedSearchKey() {
 		return _portletPreferencesHelper.getString(
 			SearchBarPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY);
 	}
 
 	@Override
 	public String getFederatedSearchKeyString() {
-		return getFederatedSearchKeyOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getFederatedSearchKey());
 	}
 
 	@Override
@@ -75,14 +71,9 @@ public class SearchBarPortletPreferencesImpl
 
 	@Override
 	public SearchScopePreference getSearchScopePreference() {
-		Optional<String> valueOptional = _portletPreferencesHelper.getString(
-			SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE);
-
-		Optional<SearchScopePreference> searchScopePreferenceOptional =
-			valueOptional.map(SearchScopePreference::getSearchScopePreference);
-
-		return searchScopePreferenceOptional.orElse(
-			SearchScopePreference.THIS_SITE);
+		return SearchScopePreference.getSearchScopePreference(
+			_portletPreferencesHelper.getString(
+				SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE));
 	}
 
 	@Override
