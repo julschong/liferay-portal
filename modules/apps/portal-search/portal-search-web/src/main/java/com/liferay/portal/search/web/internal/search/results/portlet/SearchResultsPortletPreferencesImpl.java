@@ -14,13 +14,10 @@
 
 package com.liferay.portal.search.web.internal.search.results.portlet;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 import com.liferay.portal.util.PropsUtil;
-
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 
@@ -31,14 +28,14 @@ public class SearchResultsPortletPreferencesImpl
 	implements SearchResultsPortletPreferences {
 
 	public SearchResultsPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional.orElse(null));
+			portletPreferences);
 	}
 
 	@Override
-	public Optional<String> getFederatedSearchKeyOptional() {
+	public String getFederatedSearchKey() {
 		return _portletPreferencesHelper.getString(
 			SearchResultsPortletPreferences.
 				PREFERENCE_KEY_FEDERATED_SEARCH_KEY);
@@ -46,18 +43,18 @@ public class SearchResultsPortletPreferencesImpl
 
 	@Override
 	public String getFederatedSearchKeyString() {
-		return getFederatedSearchKeyOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getFederatedSearchKey());
 	}
 
 	@Override
-	public Optional<String> getFieldsToDisplayOptional() {
+	public String getFieldsToDisplay() {
 		return _portletPreferencesHelper.getString(
 			SearchResultsPortletPreferences.PREFERENCE_KEY_FIELDS_TO_DISPLAY);
 	}
 
 	@Override
 	public String getFieldsToDisplayString() {
-		return getFieldsToDisplayOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getFieldsToDisplay());
 	}
 
 	@Override
