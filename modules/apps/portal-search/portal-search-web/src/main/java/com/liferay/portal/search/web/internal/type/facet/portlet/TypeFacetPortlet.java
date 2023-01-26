@@ -38,6 +38,7 @@ import java.util.Optional;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -120,11 +121,13 @@ public class TypeFacetPortlet extends MVCPortlet {
 				_createAssetEntriesSearchFacetDisplayContextBuilder(
 					renderRequest);
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchResponse.getPortletPreferences(renderRequest);
+
 		TypeFacetPortletPreferences typeFacetPortletPreferences =
 			new TypeFacetPortletPreferencesImpl(
 				objectDefinitionLocalService,
-				portletSharedSearchResponse.getPortletPreferences(
-					renderRequest),
+				portletPreferencesOptional.orElse(null),
 				searchableAssetClassNamesProvider);
 
 		ThemeDisplay themeDisplay = portletSharedSearchResponse.getThemeDisplay(

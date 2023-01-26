@@ -25,6 +25,10 @@ import com.liferay.portal.search.web.internal.type.facet.portlet.TypeFacetPortle
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
+import java.util.Optional;
+
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -42,10 +46,13 @@ public class TypeFacetPortletSharedSearchContributor
 	public void contribute(
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			portletSharedSearchSettings.getPortletPreferencesOptional();
+
 		TypeFacetPortletPreferences typeFacetPortletPreferences =
 			new TypeFacetPortletPreferencesImpl(
 				objectDefinitionLocalService,
-				portletSharedSearchSettings.getPortletPreferencesOptional(),
+				portletPreferencesOptional.orElse(null),
 				searchableAssetClassNamesProvider);
 
 		SearchRequestBuilder searchRequestBuilder =
