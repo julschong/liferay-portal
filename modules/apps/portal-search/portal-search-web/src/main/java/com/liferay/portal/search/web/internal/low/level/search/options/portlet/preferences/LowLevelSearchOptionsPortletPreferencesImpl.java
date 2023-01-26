@@ -21,11 +21,10 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 import com.liferay.portal.search.web.internal.search.options.portlet.SearchOptionsPortletPreferences;
-
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 
@@ -36,10 +35,10 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 	implements LowLevelSearchOptionsPortletPreferences {
 
 	public LowLevelSearchOptionsPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional.orElse(null));
+			portletPreferences);
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getConnectionIdOptional() {
+	public String getConnectionId() {
 		return _portletPreferencesHelper.getString(
 			LowLevelSearchOptionsPortletPreferences.
 				PREFERENCE_KEY_CONNECTION_ID);
@@ -78,11 +77,11 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 
 	@Override
 	public String getConnectionIdString() {
-		return getConnectionIdOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getConnectionId());
 	}
 
 	@Override
-	public Optional<String> getContributorsToExcludeOptional() {
+	public String getContributorsToExclude() {
 		return _portletPreferencesHelper.getString(
 			LowLevelSearchOptionsPortletPreferences.
 				PREFERENCE_KEY_CONTRIBUTORS_TO_EXCLUDE);
@@ -90,11 +89,11 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 
 	@Override
 	public String getContributorsToExcludeString() {
-		return getContributorsToExcludeOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getContributorsToExclude());
 	}
 
 	@Override
-	public Optional<String> getContributorsToIncludeOptional() {
+	public String getContributorsToInclude() {
 		return _portletPreferencesHelper.getString(
 			LowLevelSearchOptionsPortletPreferences.
 				PREFERENCE_KEY_CONTRIBUTORS_TO_INCLUDE);
@@ -102,11 +101,11 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 
 	@Override
 	public String getContributorsToIncludeString() {
-		return getContributorsToIncludeOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getContributorsToInclude());
 	}
 
 	@Override
-	public Optional<String> getFederatedSearchKeyOptional() {
+	public String getFederatedSearchKey() {
 		return _portletPreferencesHelper.getString(
 			SearchOptionsPortletPreferences.
 				PREFERENCE_KEY_FEDERATED_SEARCH_KEY);
@@ -114,11 +113,11 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 
 	@Override
 	public String getFederatedSearchKeyString() {
-		return getFederatedSearchKeyOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getFederatedSearchKey());
 	}
 
 	@Override
-	public Optional<String> getFieldsToReturnOptional() {
+	public String getFieldsToReturn() {
 		return _portletPreferencesHelper.getString(
 			LowLevelSearchOptionsPortletPreferences.
 				PREFERENCE_KEY_FIELDS_TO_RETURN);
@@ -126,18 +125,18 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 
 	@Override
 	public String getFieldsToReturnString() {
-		return getFieldsToReturnOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getFieldsToReturn());
 	}
 
 	@Override
-	public Optional<String> getIndexesOptional() {
+	public String getIndexes() {
 		return _portletPreferencesHelper.getString(
 			LowLevelSearchOptionsPortletPreferences.PREFERENCE_KEY_INDEXES);
 	}
 
 	@Override
 	public String getIndexesString() {
-		return getIndexesOptional().orElse(StringPool.BLANK);
+		return GetterUtil.getString(getIndexes());
 	}
 
 	private JSONArray _getDefaultAttributesJSONArray() {
