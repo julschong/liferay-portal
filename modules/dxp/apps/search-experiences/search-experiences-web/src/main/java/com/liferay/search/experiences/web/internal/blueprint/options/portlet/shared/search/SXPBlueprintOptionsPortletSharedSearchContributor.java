@@ -66,8 +66,7 @@ public class SXPBlueprintOptionsPortletSharedSearchContributor
 					searchContext.setAttribute(
 						"search.experiences.blueprint.id",
 						SXPBlueprintOptionsPortletPreferencesUtil.getValue(
-							portletSharedSearchSettings.
-								getPortletPreferencesOptional(),
+							portletSharedSearchSettings.getPortletPreferences(),
 							"sxpBlueprintId"));
 				}
 

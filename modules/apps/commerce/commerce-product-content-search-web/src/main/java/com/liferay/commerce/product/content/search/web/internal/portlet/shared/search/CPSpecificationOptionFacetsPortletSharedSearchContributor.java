@@ -49,7 +49,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
@@ -81,29 +80,26 @@ public class CPSpecificationOptionFacetsPortletSharedSearchContributor
 			SerializableFacet serializableFacet = new SerializableFacet(
 				CPField.SPECIFICATION_NAMES, searchContext);
 
-			Optional<String[]> parameterValuesOptional =
-				portletSharedSearchSettings.getParameterValues71(
+			String[] parameterValues =
+				portletSharedSearchSettings.getParameterValues(
 					CPField.SPECIFICATION_NAMES);
 
-			if (parameterValuesOptional.isPresent()) {
-				serializableFacet.select(parameterValuesOptional.get());
+			if (parameterValues != null) {
+				serializableFacet.select(parameterValues);
 
 				searchContext.setAttribute(
-					CPField.SPECIFICATION_NAMES, parameterValuesOptional.get());
+					CPField.SPECIFICATION_NAMES, parameterValues);
 			}
 
 			portletSharedSearchSettings.addFacet(serializableFacet);
 
-			Optional<PortletPreferences> portletPreferencesOptional =
-				portletSharedSearchSettings.getPortletPreferencesOptional();
+			PortletPreferences portletPreferences =
+				portletSharedSearchSettings.getPortletPreferences();
 
 			int frequencyThreshold = 1;
 			int maxTerms = 10;
 
-			if (portletPreferencesOptional.isPresent()) {
-				PortletPreferences portletPreferences =
-					portletPreferencesOptional.get();
-
+			if (portletPreferences != null) {
 				frequencyThreshold = GetterUtil.getInteger(
 					portletPreferences.getValue("frequencyThreshold", null), 1);
 				maxTerms = GetterUtil.getInteger(
@@ -116,8 +112,8 @@ public class CPSpecificationOptionFacetsPortletSharedSearchContributor
 						getCPSpecificationOptionKeyFromIndexFieldName(
 							facet.getFieldName());
 
-				parameterValuesOptional =
-					portletSharedSearchSettings.getParameterValues71(
+				parameterValues =
+					portletSharedSearchSettings.getParameterValues(
 						cpSpecificationOptionKey);
 
 				serializableFacet = new SerializableFacet(
@@ -127,11 +123,11 @@ public class CPSpecificationOptionFacetsPortletSharedSearchContributor
 					_buildFacetConfiguration(
 						facet, frequencyThreshold, maxTerms));
 
-				if (parameterValuesOptional.isPresent()) {
-					serializableFacet.select(parameterValuesOptional.get());
+				if (parameterValues != null) {
+					serializableFacet.select(parameterValues);
 
 					searchContext.setAttribute(
-						facet.getFieldName(), parameterValuesOptional.get());
+						facet.getFieldName(), parameterValues);
 				}
 
 				portletSharedSearchSettings.addFacet(serializableFacet);

@@ -36,8 +36,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
-import java.util.Optional;
-
 import javax.portlet.RenderRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -66,18 +64,18 @@ public class CPPriceRangeFacetsPortletSharedSearchContributor
 
 			Facet facet = _getFacet(renderRequest, searchContext);
 
-			Optional<String[]> parameterValuesOptional =
-				portletSharedSearchSettings.getParameterValues71(
+			String[] parameterValues =
+				portletSharedSearchSettings.getParameterValues(
 					facet.getFieldName());
 
 			SerializableFacet serializableFacet = new SerializableFacet(
 				facet.getFieldName(), searchContext);
 
-			if (parameterValuesOptional.isPresent()) {
-				serializableFacet.select(parameterValuesOptional.get());
+			if (parameterValues != null) {
+				serializableFacet.select(parameterValues);
 
 				searchContext.setAttribute(
-					facet.getFieldName(), parameterValuesOptional.get());
+					facet.getFieldName(), parameterValues);
 			}
 
 			portletSharedSearchSettings.addFacet(facet);

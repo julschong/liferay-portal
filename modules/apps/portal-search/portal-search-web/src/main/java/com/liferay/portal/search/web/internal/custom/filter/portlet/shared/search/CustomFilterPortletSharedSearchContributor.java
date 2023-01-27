@@ -109,14 +109,15 @@ public class CustomFilterPortletSharedSearchContributor
 			return filterValueOptional;
 		}
 
-		Optional<String> parameterValueOptional =
-			portletSharedSearchSettings.getParameterOptional(
-				CustomFilterPortletUtil.getParameterName(
-					customFilterPortletPreferences));
-
 		return Optional.ofNullable(
 			SearchOptionalUtil.findFirstPresent(
-				Stream.of(parameterValueOptional, filterValueOptional), null));
+				Stream.of(
+					Optional.of(
+						portletSharedSearchSettings.getParameter(
+							CustomFilterPortletUtil.getParameterName(
+								customFilterPortletPreferences))),
+					filterValueOptional),
+				null));
 	}
 
 	@Reference

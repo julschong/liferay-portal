@@ -49,7 +49,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
@@ -78,15 +77,15 @@ public class CPOptionFacetsPortletSharedSearchContributor
 			SerializableFacet serializableFacet = new SerializableFacet(
 				CPField.OPTION_NAMES, searchContext);
 
-			Optional<String[]> parameterValuesOptional =
-				portletSharedSearchSettings.getParameterValues71(
+			String[] parameterValues =
+				portletSharedSearchSettings.getParameterValues(
 					CPField.OPTION_NAMES);
 
-			if (parameterValuesOptional.isPresent()) {
-				serializableFacet.select(parameterValuesOptional.get());
+			if (parameterValues != null) {
+				serializableFacet.select(parameterValues);
 
 				searchContext.setAttribute(
-					CPField.OPTION_NAMES, parameterValuesOptional.get());
+					CPField.OPTION_NAMES, parameterValues);
 			}
 
 			RenderRequest renderRequest =
@@ -98,13 +97,10 @@ public class CPOptionFacetsPortletSharedSearchContributor
 			int frequencyThreshold = 1;
 			int maxTerms = 10;
 
-			Optional<PortletPreferences> portletPreferencesOptional =
-				portletSharedSearchSettings.getPortletPreferencesOptional();
+			PortletPreferences portletPreferences =
+				portletSharedSearchSettings.getPortletPreferences();
 
-			if (portletPreferencesOptional.isPresent()) {
-				PortletPreferences portletPreferences =
-					portletPreferencesOptional.get();
-
+			if (portletPreferences != null) {
 				frequencyThreshold = GetterUtil.getInteger(
 					portletPreferences.getValue("frequencyThreshold", null),
 					frequencyThreshold);
@@ -123,9 +119,8 @@ public class CPOptionFacetsPortletSharedSearchContributor
 					CPOptionFacetsUtil.getCPOptionKeyFromIndexFieldName(
 						facet.getFieldName());
 
-				parameterValuesOptional =
-					portletSharedSearchSettings.getParameterValues71(
-						cpOptionKey);
+				parameterValues =
+					portletSharedSearchSettings.getParameterValues(cpOptionKey);
 
 				serializableFacet = new SerializableFacet(
 					facet.getFieldName(), searchContext);
@@ -134,11 +129,11 @@ public class CPOptionFacetsPortletSharedSearchContributor
 					buildFacetConfiguration(
 						frequencyThreshold, maxTerms, serializableFacet));
 
-				if (parameterValuesOptional.isPresent()) {
-					serializableFacet.select(parameterValuesOptional.get());
+				if (parameterValues != null) {
+					serializableFacet.select(parameterValues);
 
 					searchContext.setAttribute(
-						facet.getFieldName(), parameterValuesOptional.get());
+						facet.getFieldName(), parameterValues);
 				}
 
 				portletSharedSearchSettings.addFacet(serializableFacet);

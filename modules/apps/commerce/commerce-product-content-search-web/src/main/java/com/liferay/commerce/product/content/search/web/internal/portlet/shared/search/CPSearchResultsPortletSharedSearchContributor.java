@@ -23,7 +23,6 @@ import com.liferay.commerce.product.content.search.web.internal.configuration.CP
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -43,7 +42,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchCo
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
@@ -99,11 +97,9 @@ public class CPSearchResultsPortletSharedSearchContributor
 			_commerceChannelLocalService.fetchCommerceChannelBySiteGroupId(
 				themeDisplay.getScopeGroupId());
 
-		Optional<String> parameterValueOptional =
-			portletSharedSearchSettings.getParameter71("q");
-
 		portletSharedSearchSettings.setKeywords(
-			parameterValueOptional.orElse(StringPool.BLANK));
+			GetterUtil.getString(
+				portletSharedSearchSettings.getParameter("q")));
 
 		portletSharedSearchSettings.addCondition(
 			new BooleanClauseImpl<Query>(
@@ -175,41 +171,46 @@ public class CPSearchResultsPortletSharedSearchContributor
 		portletSharedSearchSettings.setPaginationStartParameterName(
 			paginationStartParameterName);
 
-		Optional<String> paginationStartParameterValueOptional =
-			portletSharedSearchSettings.getParameter71(
+		String paginationStartParameterValue =
+			portletSharedSearchSettings.getParameter(
 				paginationStartParameterName);
 
-		Optional<Integer> paginationStartOptional =
-			paginationStartParameterValueOptional.map(Integer::valueOf);
+		Integer paginationStart = null;
 
-		paginationStartOptional.ifPresent(
-			portletSharedSearchSettings::setPaginationStart);
+		if (paginationStartParameterValue != null) {
+			paginationStart = Integer.valueOf(paginationStartParameterValue);
+		}
+
+		if (paginationStart != null) {
+			portletSharedSearchSettings.setPaginationStart(paginationStart);
+		}
 
 		String paginationDeltaParameterName = "delta";
 
-		Optional<String> paginationDeltaParameterValueOptional =
-			portletSharedSearchSettings.getParameter71(
+		String paginationDeltaParameterValue =
+			portletSharedSearchSettings.getParameter(
 				paginationDeltaParameterName);
 
-		Optional<Integer> paginationDeltaOptional =
-			paginationDeltaParameterValueOptional.map(Integer::valueOf);
+		Integer paginationDelta = null;
+
+		if (paginationDeltaParameterValue != null) {
+			paginationDelta = Integer.valueOf(paginationDeltaParameterValue);
+		}
 
 		int configurationPaginationDelta =
 			cpSearchResultsPortletInstanceConfiguration.paginationDelta();
 
-		Optional<PortletPreferences> portletPreferencesOptional =
-			portletSharedSearchSettings.getPortletPreferences71();
+		PortletPreferences portletPreferences =
+			portletSharedSearchSettings.getPortletPreferences();
 
-		if (portletPreferencesOptional.isPresent()) {
-			PortletPreferences portletPreferences =
-				portletPreferencesOptional.get();
-
+		if (portletPreferences != null) {
 			configurationPaginationDelta = GetterUtil.getInteger(
 				portletPreferences.getValue("paginationDelta", null));
 		}
 
 		portletSharedSearchSettings.setPaginationDelta(
-			paginationDeltaOptional.orElse(configurationPaginationDelta));
+			GetterUtil.getInteger(
+				paginationDelta, configurationPaginationDelta));
 	}
 
 	@Reference
