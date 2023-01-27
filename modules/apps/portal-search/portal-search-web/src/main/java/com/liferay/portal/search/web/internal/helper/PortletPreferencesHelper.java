@@ -27,10 +27,8 @@ import javax.portlet.PortletPreferences;
  */
 public class PortletPreferencesHelper {
 
-	public PortletPreferencesHelper(
-		Optional<PortletPreferences> portletPreferencesOptional) {
-
-		_portletPreferencesOptional = portletPreferencesOptional;
+	public PortletPreferencesHelper(PortletPreferences portletPreferences) {
+		_portletPreferencesOptional = Optional.ofNullable(portletPreferences);
 	}
 
 	public Optional<Boolean> getBoolean(String key) {

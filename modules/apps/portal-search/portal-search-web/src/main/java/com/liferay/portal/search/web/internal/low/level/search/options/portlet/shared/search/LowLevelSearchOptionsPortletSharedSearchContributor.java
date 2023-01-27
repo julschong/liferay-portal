@@ -53,8 +53,7 @@ public class LowLevelSearchOptionsPortletSharedSearchContributor
 		LowLevelSearchOptionsPortletPreferences
 			lowLevelSearchOptionsPortletPreferences =
 				new LowLevelSearchOptionsPortletPreferencesImpl(
-					portletSharedSearchSettings.
-						getPortletPreferencesOptional());
+					portletSharedSearchSettings.getPortletPreferences());
 
 		Optional<String> connectionIdOptional =
 			lowLevelSearchOptionsPortletPreferences.getConnectionIdOptional();

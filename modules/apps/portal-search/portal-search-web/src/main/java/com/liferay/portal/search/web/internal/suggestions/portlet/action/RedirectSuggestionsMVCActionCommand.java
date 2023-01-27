@@ -57,8 +57,7 @@ public class RedirectSuggestionsMVCActionCommand extends BaseMVCActionCommand {
 		hideDefaultSuccessMessage(actionRequest);
 
 		SearchBarPortletPreferences searchBarPortletPreferences =
-			new SearchBarPortletPreferencesImpl(
-				Optional.ofNullable(actionRequest.getPreferences()));
+			new SearchBarPortletPreferencesImpl(actionRequest.getPreferences());
 
 		String redirectURL = _getRedirectURL(
 			actionRequest, searchBarPortletPreferences);

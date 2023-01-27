@@ -51,7 +51,7 @@ public class CustomFacetPortletSharedSearchContributor
 
 		CustomFacetPortletPreferences customFacetPortletPreferences =
 			new CustomFacetPortletPreferencesImpl(
-				portletSharedSearchSettings.getPortletPreferencesOptional());
+				portletSharedSearchSettings.getPortletPreferences());
 
 		Optional<String> fieldToAggregateOptional =
 			customFacetPortletPreferences.getAggregationFieldOptional();
