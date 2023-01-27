@@ -303,13 +303,13 @@ public class SearchBarPortletDisplayContextFactory {
 			searchBarPrecedenceHelper.findHeaderSearchBarPortlet(themeDisplay);
 
 		if (headerSearchBarPortlet != null) {
-			Optional<PortletPreferences> headerPortletPreferencesOptional =
+			PortletPreferences headerPortletPreferences =
 				portletPreferencesLookup.fetchPreferences(
 					headerSearchBarPortlet, themeDisplay);
 
-			if (headerPortletPreferencesOptional.isPresent() &&
+			if ((headerPortletPreferences != null) &&
 				SearchBarPortletDestinationUtil.isSameDestination(
-					headerPortletPreferencesOptional.get(), themeDisplay)) {
+					headerPortletPreferences, themeDisplay)) {
 
 				String scope = searchSettings.getScope();
 
@@ -363,13 +363,13 @@ public class SearchBarPortletDisplayContextFactory {
 			searchBarPrecedenceHelper.findHeaderSearchBarPortlet(themeDisplay);
 
 		if (headerSearchBarPortlet != null) {
-			Optional<PortletPreferences> headerPortletPreferencesOptional =
+			PortletPreferences headerPortletPreferences =
 				portletPreferencesLookup.fetchPreferences(
 					headerSearchBarPortlet, themeDisplay);
 
-			if (headerPortletPreferencesOptional.isPresent() &&
+			if ((headerPortletPreferences != null) &&
 				SearchBarPortletDestinationUtil.isSameDestination(
-					headerPortletPreferencesOptional.get(), themeDisplay)) {
+					headerPortletPreferences, themeDisplay)) {
 
 				return GetterUtil.getString(
 					searchSettings.getKeywordsParameterName(),
@@ -391,13 +391,13 @@ public class SearchBarPortletDisplayContextFactory {
 			searchBarPrecedenceHelper.findHeaderSearchBarPortlet(themeDisplay);
 
 		if (headerSearchBarPortlet != null) {
-			Optional<PortletPreferences> headerPortletPreferencesOptional =
+			PortletPreferences headerPortletPreferences =
 				portletPreferencesLookup.fetchPreferences(
 					headerSearchBarPortlet, themeDisplay);
 
-			if (headerPortletPreferencesOptional.isPresent() &&
+			if ((headerPortletPreferences != null) &&
 				SearchBarPortletDestinationUtil.isSameDestination(
-					headerPortletPreferencesOptional.get(), themeDisplay)) {
+					headerPortletPreferences, themeDisplay)) {
 
 				String scopeParameterName =
 					searchSettings.getScopeParameterName();

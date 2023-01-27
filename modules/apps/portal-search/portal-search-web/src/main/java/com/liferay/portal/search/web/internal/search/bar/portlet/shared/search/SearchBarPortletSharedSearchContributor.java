@@ -36,7 +36,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -122,7 +121,7 @@ public class SearchBarPortletSharedSearchContributor
 
 	private SearchScope _getDefaultSearchScope() {
 		SearchBarPortletPreferences searchBarPortletPreferences =
-			new SearchBarPortletPreferencesImpl(Optional.empty());
+			new SearchBarPortletPreferencesImpl(null);
 
 		SearchScopePreference searchScopePreference =
 			searchBarPortletPreferences.getSearchScopePreference();
