@@ -29,7 +29,6 @@ import com.liferay.portal.search.web.internal.display.context.ThemeDisplaySuppli
 import com.liferay.portal.search.web.internal.modified.facet.constants.ModifiedFacetPortletKeys;
 import com.liferay.portal.search.web.internal.modified.facet.display.context.ModifiedFacetDisplayContext;
 import com.liferay.portal.search.web.internal.modified.facet.display.context.builder.ModifiedFacetDisplayContextBuilder;
-import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
@@ -118,10 +117,13 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 		String parameterName =
 			modifiedFacetPortletPreferences.getParameterName();
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameter(
-				parameterName + "From", renderRequest),
-			modifiedFacetDisplayContextBuilder::setFromParameterValue);
+		String parameterValue = portletSharedSearchResponse.getParameter(
+			parameterName + "From", renderRequest);
+
+		if (parameterValue != null) {
+			modifiedFacetDisplayContextBuilder.setFromParameterValue(
+				parameterValue);
+		}
 
 		modifiedFacetDisplayContextBuilder.setFrequenciesVisible(
 			modifiedFacetPortletPreferences.isFrequenciesVisible());
@@ -135,18 +137,25 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 
 		modifiedFacetDisplayContextBuilder.setParameterName(parameterName);
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest),
-			modifiedFacetDisplayContextBuilder::setParameterValues);
+		String[] parameterValues =
+			portletSharedSearchResponse.getParameterValues(
+				parameterName, renderRequest);
+
+		if (parameterValues != null) {
+			modifiedFacetDisplayContextBuilder.setParameterValues(
+				parameterValues);
+		}
 
 		modifiedFacetDisplayContextBuilder.setTimeZone(
 			themeDisplay.getTimeZone());
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameter(
-				parameterName + "To", renderRequest),
-			modifiedFacetDisplayContextBuilder::setToParameterValue);
+		parameterValue = portletSharedSearchResponse.getParameter(
+			parameterName + "To", renderRequest);
+
+		if (parameterValue != null) {
+			modifiedFacetDisplayContextBuilder.setToParameterValue(
+				parameterValue);
+		}
 
 		SearchResponse searchResponse =
 			portletSharedSearchResponse.getSearchResponse();

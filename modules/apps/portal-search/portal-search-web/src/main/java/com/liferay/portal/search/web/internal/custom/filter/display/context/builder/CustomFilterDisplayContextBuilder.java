@@ -97,10 +97,10 @@ public class CustomFilterDisplayContextBuilder {
 		return this;
 	}
 
-	public CustomFilterDisplayContextBuilder parameterValueOptional(
-		Optional<String> parameterValueOptional) {
+	public CustomFilterDisplayContextBuilder parameterValue(
+		String parameterValue) {
 
-		_parameterValueOptional = parameterValueOptional;
+		_parameterValue = parameterValue;
 
 		return this;
 	}
@@ -160,9 +160,11 @@ public class CustomFilterDisplayContextBuilder {
 				Stream.of(_filterValueOptional), StringPool.BLANK);
 		}
 
-		return SearchOptionalUtil.findFirstPresent(
-			Stream.of(_parameterValueOptional, _filterValueOptional),
-			StringPool.BLANK);
+		if (_parameterValue != null) {
+			return _parameterValue;
+		}
+
+		return _filterFieldOptional.orElse(StringPool.BLANK);
 	}
 
 	protected String getHeading() {
@@ -191,7 +193,7 @@ public class CustomFilterDisplayContextBuilder {
 	private Optional<String> _filterValueOptional = Optional.empty();
 	private boolean _immutable;
 	private String _parameterName;
-	private Optional<String> _parameterValueOptional = Optional.empty();
+	private String _parameterValue;
 	private Optional<String> _queryNameOptional = Optional.empty();
 	private boolean _renderNothing;
 	private ThemeDisplay _themeDisplay;

@@ -23,7 +23,6 @@ import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.web.internal.facet.display.context.AssetTagsSearchFacetDisplayContext;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.AssetTagsSearchFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.tag.facet.constants.TagFacetPortletKeys;
-import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
@@ -132,10 +131,14 @@ public class TagFacetPortlet extends MVCPortlet {
 		assetTagsSearchFacetDisplayContextBuilder.setParameterName(
 			parameterName);
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest),
-			assetTagsSearchFacetDisplayContextBuilder::setParameterValues);
+		String[] parameterValues =
+			portletSharedSearchResponse.getParameterValues(
+				parameterName, renderRequest);
+
+		if (parameterValues != null) {
+			assetTagsSearchFacetDisplayContextBuilder.setParameterValues(
+				parameterValues);
+		}
 
 		return assetTagsSearchFacetDisplayContextBuilder.build();
 	}

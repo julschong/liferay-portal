@@ -23,15 +23,12 @@ import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.web.internal.facet.display.context.UserSearchFacetDisplayContext;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.UserSearchFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.user.facet.constants.UserFacetPortletKeys;
-import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
 import java.io.IOException;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -132,10 +129,14 @@ public class UserFacetPortlet extends MVCPortlet {
 
 		userSearchFacetDisplayContextBuilder.setParamName(parameterName);
 
-		SearchOptionalUtil.copy(
-			() -> _getParameterValuesOptional(
-				parameterName, portletSharedSearchResponse, renderRequest),
-			userSearchFacetDisplayContextBuilder::setParamValues);
+		String[] parameterValues =
+			portletSharedSearchResponse.getParameterValues(
+				parameterName, renderRequest);
+
+		if (parameterValues != null) {
+			userSearchFacetDisplayContextBuilder.setParamValues(
+				Arrays.asList(parameterValues));
+		}
 
 		return userSearchFacetDisplayContextBuilder.build();
 	}
@@ -165,18 +166,6 @@ public class UserFacetPortlet extends MVCPortlet {
 		SearchRequest searchRequest = searchResponse.getRequest();
 
 		return searchRequest.getPaginationStartParameterName();
-	}
-
-	private Optional<List<String>> _getParameterValuesOptional(
-		String parameterName,
-		PortletSharedSearchResponse portletSharedSearchResponse,
-		RenderRequest renderRequest) {
-
-		Optional<String[]> optional =
-			portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest);
-
-		return optional.map(Arrays::asList);
 	}
 
 }

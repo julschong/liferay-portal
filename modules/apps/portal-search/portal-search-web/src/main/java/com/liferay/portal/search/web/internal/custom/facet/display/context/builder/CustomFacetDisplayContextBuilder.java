@@ -27,6 +27,7 @@ import com.liferay.portal.search.web.internal.util.SearchStringUtil;
 import com.liferay.portal.search.web.internal.util.comparator.BucketDisplayContextComparatorFactoryUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -155,10 +156,11 @@ public class CustomFacetDisplayContextBuilder {
 	}
 
 	public CustomFacetDisplayContextBuilder setParameterValues(
-		Optional<List<String>> parameterValuesOptional) {
+		String[] parameterValues) {
 
-		parameterValuesOptional.ifPresent(
-			parameterValues -> _parameterValues = parameterValues);
+		if (parameterValues != null) {
+			_parameterValues = Arrays.asList(parameterValues);
+		}
 
 		return this;
 	}

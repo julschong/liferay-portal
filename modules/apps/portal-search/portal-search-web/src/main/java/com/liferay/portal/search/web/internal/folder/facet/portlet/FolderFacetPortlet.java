@@ -25,7 +25,6 @@ import com.liferay.portal.search.web.internal.facet.display.context.FolderSearch
 import com.liferay.portal.search.web.internal.facet.display.context.FolderTitleLookupImpl;
 import com.liferay.portal.search.web.internal.facet.display.context.builder.FolderSearchFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.folder.facet.constants.FolderFacetPortletKeys;
-import com.liferay.portal.search.web.internal.util.SearchOptionalUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
@@ -134,10 +133,14 @@ public class FolderFacetPortlet extends MVCPortlet {
 
 		folderSearchFacetDisplayContextBuilder.setParameterName(parameterName);
 
-		SearchOptionalUtil.copy(
-			() -> portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest),
-			folderSearchFacetDisplayContextBuilder::setParameterValues);
+		String[] parameterValues =
+			portletSharedSearchResponse.getParameterValues(
+				parameterName, renderRequest);
+
+		if (parameterValues != null) {
+			folderSearchFacetDisplayContextBuilder.setParameterValues(
+				parameterValues);
+		}
 
 		return folderSearchFacetDisplayContextBuilder.build();
 	}
