@@ -60,4 +60,14 @@ public class SearchStringUtil {
 		);
 	}
 
+	public static String trim(String string) {
+		string = StringUtil.trim(string);
+
+		if (Validator.isBlank(string)) {
+			return null;
+		}
+
+		return string;
+	}
+
 }
