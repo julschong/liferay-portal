@@ -273,24 +273,24 @@ public class DepotSearchBarPortletSharedSearchContributorTest {
 
 			@Override
 			public SearchRequestBuilder getFederatedSearchRequestBuilder(
-				Optional<String> federatedSearchKeyOptional) {
+				String federatedSearchKey) {
 
 				return _searchRequestBuilderFactory.builder();
 			}
 
 			@Override
-			public Optional<String> getKeywordsParameterName() {
-				return Optional.empty();
+			public String getKeywordsParameterName() {
+				return null;
 			}
 
 			@Override
-			public Optional<Integer> getPaginationDelta() {
-				return Optional.empty();
+			public Integer getPaginationDelta() {
+				return null;
 			}
 
 			@Override
-			public Optional<String> getPaginationDeltaParameterName() {
-				return Optional.empty();
+			public String getPaginationDeltaParameterName() {
+				return null;
 			}
 
 			@Override
