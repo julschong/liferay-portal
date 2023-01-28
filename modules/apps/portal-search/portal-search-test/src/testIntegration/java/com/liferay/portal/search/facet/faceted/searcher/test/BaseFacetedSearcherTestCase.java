@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManager;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.search.test.util.AssertUtils;
@@ -33,10 +34,9 @@ import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.users.admin.test.util.search.UserSearchFixture;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -86,17 +86,12 @@ public abstract class BaseFacetedSearcherTestCase {
 	protected void assertAllHitsAreUsers(
 		String keywords, Hits hits, SearchContext searchContext) {
 
-		List<Document> documents = Stream.of(
-			hits.getDocs()
-		).filter(
-			this::isMissingScreenName
-		).collect(
-			Collectors.toList()
-		);
+		List<Document> documents = ListUtil.filter(
+			Arrays.asList(hits.getDocs()), this::isMissingScreenName);
 
 		Assert.assertTrue(
 			(String)searchContext.getAttribute("queryString") + "->" +
-				documents.toString(),
+				documents,
 			documents.isEmpty());
 	}
 
@@ -119,12 +114,15 @@ public abstract class BaseFacetedSearcherTestCase {
 		SearchContext searchContext = userSearchFixture.getSearchContext(
 			keywords);
 
-		Stream<Group> stream = _groups.stream();
+		long[] groupId = new long[_groups.size()];
 
-		searchContext.setGroupIds(
-			stream.mapToLong(
-				Group::getGroupId
-			).toArray());
+		for (int i = 0; i < _groups.size(); i++) {
+			Group group = _groups.get(i);
+
+			groupId[i] = group.getGroupId();
+		}
+
+		searchContext.setGroupIds(groupId);
 
 		return searchContext;
 	}

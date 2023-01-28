@@ -86,7 +86,15 @@ public class SXPParameterDataCreatorTest {
 			_group, _user.getUserId());
 
 		_sxpBlueprint = _sxpBlueprintLocalService.addSXPBlueprint(
-			null, _user.getUserId(), _DEFAULT_CONFIGURATION_JSON,
+			null, _user.getUserId(),
+			JSONUtil.put(
+				"generalConfiguration",
+				JSONUtil.put(
+					"searchableAssetTypes",
+					JSONUtil.put("com.liferay.journal.model.JournalArticle"))
+			).put(
+				"queryConfiguration", JSONUtil.put("applyIndexerClauses", true)
+			).toString(),
 			Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
 			StringPool.BLANK, StringPool.BLANK,
 			Collections.singletonMap(
@@ -172,15 +180,6 @@ public class SXPParameterDataCreatorTest {
 			searchResponse.getRequestString(), searchResponse.getDocuments(),
 			"title_en_US", expected);
 	}
-
-	private static final String _DEFAULT_CONFIGURATION_JSON = JSONUtil.put(
-		"generalConfiguration",
-		JSONUtil.put(
-			"searchableAssetTypes",
-			JSONUtil.put("com.liferay.journal.model.JournalArticle"))
-	).put(
-		"queryConfiguration", JSONUtil.put("applyIndexerClauses", true)
-	).toString();
 
 	@DeleteAfterTestRun
 	private Group _group;

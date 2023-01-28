@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Petteri Karttunen
  */
 @Component(enabled = false, service = PortalInstanceLifecycleListener.class)
-public class EmbeddingFieldCreationPortalInstanceLifecycleListener
+public class TextEmbeddingFieldCreationPortalInstanceLifecycleListener
 	extends BasePortalInstanceLifecycleListener {
 
 	@Override
@@ -124,7 +124,7 @@ public class EmbeddingFieldCreationPortalInstanceLifecycleListener
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EmbeddingFieldCreationPortalInstanceLifecycleListener.class);
+		TextEmbeddingFieldCreationPortalInstanceLifecycleListener.class);
 
 	@Reference
 	private IndexInformation _indexInformation;
