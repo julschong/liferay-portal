@@ -29,10 +29,10 @@ public class SearchBarPortletPreferencesImpl
 	implements SearchBarPortletPreferences {
 
 	public SearchBarPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override

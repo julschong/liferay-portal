@@ -29,10 +29,10 @@ public class CustomFilterPortletPreferencesImpl
 	implements CustomFilterPortletPreferences {
 
 	public CustomFilterPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override

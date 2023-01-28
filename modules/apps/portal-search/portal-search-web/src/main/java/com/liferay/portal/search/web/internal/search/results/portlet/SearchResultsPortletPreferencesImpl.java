@@ -31,10 +31,10 @@ public class SearchResultsPortletPreferencesImpl
 	implements SearchResultsPortletPreferences {
 
 	public SearchResultsPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override

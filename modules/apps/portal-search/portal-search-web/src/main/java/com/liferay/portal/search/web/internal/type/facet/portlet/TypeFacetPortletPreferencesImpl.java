@@ -39,14 +39,14 @@ public class TypeFacetPortletPreferencesImpl
 
 	public TypeFacetPortletPreferencesImpl(
 		ObjectDefinitionLocalService objectDefinitionLocalService,
-		Optional<PortletPreferences> portletPreferencesOptional,
+		PortletPreferences portletPreferences,
 		SearchableAssetClassNamesProvider searchableAssetClassNamesProvider) {
 
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_searchableAssetClassNamesProvider = searchableAssetClassNamesProvider;
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override

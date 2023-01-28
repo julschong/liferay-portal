@@ -28,10 +28,10 @@ public class CustomFacetPortletPreferencesImpl
 	implements CustomFacetPortletPreferences {
 
 	public CustomFacetPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override

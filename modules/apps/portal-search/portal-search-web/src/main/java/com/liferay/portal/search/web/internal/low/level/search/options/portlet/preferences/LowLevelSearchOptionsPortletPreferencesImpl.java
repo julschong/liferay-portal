@@ -36,10 +36,10 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 	implements LowLevelSearchOptionsPortletPreferences {
 
 	public LowLevelSearchOptionsPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override
