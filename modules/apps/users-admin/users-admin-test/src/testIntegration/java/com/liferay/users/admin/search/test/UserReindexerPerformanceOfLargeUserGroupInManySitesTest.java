@@ -15,6 +15,7 @@
 package com.liferay.users.admin.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.model.UserModel;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
@@ -57,7 +59,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -255,7 +256,8 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 		DocumentsAssert.assertValuesIgnoreRelevance(
 			searchResponse.getRequestString(), searchResponse.getDocuments(),
-			Field.USER_ID, _getUserIdsStream(users));
+			Field.USER_ID,
+			TransformUtil.transform(users, UserModel::getUserId));
 	}
 
 	protected SearchRequestBuilder getSearchRequestBuilder(long companyId) {
@@ -346,12 +348,6 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 		return sb.toString();
 	}
 
-	private Stream<Long> _getUserIdsStream(List<User> users) {
-		Stream<User> stream = users.stream();
-
-		return stream.map(User::getUserId);
-	}
-
 	private Dictionary<String, Object> _toDictionary(Map<String, String> map) {
 		return new HashMapDictionary<>(new HashMap<String, Object>(map));
 	}
@@ -386,20 +382,20 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 	@DeleteAfterTestRun
 	private List<Address> _addresses = new ArrayList<>();
 
-	private int _groupsCount;
-
 	@DeleteAfterTestRun
 	private List<Group> _groups;
 
+	private int _groupsCount;
+
 	@DeleteAfterTestRun
 	private List<Organization> _organizations;
-
-	private int _usersCount;
 
 	@DeleteAfterTestRun
 	private List<UserGroup> _userGroups;
 
 	@DeleteAfterTestRun
 	private List<User> _users;
+
+	private int _usersCount;
 
 }
