@@ -86,8 +86,8 @@ public class Java2WsddTask {
 
 		String location = "http://localhost/services/" + serviceName;
 
-		String mappingPackage =
-			packagePath.substring(0, packagePath.lastIndexOf(".")) + ".ws";
+		String mappingPackage = packagePath.substring(
+			0, packagePath.lastIndexOf(".")) + ".ws";
 
 		Project project = AntUtil.getProject();
 
@@ -204,8 +204,7 @@ public class Java2WsddTask {
 
 				List<Element> parameters = element.elements("parameter");
 
-				StringBundler sb = new StringBundler(
-					(2 * parameters.size()) + 2);
+				StringBundler sb = new StringBundler(2 * parameters.size() + 2);
 
 				String name = element.attributeValue("name");
 
@@ -264,7 +263,10 @@ public class Java2WsddTask {
 		_addElements(serviceElement, operationElements);
 		_addElements(serviceElement, parameterElements);
 
-		return StringUtil.replace(_formattedString(document), "\"/>", "\" />");
+		content = StringUtil.replace(
+			_formattedString(document), "\"/>", "\" />");
+
+		return content;
 	}
 
 	private static String _formattedString(Node node) throws Exception {

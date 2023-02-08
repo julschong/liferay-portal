@@ -67,7 +67,7 @@ public class AntUtil {
 						line = unsyncBufferedReader.readLine();
 					}
 				}
-				catch (IOException ioException) {
+				catch (IOException ioe) {
 				}
 
 				String message = sb.toString();
