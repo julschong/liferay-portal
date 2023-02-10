@@ -24,6 +24,7 @@ import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
@@ -415,18 +416,11 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 				User user = (User)baseModel;
 
 				try {
-					List<Group> groups = user.getSiteGroups();
+					long[] groupIds = TransformUtil.transformToLongArray(
+						user.getSiteGroups(), Group::getGroupId);
 
-					if (!groups.isEmpty()) {
-						long[] membershipIds = new long[groups.size()];
-
-						for (int i = 0; i < groups.size(); i++) {
-							Group group = groups.get(i);
-
-							membershipIds[i] = group.getGroupId();
-						}
-
-						memberships.put(Group.class.getName(), membershipIds);
+					if (ArrayUtil.isNotEmpty(groupIds)) {
+						memberships.put(Group.class.getName(), groupIds);
 					}
 				}
 				catch (Exception exception) {
