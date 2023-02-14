@@ -416,11 +416,13 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 				User user = (User)baseModel;
 
 				try {
-					long[] groupIds = TransformUtil.transformToLongArray(
-						user.getSiteGroups(), Group::getGroupId);
+					List<Group> groups = user.getSiteGroups();
 
-					if (ArrayUtil.isNotEmpty(groupIds)) {
-						memberships.put(Group.class.getName(), groupIds);
+					if (!groups.isEmpty()) {
+						memberships.put(
+							Group.class.getName(),
+							TransformUtil.transformToLongArray(
+								groups, Group::getGroupId));
 					}
 				}
 				catch (Exception exception) {
