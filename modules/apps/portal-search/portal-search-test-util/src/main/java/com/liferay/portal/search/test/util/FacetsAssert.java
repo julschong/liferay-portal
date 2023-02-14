@@ -42,10 +42,11 @@ public class FacetsAssert {
 
 		Assert.assertNotNull(termCollectors);
 
-		List<String> termCollectorStrings = TransformUtil.transform(
-			termCollectors, FacetsAssert::toString);
-
-		Assert.assertEquals(message, expected, termCollectorStrings.toString());
+		Assert.assertEquals(
+			message, expected,
+			String.valueOf(
+				TransformUtil.transform(
+					termCollectors, FacetsAssert::toString)));
 	}
 
 	public static void assertFrequencies(
