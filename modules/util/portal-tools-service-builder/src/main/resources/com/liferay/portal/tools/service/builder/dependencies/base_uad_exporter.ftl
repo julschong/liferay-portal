@@ -6,8 +6,13 @@ import ${entity.UADPackagePath}.uad.constants.${entity.UADApplicationName}UADCon
 import ${serviceBuilder.getCompatJavaClassName("StringBundler")};
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -41,24 +46,31 @@ public abstract class Base${entity.name}UADExporter extends DynamicQueryUADExpor
 	}
 
 	@Override
-	protected String toXmlString(${entity.name} ${entity.variableName}) {
-		StringBundler sb = new StringBundler(${entity.UADEntityColumns?size * 3 + 4});
+	protected String toXmlString(${entity.name} ${entity.variableName}) throws IOException {
 
-		sb.append("<model><model-name>");
-		sb.append("${apiPackagePath}.model.${entity.name}");
-		sb.append("</model-name>");
+		Document document = SAXReaderUtil.createDocument();
+
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
+
+		modelNameElement.addText("${apiPackagePath}.model.${entity.name}");
 
 		<#list entity.UADEntityColumns as entityColumn>
 			<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
-				sb.append("<column><column-name>${entityColumn.name}</column-name><column-value><![CDATA[");
-				sb.append(${entity.variableName}.get${entityColumn.methodName}());
-				sb.append("]]></column-value></column>");
+				<#if entityColumn?index == 0 >Element </#if>columnElement = modelElement.addElement("column");
+				<#if entityColumn?index == 0 >Element </#if>columnNameElement = columnElement.addElement("column-name");
+				<#if entityColumn?index == 0 >Element </#if>columnValueElement = columnElement.addElement("column-value");
+
+				columnNameElement.addText("${entityColumn.name}");
+				<#if stringUtil.equals(entityColumn.type, "String")>
+					columnValueElement.addCDATA(${entity.variableName}.get${entityColumn.methodName}());
+				<#else>
+					columnValueElement.addText(String.valueOf(${entity.variableName}.get${entityColumn.methodName}()));
+				</#if>
 			</#if>
 		</#list>
 
-		sb.append("</model>");
-
-		return sb.toString();
+		return document.formattedString();
 	}
 
 	@Reference
