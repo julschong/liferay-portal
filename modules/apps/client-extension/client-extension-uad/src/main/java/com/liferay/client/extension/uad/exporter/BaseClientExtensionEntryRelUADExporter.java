@@ -17,8 +17,11 @@ package com.liferay.client.extension.uad.exporter;
 import com.liferay.client.extension.model.ClientExtensionEntryRel;
 import com.liferay.client.extension.service.ClientExtensionEntryRelLocalService;
 import com.liferay.client.extension.uad.constants.ClientExtensionUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -58,28 +61,42 @@ public abstract class BaseClientExtensionEntryRelUADExporter
 	protected String toXmlString(
 		ClientExtensionEntryRel clientExtensionEntryRel) {
 
-		StringBundler sb = new StringBundler(13);
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.client.extension.model.ClientExtensionEntryRel");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>clientExtensionEntryRelId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntryRel.getClientExtensionEntryRelId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntryRel.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntryRel.getUserName());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText(
+			"com.liferay.client.extension.model.ClientExtensionEntryRel");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("clientExtensionEntryRelId");
+		columnValueElement.addText(
+			String.valueOf(
+				clientExtensionEntryRel.getClientExtensionEntryRelId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(clientExtensionEntryRel.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(clientExtensionEntryRel.getUserName());
+
+		try {
+			return document.formattedString();
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
 	}
 
 	@Reference
