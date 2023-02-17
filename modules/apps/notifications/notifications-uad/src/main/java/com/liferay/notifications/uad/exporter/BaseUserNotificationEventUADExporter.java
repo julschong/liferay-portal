@@ -15,10 +15,13 @@
 package com.liferay.notifications.uad.exporter;
 
 import com.liferay.notifications.uad.constants.NotificationsUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -56,24 +59,35 @@ public abstract class BaseUserNotificationEventUADExporter
 
 	@Override
 	protected String toXmlString(UserNotificationEvent userNotificationEvent) {
-		StringBundler sb = new StringBundler(10);
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.UserNotificationEvent");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = modelElement.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>userNotificationEventId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationEvent.getUserNotificationEventId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationEvent.getUserId());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText(
+			"com.liferay.portal.kernel.model.UserNotificationEvent");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("userNotificationEventId");
+		columnValueElement.addText(
+			String.valueOf(userNotificationEvent.getUserNotificationEventId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(userNotificationEvent.getUserId()));
+
+		try {
+			return document.formattedString();
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
 	}
 
 	@Reference
