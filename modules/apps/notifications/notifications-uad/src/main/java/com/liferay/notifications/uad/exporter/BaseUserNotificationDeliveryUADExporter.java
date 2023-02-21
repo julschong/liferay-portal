@@ -15,10 +15,13 @@
 package com.liferay.notifications.uad.exporter;
 
 import com.liferay.notifications.uad.constants.NotificationsUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.UserNotificationDelivery;
 import com.liferay.portal.kernel.service.UserNotificationDeliveryLocalService;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -58,24 +61,36 @@ public abstract class BaseUserNotificationDeliveryUADExporter
 	protected String toXmlString(
 		UserNotificationDelivery userNotificationDelivery) {
 
-		StringBundler sb = new StringBundler(10);
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.UserNotificationDelivery");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>userNotificationDeliveryId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationDelivery.getUserNotificationDeliveryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationDelivery.getUserId());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText(
+			"com.liferay.portal.kernel.model.UserNotificationDelivery");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("userNotificationDeliveryId");
+		columnValueElement.addText(
+			String.valueOf(
+				userNotificationDelivery.getUserNotificationDeliveryId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(userNotificationDelivery.getUserId()));
+
+		try {
+			return document.formattedString();
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
 	}
 
 	@Reference

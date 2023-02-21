@@ -17,8 +17,11 @@ package com.liferay.message.boards.uad.exporter;
 import com.liferay.message.boards.model.MBSuspiciousActivity;
 import com.liferay.message.boards.service.MBSuspiciousActivityLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -55,28 +58,41 @@ public abstract class BaseMBSuspiciousActivityUADExporter
 
 	@Override
 	protected String toXmlString(MBSuspiciousActivity mbSuspiciousActivity) {
-		StringBundler sb = new StringBundler(13);
+		Document document = SAXReaderUtil.createDocument();
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.message.boards.model.MBSuspiciousActivity");
-		sb.append("</model-name>");
+		Element modelElement = document.addElement("model");
+		Element modelNameElement = document.addElement("model-name");
 
-		sb.append(
-			"<column><column-name>suspiciousActivityId</column-name><column-value><![CDATA[");
-		sb.append(mbSuspiciousActivity.getSuspiciousActivityId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(mbSuspiciousActivity.getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbSuspiciousActivity.getUserName());
-		sb.append("]]></column-value></column>");
+		modelNameElement.addText(
+			"com.liferay.message.boards.model.MBSuspiciousActivity");
 
-		sb.append("</model>");
+		Element columnElement = modelElement.addElement("column");
+		Element columnNameElement = columnElement.addElement("column-name");
+		Element columnValueElement = columnElement.addElement("column-value");
 
-		return sb.toString();
+		columnNameElement.addText("suspiciousActivityId");
+		columnValueElement.addText(
+			String.valueOf(mbSuspiciousActivity.getSuspiciousActivityId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userId");
+		columnValueElement.addText(
+			String.valueOf(mbSuspiciousActivity.getUserId()));
+		columnElement = modelElement.addElement("column");
+		columnNameElement = columnElement.addElement("column-name");
+		columnValueElement = columnElement.addElement("column-value");
+
+		columnNameElement.addText("userName");
+		columnValueElement.addCDATA(mbSuspiciousActivity.getUserName());
+
+		try {
+			return document.formattedString();
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
 	}
 
 	@Reference
