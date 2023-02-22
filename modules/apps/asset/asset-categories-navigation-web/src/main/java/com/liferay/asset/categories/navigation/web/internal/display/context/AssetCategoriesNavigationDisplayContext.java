@@ -29,12 +29,11 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.KeyValuePairComparator;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
@@ -109,24 +108,33 @@ public class AssetCategoriesNavigationDisplayContext {
 
 		_assetVocabularyIds = getAvailableAssetVocabularyIds();
 
-		String[] assetVocabularyIdsArray =
+		String[] assetVocabularyIds =
 			_assetCategoriesNavigationPortletInstanceConfiguration.
 				assetVocabularyIds();
 
-		if (!_assetCategoriesNavigationPortletInstanceConfiguration.
-				allAssetVocabularies() &&
-			(assetVocabularyIdsArray != null)) {
+		if (_assetCategoriesNavigationPortletInstanceConfiguration.
+				allAssetVocabularies() ||
+			(assetVocabularyIds == null)) {
 
-			_assetVocabularyIds = ArrayUtil.filter(
-				StringUtil.split(StringUtil.merge(assetVocabularyIdsArray), 0L),
-				assetVocabularyId -> {
-					AssetVocabulary assetVocabulary =
-						AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
-							assetVocabularyId);
-
-					return assetVocabulary != null;
-				});
+			return _assetVocabularyIds;
 		}
+
+		_assetVocabularyIds = TransformUtil.transformToLongArray(
+			Arrays.asList(assetVocabularyIds),
+			assetVocabularyIdString -> {
+				long assetVocabularyId = GetterUtil.getLong(
+					assetVocabularyIdString);
+
+				AssetVocabulary assetVocabulary =
+					AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
+						assetVocabularyId);
+
+				if (assetVocabulary == null) {
+					return null;
+				}
+
+				return assetVocabularyId;
+			});
 
 		return _assetVocabularyIds;
 	}
