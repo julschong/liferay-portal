@@ -154,22 +154,22 @@ public class AssetCategoriesNavigationDisplayContext {
 
 		_currentAssetVocabularyIds = getAssetVocabularyIds();
 
-		String[] assetVocabularyIds =
+		String[] configuredAssetVocabularyIds =
 			_assetCategoriesNavigationPortletInstanceConfiguration.
 				assetVocabularyIds();
 
 		if (_assetCategoriesNavigationPortletInstanceConfiguration.
 				allAssetVocabularies() ||
-			(assetVocabularyIds == null)) {
+			(configuredAssetVocabularyIds == null)) {
 
 			return _currentAssetVocabularyIds;
 		}
 
 		_currentAssetVocabularyIds = TransformUtil.transformToLongArray(
-			Arrays.asList(assetVocabularyIds),
-			assetVocabularyIdString -> {
+			Arrays.asList(configuredAssetVocabularyIds),
+			configuredAssetVocabularyId -> {
 				long assetVocabularyId = GetterUtil.getLong(
-					assetVocabularyIdString);
+					configuredAssetVocabularyId);
 
 				AssetVocabulary assetVocabulary =
 					AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
