@@ -106,15 +106,8 @@ public class AssetCategoriesNavigationDisplayContext {
 			return _assetVocabularyIds;
 		}
 
-		List<AssetVocabulary> assetVocabularies = getAssetVocabularies();
-
-		_assetVocabularyIds = new long[assetVocabularies.size()];
-
-		for (int i = 0; i < assetVocabularies.size(); i++) {
-			AssetVocabulary assetVocabulary = assetVocabularies.get(i);
-
-			_assetVocabularyIds[i] = assetVocabulary.getVocabularyId();
-		}
+		_assetVocabularyIds = TransformUtil.transformToLongArray(
+			getAssetVocabularies(), AssetVocabulary::getVocabularyId);
 
 		return _assetVocabularyIds;
 	}
@@ -186,16 +179,11 @@ public class AssetCategoriesNavigationDisplayContext {
 	}
 
 	public List<KeyValuePair> getCurrentVocabularyNames() {
-		List<KeyValuePair> vocabularyNames = new ArrayList<>();
-
-		for (long assetVocabularyId : getCurrentAssetVocabularyIds()) {
-			vocabularyNames.add(
-				_toKeyValuePair(
-					AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
-						assetVocabularyId)));
-		}
-
-		return vocabularyNames;
+		return TransformUtil.transformToList(
+			getCurrentAssetVocabularyIds(),
+			assetVocabularyId -> _toKeyValuePair(
+				AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
+					assetVocabularyId)));
 	}
 
 	public List<AssetVocabulary> getDDMTemplateAssetVocabularies()
