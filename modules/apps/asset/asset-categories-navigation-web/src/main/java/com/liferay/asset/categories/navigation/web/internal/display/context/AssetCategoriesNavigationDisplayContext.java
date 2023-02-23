@@ -106,64 +106,26 @@ public class AssetCategoriesNavigationDisplayContext {
 			return _assetVocabularyIds;
 		}
 
-		_assetVocabularyIds = getAvailableAssetVocabularyIds();
-
-		String[] assetVocabularyIds =
-			_assetCategoriesNavigationPortletInstanceConfiguration.
-				assetVocabularyIds();
-
-		if (_assetCategoriesNavigationPortletInstanceConfiguration.
-				allAssetVocabularies() ||
-			(assetVocabularyIds == null)) {
-
-			return _assetVocabularyIds;
-		}
-
-		_assetVocabularyIds = TransformUtil.transformToLongArray(
-			Arrays.asList(assetVocabularyIds),
-			assetVocabularyIdString -> {
-				long assetVocabularyId = GetterUtil.getLong(
-					assetVocabularyIdString);
-
-				AssetVocabulary assetVocabulary =
-					AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
-						assetVocabularyId);
-
-				if (assetVocabulary == null) {
-					return null;
-				}
-
-				return assetVocabularyId;
-			});
-
-		return _assetVocabularyIds;
-	}
-
-	public long[] getAvailableAssetVocabularyIds() {
-		if (_availableAssetVocabularyIds != null) {
-			return _availableAssetVocabularyIds;
-		}
-
 		List<AssetVocabulary> assetVocabularies = getAssetVocabularies();
 
-		_availableAssetVocabularyIds = new long[assetVocabularies.size()];
+		_assetVocabularyIds = new long[assetVocabularies.size()];
 
 		for (int i = 0; i < assetVocabularies.size(); i++) {
 			AssetVocabulary assetVocabulary = assetVocabularies.get(i);
 
-			_availableAssetVocabularyIds[i] = assetVocabulary.getVocabularyId();
+			_assetVocabularyIds[i] = assetVocabulary.getVocabularyId();
 		}
 
-		return _availableAssetVocabularyIds;
+		return _assetVocabularyIds;
 	}
 
 	public List<KeyValuePair> getAvailableVocabularyNames() {
-		long[] assetVocabularyIds = getAssetVocabularyIds();
+		long[] assetVocabularyIds = getCurrentAssetVocabularyIds();
 
 		Arrays.sort(assetVocabularyIds);
 
 		Set<Long> availableAssetVocabularyIdsSet = SetUtil.fromArray(
-			getAvailableAssetVocabularyIds());
+			getAssetVocabularyIds());
 
 		List<KeyValuePair> vocabularyNames = TransformUtil.transform(
 			availableAssetVocabularyIdsSet,
@@ -185,10 +147,48 @@ public class AssetCategoriesNavigationDisplayContext {
 		return vocabularyNames;
 	}
 
+	public long[] getCurrentAssetVocabularyIds() {
+		if (_currentAssetVocabularyIds != null) {
+			return _currentAssetVocabularyIds;
+		}
+
+		_currentAssetVocabularyIds = getAssetVocabularyIds();
+
+		String[] assetVocabularyIds =
+			_assetCategoriesNavigationPortletInstanceConfiguration.
+				assetVocabularyIds();
+
+		if (_assetCategoriesNavigationPortletInstanceConfiguration.
+				allAssetVocabularies() ||
+			(assetVocabularyIds == null)) {
+
+			return _currentAssetVocabularyIds;
+		}
+
+		_currentAssetVocabularyIds = TransformUtil.transformToLongArray(
+			Arrays.asList(assetVocabularyIds),
+			assetVocabularyIdString -> {
+				long assetVocabularyId = GetterUtil.getLong(
+					assetVocabularyIdString);
+
+				AssetVocabulary assetVocabulary =
+					AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
+						assetVocabularyId);
+
+				if (assetVocabulary == null) {
+					return null;
+				}
+
+				return assetVocabularyId;
+			});
+
+		return _currentAssetVocabularyIds;
+	}
+
 	public List<KeyValuePair> getCurrentVocabularyNames() {
 		List<KeyValuePair> vocabularyNames = new ArrayList<>();
 
-		for (long assetVocabularyId : getAssetVocabularyIds()) {
+		for (long assetVocabularyId : getCurrentAssetVocabularyIds()) {
 			vocabularyNames.add(
 				_toKeyValuePair(
 					AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
@@ -215,7 +215,7 @@ public class AssetCategoriesNavigationDisplayContext {
 			return _ddmTemplateAssetVocabularies;
 		}
 
-		for (long assetVocabularyId : getAssetVocabularyIds()) {
+		for (long assetVocabularyId : getCurrentAssetVocabularyIds()) {
 			try {
 				_ddmTemplateAssetVocabularies.add(
 					AssetVocabularyServiceUtil.fetchVocabulary(
@@ -283,7 +283,7 @@ public class AssetCategoriesNavigationDisplayContext {
 		_assetCategoriesNavigationPortletInstanceConfiguration;
 	private List<AssetVocabulary> _assetVocabularies;
 	private long[] _assetVocabularyIds;
-	private long[] _availableAssetVocabularyIds;
+	private long[] _currentAssetVocabularyIds;
 	private List<AssetVocabulary> _ddmTemplateAssetVocabularies;
 	private long _displayStyleGroupId;
 	private final HttpServletRequest _httpServletRequest;

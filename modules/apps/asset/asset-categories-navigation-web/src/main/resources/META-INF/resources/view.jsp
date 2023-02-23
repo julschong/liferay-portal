@@ -36,7 +36,7 @@
 		<c:otherwise>
 			<liferay-asset:asset-categories-navigation
 				hidePortletWhenEmpty="<%= true %>"
-				vocabularyIds="<%= assetCategoriesNavigationDisplayContext.getAssetVocabularyIds() %>"
+				vocabularyIds="<%= assetCategoriesNavigationDisplayContext.getCurrentAssetVocabularyIds() %>"
 			/>
 		</c:otherwise>
 	</c:choose>
