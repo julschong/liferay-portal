@@ -15,7 +15,8 @@
 package com.liferay.announcements.uad.constants;
 
 /**
- * @author Drew Brokke
+ * @author Brian Wing Shun Chan
+ * @generated
  */
 public class AnnouncementsUADConstants {
 
