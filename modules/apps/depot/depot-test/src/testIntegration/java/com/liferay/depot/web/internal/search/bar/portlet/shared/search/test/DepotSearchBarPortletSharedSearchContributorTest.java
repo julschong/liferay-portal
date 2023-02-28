@@ -304,13 +304,8 @@ public class DepotSearchBarPortletSharedSearchContributorTest {
 			}
 
 			@Override
-			public Optional<String> getParameter71(String name) {
-				return Optional.empty();
-			}
-
-			@Override
-			public Optional<String> getParameterOptional(String name) {
-				return Optional.empty();
+			public String getParameter(String name) {
+				return null;
 			}
 
 			@Override
