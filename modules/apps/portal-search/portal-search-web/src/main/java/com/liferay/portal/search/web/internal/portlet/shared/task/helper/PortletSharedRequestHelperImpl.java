@@ -15,9 +15,10 @@
 package com.liferay.portal.search.web.internal.portlet.shared.task.helper;
 
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.web.internal.portlet.shared.task.SearchHttpUtil;
 import com.liferay.portal.search.web.internal.util.SearchArrayUtil;
-import com.liferay.portal.search.web.internal.util.SearchStringUtil;
 
 import java.util.Optional;
 
@@ -50,13 +51,17 @@ public class PortletSharedRequestHelperImpl
 	}
 
 	@Override
-	public Optional<String> getParameter(
-		String name, RenderRequest renderRequest) {
-
+	public String getParameter(String name, RenderRequest renderRequest) {
 		HttpServletRequest httpServletRequest = _getSharedHttpServletRequest(
 			renderRequest);
 
-		return SearchStringUtil.maybe(httpServletRequest.getParameter(name));
+		String value = StringUtil.trim(httpServletRequest.getParameter(name));
+
+		if (Validator.isBlank(value)) {
+			return null;
+		}
+
+		return value;
 	}
 
 	@Override
