@@ -44,8 +44,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRe
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portlet.PortletPreferencesImpl;
 
-import java.util.Optional;
-
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
@@ -478,7 +476,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 			portletSharedSearchResponse.getParameter(
 				Mockito.eq(scopeParameterName), Mockito.any())
 		).thenReturn(
-			Optional.ofNullable(scopeParameterValue)
+			scopeParameterValue
 		);
 
 		SearchResponse searchResponse = Mockito.mock(SearchResponse.class);
