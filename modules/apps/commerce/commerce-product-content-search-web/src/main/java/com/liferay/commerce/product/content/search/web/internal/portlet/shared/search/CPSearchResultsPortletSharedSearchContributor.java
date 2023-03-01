@@ -102,11 +102,9 @@ public class CPSearchResultsPortletSharedSearchContributor
 			_commerceChannelLocalService.fetchCommerceChannelBySiteGroupId(
 				themeDisplay.getScopeGroupId());
 
-		Optional<String> parameterValueOptional =
-			portletSharedSearchSettings.getParameter71("q");
+		String parameterValue = GetterUtil.getString(portletSharedSearchSettings.getParameter("q"));
 
-		portletSharedSearchSettings.setKeywords(
-			parameterValueOptional.orElse(StringPool.BLANK));
+		portletSharedSearchSettings.setKeywords(parameterValue);
 
 		portletSharedSearchSettings.addCondition(
 			new BooleanClauseImpl<Query>(
@@ -178,24 +176,17 @@ public class CPSearchResultsPortletSharedSearchContributor
 		portletSharedSearchSettings.setPaginationStartParameterName(
 			paginationStartParameterName);
 
-		Optional<String> paginationStartParameterValueOptional =
-			portletSharedSearchSettings.getParameter71(
+		String paginationStartParameterValue =
+			portletSharedSearchSettings.getParameter(
 				paginationStartParameterName);
 
-		Optional<Integer> paginationStartOptional =
-			paginationStartParameterValueOptional.map(Integer::valueOf);
+		if (paginationStartParameterValue != null) {
+			portletSharedSearchSettings.setPaginationStart(
+				Integer.valueOf(paginationStartParameterValue));
+		}
 
-		paginationStartOptional.ifPresent(
-			portletSharedSearchSettings::setPaginationStart);
-
-		String paginationDeltaParameterName = "delta";
-
-		Optional<String> paginationDeltaParameterValueOptional =
-			portletSharedSearchSettings.getParameter71(
-				paginationDeltaParameterName);
-
-		Optional<Integer> paginationDeltaOptional =
-			paginationDeltaParameterValueOptional.map(Integer::valueOf);
+		String paginationDeltaParameterValue =
+			portletSharedSearchSettings.getParameter("delta");
 
 		int configurationPaginationDelta =
 			cpSearchResultsPortletInstanceConfiguration.paginationDelta();
@@ -211,8 +202,13 @@ public class CPSearchResultsPortletSharedSearchContributor
 				portletPreferences.getValue("paginationDelta", null));
 		}
 
-		portletSharedSearchSettings.setPaginationDelta(
-			paginationDeltaOptional.orElse(configurationPaginationDelta));
+		int paginationDelta = configurationPaginationDelta;
+
+		if (paginationDeltaParameterValue != null) {
+			paginationDelta = Integer.valueOf(paginationDeltaParameterValue);
+		}
+
+		portletSharedSearchSettings.setPaginationDelta(paginationDelta);
 	}
 
 	@Reference
