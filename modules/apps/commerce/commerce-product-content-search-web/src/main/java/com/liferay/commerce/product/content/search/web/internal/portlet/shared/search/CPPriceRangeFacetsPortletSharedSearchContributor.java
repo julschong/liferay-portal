@@ -31,12 +31,11 @@ import com.liferay.portal.kernel.search.facet.RangeFacet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
-
-import java.util.Optional;
 
 import javax.portlet.RenderRequest;
 
@@ -66,18 +65,18 @@ public class CPPriceRangeFacetsPortletSharedSearchContributor
 
 			Facet facet = _getFacet(renderRequest, searchContext);
 
-			Optional<String[]> parameterValuesOptional =
-				portletSharedSearchSettings.getParameterValues71(
+			String[] parameterValues =
+				portletSharedSearchSettings.getParameterValues(
 					facet.getFieldName());
 
 			SerializableFacet serializableFacet = new SerializableFacet(
 				facet.getFieldName(), searchContext);
 
-			if (parameterValuesOptional.isPresent()) {
-				serializableFacet.select(parameterValuesOptional.get());
+			if (ArrayUtil.isNotEmpty(parameterValues)) {
+				serializableFacet.select(parameterValues);
 
 				searchContext.setAttribute(
-					facet.getFieldName(), parameterValuesOptional.get());
+					facet.getFieldName(), parameterValues);
 			}
 
 			portletSharedSearchSettings.addFacet(facet);

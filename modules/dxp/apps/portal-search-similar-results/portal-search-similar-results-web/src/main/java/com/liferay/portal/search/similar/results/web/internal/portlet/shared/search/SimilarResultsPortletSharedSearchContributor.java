@@ -159,11 +159,10 @@ public class SimilarResultsPortletSharedSearchContributor
 		PortletSharedSearchSettings portletSharedSearchSettings,
 		SearchRequestBuilder searchRequestBuilder) {
 
-		Optional<String> optional =
-			portletSharedSearchSettings.getParameterOptional(
-				"similar.results.all.classes");
+		String parameterValue = portletSharedSearchSettings.getParameter(
+			"similar.results.all.classes");
 
-		if (optional.isPresent()) {
+		if (parameterValue != null) {
 			return;
 		}
 
