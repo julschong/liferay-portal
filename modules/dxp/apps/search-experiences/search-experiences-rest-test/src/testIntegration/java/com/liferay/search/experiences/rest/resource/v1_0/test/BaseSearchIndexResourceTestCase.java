@@ -55,6 +55,7 @@ import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,8 +64,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -341,7 +340,7 @@ public abstract class BaseSearchIndexResourceTestCase {
 
 		boolean valid = false;
 
-		java.util.Collection<SearchIndex> searchIndexes = page.getItems();
+		Collection<SearchIndex> searchIndexes = page.getItems();
 
 		int size = searchIndexes.size();
 
@@ -495,19 +494,12 @@ public abstract class BaseSearchIndexResourceTestCase {
 	protected java.lang.reflect.Field[] getDeclaredFields(Class clazz)
 		throws Exception {
 
-		Stream<java.lang.reflect.Field> stream = Stream.of(
-			ReflectionUtil.getDeclaredFields(clazz));
-
-		return stream.filter(
-			field -> !field.isSynthetic()
-		).toArray(
-			java.lang.reflect.Field[]::new
-		);
+		return ArrayUtil.filter(
+			ReflectionUtil.getDeclaredFields(clazz),
+			field -> !field.isSynthetic());
 	}
 
-	protected java.util.Collection<EntityField> getEntityFields()
-		throws Exception {
-
+	protected Collection<EntityField> getEntityFields() throws Exception {
 		if (!(_searchIndexResource instanceof EntityModelResource)) {
 			throw new UnsupportedOperationException(
 				"Resource is not an instance of EntityModelResource");
@@ -532,18 +524,18 @@ public abstract class BaseSearchIndexResourceTestCase {
 	protected List<EntityField> getEntityFields(EntityField.Type type)
 		throws Exception {
 
-		java.util.Collection<EntityField> entityFields = getEntityFields();
+		List<EntityField> entityFieldsList = new ArrayList<>();
 
-		Stream<EntityField> stream = entityFields.stream();
-
-		return stream.filter(
-			entityField ->
-				Objects.equals(entityField.getType(), type) &&
+		for (EntityField entityField : getEntityFields()) {
+			if (Objects.equals(entityField.getType(), type) &&
 				!ArrayUtil.contains(
-					getIgnoredEntityFieldNames(), entityField.getName())
-		).collect(
-			Collectors.toList()
-		);
+					getIgnoredEntityFieldNames(), entityField.getName())) {
+
+				entityFieldsList.add(entityField);
+			}
+		}
+
+		return entityFieldsList;
 	}
 
 	protected String getFilterString(
