@@ -23,6 +23,7 @@ import com.liferay.analytics.settings.rest.constants.FieldPeopleConstants;
 import com.liferay.analytics.settings.rest.constants.FieldProductConstants;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -30,7 +31,6 @@ import com.liferay.portal.search.test.util.IdempotentRetryAssert;
 import com.liferay.portal.test.rule.Inject;
 
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -266,13 +266,9 @@ public class FieldResourceTest extends BaseFieldResourceTestCase {
 			});
 
 		fieldResource.patchFieldAccount(
-			Stream.of(
-				FieldAccountConstants.FIELD_ACCOUNT_NAMES
-			).map(
-				name -> _getField(name, true, "account")
-			).toArray(
-				Field[]::new
-			));
+			TransformUtil.transform(
+				FieldAccountConstants.FIELD_ACCOUNT_NAMES,
+				name -> _getField(name, true, "account"), Field.class));
 
 		IdempotentRetryAssert.retryAssert(
 			5, TimeUnit.SECONDS, 1, TimeUnit.SECONDS,
@@ -302,13 +298,9 @@ public class FieldResourceTest extends BaseFieldResourceTestCase {
 			});
 
 		fieldResource.patchFieldAccount(
-			Stream.of(
-				FieldAccountConstants.FIELD_ACCOUNT_NAMES
-			).map(
-				name -> _getField(name, false, "account")
-			).toArray(
-				Field[]::new
-			));
+			TransformUtil.transform(
+				FieldAccountConstants.FIELD_ACCOUNT_NAMES,
+				name -> _getField(name, false, "account"), Field.class));
 
 		IdempotentRetryAssert.retryAssert(
 			5, TimeUnit.SECONDS, 1, TimeUnit.SECONDS,
@@ -418,21 +410,13 @@ public class FieldResourceTest extends BaseFieldResourceTestCase {
 			});
 
 		fieldResource.patchFieldPeople(
-			ArrayUtil.append(
-				Stream.of(
-					FieldPeopleConstants.FIELD_CONTACT_NAMES
-				).map(
-					name -> _getField(name, true, "contact")
-				).toArray(
-					Field[]::new
-				),
-				Stream.of(
-					FieldPeopleConstants.FIELD_USER_NAMES
-				).map(
-					name -> _getField(name, true, "user")
-				).toArray(
-					Field[]::new
-				)));
+			_concatFields(
+				TransformUtil.transform(
+					FieldPeopleConstants.FIELD_CONTACT_NAMES,
+					name -> _getField(name, true, "contact"), Field.class),
+				TransformUtil.transform(
+					FieldPeopleConstants.FIELD_USER_NAMES,
+					name -> _getField(name, true, "user"), Field.class)));
 
 		IdempotentRetryAssert.retryAssert(
 			5, TimeUnit.SECONDS, 1, TimeUnit.SECONDS,
@@ -463,21 +447,13 @@ public class FieldResourceTest extends BaseFieldResourceTestCase {
 			});
 
 		fieldResource.patchFieldPeople(
-			ArrayUtil.append(
-				Stream.of(
-					FieldPeopleConstants.FIELD_CONTACT_NAMES
-				).map(
-					name -> _getField(name, false, "contact")
-				).toArray(
-					Field[]::new
-				),
-				Stream.of(
-					FieldPeopleConstants.FIELD_USER_NAMES
-				).map(
-					name -> _getField(name, false, "user")
-				).toArray(
-					Field[]::new
-				)));
+			_concatFields(
+				TransformUtil.transform(
+					FieldPeopleConstants.FIELD_CONTACT_NAMES,
+					name -> _getField(name, false, "contact"), Field.class),
+				TransformUtil.transform(
+					FieldPeopleConstants.FIELD_USER_NAMES,
+					name -> _getField(name, false, "user"), Field.class)));
 
 		IdempotentRetryAssert.retryAssert(
 			5, TimeUnit.SECONDS, 1, TimeUnit.SECONDS,
@@ -549,28 +525,17 @@ public class FieldResourceTest extends BaseFieldResourceTestCase {
 			});
 
 		fieldResource.patchFieldProduct(
-			ArrayUtil.append(
-				Stream.of(
-					FieldProductConstants.FIELD_CATEGORY_NAMES
-				).map(
-					name -> _getField(name, true, "category")
-				).toArray(
-					Field[]::new
-				),
-				Stream.of(
-					FieldProductConstants.FIELD_PRODUCT_NAMES
-				).map(
-					name -> _getField(name, true, "product")
-				).toArray(
-					Field[]::new
-				),
-				Stream.of(
-					FieldProductConstants.FIELD_PRODUCT_CHANNEL_NAMES
-				).map(
-					name -> _getField(name, true, "product-channel")
-				).toArray(
-					Field[]::new
-				)));
+			_concatFields(
+				TransformUtil.transform(
+					FieldProductConstants.FIELD_CATEGORY_NAMES,
+					name -> _getField(name, true, "category"), Field.class),
+				TransformUtil.transform(
+					FieldProductConstants.FIELD_PRODUCT_NAMES,
+					name -> _getField(name, true, "product"), Field.class),
+				TransformUtil.transform(
+					FieldProductConstants.FIELD_PRODUCT_CHANNEL_NAMES,
+					name -> _getField(name, true, "product-channel"),
+					Field.class)));
 
 		IdempotentRetryAssert.retryAssert(
 			5, TimeUnit.SECONDS, 1, TimeUnit.SECONDS,
@@ -603,28 +568,17 @@ public class FieldResourceTest extends BaseFieldResourceTestCase {
 			});
 
 		fieldResource.patchFieldProduct(
-			ArrayUtil.append(
-				Stream.of(
-					FieldProductConstants.FIELD_CATEGORY_NAMES
-				).map(
-					name -> _getField(name, false, "category")
-				).toArray(
-					Field[]::new
-				),
-				Stream.of(
-					FieldProductConstants.FIELD_PRODUCT_NAMES
-				).map(
-					name -> _getField(name, false, "product")
-				).toArray(
-					Field[]::new
-				),
-				Stream.of(
-					FieldProductConstants.FIELD_PRODUCT_CHANNEL_NAMES
-				).map(
-					name -> _getField(name, false, "product-channel")
-				).toArray(
-					Field[]::new
-				)));
+			_concatFields(
+				TransformUtil.transform(
+					FieldProductConstants.FIELD_CATEGORY_NAMES,
+					name -> _getField(name, false, "category"), Field.class),
+				TransformUtil.transform(
+					FieldProductConstants.FIELD_PRODUCT_NAMES,
+					name -> _getField(name, false, "product"), Field.class),
+				TransformUtil.transform(
+					FieldProductConstants.FIELD_PRODUCT_CHANNEL_NAMES,
+					name -> _getField(name, false, "product-channel"),
+					Field.class)));
 
 		IdempotentRetryAssert.retryAssert(
 			5, TimeUnit.SECONDS, 1, TimeUnit.SECONDS,
@@ -657,6 +611,10 @@ public class FieldResourceTest extends BaseFieldResourceTestCase {
 
 				return null;
 			});
+	}
+
+	private Field[] _concatFields(Field[]... fieldsArray) {
+		return ArrayUtil.append(fieldsArray);
 	}
 
 	private Field _getField(String name, boolean selected, String source) {
