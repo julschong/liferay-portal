@@ -97,12 +97,7 @@ public class PortletSharedSearchSettingsImpl
 	}
 
 	@Override
-	public Optional<String> getParameter71(String name) {
-		return _portletSharedRequestHelper.getParameter(name, _renderRequest);
-	}
-
-	@Override
-	public Optional<String> getParameterOptional(String name) {
+	public String getParameter(String name) {
 		return _portletSharedRequestHelper.getParameter(name, _renderRequest);
 	}
 
