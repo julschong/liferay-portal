@@ -81,6 +81,7 @@ import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2318,7 +2319,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 	protected void assertValid(Page<${schemaClientJavaType}> page, Map<String, Map<String, String>> expectedActions) {
 		boolean valid = false;
 
-		java.util.Collection<${schemaClientJavaType}> ${schemaVarNames} = page.getItems();
+		Collection<${schemaClientJavaType}> ${schemaVarNames} = page.getItems();
 
 		int size = ${schemaVarNames}.size();
 
@@ -2569,7 +2570,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 		).toArray(java.lang.reflect.Field[]::new);
 	}
 
-	protected java.util.Collection<EntityField> getEntityFields() throws Exception {
+	protected Collection<EntityField> getEntityFields() throws Exception {
 		if (!(_${schemaVarName}Resource instanceof EntityModelResource)) {
 			throw new UnsupportedOperationException("Resource is not an instance of EntityModelResource");
 		}
@@ -2588,7 +2589,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 	}
 
 	protected List<EntityField> getEntityFields(EntityField.Type type) throws Exception {
-		java.util.Collection<EntityField> entityFields = getEntityFields();
+		Collection<EntityField> entityFields = getEntityFields();
 
 		Stream<EntityField> stream = entityFields.stream();
 
