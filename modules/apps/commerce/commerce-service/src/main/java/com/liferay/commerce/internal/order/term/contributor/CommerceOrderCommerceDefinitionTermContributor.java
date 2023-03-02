@@ -71,7 +71,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -463,34 +462,30 @@ public class CommerceOrderCommerceDefinitionTermContributor
 		CommerceShippingMethod commerceShippingMethod =
 			commerceOrder.getCommerceShippingMethod();
 
-		if (commerceShippingMethod == null) {
-			CommerceShippingEngine commerceShippingEngine =
-				_commerceShippingEngineRegistry.getCommerceShippingEngine(
-					commerceShippingMethod.getEngineKey());
+		if (commerceShippingMethod != null) {
+			return StringPool.BLANK;
+		}
 
-			if (commerceShippingEngine != null) {
-				List<CommerceShippingOption> commerceShippingOptions =
-					commerceShippingEngine.getCommerceShippingOptions(
-						null, commerceOrder, locale);
+		CommerceShippingEngine commerceShippingEngine =
+			_commerceShippingEngineRegistry.getCommerceShippingEngine(
+				commerceShippingMethod.getEngineKey());
 
-				Stream<CommerceShippingOption> commerceShippingOptionsStream =
-					commerceShippingOptions.stream();
+		if (commerceShippingEngine == null) {
+			return StringPool.BLANK;
+		}
 
-				return commerceShippingOptionsStream.filter(
-					commerceShippingOption -> commerceShippingOption.getKey(
-					).equals(
-						commerceOrder.getShippingOptionName()
-					)
-				).findFirst(
-				).map(
-					CommerceShippingOption::getName
-				).orElse(
-					""
-				);
+		for (CommerceShippingOption commerceShippingOption :
+				commerceShippingEngine.getCommerceShippingOptions(
+					null, commerceOrder, locale)) {
+
+			String key = commerceShippingOption.getKey();
+
+			if (key.equals(commerceOrder.getShippingOptionName())) {
+				return commerceShippingOption.getName();
 			}
 		}
 
-		return "";
+		return StringPool.BLANK;
 	}
 
 	private String _getOrderUrlTerm(CommerceOrder commerceOrder)
