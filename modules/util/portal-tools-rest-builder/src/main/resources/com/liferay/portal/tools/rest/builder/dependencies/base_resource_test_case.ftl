@@ -2563,11 +2563,9 @@ public abstract class Base${schemaName}ResourceTestCase {
 	</#list>
 
 	protected java.lang.reflect.Field[] getDeclaredFields(Class clazz) throws Exception {
-		Stream<java.lang.reflect.Field> stream = Stream.of(ReflectionUtil.getDeclaredFields(clazz));
-
-		return stream.filter(
-			field -> !field.isSynthetic()
-		).toArray(java.lang.reflect.Field[]::new);
+		return ArrayUtil.filter(
+			ReflectionUtil.getDeclaredFields(clazz),
+			field -> !field.isSynthetic());
 	}
 
 	protected Collection<EntityField> getEntityFields() throws Exception {
@@ -2589,15 +2587,18 @@ public abstract class Base${schemaName}ResourceTestCase {
 	}
 
 	protected List<EntityField> getEntityFields(EntityField.Type type) throws Exception {
-		Collection<EntityField> entityFields = getEntityFields();
+		List<EntityField> entityFieldsList = new ArrayList<>();
 
-		Stream<EntityField> stream = entityFields.stream();
+		for (EntityField entityField : getEntityFields()) {
+			if (Objects.equals(entityField.getType(), type) &&
+				!ArrayUtil.contains(
+					getIgnoredEntityFieldNames(), entityField.getName())) {
 
-		return stream.filter(
-			entityField -> Objects.equals(entityField.getType(), type) && !ArrayUtil.contains(getIgnoredEntityFieldNames(), entityField.getName())
-		).collect(
-			Collectors.toList()
-		);
+				entityFieldsList.add(entityField);
+			}
+		}
+
+		return entityFieldsList;
 	}
 
 	protected String getFilterString(EntityField entityField, String operator, ${schemaClientJavaType} ${schemaVarName}) {
