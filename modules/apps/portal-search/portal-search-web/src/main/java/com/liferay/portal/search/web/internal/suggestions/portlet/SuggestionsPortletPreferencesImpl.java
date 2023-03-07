@@ -16,8 +16,6 @@ package com.liferay.portal.search.web.internal.suggestions.portlet;
 
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 
 /**
@@ -27,10 +25,10 @@ public class SuggestionsPortletPreferencesImpl
 	implements SuggestionsPortletPreferences {
 
 	public SuggestionsPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override

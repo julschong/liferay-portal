@@ -644,7 +644,7 @@ public class SearchResultSummaryDisplayContextBuilder {
 		Set<String> set = new LinkedHashSet<>(
 			Arrays.asList(
 				SearchStringUtil.splitAndUnquote(
-					_searchResultPreferences.getFieldsToDisplayOptional())));
+					_searchResultPreferences.getFieldsToDisplay())));
 
 		boolean star = set.remove(StringPool.STAR);
 

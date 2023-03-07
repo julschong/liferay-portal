@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 import com.liferay.portal.util.PropsUtil;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 
 /**
@@ -31,10 +29,10 @@ public class SearchResultsPortletPreferencesImpl
 	implements SearchResultsPortletPreferences {
 
 	public SearchResultsPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override
@@ -45,14 +43,9 @@ public class SearchResultsPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getFieldsToDisplayOptional() {
+	public String getFieldsToDisplay() {
 		return _portletPreferencesHelper.getString(
 			SearchResultsPortletPreferences.PREFERENCE_KEY_FIELDS_TO_DISPLAY);
-	}
-
-	@Override
-	public String getFieldsToDisplayString() {
-		return getFieldsToDisplayOptional().orElse(StringPool.BLANK);
 	}
 
 	@Override

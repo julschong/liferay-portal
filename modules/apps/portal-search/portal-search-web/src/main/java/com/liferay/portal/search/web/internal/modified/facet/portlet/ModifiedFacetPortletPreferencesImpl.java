@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 import com.liferay.portal.search.web.internal.user.facet.portlet.UserFacetPortletPreferences;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 
 /**
@@ -36,10 +34,10 @@ public class ModifiedFacetPortletPreferencesImpl
 	implements ModifiedFacetPortletPreferences {
 
 	public ModifiedFacetPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class ModifiedFacetPortletPreferencesImpl
 
 	@Override
 	public JSONArray getRangesJSONArray() {
-		String rangesString = getRangesString();
+		String rangesString = getRanges();
 
 		if (Validator.isBlank(rangesString)) {
 			return _getDefaultRangesJSONArray();
@@ -84,7 +82,7 @@ public class ModifiedFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public String getRangesString() {
+	public String getRanges() {
 		return _portletPreferencesHelper.getString(
 			ModifiedFacetPortletPreferences.PREFERENCE_KEY_RANGES,
 			StringPool.BLANK);

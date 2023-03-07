@@ -41,7 +41,7 @@ public interface ModifiedFacetPortletPreferences {
 
 	public JSONArray getRangesJSONArray();
 
-	public String getRangesString();
+	public String getRanges();
 
 	public boolean isFrequenciesVisible();
 

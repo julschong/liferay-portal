@@ -18,8 +18,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 
 /**
@@ -29,23 +27,16 @@ public class SearchBarPortletPreferencesImpl
 	implements SearchBarPortletPreferences {
 
 	public SearchBarPortletPreferencesImpl(
-		Optional<PortletPreferences> portletPreferencesOptional) {
+		PortletPreferences portletPreferences) {
 
 		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+			portletPreferences);
 	}
 
 	@Override
-	public Optional<String> getDestinationOptional() {
+	public String getDestination() {
 		return _portletPreferencesHelper.getString(
 			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION);
-	}
-
-	@Override
-	public String getDestinationString() {
-		Optional<String> valueOptional = getDestinationOptional();
-
-		return valueOptional.orElse(StringPool.BLANK);
 	}
 
 	@Override
@@ -71,22 +62,9 @@ public class SearchBarPortletPreferencesImpl
 
 	@Override
 	public SearchScopePreference getSearchScopePreference() {
-		Optional<String> valueOptional = _portletPreferencesHelper.getString(
-			SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE);
-
-		Optional<SearchScopePreference> searchScopePreferenceOptional =
-			valueOptional.map(SearchScopePreference::getSearchScopePreference);
-
-		return searchScopePreferenceOptional.orElse(
-			SearchScopePreference.THIS_SITE);
-	}
-
-	@Override
-	public String getSearchScopePreferenceString() {
-		SearchScopePreference searchScopePreference =
-			getSearchScopePreference();
-
-		return searchScopePreference.getPreferenceString();
+		return SearchScopePreference.getSearchScopePreference(
+			_portletPreferencesHelper.getString(
+				SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE));
 	}
 
 	@Override

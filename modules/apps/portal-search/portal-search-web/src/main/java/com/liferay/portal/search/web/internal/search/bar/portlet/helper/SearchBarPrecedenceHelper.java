@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.portlet.PortletPreferences;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -138,11 +140,14 @@ public class SearchBarPrecedenceHelper {
 		Portlet portlet, ThemeDisplay themeDisplay) {
 
 		if (portlet == null) {
-			return new SearchBarPortletPreferencesImpl(Optional.empty());
+			return new SearchBarPortletPreferencesImpl(null);
 		}
 
+		Optional<PortletPreferences> portletPreferencesOptional =
+			_portletPreferencesLookup.fetchPreferences(portlet, themeDisplay);
+
 		return new SearchBarPortletPreferencesImpl(
-			_portletPreferencesLookup.fetchPreferences(portlet, themeDisplay));
+			portletPreferencesOptional.orElse(null));
 	}
 
 	private SearchBarPortletPreferences _getSearchBarPortletPreferences(

@@ -84,13 +84,12 @@ public class SearchBarPortletDisplayContextFactory {
 
 		SearchBarPortletPreferences searchBarPortletPreferences =
 			new SearchBarPortletPreferencesImpl(
-				Optional.ofNullable(_renderRequest.getPreferences()));
+				_renderRequest.getPreferences());
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String destinationString =
-			searchBarPortletPreferences.getDestinationString();
+		String destinationString = searchBarPortletPreferences.getDestination();
 
 		if (Validator.isBlank(destinationString)) {
 			searchBarPortletDisplayContext.setSearchURL(

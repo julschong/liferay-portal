@@ -17,8 +17,6 @@ package com.liferay.portal.search.similar.results.web.internal.portlet;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.similar.results.web.internal.helper.PortletPreferencesHelper;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 
 /**
@@ -29,9 +27,10 @@ public class SimilarResultsPortletPreferencesImpl
 	implements SimilarResultsPortletPreferences {
 
 	public SimilarResultsPortletPreferencesImpl(
-		Optional<PortletPreferences> optional) {
+		PortletPreferences portletPreferences) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(optional);
+		_portletPreferencesHelper = new PortletPreferencesHelper(
+			portletPreferences);
 	}
 
 	@Override
@@ -68,7 +67,8 @@ public class SimilarResultsPortletPreferencesImpl
 
 	@Override
 	public Integer getMaxDocFrequency() {
-		return _getIntegerNullable(PREFERENCE_KEY_MAX_DOC_FREQUENCY);
+		return _portletPreferencesHelper.getInteger(
+			PREFERENCE_KEY_MAX_DOC_FREQUENCY);
 	}
 
 	@Override
@@ -79,17 +79,20 @@ public class SimilarResultsPortletPreferencesImpl
 
 	@Override
 	public Integer getMaxQueryTerms() {
-		return _getIntegerNullable(PREFERENCE_KEY_MAX_QUERY_TERMS);
+		return _portletPreferencesHelper.getInteger(
+			PREFERENCE_KEY_MAX_QUERY_TERMS);
 	}
 
 	@Override
 	public Integer getMaxWordLength() {
-		return _getIntegerNullable(PREFERENCE_KEY_MAX_WORD_LENGTH);
+		return _portletPreferencesHelper.getInteger(
+			PREFERENCE_KEY_MAX_WORD_LENGTH);
 	}
 
 	@Override
 	public Integer getMinDocFrequency() {
-		return _getIntegerNullable(PREFERENCE_KEY_MIN_DOC_FREQUENCY);
+		return _portletPreferencesHelper.getInteger(
+			PREFERENCE_KEY_MIN_DOC_FREQUENCY);
 	}
 
 	@Override
@@ -99,12 +102,14 @@ public class SimilarResultsPortletPreferencesImpl
 
 	@Override
 	public Integer getMinTermFrequency() {
-		return _getIntegerNullable(PREFERENCE_KEY_MIN_TERM_FREQUENCY);
+		return _portletPreferencesHelper.getInteger(
+			PREFERENCE_KEY_MIN_TERM_FREQUENCY);
 	}
 
 	@Override
 	public Integer getMinWordLength() {
-		return _getIntegerNullable(PREFERENCE_KEY_MIN_WORD_LENGTH);
+		return _portletPreferencesHelper.getInteger(
+			PREFERENCE_KEY_MIN_WORD_LENGTH);
 	}
 
 	@Override
@@ -120,20 +125,8 @@ public class SimilarResultsPortletPreferencesImpl
 
 	@Override
 	public Float getTermBoost() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			PREFERENCE_KEY_TERM_BOOST);
-
-		return optional.map(
-			GetterUtil::getFloat
-		).orElse(
-			null
-		);
-	}
-
-	private Integer _getIntegerNullable(String key) {
-		Optional<Integer> optional = _portletPreferencesHelper.getInteger(key);
-
-		return optional.orElse(null);
+		return GetterUtil.getFloat(
+			_portletPreferencesHelper.getString(PREFERENCE_KEY_TERM_BOOST));
 	}
 
 	private String _getStringNullable(String key) {

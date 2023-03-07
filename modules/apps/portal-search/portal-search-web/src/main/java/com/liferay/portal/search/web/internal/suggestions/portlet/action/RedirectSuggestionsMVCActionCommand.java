@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.web.internal.display.context.PortletRequestThemeDisplaySupplier;
@@ -57,8 +58,7 @@ public class RedirectSuggestionsMVCActionCommand extends BaseMVCActionCommand {
 		hideDefaultSuccessMessage(actionRequest);
 
 		SearchBarPortletPreferences searchBarPortletPreferences =
-			new SearchBarPortletPreferencesImpl(
-				Optional.ofNullable(actionRequest.getPreferences()));
+			new SearchBarPortletPreferencesImpl(actionRequest.getPreferences());
 
 		String redirectURL = _getRedirectURL(
 			actionRequest, searchBarPortletPreferences);
@@ -121,14 +121,10 @@ public class RedirectSuggestionsMVCActionCommand extends BaseMVCActionCommand {
 
 		String friendlyURL = _getFriendlyURL(themeDisplay);
 
-		String path = url.substring(0, url.indexOf(friendlyURL));
-
-		Optional<String> destinationOptional =
-			searchBarPortletPreferences.getDestinationOptional();
-
-		String destination = destinationOptional.orElse(friendlyURL);
-
-		return _getPath(path, destination);
+		return _getPath(
+			url.substring(0, url.indexOf(friendlyURL)),
+			GetterUtil.getString(
+				searchBarPortletPreferences.getDestination(), friendlyURL));
 	}
 
 	private ThemeDisplay _getThemeDisplay(ActionRequest actionRequest) {

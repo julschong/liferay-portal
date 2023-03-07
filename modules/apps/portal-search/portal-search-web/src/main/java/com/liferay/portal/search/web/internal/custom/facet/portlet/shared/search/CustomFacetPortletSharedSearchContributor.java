@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.facet.custom.CustomFacetSearchContributor;
 import com.liferay.portal.search.facet.nested.NestedFacetSearchContributor;
@@ -29,8 +30,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchCo
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.util.Locale;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -53,18 +52,16 @@ public class CustomFacetPortletSharedSearchContributor
 			new CustomFacetPortletPreferencesImpl(
 				portletSharedSearchSettings.getPortletPreferences());
 
-		Optional<String> fieldToAggregateOptional =
-			customFacetPortletPreferences.getAggregationFieldOptional();
+		String fieldToAggregate =
+			customFacetPortletPreferences.getAggregationField();
 
-		if (!fieldToAggregateOptional.isPresent()) {
+		if (fieldToAggregate == null) {
 			return;
 		}
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
 				customFacetPortletPreferences.getFederatedSearchKey());
-
-		String fieldToAggregate = fieldToAggregateOptional.get();
 
 		if (!ddmIndexer.isLegacyDDMIndexFieldsEnabled() &&
 			fieldToAggregate.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
@@ -150,16 +147,14 @@ public class CustomFacetPortletSharedSearchContributor
 	private String _getParameterName(
 		CustomFacetPortletPreferences customFacetPortletPreferences) {
 
-		Optional<String> optional = Stream.of(
-			customFacetPortletPreferences.getParameterNameOptional(),
-			customFacetPortletPreferences.getAggregationFieldOptional()
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).findFirst();
+		String parameterName = customFacetPortletPreferences.getParameterName();
 
-		return optional.orElse("customfield");
+		if (parameterName != null) {
+			return parameterName;
+		}
+
+		return GetterUtil.getString(
+			customFacetPortletPreferences.getAggregationField(), "customfield");
 	}
 
 	private Locale _getSuffixLocale(String string) {
