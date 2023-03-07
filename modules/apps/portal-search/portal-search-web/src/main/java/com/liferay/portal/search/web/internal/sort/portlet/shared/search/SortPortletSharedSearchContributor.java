@@ -62,7 +62,7 @@ public class SortPortletSharedSearchContributor
 
 		SortPortletPreferences sortPortletPreferences =
 			new SortPortletPreferencesImpl(
-				portletSharedSearchSettings.getPortletPreferencesOptional());
+				portletSharedSearchSettings.getPortletPreferences());
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getSearchRequestBuilder();
