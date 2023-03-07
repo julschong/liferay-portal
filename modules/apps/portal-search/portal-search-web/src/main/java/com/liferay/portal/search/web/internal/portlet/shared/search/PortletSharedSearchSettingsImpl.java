@@ -27,8 +27,6 @@ import com.liferay.portal.search.web.internal.portlet.shared.task.helper.Portlet
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 import com.liferay.portal.search.web.search.request.SearchSettings;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
@@ -40,13 +38,13 @@ public class PortletSharedSearchSettingsImpl
 
 	public PortletSharedSearchSettingsImpl(
 		SearchSettings searchSettings, String portletId,
-		Optional<PortletPreferences> portletPreferencesOptional,
+		PortletPreferences portletPreferences,
 		PortletSharedRequestHelper portletSharedRequestHelper,
 		RenderRequest renderRequest) {
 
 		_searchSettings = searchSettings;
 		_portletId = portletId;
-		_portletPreferencesOptional = portletPreferencesOptional;
+		_portletPreferences = portletPreferences;
 		_portletSharedRequestHelper = portletSharedRequestHelper;
 		_renderRequest = renderRequest;
 
@@ -97,26 +95,12 @@ public class PortletSharedSearchSettingsImpl
 	}
 
 	@Override
-	public Optional<String> getParameter71(String name) {
-		return _portletSharedRequestHelper.getParameter(name, _renderRequest);
-	}
-
-	@Override
-	public Optional<String> getParameterOptional(String name) {
+	public String getParameter(String name) {
 		return _portletSharedRequestHelper.getParameter(name, _renderRequest);
 	}
 
 	@Override
 	public String[] getParameterValues(String name) {
-		Optional<String[]> optional =
-			_portletSharedRequestHelper.getParameterValues(
-				name, _renderRequest);
-
-		return optional.orElse(new String[0]);
-	}
-
-	@Override
-	public Optional<String[]> getParameterValues71(String name) {
 		return _portletSharedRequestHelper.getParameterValues(
 			name, _renderRequest);
 	}
@@ -127,13 +111,8 @@ public class PortletSharedSearchSettingsImpl
 	}
 
 	@Override
-	public Optional<PortletPreferences> getPortletPreferences71() {
-		return _portletPreferencesOptional;
-	}
-
-	@Override
-	public Optional<PortletPreferences> getPortletPreferencesOptional() {
-		return _portletPreferencesOptional;
+	public PortletPreferences getPortletPreferences() {
+		return _portletPreferences;
 	}
 
 	@Override
@@ -218,7 +197,7 @@ public class PortletSharedSearchSettingsImpl
 	}
 
 	private final String _portletId;
-	private final Optional<PortletPreferences> _portletPreferencesOptional;
+	private final PortletPreferences _portletPreferences;
 	private final PortletSharedRequestHelper _portletSharedRequestHelper;
 	private final RenderRequest _renderRequest;
 	private final SearchRequestBuilder _searchRequestBuilder;
