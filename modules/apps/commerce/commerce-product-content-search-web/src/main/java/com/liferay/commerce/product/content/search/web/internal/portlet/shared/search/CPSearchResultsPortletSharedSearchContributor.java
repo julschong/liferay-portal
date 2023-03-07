@@ -42,7 +42,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchCo
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
@@ -186,13 +185,10 @@ public class CPSearchResultsPortletSharedSearchContributor
 		int paginationDelta =
 			cpSearchResultsPortletInstanceConfiguration.paginationDelta();
 
-		Optional<PortletPreferences> portletPreferencesOptional =
-			portletSharedSearchSettings.getPortletPreferences71();
+		PortletPreferences portletPreferences =
+			portletSharedSearchSettings.getPortletPreferences();
 
-		if (portletPreferencesOptional.isPresent()) {
-			PortletPreferences portletPreferences =
-				portletPreferencesOptional.get();
-
+		if (portletPreferences != null) {
 			paginationDelta = GetterUtil.getInteger(
 				portletPreferences.getValue("paginationDelta", null));
 		}

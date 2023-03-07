@@ -254,8 +254,8 @@ public class PortletSharedSearchRequestImpl
 		return searchSettings -> portletSharedSearchContributor.contribute(
 			new PortletSharedSearchSettingsImpl(
 				searchSettings, portlet.getPortletId(),
-				portletPreferencesOptional, portletSharedRequestHelper,
-				renderRequest));
+				portletPreferencesOptional.orElse(null),
+				portletSharedRequestHelper, renderRequest));
 	}
 
 	private List<SearchSettingsContributor> _getSearchSettingsContributors(
