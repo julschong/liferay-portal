@@ -18,7 +18,6 @@ import com.liferay.portal.search.web.internal.portlet.shared.task.helper.Portlet
 import com.liferay.portal.search.web.portlet.shared.task.PortletSharedTask;
 import com.liferay.portal.search.web.portlet.shared.task.PortletSharedTaskExecutor;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -41,26 +40,24 @@ public class PortletSharedTaskExecutorImpl
 
 		String attributeName = "LIFERAY_SHARED_" + attributeSuffix;
 
-		Optional<FutureTask<T>> oldFutureTaskOptional;
+		FutureTask<T> oldFutureTask;
 		FutureTask<T> futureTask;
 
 		synchronized (renderRequest) {
-			oldFutureTaskOptional = portletSharedRequestHelper.getAttribute(
+			oldFutureTask = portletSharedRequestHelper.getAttribute(
 				attributeName, renderRequest);
 
-			futureTask = oldFutureTaskOptional.orElseGet(
-				() -> {
-					FutureTask<T> newFutureTask = new FutureTask<>(
-						portletSharedTask::execute);
+			futureTask = oldFutureTask;
 
-					portletSharedRequestHelper.setAttribute(
-						attributeName, newFutureTask, renderRequest);
+			if (oldFutureTask == null) {
+				futureTask = new FutureTask<>(portletSharedTask::execute);
 
-					return newFutureTask;
-				});
+				portletSharedRequestHelper.setAttribute(
+					attributeName, futureTask, renderRequest);
+			}
 		}
 
-		if (!oldFutureTaskOptional.isPresent()) {
+		if (oldFutureTask == null) {
 			futureTask.run();
 		}
 
