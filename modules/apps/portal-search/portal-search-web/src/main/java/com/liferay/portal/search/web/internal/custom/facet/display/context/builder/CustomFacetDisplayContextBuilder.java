@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -74,11 +73,11 @@ public class CustomFacetDisplayContextBuilder {
 	}
 
 	public CustomFacetDisplayContextBuilder setCustomDisplayCaption(
-		Optional<String> customDisplayCaptionOptional) {
+		String customDisplayCaption) {
 
-		customDisplayCaptionOptional.ifPresent(
-			customDisplayCaption ->
-				_customDisplayCaption = customDisplayCaption);
+		if (customDisplayCaption != null) {
+			_customDisplayCaption = customDisplayCaption;
+		}
 
 		return this;
 	}
@@ -155,22 +154,18 @@ public class CustomFacetDisplayContextBuilder {
 	}
 
 	public CustomFacetDisplayContextBuilder setParameterValues(
-		Optional<List<String>> parameterValuesOptional) {
+		List<String> parameterValues) {
 
-		parameterValuesOptional.ifPresent(
-			parameterValues -> _parameterValues = parameterValues);
+		if (parameterValues != null) {
+			_parameterValues = parameterValues;
+		}
 
 		return this;
 	}
 
 	protected String getDisplayCaption() {
-		Optional<String> optional1 = SearchStringUtil.maybe(
-			_customDisplayCaption);
-
-		Optional<String> optional2 = SearchStringUtil.maybe(
-			optional1.orElse(_fieldToAggregate));
-
-		return optional2.orElse("custom");
+		return SearchStringUtil.getFirstNotNullString(
+			true, _customDisplayCaption, _fieldToAggregate, "custom");
 	}
 
 	protected List<TermCollector> getTermCollectors() {

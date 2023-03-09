@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.facet.Facet;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -25,15 +26,14 @@ import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.web.internal.custom.facet.constants.CustomFacetPortletKeys;
 import com.liferay.portal.search.web.internal.custom.facet.display.context.CustomFacetDisplayContext;
 import com.liferay.portal.search.web.internal.custom.facet.display.context.builder.CustomFacetDisplayContextBuilder;
+import com.liferay.portal.search.web.internal.util.SearchStringUtil;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 
 import java.io.IOException;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -117,18 +117,19 @@ public class CustomFacetPortlet extends MVCPortlet {
 
 		String parameterName = _getParameterName(customFacetPortletPreferences);
 
-		Optional<List<String>> parameterValuesOptional =
-			_getParameterValuesOptional(
-				parameterName, portletSharedSearchResponse, renderRequest);
+		Optional<String[]> parameterValuesOptional =
+			portletSharedSearchResponse.getParameterValues(
+				parameterName, renderRequest);
 
 		return customFacetDisplayContextBuilder.setCustomDisplayCaption(
-			customFacetPortletPreferences.getCustomHeadingOptional()
+			customFacetPortletPreferences.getCustomHeading()
 		).setFacet(
 			_getFacet(
 				portletSharedSearchResponse, customFacetPortletPreferences,
 				renderRequest)
 		).setFieldToAggregate(
-			customFacetPortletPreferences.getAggregationFieldString()
+			GetterUtil.getString(
+				customFacetPortletPreferences.getAggregationField())
 		).setFrequenciesVisible(
 			customFacetPortletPreferences.isFrequenciesVisible()
 		).setFrequencyThreshold(
@@ -142,7 +143,11 @@ public class CustomFacetPortlet extends MVCPortlet {
 		).setParameterName(
 			parameterName
 		).setParameterValues(
-			parameterValuesOptional
+			parameterValuesOptional.map(
+				Arrays::asList
+			).orElse(
+				null
+			)
 		).build();
 	}
 
@@ -196,28 +201,9 @@ public class CustomFacetPortlet extends MVCPortlet {
 	private String _getParameterName(
 		CustomFacetPortletPreferences customFacetPortletPreferences) {
 
-		Optional<String> optional = Stream.of(
-			customFacetPortletPreferences.getParameterNameOptional(),
-			customFacetPortletPreferences.getAggregationFieldOptional()
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).findFirst();
-
-		return optional.orElse("customfield");
-	}
-
-	private Optional<List<String>> _getParameterValuesOptional(
-		String parameterName,
-		PortletSharedSearchResponse portletSharedSearchResponse,
-		RenderRequest renderRequest) {
-
-		Optional<String[]> optional =
-			portletSharedSearchResponse.getParameterValues(
-				parameterName, renderRequest);
-
-		return optional.map(Arrays::asList);
+		return SearchStringUtil.getFirstNotNullString(
+			customFacetPortletPreferences.getParameterName(),
+			customFacetPortletPreferences.getAggregationField(), "customfield");
 	}
 
 	private String _getPortletId(RenderRequest renderRequest) {
