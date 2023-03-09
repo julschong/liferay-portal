@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.search.results.portlet.shared.search;
 
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.web.constants.SearchResultsPortletKeys;
@@ -58,10 +59,10 @@ public class SearchResultsPortletSharedSearchContributor
 		if (searchResultsPortletPreferences.isHighlightEnabled()) {
 			searchRequestBuilder.highlightEnabled(true);
 
-			String[] fieldsToDisplay = SearchStringUtil.splitAndUnquote(
-				searchResultsPortletPreferences.getFieldsToDisplayOptional());
-
-			searchRequestBuilder.highlightFields(fieldsToDisplay);
+			searchRequestBuilder.highlightFields(
+				SearchStringUtil.splitAndUnquote(
+					GetterUtil.getString(
+						searchResultsPortletPreferences.getFieldsToDisplay())));
 		}
 	}
 
