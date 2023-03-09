@@ -58,10 +58,9 @@ public class SearchResultsPortletSharedSearchContributor
 		if (searchResultsPortletPreferences.isHighlightEnabled()) {
 			searchRequestBuilder.highlightEnabled(true);
 
-			String[] fieldsToDisplay = SearchStringUtil.splitAndUnquote(
-				searchResultsPortletPreferences.getFieldsToDisplayOptional());
-
-			searchRequestBuilder.highlightFields(fieldsToDisplay);
+			searchRequestBuilder.highlightFields(
+				SearchStringUtil.splitAndUnquote(
+					searchResultsPortletPreferences.getFieldsToDisplay()));
 		}
 	}
 
