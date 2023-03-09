@@ -26,6 +26,26 @@ import java.util.stream.Stream;
  */
 public class SearchStringUtil {
 
+	public static String getFirstNotNullString(
+		boolean trim, String... strings) {
+
+		for (String string : strings) {
+			if (trim) {
+				string = StringUtil.trim(string);
+			}
+
+			if (string != null) {
+				return string;
+			}
+		}
+
+		return null;
+	}
+
+	public static String getFirstNotNullString(String... strings) {
+		return getFirstNotNullString(false, strings);
+	}
+
 	public static Optional<String> maybe(String s) {
 		s = StringUtil.trim(s);
 
