@@ -183,7 +183,7 @@ public class TypeFacetPortlet extends MVCPortlet {
 		TypeFacetPortletPreferences typeFacetPortletPreferences,
 		ThemeDisplay themeDisplay) {
 
-		return typeFacetPortletPreferences.getCurrentAssetTypesArray(
+		return typeFacetPortletPreferences.getAssetTypes(
 			themeDisplay.getCompanyId());
 	}
 

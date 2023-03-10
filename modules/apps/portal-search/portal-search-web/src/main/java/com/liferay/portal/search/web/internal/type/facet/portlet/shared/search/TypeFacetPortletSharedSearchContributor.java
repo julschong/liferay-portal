@@ -66,7 +66,7 @@ public class TypeFacetPortletSharedSearchContributor
 			portletSharedSearchSettings.getThemeDisplay();
 
 		searchRequestBuilder.entryClassNames(
-			typeFacetPortletPreferences.getCurrentAssetTypesArray(
+			typeFacetPortletPreferences.getAssetTypes(
 				themeDisplay.getCompanyId()));
 	}
 

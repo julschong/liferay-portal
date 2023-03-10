@@ -36,17 +36,17 @@ public interface TypeFacetPortletPreferences {
 
 	public static final String PREFERENCE_KEY_PARAMETER_NAME = "parameterName";
 
+	public List<KeyValuePair> getAssetTypeModelResourceKeyValuePairs(
+		long companyId, Locale locale);
+
 	public String[] getAssetTypes();
+
+	public String[] getAssetTypes(long companyId);
 
 	public String getAssetTypesString();
 
-	public List<KeyValuePair> getAvailableAssetTypes(
+	public List<KeyValuePair> getAvailableAssetTypeModelResourceKeyValuePairs(
 		long companyId, Locale locale);
-
-	public List<KeyValuePair> getCurrentAssetTypes(
-		long companyId, Locale locale);
-
-	public String[] getCurrentAssetTypesArray(long companyId);
 
 	public int getFrequencyThreshold();
 

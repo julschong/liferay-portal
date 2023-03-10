@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.asset.SearchableAssetClassNamesProvider;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -51,6 +50,16 @@ public class TypeFacetPortletPreferencesImpl
 	}
 
 	@Override
+	public List<KeyValuePair> getAssetTypeModelResourceKeyValuePairs(
+		long companyId, Locale locale) {
+
+		return TransformUtil.transformToList(
+			getAssetTypes(companyId),
+			assetType -> _getAssetTypeModelResourceKeyValuePair(
+				locale, assetType));
+	}
+
+	@Override
 	public String[] getAssetTypes() {
 		String assetTypes = _portletPreferencesHelper.getString(
 			TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES);
@@ -63,6 +72,17 @@ public class TypeFacetPortletPreferencesImpl
 	}
 
 	@Override
+	public String[] getAssetTypes(long companyId) {
+		String[] assetTypes = getAssetTypes();
+
+		if (assetTypes != null) {
+			return assetTypes;
+		}
+
+		return getAllAssetTypes(companyId);
+	}
+
+	@Override
 	public String getAssetTypesString() {
 		return _portletPreferencesHelper.getString(
 			TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES,
@@ -70,7 +90,7 @@ public class TypeFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public List<KeyValuePair> getAvailableAssetTypes(
+	public List<KeyValuePair> getAvailableAssetTypeModelResourceKeyValuePairs(
 		long companyId, Locale locale) {
 
 		String[] assetTypes = getAssetTypes();
@@ -88,34 +108,9 @@ public class TypeFacetPortletPreferencesImpl
 					return null;
 				}
 
-				return _getKeyValuePair(locale, assetType);
+				return _getAssetTypeModelResourceKeyValuePair(
+					locale, assetType);
 			});
-	}
-
-	@Override
-	public List<KeyValuePair> getCurrentAssetTypes(
-		long companyId, Locale locale) {
-
-		String[] assetTypes = getCurrentAssetTypesArray(companyId);
-
-		List<KeyValuePair> currentAssetTypes = new ArrayList<>();
-
-		for (String className : assetTypes) {
-			currentAssetTypes.add(_getKeyValuePair(locale, className));
-		}
-
-		return currentAssetTypes;
-	}
-
-	@Override
-	public String[] getCurrentAssetTypesArray(long companyId) {
-		String[] assetTypes = getAssetTypes();
-
-		if (assetTypes != null) {
-			return assetTypes;
-		}
-
-		return getAllAssetTypes(companyId);
 	}
 
 	@Override
@@ -147,12 +142,14 @@ public class TypeFacetPortletPreferencesImpl
 		return _searchableAssetClassNamesProvider.getClassNames(companyId);
 	}
 
-	private KeyValuePair _getKeyValuePair(Locale locale, String className) {
-		String modelResource = ResourceActionsUtil.getModelResource(
-			locale, className);
+	private KeyValuePair _getAssetTypeModelResourceKeyValuePair(
+		Locale locale, String assetType) {
 
-		if (className.startsWith(ObjectDefinition.class.getName() + "#")) {
-			String[] parts = StringUtil.split(className, "#");
+		String modelResource = ResourceActionsUtil.getModelResource(
+			locale, assetType);
+
+		if (assetType.startsWith(ObjectDefinition.class.getName() + "#")) {
+			String[] parts = StringUtil.split(assetType, "#");
 
 			ObjectDefinition objectDefinition =
 				_objectDefinitionLocalService.fetchObjectDefinition(
@@ -161,7 +158,7 @@ public class TypeFacetPortletPreferencesImpl
 			modelResource = objectDefinition.getLabel(locale);
 		}
 
-		return new KeyValuePair(className, modelResource);
+		return new KeyValuePair(assetType, modelResource);
 	}
 
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;

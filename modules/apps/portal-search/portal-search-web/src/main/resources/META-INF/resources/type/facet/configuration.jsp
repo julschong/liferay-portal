@@ -101,10 +101,10 @@ TypeFacetPortletPreferences typeFacetPortletPreferences = new com.liferay.portal
 
 			<liferay-ui:input-move-boxes
 				leftBoxName="currentAssetTypes"
-				leftList="<%= typeFacetPortletPreferences.getCurrentAssetTypes(themeDisplay.getCompanyId(), themeDisplay.getLocale()) %>"
+				leftList="<%= typeFacetPortletPreferences.getAssetTypeModelResourceKeyValuePairs(themeDisplay.getCompanyId(), themeDisplay.getLocale()) %>"
 				leftTitle="current"
 				rightBoxName="availableAssetTypes"
-				rightList="<%= typeFacetPortletPreferences.getAvailableAssetTypes(themeDisplay.getCompanyId(), themeDisplay.getLocale()) %>"
+				rightList="<%= typeFacetPortletPreferences.getAvailableAssetTypeModelResourceKeyValuePairs(themeDisplay.getCompanyId(), themeDisplay.getLocale()) %>"
 				rightTitle="available"
 			/>
 		</liferay-frontend:fieldset>
