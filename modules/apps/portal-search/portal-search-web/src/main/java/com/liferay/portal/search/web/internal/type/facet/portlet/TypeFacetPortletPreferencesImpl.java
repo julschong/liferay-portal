@@ -16,6 +16,7 @@ package com.liferay.portal.search.web.internal.type.facet.portlet;
 
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -50,12 +51,15 @@ public class TypeFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String[]> getAssetTypesArray() {
-		Optional<String> assetTypesOptional =
-			_portletPreferencesHelper.getString(
-				TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES);
+	public String[] getAssetTypes() {
+		String assetTypes = _portletPreferencesHelper.getString(
+			TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES);
 
-		return assetTypesOptional.map(StringUtil::split);
+		if (assetTypes == null) {
+			return null;
+		}
+
+		return StringUtil.split(assetTypes);
 	}
 
 	@Override
@@ -69,21 +73,23 @@ public class TypeFacetPortletPreferencesImpl
 	public List<KeyValuePair> getAvailableAssetTypes(
 		long companyId, Locale locale) {
 
-		Optional<String[]> assetTypesOptional = getAssetTypesArray();
+		String[] assetTypes = getAssetTypes();
 
-		String[] allAssetTypes = getAllAssetTypes(companyId);
-
-		String[] assetTypes = assetTypesOptional.orElse(allAssetTypes);
-
-		List<KeyValuePair> availableAssetTypes = new ArrayList<>();
-
-		for (String className : allAssetTypes) {
-			if (!ArrayUtil.contains(assetTypes, className)) {
-				availableAssetTypes.add(_getKeyValuePair(locale, className));
-			}
+		if (assetTypes == null) {
+			assetTypes = getAllAssetTypes(companyId);
 		}
 
-		return availableAssetTypes;
+		String[] assetTypesCopy = assetTypes;
+
+		return TransformUtil.transformToList(
+			getAllAssetTypes(companyId),
+			assetType -> {
+				if (ArrayUtil.contains(assetTypesCopy, assetType)) {
+					return null;
+				}
+
+				return _getKeyValuePair(locale, assetType);
+			});
 	}
 
 	@Override
@@ -103,9 +109,13 @@ public class TypeFacetPortletPreferencesImpl
 
 	@Override
 	public String[] getCurrentAssetTypesArray(long companyId) {
-		Optional<String[]> assetTypesOptional = getAssetTypesArray();
+		String[] assetTypes = getAssetTypes();
 
-		return assetTypesOptional.orElseGet(() -> getAllAssetTypes(companyId));
+		if (assetTypes != null) {
+			return assetTypes;
+		}
+
+		return getAllAssetTypes(companyId);
 	}
 
 	@Override
