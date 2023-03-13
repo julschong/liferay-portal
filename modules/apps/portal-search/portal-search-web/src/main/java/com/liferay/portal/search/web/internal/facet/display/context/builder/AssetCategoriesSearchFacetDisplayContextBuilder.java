@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -42,7 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -189,17 +189,8 @@ public class AssetCategoriesSearchFacetDisplayContextBuilder
 	}
 
 	protected List<BucketDisplayContext> getEmptyBucketDisplayContexts() {
-		Stream<Long> categoryIdsStream = _selectedCategoryIds.stream();
-
-		return categoryIdsStream.map(
-			this::_getEmptyBucketDisplayContext
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).collect(
-			Collectors.toList()
-		);
+		return TransformUtil.transform(
+			_selectedCategoryIds, this::_getEmptyBucketDisplayContext);
 	}
 
 	protected String getFirstParameterValueString() {
@@ -439,15 +430,16 @@ public class AssetCategoriesSearchFacetDisplayContextBuilder
 		return null;
 	}
 
-	private Optional<BucketDisplayContext> _getEmptyBucketDisplayContext(
+	private BucketDisplayContext _getEmptyBucketDisplayContext(
 		long assetCategoryId) {
 
-		return Optional.ofNullable(
-			_fetchAssetCategory(assetCategoryId)
-		).map(
-			assetCategory -> buildBucketDisplayContext(
-				assetCategory, 0, true, 1)
-		);
+		AssetCategory assetCategory = _fetchAssetCategory(assetCategoryId);
+
+		if (assetCategory == null) {
+			return null;
+		}
+
+		return buildBucketDisplayContext(assetCategory, 0, true, 1);
 	}
 
 	private boolean _isCloud() {
