@@ -15,6 +15,8 @@
 package com.liferay.util.xml;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -35,7 +37,45 @@ public class XMLSafeReader extends UnsyncStringReader {
 		// case since there is no real way to escape those characters. See
 		// LPS-85393 for more information.
 
-		xml = StringUtil.replace(xml, "]]><", "[$SPECIAL_CHARACTER$]");
+		if (xml == null) {
+			return null;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		int prev = 0;
+		int start = xml.indexOf("]]>");
+
+		while (start > - 1 && start < xml.length() - 1) {
+			sb.append(xml.substring(prev, start));
+
+			int end = start + 3;
+
+			while (end < xml.length() - 1) {
+				if (!Character.isWhitespace(xml.charAt(end))) {
+					break;
+				}
+
+				end++;
+			}
+
+			if (end < xml.length() - 1) {
+				if (xml.charAt(end) == CharPool.LESS_THAN) {
+					sb.append("[$SPECIAL_CHARACTER$]");
+					end++;
+				} else {
+					sb.append(xml.substring(start, end));
+				}
+			}
+
+			prev = end;
+			start = xml.indexOf("]]>", end);
+		}
+
+		sb.append(xml.substring(prev));
+
+		xml = sb.toString();
+
 		xml = StringUtil.replace(xml, "]]>", "]]]]><![CDATA[>");
 
 		return StringUtil.replace(xml, "[$SPECIAL_CHARACTER$]", "]]><");
