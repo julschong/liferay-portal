@@ -73,7 +73,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -559,18 +558,16 @@ public class SearchResultSummaryDisplayContextBuilder {
 	private void _buildCreationDateString(
 		SearchResultSummaryDisplayContext searchResultSummaryDisplayContext) {
 
-		Optional<String> dateStringOptional = SearchStringUtil.maybe(
+		String dateString = StringUtil.trim(
 			_getFieldValueString(Field.CREATE_DATE));
 
-		Optional<Date> dateOptional = dateStringOptional.map(
-			this::_parseDateStringFieldValue);
+		if (Validator.isBlank(dateString)) {
+			return;
+		}
 
-		dateOptional.ifPresent(
-			date -> {
-				searchResultSummaryDisplayContext.setCreationDateString(
-					_formatDate(date));
-				searchResultSummaryDisplayContext.setCreationDateVisible(true);
-			});
+		searchResultSummaryDisplayContext.setCreationDateString(
+			_formatDate(_parseDateStringFieldValue(dateString)));
+		searchResultSummaryDisplayContext.setCreationDateVisible(true);
 	}
 
 	private void _buildCreatorUserName(
@@ -876,35 +873,31 @@ public class SearchResultSummaryDisplayContextBuilder {
 	private void _buildModifiedDateString(
 		SearchResultSummaryDisplayContext searchResultSummaryDisplayContext) {
 
-		Optional<String> dateStringOptional = SearchStringUtil.maybe(
+		String dateString = StringUtil.trim(
 			_getFieldValueString(Field.MODIFIED_DATE));
 
-		Optional<Date> dateOptional = dateStringOptional.map(
-			this::_parseDateStringFieldValue);
+		if (Validator.isBlank(dateString)) {
+			return;
+		}
 
-		dateOptional.ifPresent(
-			date -> {
-				searchResultSummaryDisplayContext.setModifiedDateString(
-					_formatDate(date));
-				searchResultSummaryDisplayContext.setModifiedDateVisible(true);
-			});
+		searchResultSummaryDisplayContext.setModifiedDateString(
+			_formatDate(_parseDateStringFieldValue(dateString)));
+		searchResultSummaryDisplayContext.setModifiedDateVisible(true);
 	}
 
 	private void _buildPublishedDateString(
 		SearchResultSummaryDisplayContext searchResultSummaryDisplayContext) {
 
-		Optional<String> dateStringOptional = SearchStringUtil.maybe(
+		String dateString = StringUtil.trim(
 			_getFieldValueString(Field.PUBLISH_DATE));
 
-		Optional<Date> dateOptional = dateStringOptional.map(
-			this::_parseDateStringFieldValue);
+		if (Validator.isBlank(dateString)) {
+			return;
+		}
 
-		dateOptional.ifPresent(
-			date -> {
-				searchResultSummaryDisplayContext.setPublishedDateString(
-					_formatDate(date));
-				searchResultSummaryDisplayContext.setPublishedDateVisible(true);
-			});
+		searchResultSummaryDisplayContext.setPublishedDateString(
+			_formatDate(_parseDateStringFieldValue(dateString)));
+		searchResultSummaryDisplayContext.setPublishedDateVisible(true);
 	}
 
 	private SearchResultSummaryDisplayContext _buildTemporarilyUnavailable() {
