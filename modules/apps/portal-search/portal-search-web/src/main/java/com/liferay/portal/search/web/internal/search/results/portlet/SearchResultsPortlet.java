@@ -388,8 +388,8 @@ public class SearchResultsPortlet extends MVCPortlet {
 			getHttpServletRequest(renderRequest)
 		).setResourceActions(
 			resourceActions
-		).setSearchResultImageContributorsStream(
-			_searchResultImageContributors.stream()
+		).setSearchResultImageContributors(
+			_searchResultImageContributors
 		).setSearchResultPreferences(
 			searchResultPreferences
 		).setSummaryBuilderFactory(
