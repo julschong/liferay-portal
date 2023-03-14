@@ -312,6 +312,8 @@ public class DefaultDDMStructureHelperImpl
 
 		xml = StringUtil.replace(xml, "[$LOCALE_DEFAULT$]", locale.toString());
 
+		System.out.println(xml);
+
 		Document document = UnsecureSAXReaderUtil.read(xml);
 
 		Element rootElement = document.getRootElement();
