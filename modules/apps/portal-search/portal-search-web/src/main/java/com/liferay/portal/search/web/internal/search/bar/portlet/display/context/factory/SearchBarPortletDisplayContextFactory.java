@@ -309,13 +309,13 @@ public class SearchBarPortletDisplayContextFactory {
 			return searchBarPortletPreferences.getSearchScopePreference();
 		}
 
-		Optional<PortletPreferences> headerPortletPreferencesOptional =
+		PortletPreferences portletPreferences =
 			portletPreferencesLookup.fetchPreferences(
 				headerSearchBarPortlet, themeDisplay);
 
-		if (!headerPortletPreferencesOptional.isPresent() ||
+		if ((portletPreferences == null) ||
 			!SearchBarPortletDestinationUtil.isSameDestination(
-				headerPortletPreferencesOptional.get(), themeDisplay)) {
+				portletPreferences, themeDisplay)) {
 
 			return searchBarPortletPreferences.getSearchScopePreference();
 		}
@@ -372,13 +372,13 @@ public class SearchBarPortletDisplayContextFactory {
 			return searchBarPortletPreferences.getKeywordsParameterName();
 		}
 
-		Optional<PortletPreferences> headerPortletPreferencesOptional =
+		PortletPreferences portletPreferences =
 			portletPreferencesLookup.fetchPreferences(
 				headerSearchBarPortlet, themeDisplay);
 
-		if (!headerPortletPreferencesOptional.isPresent() ||
+		if ((portletPreferences == null) ||
 			!SearchBarPortletDestinationUtil.isSameDestination(
-				headerPortletPreferencesOptional.get(), themeDisplay)) {
+				portletPreferences, themeDisplay)) {
 
 			return searchBarPortletPreferences.getKeywordsParameterName();
 		}
@@ -402,13 +402,13 @@ public class SearchBarPortletDisplayContextFactory {
 			return searchBarPortletPreferences.getScopeParameterName();
 		}
 
-		Optional<PortletPreferences> headerPortletPreferencesOptional =
+		PortletPreferences portletPreferences =
 			portletPreferencesLookup.fetchPreferences(
 				headerSearchBarPortlet, themeDisplay);
 
-		if (!headerPortletPreferencesOptional.isPresent() ||
+		if ((portletPreferences == null) ||
 			!SearchBarPortletDestinationUtil.isSameDestination(
-				headerPortletPreferencesOptional.get(), themeDisplay)) {
+				portletPreferences, themeDisplay)) {
 
 			return searchBarPortletPreferences.getScopeParameterName();
 		}
