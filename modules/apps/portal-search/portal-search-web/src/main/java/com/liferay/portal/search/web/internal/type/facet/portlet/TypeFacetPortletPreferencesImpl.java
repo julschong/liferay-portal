@@ -63,6 +63,17 @@ public class TypeFacetPortletPreferencesImpl
 	}
 
 	@Override
+	public String[] getAssetTypes(long companyId) {
+		String[] assetTypes = getAssetTypes();
+
+		if (assetTypes != null) {
+			return assetTypes;
+		}
+
+		return getAllAssetTypes(companyId);
+	}
+
+	@Override
 	public String getAssetTypesString() {
 		return _portletPreferencesHelper.getString(
 			TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES,
@@ -96,7 +107,7 @@ public class TypeFacetPortletPreferencesImpl
 	public List<KeyValuePair> getCurrentAssetTypes(
 		long companyId, Locale locale) {
 
-		String[] assetTypes = getCurrentAssetTypesArray(companyId);
+		String[] assetTypes = getAssetTypes(companyId);
 
 		List<KeyValuePair> currentAssetTypes = new ArrayList<>();
 
@@ -105,17 +116,6 @@ public class TypeFacetPortletPreferencesImpl
 		}
 
 		return currentAssetTypes;
-	}
-
-	@Override
-	public String[] getCurrentAssetTypesArray(long companyId) {
-		String[] assetTypes = getAssetTypes();
-
-		if (assetTypes != null) {
-			return assetTypes;
-		}
-
-		return getAllAssetTypes(companyId);
 	}
 
 	@Override
