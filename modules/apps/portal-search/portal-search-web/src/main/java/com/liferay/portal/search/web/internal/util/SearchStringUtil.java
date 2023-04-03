@@ -26,6 +26,16 @@ import java.util.stream.Stream;
  */
 public class SearchStringUtil {
 
+	public static String getFirstNotBlankValue(String... values) {
+		for (String value : values) {
+			if (!Validator.isBlank(value)) {
+				return value;
+			}
+		}
+
+		return null;
+	}
+
 	public static Optional<String> maybe(String s) {
 		s = StringUtil.trim(s);
 
