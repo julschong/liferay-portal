@@ -35,6 +35,10 @@ public class SearchStringUtil {
 	}
 
 	public static String[] splitAndUnquote(String s) {
+		if (Validator.isBlank(s)) {
+			return new String[0];
+		}
+
 		return TransformUtil.transform(
 			StringUtil.split(s.trim(), CharPool.COMMA),
 			part -> StringUtil.unquote(part.trim()), String.class);
