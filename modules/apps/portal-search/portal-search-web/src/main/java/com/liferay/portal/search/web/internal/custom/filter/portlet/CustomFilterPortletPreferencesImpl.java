@@ -36,25 +36,17 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getBoostOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_BOOST);
-	}
-
-	@Override
 	public String getBoostString() {
-		return _getString(getBoostOptional());
-	}
-
-	@Override
-	public Optional<String> getCustomHeadingOptional() {
 		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING);
+			CustomFilterPortletPreferences.PREFERENCE_KEY_BOOST,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getCustomHeadingString() {
-		return _getString(getCustomHeadingOptional());
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING,
+			StringPool.BLANK);
 	}
 
 	@Override
@@ -65,14 +57,10 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getFilterFieldOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_FIELD);
-	}
-
-	@Override
 	public String getFilterFieldString() {
-		return _getString(getFilterFieldOptional());
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_FIELD,
+			StringPool.BLANK);
 	}
 
 	@Override
@@ -83,14 +71,10 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getFilterValueOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE);
-	}
-
-	@Override
 	public String getFilterValueString() {
-		return _getString(getFilterValueOptional());
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE,
+			StringPool.BLANK);
 	}
 
 	@Override
@@ -100,36 +84,24 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getParameterNameOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME);
-	}
-
-	@Override
 	public String getParameterNameString() {
-		return _getString(getParameterNameOptional());
-	}
-
-	@Override
-	public Optional<String> getParentQueryNameOptional() {
 		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_PARENT_QUERY_NAME);
+			CustomFilterPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getParentQueryNameString() {
-		return _getString(getParentQueryNameOptional());
-	}
-
-	@Override
-	public Optional<String> getQueryNameOptional() {
 		return _portletPreferencesHelper.getString(
-			CustomFilterPortletPreferences.PREFERENCE_KEY_QUERY_NAME);
+			CustomFilterPortletPreferences.PREFERENCE_KEY_PARENT_QUERY_NAME,
+			StringPool.BLANK);
 	}
 
 	@Override
 	public String getQueryNameString() {
-		return _getString(getQueryNameOptional());
+		return _portletPreferencesHelper.getString(
+			CustomFilterPortletPreferences.PREFERENCE_KEY_QUERY_NAME,
+			StringPool.BLANK);
 	}
 
 	@Override
@@ -148,10 +120,6 @@ public class CustomFilterPortletPreferencesImpl
 	public boolean isInvisible() {
 		return _portletPreferencesHelper.getBoolean(
 			CustomFilterPortletPreferences.PREFERENCE_KEY_INVISIBLE, false);
-	}
-
-	private String _getString(Optional<String> optional) {
-		return optional.orElse(StringPool.BLANK);
 	}
 
 	private final PortletPreferencesHelper _portletPreferencesHelper;
