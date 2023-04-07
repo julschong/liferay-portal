@@ -42,14 +42,18 @@ public class PortletPreferencesHelper {
 		return GetterUtil.getInteger(_getValue(key), defaultValue);
 	}
 
-	public Optional<String> getString(String key) {
-		return Optional.ofNullable(_getValue(key));
+	public String getString(String key) {
+		return _getValue(key);
 	}
 
 	public String getString(String key, String defaultValue) {
-		Optional<String> valueOptional = getString(key);
+		String value = getString(key);
 
-		return valueOptional.orElse(defaultValue);
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
 	}
 
 	private String _getValue(String key) {
