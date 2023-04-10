@@ -60,7 +60,7 @@ public class LowLevelSearchOptionsPortletSharedSearchContributor
 					getFederatedSearchKey());
 
 		String connectionId =
-			lowLevelSearchOptionsPortletPreferences.getConnectionIdString();
+			lowLevelSearchOptionsPortletPreferences.getConnectionId();
 
 		if (Validator.isBlank(connectionId)) {
 			connectionId = null;
@@ -71,18 +71,17 @@ public class LowLevelSearchOptionsPortletSharedSearchContributor
 		).excludeContributors(
 			SearchStringUtil.splitAndUnquote(
 				lowLevelSearchOptionsPortletPreferences.
-					getContributorsToExcludeString())
+					getContributorsToExclude())
 		).fields(
 			SearchStringUtil.splitAndUnquote(
-				lowLevelSearchOptionsPortletPreferences.
-					getFieldsToReturnString())
+				lowLevelSearchOptionsPortletPreferences.getFieldsToReturn())
 		).includeContributors(
 			SearchStringUtil.splitAndUnquote(
 				lowLevelSearchOptionsPortletPreferences.
-					getContributorsToIncludeString())
+					getContributorsToInclude())
 		).indexes(
 			SearchStringUtil.splitAndUnquote(
-				lowLevelSearchOptionsPortletPreferences.getIndexesString())
+				lowLevelSearchOptionsPortletPreferences.getIndexes())
 		).withSearchContext(
 			searchContext -> {
 				if (Validator.isNull(
