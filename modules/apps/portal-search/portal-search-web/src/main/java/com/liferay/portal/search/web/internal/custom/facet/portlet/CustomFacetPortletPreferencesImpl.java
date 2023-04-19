@@ -36,7 +36,7 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public String getAggregationFieldString() {
+	public String getAggregationField() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFacetPortletPreferences.
@@ -44,7 +44,7 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public String getCustomHeadingString() {
+	public String getCustomHeading() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING));
@@ -78,7 +78,7 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public String getParameterNameString() {
+	public String getParameterName() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME));
