@@ -15,6 +15,7 @@
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
@@ -37,15 +38,9 @@ public class SearchBarPortletPreferencesImpl
 
 	@Override
 	public String getDestination() {
-		Optional<String> optional = getDestinationOptional();
-
-		return optional.orElse(StringPool.BLANK);
-	}
-
-	@Override
-	public Optional<String> getDestinationOptional() {
-		return _portletPreferencesHelper.getString(
-			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION);
+		return GetterUtil.getString(
+			_portletPreferencesHelper.getString(
+				SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION));
 	}
 
 	@Override
