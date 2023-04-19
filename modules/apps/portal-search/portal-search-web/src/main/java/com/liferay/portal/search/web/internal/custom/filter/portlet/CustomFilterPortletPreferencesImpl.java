@@ -37,14 +37,14 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public String getBoostString() {
+	public String getBoost() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFilterPortletPreferences.PREFERENCE_KEY_BOOST));
 	}
 
 	@Override
-	public String getCustomHeadingString() {
+	public String getCustomHeading() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFilterPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING));
@@ -58,7 +58,7 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public String getFilterFieldString() {
+	public String getFilterField() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_FIELD));
@@ -72,7 +72,7 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public String getFilterValueString() {
+	public String getFilterValue() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFilterPortletPreferences.PREFERENCE_KEY_FILTER_VALUE));
@@ -85,14 +85,14 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public String getParameterNameString() {
+	public String getParameterName() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFilterPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME));
 	}
 
 	@Override
-	public String getParentQueryNameString() {
+	public String getParentQueryName() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFilterPortletPreferences.
@@ -100,7 +100,7 @@ public class CustomFilterPortletPreferencesImpl
 	}
 
 	@Override
-	public String getQueryNameString() {
+	public String getQueryName() {
 		return GetterUtil.getString(
 			_portletPreferencesHelper.getString(
 				CustomFilterPortletPreferences.PREFERENCE_KEY_QUERY_NAME));
