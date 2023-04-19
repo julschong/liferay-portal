@@ -15,6 +15,7 @@
 package com.liferay.portal.search.web.internal.custom.facet.portlet;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
 import java.util.Optional;
@@ -35,29 +36,18 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getAggregationFieldOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_FIELD);
-	}
-
-	@Override
 	public String getAggregationFieldString() {
-		Optional<String> optional = getAggregationFieldOptional();
-
-		return optional.orElse(StringPool.BLANK);
-	}
-
-	@Override
-	public Optional<String> getCustomHeadingOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING);
+		return GetterUtil.getString(
+			_portletPreferencesHelper.getString(
+				CustomFacetPortletPreferences.
+					PREFERENCE_KEY_AGGREGATION_FIELD));
 	}
 
 	@Override
 	public String getCustomHeadingString() {
-		Optional<String> optional = getCustomHeadingOptional();
-
-		return optional.orElse(StringPool.BLANK);
+		return GetterUtil.getString(
+			_portletPreferencesHelper.getString(
+				CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING));
 	}
 
 	@Override
@@ -88,16 +78,10 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String> getParameterNameOptional() {
-		return _portletPreferencesHelper.getString(
-			CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME);
-	}
-
-	@Override
 	public String getParameterNameString() {
-		Optional<String> optional = getParameterNameOptional();
-
-		return optional.orElse(StringPool.BLANK);
+		return GetterUtil.getString(
+			_portletPreferencesHelper.getString(
+				CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME));
 	}
 
 	@Override
