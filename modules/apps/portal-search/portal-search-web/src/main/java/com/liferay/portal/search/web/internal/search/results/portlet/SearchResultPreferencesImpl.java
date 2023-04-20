@@ -32,7 +32,7 @@ public class SearchResultPreferencesImpl implements SearchResultPreferences {
 
 	@Override
 	public String getFieldsToDisplay() {
-		return _searchResultsPortletPreferences.getFieldsToDisplayString();
+		return _searchResultsPortletPreferences.getFieldsToDisplay();
 	}
 
 	@Override
