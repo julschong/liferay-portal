@@ -25,6 +25,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import java.util.Arrays;
 import java.util.Optional;
 
+import javax.portlet.PortletPreferences;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -46,7 +48,8 @@ public class TypeFacetPortletPreferencesImplTest {
 	@Before
 	public void setUp() {
 		typeFacetPortletPreferencesImpl = new TypeFacetPortletPreferencesImpl(
-			_objectDefinitionLocalService, Optional.empty(),
+			_objectDefinitionLocalService,
+			Optional.of(Mockito.mock(PortletPreferences.class)),
 			new SearchableAssetClassNamesProviderImpl() {
 				{
 					assetRendererFactoryRegistry =
