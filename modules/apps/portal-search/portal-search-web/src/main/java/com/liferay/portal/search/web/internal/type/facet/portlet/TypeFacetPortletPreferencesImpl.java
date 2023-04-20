@@ -20,6 +20,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.asset.SearchableAssetClassNamesProvider;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
@@ -29,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.portlet.PortletPreferences;
 
@@ -74,16 +76,16 @@ public class TypeFacetPortletPreferencesImpl
 	public List<KeyValuePair> getAvailableAssetTypes(
 		long companyId, Locale locale) {
 
-		String[] assetTypes = getAssetTypesArray();
+		Set<String> assetTypes = SetUtil.fromArray(getAssetTypesArray());
 
-		if (ArrayUtil.isEmpty(assetTypes)) {
+		if (assetTypes.isEmpty()) {
 			return Collections.emptyList();
 		}
 
 		List<KeyValuePair> availableAssetTypes = new ArrayList<>();
 
 		for (String className : getAllAssetTypes(companyId)) {
-			if (!ArrayUtil.contains(assetTypes, className)) {
+			if (!assetTypes.contains(className)) {
 				availableAssetTypes.add(_getKeyValuePair(locale, className));
 			}
 		}
