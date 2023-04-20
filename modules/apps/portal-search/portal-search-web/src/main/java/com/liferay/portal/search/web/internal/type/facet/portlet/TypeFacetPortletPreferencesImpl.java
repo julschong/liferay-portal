@@ -25,6 +25,7 @@ import com.liferay.portal.search.asset.SearchableAssetClassNamesProvider;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -50,12 +51,16 @@ public class TypeFacetPortletPreferencesImpl
 	}
 
 	@Override
-	public Optional<String[]> getAssetTypesArray() {
+	public String[] getAssetTypesArray() {
 		Optional<String> assetTypesOptional =
 			_portletPreferencesHelper.getString(
 				TypeFacetPortletPreferences.PREFERENCE_KEY_ASSET_TYPES);
 
-		return assetTypesOptional.map(StringUtil::split);
+		return assetTypesOptional.map(
+			StringUtil::split
+		).orElse(
+			new String[0]
+		);
 	}
 
 	@Override
@@ -69,15 +74,15 @@ public class TypeFacetPortletPreferencesImpl
 	public List<KeyValuePair> getAvailableAssetTypes(
 		long companyId, Locale locale) {
 
-		Optional<String[]> assetTypesOptional = getAssetTypesArray();
+		String[] assetTypes = getAssetTypesArray();
 
-		String[] allAssetTypes = getAllAssetTypes(companyId);
-
-		String[] assetTypes = assetTypesOptional.orElse(allAssetTypes);
+		if (ArrayUtil.isEmpty(assetTypes)) {
+			return Collections.emptyList();
+		}
 
 		List<KeyValuePair> availableAssetTypes = new ArrayList<>();
 
-		for (String className : allAssetTypes) {
+		for (String className : getAllAssetTypes(companyId)) {
 			if (!ArrayUtil.contains(assetTypes, className)) {
 				availableAssetTypes.add(_getKeyValuePair(locale, className));
 			}
@@ -103,9 +108,13 @@ public class TypeFacetPortletPreferencesImpl
 
 	@Override
 	public String[] getCurrentAssetTypesArray(long companyId) {
-		Optional<String[]> assetTypesOptional = getAssetTypesArray();
+		String[] assetTypes = getAssetTypesArray();
 
-		return assetTypesOptional.orElseGet(() -> getAllAssetTypes(companyId));
+		if (ArrayUtil.isNotEmpty(assetTypes)) {
+			return assetTypes;
+		}
+
+		return getAllAssetTypes(companyId);
 	}
 
 	@Override
