@@ -84,15 +84,15 @@ public class TypeFacetPortletPreferencesImpl
 				assetType -> _getKeyValuePair(locale, assetType));
 		}
 
-		List<KeyValuePair> availableAssetTypes = new ArrayList<>();
+		return TransformUtil.transformToList(
+			getAllAssetTypes(companyId),
+			assetType -> {
+				if (assetTypes.contains(assetType)) {
+					return null;
+				}
 
-		for (String className : getAllAssetTypes(companyId)) {
-			if (!assetTypes.contains(className)) {
-				availableAssetTypes.add(_getKeyValuePair(locale, className));
-			}
-		}
-
-		return availableAssetTypes;
+				return _getKeyValuePair(locale, assetType);
+			});
 	}
 
 	@Override
