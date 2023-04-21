@@ -244,6 +244,11 @@ public class PortletPreferencesFactoryImpl
 	}
 
 	@Override
+	public PortletPreferences getEmptyPortletPreferences() {
+		return _emptyPortletPreferences;
+	}
+
+	@Override
 	public PortletPreferences getExistingPortletSetup(
 			Layout layout, String portletId)
 		throws PortalException {
@@ -1028,6 +1033,26 @@ public class PortletPreferencesFactoryImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletPreferencesFactoryImpl.class);
+
+	private static final PortletPreferences _emptyPortletPreferences =
+		new PortletPreferencesImpl() {
+
+			@Override
+			public void setPlid(long plid) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void setValue(String key, String value) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void setValues(String key, String... values) {
+				throw new UnsupportedOperationException();
+			}
+
+		};
 
 	private Map<String, Preference> _defaultPreferencesMap;
 	private final PortalCache<String, Map<String, Preference>>

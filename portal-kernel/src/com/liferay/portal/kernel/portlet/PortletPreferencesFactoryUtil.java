@@ -60,6 +60,10 @@ public class PortletPreferencesFactoryUtil {
 			companyId, ownerId, ownerType, plid, portletId, xml);
 	}
 
+	public static PortletPreferences getEmptyPortletPreferences() {
+		return _portletPreferencesFactory.getEmptyPortletPreferences();
+	}
+
 	public static PortletPreferences getExistingPortletSetup(
 			Layout layout, String portletId)
 		throws PortalException {
