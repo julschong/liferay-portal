@@ -16,6 +16,7 @@ package com.liferay.portal.search.web.internal.type.facet.portlet;
 
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -26,7 +27,6 @@ import com.liferay.portal.search.asset.SearchableAssetClassNamesProvider;
 import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -79,7 +79,9 @@ public class TypeFacetPortletPreferencesImpl
 		Set<String> assetTypes = SetUtil.fromArray(getAssetTypesArray());
 
 		if (assetTypes.isEmpty()) {
-			return Collections.emptyList();
+			return TransformUtil.transformToList(
+				getAllAssetTypes(companyId),
+				assetType -> _getKeyValuePair(locale, assetType));
 		}
 
 		List<KeyValuePair> availableAssetTypes = new ArrayList<>();
