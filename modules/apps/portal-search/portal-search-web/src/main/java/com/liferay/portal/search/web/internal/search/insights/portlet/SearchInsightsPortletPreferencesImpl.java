@@ -15,7 +15,9 @@
 package com.liferay.portal.search.web.internal.search.insights.portlet;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Optional;
 
@@ -30,24 +32,28 @@ public class SearchInsightsPortletPreferencesImpl
 	public SearchInsightsPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElse(
+			PortletPreferencesFactoryUtil.getEmptyPortletPreferences());
 	}
 
 	@Override
 	public String getFederatedSearchKey() {
-		return _portletPreferencesHelper.getString(
-			SearchInsightsPortletPreferences.
-				PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
-			StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				SearchInsightsPortletPreferences.
+					PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public boolean isExplain() {
-		return _portletPreferencesHelper.getBoolean(
-			SearchInsightsPortletPreferences.PREFERENCE_KEY_EXPLAIN, true);
+		return GetterUtil.getBoolean(
+			_portletPreferences.getValue(
+				SearchInsightsPortletPreferences.PREFERENCE_KEY_EXPLAIN,
+				StringPool.BLANK),
+			true);
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }
