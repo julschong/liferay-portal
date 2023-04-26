@@ -21,8 +21,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
 import java.util.Optional;
 
@@ -36,8 +37,8 @@ public class SortPortletPreferencesImpl implements SortPortletPreferences {
 	public SortPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElse(
+			PortletPreferencesFactoryUtil.getEmptyPortletPreferences());
 	}
 
 	@Override
@@ -62,8 +63,10 @@ public class SortPortletPreferencesImpl implements SortPortletPreferences {
 
 	@Override
 	public String getFieldsString() {
-		return _portletPreferencesHelper.getString(
-			SortPortletPreferences.PREFERENCE_KEY_FIELDS, StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				SortPortletPreferences.PREFERENCE_KEY_FIELDS,
+				StringPool.BLANK));
 	}
 
 	@Override
@@ -98,7 +101,7 @@ public class SortPortletPreferencesImpl implements SortPortletPreferences {
 		new Preset("userName", "user")
 	};
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 	private static class Preset {
 
