@@ -14,7 +14,10 @@
 
 package com.liferay.portal.search.web.internal.site.facet.portlet;
 
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Optional;
 
@@ -29,41 +32,53 @@ public class SiteFacetPortletPreferencesImpl
 	public SiteFacetPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElse(
+			PortletPreferencesFactoryUtil.getEmptyPortletPreferences());
 	}
 
 	@Override
 	public int getFrequencyThreshold() {
-		return _portletPreferencesHelper.getInteger(
-			SiteFacetPortletPreferences.PREFERENCE_KEY_FREQUENCY_THRESHOLD, 1);
+		return GetterUtil.getInteger(
+			_portletPreferences.getValue(
+				SiteFacetPortletPreferences.PREFERENCE_KEY_FREQUENCY_THRESHOLD,
+				StringPool.BLANK),
+			1);
 	}
 
 	@Override
 	public int getMaxTerms() {
-		return _portletPreferencesHelper.getInteger(
-			SiteFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS, 10);
+		return GetterUtil.getInteger(
+			_portletPreferences.getValue(
+				SiteFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS,
+				StringPool.BLANK),
+			10);
 	}
 
 	@Override
 	public String getOrder() {
-		return _portletPreferencesHelper.getString(
-			SiteFacetPortletPreferences.PREFERENCE_KEY_ORDER, "count:desc");
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				SiteFacetPortletPreferences.PREFERENCE_KEY_ORDER,
+				"count:desc"));
 	}
 
 	@Override
 	public String getParameterName() {
-		return _portletPreferencesHelper.getString(
-			SiteFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME, "site");
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				SiteFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
+				"site"));
 	}
 
 	@Override
 	public boolean isFrequenciesVisible() {
-		return _portletPreferencesHelper.getBoolean(
-			SiteFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
+		return GetterUtil.getBoolean(
+			_portletPreferences.getValue(
+				SiteFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
+				StringPool.BLANK),
 			true);
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }
