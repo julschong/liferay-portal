@@ -15,7 +15,9 @@
 package com.liferay.portal.search.web.internal.search.options.portlet;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Optional;
 
@@ -30,32 +32,37 @@ public class SearchOptionsPortletPreferencesImpl
 	public SearchOptionsPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElse(
+			PortletPreferencesFactoryUtil.getEmptyPortletPreferences());
 	}
 
 	@Override
 	public String getFederatedSearchKey() {
-		return _portletPreferencesHelper.getString(
-			SearchOptionsPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
-			StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				SearchOptionsPortletPreferences.
+					PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public boolean isAllowEmptySearches() {
-		return _portletPreferencesHelper.getBoolean(
-			SearchOptionsPortletPreferences.PREFERENCE_KEY_ALLOW_EMPTY_SEARCHES,
-			false);
+		return GetterUtil.getBoolean(
+			_portletPreferences.getValue(
+				SearchOptionsPortletPreferences.
+					PREFERENCE_KEY_ALLOW_EMPTY_SEARCHES,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public boolean isBasicFacetSelection() {
-		return _portletPreferencesHelper.getBoolean(
-			SearchOptionsPortletPreferences.
-				PREFERENCE_KEY_BASIC_FACET_SELECTION,
-			false);
+		return GetterUtil.getBoolean(
+			_portletPreferences.getValue(
+				SearchOptionsPortletPreferences.
+					PREFERENCE_KEY_BASIC_FACET_SELECTION,
+				StringPool.BLANK));
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }
