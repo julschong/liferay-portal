@@ -21,8 +21,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 import com.liferay.portal.search.web.internal.search.options.portlet.SearchOptionsPortletPreferences;
 
 import java.util.Optional;
@@ -38,8 +39,8 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 	public LowLevelSearchOptionsPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElse(
+			PortletPreferencesFactoryUtil.getEmptyPortletPreferences());
 	}
 
 	@Override
@@ -64,60 +65,63 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 
 	@Override
 	public String getAttributesString() {
-		return _portletPreferencesHelper.getString(
-			LowLevelSearchOptionsPortletPreferences.PREFERENCE_ATTRIBUTES,
-			StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				LowLevelSearchOptionsPortletPreferences.PREFERENCE_ATTRIBUTES,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public String getConnectionId() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			LowLevelSearchOptionsPortletPreferences.
-				PREFERENCE_KEY_CONNECTION_ID);
-
-		return optional.orElse(StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				LowLevelSearchOptionsPortletPreferences.
+					PREFERENCE_KEY_CONNECTION_ID,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public String getContributorsToExclude() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			LowLevelSearchOptionsPortletPreferences.
-				PREFERENCE_KEY_CONTRIBUTORS_TO_EXCLUDE);
-
-		return optional.orElse(StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				LowLevelSearchOptionsPortletPreferences.
+					PREFERENCE_KEY_CONTRIBUTORS_TO_EXCLUDE,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public String getContributorsToInclude() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			LowLevelSearchOptionsPortletPreferences.
-				PREFERENCE_KEY_CONTRIBUTORS_TO_INCLUDE);
-
-		return optional.orElse(StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				LowLevelSearchOptionsPortletPreferences.
+					PREFERENCE_KEY_CONTRIBUTORS_TO_INCLUDE,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public String getFederatedSearchKey() {
-		return _portletPreferencesHelper.getString(
-			SearchOptionsPortletPreferences.PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
-			StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				SearchOptionsPortletPreferences.
+					PREFERENCE_KEY_FEDERATED_SEARCH_KEY,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public String getFieldsToReturn() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			LowLevelSearchOptionsPortletPreferences.
-				PREFERENCE_KEY_FIELDS_TO_RETURN);
-
-		return optional.orElse(StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				LowLevelSearchOptionsPortletPreferences.
+					PREFERENCE_KEY_FIELDS_TO_RETURN,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public String getIndexes() {
-		Optional<String> optional = _portletPreferencesHelper.getString(
-			LowLevelSearchOptionsPortletPreferences.PREFERENCE_KEY_INDEXES);
-
-		return optional.orElse(StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				LowLevelSearchOptionsPortletPreferences.PREFERENCE_KEY_INDEXES,
+				StringPool.BLANK));
 	}
 
 	private JSONArray _getDefaultAttributesJSONArray() {
@@ -132,6 +136,6 @@ public class LowLevelSearchOptionsPortletPreferencesImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		LowLevelSearchOptionsPortletPreferencesImpl.class);
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }
