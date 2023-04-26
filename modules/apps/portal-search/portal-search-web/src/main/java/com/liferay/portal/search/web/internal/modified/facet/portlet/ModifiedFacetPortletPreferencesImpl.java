@@ -21,8 +21,10 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 import com.liferay.portal.search.web.internal.user.facet.portlet.UserFacetPortletPreferences;
 
 import java.util.Optional;
@@ -38,29 +40,33 @@ public class ModifiedFacetPortletPreferencesImpl
 	public ModifiedFacetPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElse(
+			PortletPreferencesFactoryUtil.getEmptyPortletPreferences());
 	}
 
 	@Override
 	public int getFrequencyThreshold() {
-		return _portletPreferencesHelper.getInteger(
-			ModifiedFacetPortletPreferences.PREFERENCE_KEY_FREQUENCY_THRESHOLD,
-			0);
+		return GetterUtil.getInteger(
+			_portletPreferences.getValue(
+				ModifiedFacetPortletPreferences.
+					PREFERENCE_KEY_FREQUENCY_THRESHOLD,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public String getOrder() {
-		return _portletPreferencesHelper.getString(
-			ModifiedFacetPortletPreferences.PREFERENCE_KEY_ORDER,
-			"OrderHitsDesc");
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				ModifiedFacetPortletPreferences.PREFERENCE_KEY_ORDER,
+				"OrderHitsDesc"));
 	}
 
 	@Override
 	public String getParameterName() {
-		return _portletPreferencesHelper.getString(
-			ModifiedFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
-			"modified");
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				ModifiedFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
+				"modified"));
 	}
 
 	@Override
@@ -85,15 +91,18 @@ public class ModifiedFacetPortletPreferencesImpl
 
 	@Override
 	public String getRangesString() {
-		return _portletPreferencesHelper.getString(
-			ModifiedFacetPortletPreferences.PREFERENCE_KEY_RANGES,
-			StringPool.BLANK);
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				ModifiedFacetPortletPreferences.PREFERENCE_KEY_RANGES,
+				StringPool.BLANK));
 	}
 
 	@Override
 	public boolean isFrequenciesVisible() {
-		return _portletPreferencesHelper.getBoolean(
-			UserFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
+		return GetterUtil.getBoolean(
+			_portletPreferences.getValue(
+				UserFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
+				StringPool.BLANK),
 			true);
 	}
 
@@ -124,6 +133,6 @@ public class ModifiedFacetPortletPreferencesImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ModifiedFacetPortletPreferencesImpl.class);
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }
