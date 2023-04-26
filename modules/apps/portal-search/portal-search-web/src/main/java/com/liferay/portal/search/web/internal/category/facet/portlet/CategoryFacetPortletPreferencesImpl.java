@@ -14,8 +14,10 @@
 
 package com.liferay.portal.search.web.internal.category.facet.portlet;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.search.web.internal.helper.PortletPreferencesHelper;
 
 import java.util.Optional;
 
@@ -30,58 +32,72 @@ public class CategoryFacetPortletPreferencesImpl
 	public CategoryFacetPortletPreferencesImpl(
 		Optional<PortletPreferences> portletPreferencesOptional) {
 
-		_portletPreferencesHelper = new PortletPreferencesHelper(
-			portletPreferencesOptional);
+		_portletPreferences = portletPreferencesOptional.orElse(
+			PortletPreferencesFactoryUtil.getEmptyPortletPreferences());
 	}
 
 	@Override
 	public String getDisplayStyle() {
-		return _portletPreferencesHelper.getString(
-			CategoryFacetPortletPreferences.PREFERENCE_KEY_DISPLAY_STYLE,
-			"cloud");
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				CategoryFacetPortletPreferences.PREFERENCE_KEY_DISPLAY_STYLE,
+				"cloud"));
 	}
 
 	@Override
 	public int getFrequencyThreshold() {
-		return _portletPreferencesHelper.getInteger(
-			CategoryFacetPortletPreferences.PREFERENCE_KEY_FREQUENCY_THRESHOLD,
+		return GetterUtil.getInteger(
+			_portletPreferences.getValue(
+				CategoryFacetPortletPreferences.
+					PREFERENCE_KEY_FREQUENCY_THRESHOLD,
+				StringPool.BLANK),
 			1);
 	}
 
 	@Override
 	public int getMaxTerms() {
-		return _portletPreferencesHelper.getInteger(
-			CategoryFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS, 10);
+		return GetterUtil.getInteger(
+			_portletPreferences.getValue(
+				CategoryFacetPortletPreferences.PREFERENCE_KEY_MAX_TERMS,
+				StringPool.BLANK),
+			10);
 	}
 
 	@Override
 	public String getOrder() {
-		return _portletPreferencesHelper.getString(
-			CategoryFacetPortletPreferences.PREFERENCE_KEY_ORDER, "count:desc");
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				CategoryFacetPortletPreferences.PREFERENCE_KEY_ORDER,
+				"count:desc"));
 	}
 
 	@Override
 	public String getParameterName() {
-		return _portletPreferencesHelper.getString(
-			CategoryFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
-			"category");
+		return StringUtil.trim(
+			_portletPreferences.getValue(
+				CategoryFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME,
+				"category"));
 	}
 
 	@Override
 	public String[] getVocabularyIds() {
-		String vocabularyIds = _portletPreferencesHelper.getString(
-			CategoryFacetPortletPreferences.PREFERENCE_VOCABULARY_IDS, null);
-
-		return StringUtil.split(vocabularyIds);
+		return StringUtil.split(
+			StringUtil.trim(
+				_portletPreferences.getValue(
+					CategoryFacetPortletPreferences.PREFERENCE_VOCABULARY_IDS,
+					StringPool.BLANK)));
 	}
 
 	@Override
 	public boolean isFrequenciesVisible() {
-		return _portletPreferencesHelper.getBoolean(
-			CategoryFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
+		return GetterUtil.getBoolean(
+			_portletPreferences.getValue(
+				CategoryFacetPortletPreferences.
+					PREFERENCE_KEY_FREQUENCIES_VISIBLE,
+				StringPool.BLANK),
 			true);
 	}
 
-	private final PortletPreferencesHelper _portletPreferencesHelper;
+	private final PortletPreferences _portletPreferences;
 
 }
