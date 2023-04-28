@@ -55,7 +55,6 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -248,24 +247,13 @@ public class SearchResultsPortlet extends MVCPortlet {
 		searchResultsPortletDisplayContext.setRenderNothing(
 			isRenderNothing(renderRequest, searchRequest));
 
-		int paginationDelta = Optional.ofNullable(
-			portletSharedSearchResponse.getPaginationDelta()
-		).orElse(
-			SearchContainer.DEFAULT_DELTA
-		);
-
-		int paginationStart = Optional.ofNullable(
-			portletSharedSearchResponse.getPaginationStart()
-		).orElse(
-			0
-		);
-
 		searchResultsPortletDisplayContext.setSearchContainer(
 			_buildSearchContainer(
-				documents, searchResponse.getTotalHits(), paginationStart,
+				documents, searchResponse.getTotalHits(),
+				portletSharedSearchResponse.getPaginationStart(),
 				searchResultsPortletPreferences.
 					getPaginationStartParameterName(),
-				paginationDelta,
+				portletSharedSearchResponse.getPaginationDelta(),
 				searchResultsPortletPreferences.
 					getPaginationDeltaParameterName(),
 				renderRequest));
