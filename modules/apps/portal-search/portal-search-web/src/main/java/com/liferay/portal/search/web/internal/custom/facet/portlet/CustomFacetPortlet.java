@@ -117,10 +117,6 @@ public class CustomFacetPortlet extends MVCPortlet {
 
 		String parameterName = _getParameterName(customFacetPortletPreferences);
 
-		Optional<List<String>> parameterValuesOptional =
-			_getParameterValuesOptional(
-				parameterName, portletSharedSearchResponse, renderRequest);
-
 		return customFacetDisplayContextBuilder.setCustomDisplayCaption(
 			customFacetPortletPreferences.getCustomHeading()
 		).setFacet(
@@ -142,7 +138,8 @@ public class CustomFacetPortlet extends MVCPortlet {
 		).setParameterName(
 			parameterName
 		).setParameterValues(
-			parameterValuesOptional
+			_getParameterValuesOptional(
+				parameterName, portletSharedSearchResponse, renderRequest)
 		).build();
 	}
 
