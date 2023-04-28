@@ -149,12 +149,9 @@ public class SearchBarPortletDisplayContextFactory {
 		searchBarPortletDisplayContext.setInputPlaceholder(
 			LanguageUtil.get(
 				getHttpServletRequest(_renderRequest), "search-..."));
+
 		searchBarPortletDisplayContext.setKeywords(
-			Optional.ofNullable(
-				searchRequest.getQueryString()
-			).orElse(
-				StringPool.BLANK
-			));
+			GetterUtil.getString(searchRequest.getQueryString()));
 		searchBarPortletDisplayContext.setKeywordsParameterName(
 			_getKeywordsParameterName(
 				portletPreferencesLookup,
@@ -163,11 +160,8 @@ public class SearchBarPortletDisplayContextFactory {
 				themeDisplay));
 
 		searchBarPortletDisplayContext.setPaginationStartParameterName(
-			Optional.ofNullable(
-				searchRequest.getPaginationStartParameterName()
-			).orElse(
-				StringPool.BLANK
-			));
+			GetterUtil.getString(
+				searchRequest.getPaginationStartParameterName()));
 
 		String scopeParameterName = _getScopeParameterName(
 			portletPreferencesLookup, searchBarPrecedenceHelper,
