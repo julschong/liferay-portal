@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.facet.Facet;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -32,8 +33,8 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRe
 import java.io.IOException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -138,7 +139,7 @@ public class CustomFacetPortlet extends MVCPortlet {
 		).setParameterName(
 			parameterName
 		).setParameterValues(
-			_getParameterValuesOptional(
+			_getParameterValues(
 				parameterName, portletSharedSearchResponse, renderRequest)
 		).build();
 	}
@@ -209,16 +210,20 @@ public class CustomFacetPortlet extends MVCPortlet {
 		return "customfield";
 	}
 
-	private Optional<List<String>> _getParameterValuesOptional(
+	private List<String> _getParameterValues(
 		String parameterName,
 		PortletSharedSearchResponse portletSharedSearchResponse,
 		RenderRequest renderRequest) {
 
-		Optional<String[]> optional =
+		String[] parameterValues =
 			portletSharedSearchResponse.getParameterValues(
 				parameterName, renderRequest);
 
-		return optional.map(Arrays::asList);
+		if (ArrayUtil.isEmpty(parameterValues)) {
+			return Collections.emptyList();
+		}
+
+		return Arrays.asList(parameterValues);
 	}
 
 	private String _getPortletId(RenderRequest renderRequest) {
