@@ -84,19 +84,16 @@ public class PortletSharedSearchResponseImpl
 	}
 
 	@Override
-	public String getParameter(
-		String name, RenderRequest renderRequest) {
-
+	public String getParameter(String name, RenderRequest renderRequest) {
 		return _portletSharedRequestHelper.getParameter(name, renderRequest);
 	}
 
 	@Override
-	public Optional<String[]> getParameterValues(
+	public String[] getParameterValues(
 		String name, RenderRequest renderRequest) {
 
-		return Optional.ofNullable(
-			_portletSharedRequestHelper.getParameterValues(
-				name, renderRequest));
+		return _portletSharedRequestHelper.getParameterValues(
+			name, renderRequest);
 	}
 
 	@Override
