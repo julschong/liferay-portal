@@ -92,12 +92,11 @@ public class PortletSharedSearchResponseImpl
 	}
 
 	@Override
-	public Optional<String[]> getParameterValues(
+	public String[] getParameterValues(
 		String name, RenderRequest renderRequest) {
 
-		return Optional.ofNullable(
-			_portletSharedRequestHelper.getParameterValues(
-				name, renderRequest));
+		return _portletSharedRequestHelper.getParameterValues(
+			name, renderRequest);
 	}
 
 	@Override
