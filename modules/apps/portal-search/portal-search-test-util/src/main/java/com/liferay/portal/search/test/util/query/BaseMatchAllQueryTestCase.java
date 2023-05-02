@@ -15,6 +15,7 @@
 package com.liferay.portal.search.test.util.query;
 
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.hits.SearchHits;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.test.util.DocumentsAssert;
@@ -67,7 +68,7 @@ public abstract class BaseMatchAllQueryTestCase extends BaseIndexingTestCase {
 						DocumentsAssert.assertValues(
 							searchResponse.getRequestString(),
 							searchResponse.getDocuments(), Field.PRIORITY,
-							String.valueOf(Arrays.asList(sequence)));
+							String.valueOf(ListUtil.fromArray(sequence)));
 					});
 			});
 	}
