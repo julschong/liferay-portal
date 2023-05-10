@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.facet.display.context.AssetTagsSearchFacetDisplayContext;
@@ -140,7 +141,9 @@ public class AssetTagsSearchFacetDisplayContextBuilder {
 	}
 
 	public void setParameterValues(String... parameterValues) {
-		_selectedTags = Arrays.asList(parameterValues);
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			_selectedTags = Arrays.asList(parameterValues);
+		}
 	}
 
 	protected BucketDisplayContext buildBucketDisplayContext(

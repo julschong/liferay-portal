@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -144,8 +145,10 @@ public class ModifiedFacetDisplayContextBuilder implements Serializable {
 	}
 
 	public void setParameterValues(String... parameterValues) {
-		_selectedRanges = Arrays.asList(
-			Objects.requireNonNull(parameterValues));
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			_selectedRanges = Arrays.asList(
+				Objects.requireNonNull(parameterValues));
+		}
 	}
 
 	public void setTimeZone(TimeZone timeZone) {

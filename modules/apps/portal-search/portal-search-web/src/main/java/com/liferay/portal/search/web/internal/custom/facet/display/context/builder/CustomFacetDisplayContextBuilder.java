@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -155,7 +156,7 @@ public class CustomFacetDisplayContextBuilder {
 	public CustomFacetDisplayContextBuilder setParameterValues(
 		String[] parameterValues) {
 
-		if (parameterValues != null) {
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
 			_parameterValues = Arrays.asList(parameterValues);
 		}
 

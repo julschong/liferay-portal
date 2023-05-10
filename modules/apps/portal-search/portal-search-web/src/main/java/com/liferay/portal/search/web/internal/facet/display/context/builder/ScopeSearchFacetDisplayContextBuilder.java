@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.facet.display.context.BucketDisplayContext;
@@ -132,22 +133,23 @@ public class ScopeSearchFacetDisplayContextBuilder {
 	}
 
 	public void setParameterValue(String parameterValue) {
-		setParameterValues(
-			Collections.singletonList(Objects.requireNonNull(parameterValue)));
+		setParameterValues(Objects.requireNonNull(parameterValue));
 	}
 
-	public void setParameterValues(List<String> parameterValues) {
-		_selectedGroupIds = TransformUtil.transform(
-			Objects.requireNonNull(parameterValues),
-			value -> {
-				long groupId = GetterUtil.getLong(value);
+	public void setParameterValues(String... parameterValues) {
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			_selectedGroupIds = TransformUtil.transformToList(
+				parameterValues,
+				value -> {
+					long groupId = GetterUtil.getLong(value);
 
-				if (groupId <= 0) {
-					return null;
-				}
+					if (groupId <= 0) {
+						return null;
+					}
 
-				return groupId;
-			});
+					return groupId;
+				});
+		}
 	}
 
 	public void setRequest(HttpServletRequest httpServletRequest) {

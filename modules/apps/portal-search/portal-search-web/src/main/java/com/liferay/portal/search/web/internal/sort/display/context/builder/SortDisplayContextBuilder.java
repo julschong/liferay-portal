@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.sort.configuration.SortPortletInstanceConfiguration;
@@ -89,13 +90,9 @@ public class SortDisplayContextBuilder {
 	public SortDisplayContextBuilder parameterValues(
 		String... parameterValues) {
 
-		if (parameterValues == null) {
-			_selectedFields = Collections.emptyList();
-
-			return this;
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			_selectedFields = Arrays.asList(parameterValues);
 		}
-
-		_selectedFields = Arrays.asList(parameterValues);
 
 		return this;
 	}

@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -35,7 +36,6 @@ import com.liferay.portal.search.web.internal.util.comparator.BucketDisplayConte
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.portlet.RenderRequest;
 
@@ -126,17 +126,19 @@ public class FolderSearchFacetDisplayContextBuilder {
 	}
 
 	public void setParameterValues(String... parameterValues) {
-		_selectedFolderIds = TransformUtil.transformToList(
-			Objects.requireNonNull(parameterValues),
-			value -> {
-				long folderId = GetterUtil.getLong(value);
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			_selectedFolderIds = TransformUtil.transformToList(
+				parameterValues,
+				value -> {
+					long folderId = GetterUtil.getLong(value);
 
-				if (folderId <= 0) {
-					return null;
-				}
+					if (folderId <= 0) {
+						return null;
+					}
 
-				return folderId;
-			});
+					return folderId;
+				});
+		}
 	}
 
 	protected long getDisplayStyleGroupId() {

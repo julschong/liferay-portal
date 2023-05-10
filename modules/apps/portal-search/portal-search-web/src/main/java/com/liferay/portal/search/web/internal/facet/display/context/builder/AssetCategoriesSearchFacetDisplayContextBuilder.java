@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -42,7 +43,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.portlet.RenderRequest;
@@ -154,17 +154,19 @@ public class AssetCategoriesSearchFacetDisplayContextBuilder
 	}
 
 	public void setParameterValues(String... parameterValues) {
-		_selectedCategoryIds = TransformUtil.transformToList(
-			Objects.requireNonNull(parameterValues),
-			parameterValue -> {
-				long categoryId = GetterUtil.getLong(parameterValue);
+		if (ArrayUtil.isNotEmpty(parameterValues)) {
+			_selectedCategoryIds = TransformUtil.transformToList(
+				parameterValues,
+				parameterValue -> {
+					long categoryId = GetterUtil.getLong(parameterValue);
 
-				if (categoryId <= 0) {
-					return null;
-				}
+					if (categoryId <= 0) {
+						return null;
+					}
 
-				return categoryId;
-			});
+					return categoryId;
+				});
+		}
 	}
 
 	public void setPortal(Portal portal) {

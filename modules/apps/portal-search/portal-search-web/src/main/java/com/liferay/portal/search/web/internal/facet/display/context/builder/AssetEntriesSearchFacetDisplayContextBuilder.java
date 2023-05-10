@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.security.permission.comparator.ModelResourceComparator;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SortedArrayList;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -39,6 +40,7 @@ import com.liferay.portal.search.web.internal.util.comparator.BucketDisplayConte
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -241,8 +243,10 @@ public class AssetEntriesSearchFacetDisplayContextBuilder
 		_parameterValues = Collections.singletonList(parameterValue);
 	}
 
-	public void setParameterValues(List<String> paramValues) {
-		_parameterValues = paramValues;
+	public void setParameterValues(String... paramValues) {
+		if (ArrayUtil.isNotEmpty(paramValues)) {
+			_parameterValues = Arrays.asList(paramValues);
+		}
 	}
 
 	public void setTypeNames(Map<String, String> typeNames) {
