@@ -99,10 +99,12 @@ public class SearchBarPortletInstanceConfigurationRenderer
 		searchBarPortletInstanceConfigurationDisplayContext.
 			setEnableSuggestions(
 				_searchBarPortletInstanceConfiguration.enableSuggestions());
+
 		searchBarPortletInstanceConfigurationDisplayContext.
 			setSuggestionsConfigurationVisible(
 				_searchSuggestionsCompanyConfiguration.
 					enableSuggestionsEndpoint());
+
 		searchBarPortletInstanceConfigurationDisplayContext.
 			setSuggestionsContributorConfigurations(
 				_searchBarPortletInstanceConfiguration.

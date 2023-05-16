@@ -76,7 +76,7 @@ public class SearchBarPortlet extends MVCPortlet {
 	public void render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
-
+test
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory = null;
 
