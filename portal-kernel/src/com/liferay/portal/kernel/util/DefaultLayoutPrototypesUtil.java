@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -30,8 +29,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.portlet.PortletPreferences;
 
 /**
  * @author Eudaldo Alonso
@@ -84,23 +81,6 @@ public class DefaultLayoutPrototypesUtil {
 		addResourcePermissions(layout, portletId);
 
 		return portletId;
-	}
-
-	public static PortletPreferences updatePortletSetup(
-			Layout layout, String portletId, Map<String, String> preferences)
-		throws Exception {
-
-		PortletPreferences portletSetup =
-			PortletPreferencesFactoryUtil.getLayoutPortletSetup(
-				layout, portletId);
-
-		for (Map.Entry<String, String> entry : preferences.entrySet()) {
-			portletSetup.setValue(entry.getKey(), entry.getValue());
-		}
-
-		portletSetup.store();
-
-		return portletSetup;
 	}
 
 	protected static void addResourcePermissions(
