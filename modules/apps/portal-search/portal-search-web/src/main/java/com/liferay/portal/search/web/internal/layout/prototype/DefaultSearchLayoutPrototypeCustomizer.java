@@ -30,6 +30,7 @@ import com.liferay.portal.search.web.internal.tag.facet.constants.TagFacetPortle
 import com.liferay.portal.search.web.internal.type.facet.constants.TypeFacetPortletKeys;
 import com.liferay.portal.search.web.internal.user.facet.constants.UserFacetPortletKeys;
 import com.liferay.portal.search.web.layout.prototype.SearchLayoutPrototypeCustomizer;
+import com.liferay.portlet.configuration.kernel.util.DefaultPortletConfigurationUtil;
 
 /**
  * @author André de Oliveira
@@ -121,7 +122,7 @@ public class DefaultSearchLayoutPrototypeCustomizer
 		String portletId = DefaultLayoutPrototypesUtil.addPortletId(
 			layout, portletKey, columnId);
 
-		DefaultLayoutPrototypesUtil.updatePortletSetup(
+		DefaultPortletConfigurationUtil.addDefaultPortletConfiguration(
 			layout, portletId,
 			HashMapBuilder.put(
 				"portletSetupPortletDecoratorId", "barebone"

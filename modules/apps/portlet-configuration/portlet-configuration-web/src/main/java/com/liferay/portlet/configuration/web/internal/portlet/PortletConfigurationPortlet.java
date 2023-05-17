@@ -77,6 +77,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.configuration.kernel.util.DefaultPortletConfigurationUtil;
 import com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationPortletKeys;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationWebKeys;
@@ -916,6 +917,13 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 	private PortletPreferences _getPortletPreferences(
 			ThemeDisplay themeDisplay, String portletId)
 		throws PortalException {
+
+		if (DefaultPortletConfigurationUtil.hasDefaultPortletConfiguration(
+				portletId)) {
+
+			DefaultPortletConfigurationUtil.
+				initializeDefaultPortletConfiguration(portletId);
+		}
 
 		Layout layout = themeDisplay.getLayout();
 
