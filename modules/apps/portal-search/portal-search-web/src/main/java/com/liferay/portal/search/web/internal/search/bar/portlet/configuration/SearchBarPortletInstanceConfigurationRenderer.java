@@ -18,9 +18,15 @@ import com.liferay.configuration.admin.display.ConfigurationFormRenderer;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.rest.configuration.SearchSuggestionsCompanyConfiguration;
 import com.liferay.portal.search.web.internal.search.bar.portlet.display.context.SearchBarPortletInstanceConfigurationDisplayContext;
 
@@ -41,10 +47,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Petteri Karttunen
  */
 @Component(
-	configurationPid = {
-		"com.liferay.portal.search.rest.configuration.SearchSuggestionsCompanyConfiguration",
-		"com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarPortletInstanceConfiguration"
-	},
+	configurationPid = "com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarPortletInstanceConfiguration",
 	service = ConfigurationFormRenderer.class
 )
 public class SearchBarPortletInstanceConfigurationRenderer
@@ -100,10 +103,6 @@ public class SearchBarPortletInstanceConfigurationRenderer
 			setEnableSuggestions(
 				_searchBarPortletInstanceConfiguration.enableSuggestions());
 		searchBarPortletInstanceConfigurationDisplayContext.
-			setSuggestionsConfigurationVisible(
-				_searchSuggestionsCompanyConfiguration.
-					enableSuggestionsEndpoint());
-		searchBarPortletInstanceConfigurationDisplayContext.
 			setSuggestionsContributorConfigurations(
 				_searchBarPortletInstanceConfiguration.
 					suggestionsContributorConfigurations());
@@ -111,6 +110,29 @@ public class SearchBarPortletInstanceConfigurationRenderer
 			setSuggestionsDisplayThreshold(
 				_searchBarPortletInstanceConfiguration.
 					suggestionsDisplayThreshold());
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		try {
+			SearchSuggestionsCompanyConfiguration
+				searchSuggestionsCompanyConfiguration =
+					ConfigurationProviderUtil.getCompanyConfiguration(
+						SearchSuggestionsCompanyConfiguration.class,
+						themeDisplay.getCompanyId());
+
+			searchBarPortletInstanceConfigurationDisplayContext.
+				setSuggestionsConfigurationVisible(
+					searchSuggestionsCompanyConfiguration.
+						enableSuggestionsEndpoint());
+		}
+		catch (ConfigurationException configurationException) {
+			_log.error(
+				"Unable to get search suggestions for company id: " +
+					themeDisplay.getCompanyId(),
+				configurationException);
+		}
 
 		httpServletRequest.setAttribute(
 			SearchBarPortletInstanceConfigurationDisplayContext.class.getName(),
@@ -127,19 +149,16 @@ public class SearchBarPortletInstanceConfigurationRenderer
 		_searchBarPortletInstanceConfiguration =
 			ConfigurableUtil.createConfigurable(
 				SearchBarPortletInstanceConfiguration.class, properties);
-
-		_searchSuggestionsCompanyConfiguration =
-			ConfigurableUtil.createConfigurable(
-				SearchSuggestionsCompanyConfiguration.class, properties);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SearchBarPortletInstanceConfigurationRenderer.class);
 
 	@Reference
 	private JSPRenderer _jspRenderer;
 
 	private volatile SearchBarPortletInstanceConfiguration
 		_searchBarPortletInstanceConfiguration;
-	private volatile SearchSuggestionsCompanyConfiguration
-		_searchSuggestionsCompanyConfiguration;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.portal.search.web)",
