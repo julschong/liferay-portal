@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.IndexStatusManagerThreadLocal;
 import com.liferay.portal.search.configuration.IndexStatusManagerConfiguration;
 import com.liferay.portal.search.index.IndexStatusManager;
-import com.liferay.portal.search.internal.index.configuration.IndexStatusManagerInternalConfiguration;
 
 import java.util.Collections;
 import java.util.Map;
@@ -32,22 +31,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
  */
 @Component(
-	configurationPid = {
-		"com.liferay.portal.search.configuration.IndexStatusManagerConfiguration",
-		"com.liferay.portal.search.internal.index.configuration.IndexStatusManagerInternalConfiguration"
-	},
+	configurationPid = "com.liferay.portal.search.configuration.IndexStatusManagerConfiguration",
 	service = IndexStatusManager.class
 )
 public class IndexStatusManagerImpl implements IndexStatusManager {
 
 	@Override
 	public boolean isIndexReadOnly() {
-		if (_suppressIndexReadOnly) {
+		if (_indexStatusInternalConfigurationProvider.
+				getSuppressIndexReadOnly()) {
+
 			return false;
 		}
 
@@ -133,14 +132,6 @@ public class IndexStatusManagerImpl implements IndexStatusManager {
 				IndexStatusManagerConfiguration.class, properties);
 
 		_indexReadOnly = indexStatusManagerConfiguration.indexReadOnly();
-
-		IndexStatusManagerInternalConfiguration
-			indexStatusManagerInternalConfiguration =
-				ConfigurableUtil.createConfigurable(
-					IndexStatusManagerInternalConfiguration.class, properties);
-
-		_suppressIndexReadOnly =
-			indexStatusManagerInternalConfiguration.suppressIndexReadOnly();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -150,8 +141,12 @@ public class IndexStatusManagerImpl implements IndexStatusManager {
 	private Throwable _indexReadOnlyCallStackThrowable;
 	private final Set<String> _indexReadOnlyModels = Collections.newSetFromMap(
 		new ConcurrentHashMap<>());
+
+	@Reference
+	private IndexStatusInternalConfigurationProvider
+		_indexStatusInternalConfigurationProvider;
+
 	private boolean _readWriteRequired;
 	private Throwable _requireIndexReadWriteCallStackThrowable;
-	private volatile boolean _suppressIndexReadOnly;
 
 }

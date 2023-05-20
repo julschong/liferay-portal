@@ -15,55 +15,34 @@
 package com.liferay.portal.search.internal.index;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.events.StartupHelperUtil;
-import com.liferay.portal.kernel.search.IndexStatusManagerThreadLocal;
-import com.liferay.portal.search.index.IndexStatusManager;
 import com.liferay.portal.search.internal.index.configuration.IndexStatusManagerInternalConfiguration;
 
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Julius Lee
  */
 @Component(
 	configurationPid = "com.liferay.portal.search.internal.index.configuration.IndexStatusManagerInternalConfiguration",
-	service = IndexStatusManagerInternal.class
+	service = IndexStatusInternalConfigurationProvider.class
 )
-public class IndexStatusManagerInternal {
+public class IndexStatusInternalConfigurationProvider {
 
-	public boolean isIndexReadOnly() {
-		if (_suppressIndexReadOnly) {
-			return false;
-		}
-
-		if (IndexStatusManagerThreadLocal.isIndexReadOnly() ||
-			_indexStatusManager.isIndexReadOnly() ||
-			StartupHelperUtil.isUpgrading()) {
-
-			return true;
-		}
-
-		return false;
+	public boolean getSuppressIndexReadOnly() {
+		return _indexStatusManagerInternalConfiguration.suppressIndexReadOnly();
 	}
 
 	@Activate
 	protected void activate(Map<String, Object> properties) {
-		IndexStatusManagerInternalConfiguration
-			indexStatusManagerInternalConfiguration =
-				ConfigurableUtil.createConfigurable(
-					IndexStatusManagerInternalConfiguration.class, properties);
-
-		_suppressIndexReadOnly =
-			indexStatusManagerInternalConfiguration.suppressIndexReadOnly();
+		_indexStatusManagerInternalConfiguration =
+			ConfigurableUtil.createConfigurable(
+				IndexStatusManagerInternalConfiguration.class, properties);
 	}
 
-	@Reference
-	private IndexStatusManager _indexStatusManager;
-
-	private volatile boolean _suppressIndexReadOnly;
+	private volatile IndexStatusManagerInternalConfiguration
+		_indexStatusManagerInternalConfiguration;
 
 }
