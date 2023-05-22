@@ -23,41 +23,57 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.rest.configuration.SearchSuggestionsCompanyConfiguration;
 import com.liferay.portal.search.web.internal.search.bar.portlet.display.context.SearchBarPortletInstanceConfigurationDisplayContext;
-
-import java.io.IOException;
-
-import java.util.Map;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author Petteri Karttunen
  */
 @Component(
 	configurationPid =
-		"com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarPortletInstanceConfiguration",
+		"com.liferay.portal.search.rest.configuration.SearchSuggestionsCompanyConfiguration",
 	service = ConfigurationFormRenderer.class
 )
-public class SearchBarPortletInstanceConfigurationRenderer
+public class SearchSuggestionsCompanyConfigurationRenderer
 	implements ConfigurationFormRenderer {
 
 	@Override
 	public String getPid() {
-		return SearchBarPortletInstanceConfiguration.class.getName();
+		return SearchSuggestionsCompanyConfiguration.class.getName();
 	}
 
 	@Override
 	public Map<String, Object> getRequestParameters(
 		HttpServletRequest httpServletRequest) {
 
-		return _configurationFormRenderer.getRequestParameters(httpServletRequest);
+		return HashMapBuilder.<String, Object>put(
+			"displayStyle",
+			ParamUtil.getString(httpServletRequest, "displayStyle")
+		).put(
+			"displayStyleGroupId",
+			ParamUtil.getLong(httpServletRequest, "displayStyleGroupId")
+		).put(
+			"enableSuggestions",
+			ParamUtil.getBoolean(httpServletRequest, "enableSuggestions")
+		).put(
+			"suggestionsContributorConfigurations",
+			StringUtil.split(
+				ParamUtil.getString(
+					httpServletRequest, "suggestionsContributorConfigurations"),
+				CharPool.PIPE)
+		).put(
+			"suggestionsDisplayThreshold",
+			ParamUtil.getInteger(
+				httpServletRequest, "suggestionsDisplayThreshold")
+		).build();
 	}
 
 	@Override
@@ -67,47 +83,40 @@ public class SearchBarPortletInstanceConfigurationRenderer
 		throws IOException {
 
 		SearchBarPortletInstanceConfigurationDisplayContext
-			searchBarPortletInstanceConfigurationDisplayContext =
-				new SearchBarPortletInstanceConfigurationDisplayContext();
+			searchBarPortletInstanceConfigurationDisplayContext = (SearchBarPortletInstanceConfigurationDisplayContext) httpServletRequest.getAttribute("hello");
 
-		searchBarPortletInstanceConfigurationDisplayContext.setDisplayStyle(
-			_searchBarPortletInstanceConfiguration.displayStyle());
 		searchBarPortletInstanceConfigurationDisplayContext.
-			setDisplayStyleGroupId(
-				_searchBarPortletInstanceConfiguration.displayStyleGroupId());
-		searchBarPortletInstanceConfigurationDisplayContext.
-			setEnableSuggestions(
-				_searchBarPortletInstanceConfiguration.enableSuggestions());
-		searchBarPortletInstanceConfigurationDisplayContext.
-			setSuggestionsContributorConfigurations(
-				_searchBarPortletInstanceConfiguration.
-					suggestionsContributorConfigurations());
-		searchBarPortletInstanceConfigurationDisplayContext.
-			setSuggestionsDisplayThreshold(
-				_searchBarPortletInstanceConfiguration.
-					suggestionsDisplayThreshold());
+			setSuggestionsConfigurationVisible(
+				_searchSuggestionsCompanyConfiguration.
+					enableSuggestionsEndpoint());
 
 		httpServletRequest.setAttribute(
 			SearchBarPortletInstanceConfigurationDisplayContext.class.getName(),
 			searchBarPortletInstanceConfigurationDisplayContext);
 
-
-		_configurationFormRenderer.render(httpServletRequest, httpServletResponse);
+		_jspRenderer.renderJSP(
+			_servletContext, httpServletRequest, httpServletResponse,
+			"/search/bar/portlet_instance_configuration.jsp");
 	}
 
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_searchBarPortletInstanceConfiguration =
+		_searchSuggestionsCompanyConfiguration =
 			ConfigurableUtil.createConfigurable(
-				SearchBarPortletInstanceConfiguration.class, properties);
-
+				SearchSuggestionsCompanyConfiguration.class, properties);
 	}
 
-	private volatile SearchBarPortletInstanceConfiguration
-		_searchBarPortletInstanceConfiguration;
+	@Reference
+	private JSPRenderer _jspRenderer;
 
-	@Reference (target = "(configurationPid=com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchSuggestionsCompanyConfigurationRenderer)")
-	private ConfigurationFormRenderer _configurationFormRenderer;
+	private volatile SearchSuggestionsCompanyConfiguration
+		_searchSuggestionsCompanyConfiguration;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.portal.search.web)",
+		unbind = "-"
+	)
+	private ServletContext _servletContext;
 
 }
