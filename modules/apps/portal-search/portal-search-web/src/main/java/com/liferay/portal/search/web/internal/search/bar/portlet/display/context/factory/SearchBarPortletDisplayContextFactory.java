@@ -52,8 +52,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRe
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 import com.liferay.portal.search.web.search.request.SearchSettings;
 
-import java.util.Optional;
-
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
@@ -139,7 +137,7 @@ public class SearchBarPortletDisplayContextFactory {
 
 		SearchBarPortletPreferences searchBarPortletPreferences =
 			new SearchBarPortletPreferencesImpl(
-				Optional.ofNullable(_renderRequest.getPreferences()));
+				_renderRequest.getPreferences());
 
 		SearchResponse searchResponse = _getSearchResponse(
 			portletSharedSearchResponse, searchBarPortletPreferences);
@@ -167,20 +165,19 @@ public class SearchBarPortletDisplayContextFactory {
 			portletSharedSearchResponse.getSearchSettings(),
 			searchBarPortletPreferences, themeDisplay);
 
-		Optional<String> scopeParameterValueOptional =
-			portletSharedSearchResponse.getParameter(
-				scopeParameterName, _renderRequest);
+		String scopeParameterValue = portletSharedSearchResponse.getParameter(
+			scopeParameterName, _renderRequest);
 
 		searchBarPortletDisplayContext.setScopeParameterName(
 			scopeParameterName);
 
 		searchBarPortletDisplayContext.setScopeParameterValue(
-			scopeParameterValueOptional.orElse(StringPool.BLANK));
+			GetterUtil.getString(scopeParameterValue));
 		searchBarPortletDisplayContext.setSearchBarPortletInstanceConfiguration(
 			searchBarPortletInstanceConfiguration);
 
 		_setSelectedSearchScopePreference(
-			portletPreferencesLookup, scopeParameterValueOptional.orElse(null),
+			portletPreferencesLookup, scopeParameterValue,
 			searchBarPortletDisplayContext, searchBarPrecedenceHelper,
 			searchBarPortletPreferences,
 			portletSharedSearchResponse.getSearchSettings(), themeDisplay);

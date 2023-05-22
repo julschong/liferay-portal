@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
@@ -98,12 +97,11 @@ public class SimilarResultsPortletSharedSearchContributor
 		Criteria criteria,
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
-		Optional<PortletPreferences> portletPreferencesOptional =
-			portletSharedSearchSettings.getPortletPreferencesOptional();
+		PortletPreferences portletPreferences =
+			portletSharedSearchSettings.getPortletPreferences();
 
 		SimilarResultsPortletPreferences similarResultsPortletPreferences =
-			new SimilarResultsPortletPreferencesImpl(
-				portletPreferencesOptional.orElse(null));
+			new SimilarResultsPortletPreferencesImpl(portletPreferences);
 
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
@@ -176,11 +174,10 @@ public class SimilarResultsPortletSharedSearchContributor
 		PortletSharedSearchSettings portletSharedSearchSettings,
 		SearchRequestBuilder searchRequestBuilder) {
 
-		Optional<String> optional =
-			portletSharedSearchSettings.getParameterOptional(
-				"similar.results.all.classes");
+		String parameterValue = portletSharedSearchSettings.getParameter(
+			"similar.results.all.classes");
 
-		if (optional.isPresent()) {
+		if (Validator.isNotNull(parameterValue)) {
 			return;
 		}
 
