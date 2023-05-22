@@ -12,23 +12,20 @@
  * details.
  */
 
-package com.liferay.document.library.configuration;
+package com.liferay.document.library.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
-
-import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Drew Brokke
  */
 @ExtendedObjectClassDefinition(category = "documents-and-media")
 @Meta.OCD(
-	id = "com.liferay.document.library.configuration.DLFileEntryConfiguration",
+	id = "com.liferay.document.library.internal.configuration.DLFileEntryConfiguration",
 	localization = "content/Language", name = "dl-file-entry-configuration-name"
 )
-@ProviderType
 public interface DLFileEntryConfiguration {
 
 	@Meta.AD(
