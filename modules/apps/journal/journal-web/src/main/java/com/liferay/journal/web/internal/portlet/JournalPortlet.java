@@ -67,7 +67,10 @@ import com.liferay.journal.web.internal.configuration.FFJournalAutoSaveDraftConf
 import com.liferay.journal.web.internal.configuration.JournalWebConfiguration;
 import com.liferay.journal.web.internal.helper.JournalDDMTemplateHelper;
 import com.liferay.journal.web.internal.portlet.action.ActionUtil;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.journal.web.internal.portlet.configuration.provider.DDMWebConfigurationProvider;
+import com.liferay.journal.web.internal.portlet.configuration.provider.FFJournalAutoSaveDraftConfigurationProvider;
+import com.liferay.journal.web.internal.portlet.configuration.provider.JournalFileUploadsConfigurationProvider;
+import com.liferay.journal.web.internal.portlet.configuration.provider.JournalWebConfigurationProvider;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -91,7 +94,6 @@ import com.liferay.trash.util.TrashWebKeys;
 
 import java.io.IOException;
 
-import java.util.Map;
 import java.util.Objects;
 
 import javax.portlet.Portlet;
@@ -103,21 +105,13 @@ import javax.portlet.ResourceResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eduardo García
  */
 @Component(
-	configurationPid = {
-		"com.liferay.dynamic.data.mapping.configuration.DDMWebConfiguration",
-		"com.liferay.journal.configuration.JournalFileUploadsConfiguration",
-		"com.liferay.journal.web.internal.configuration.FFJournalAutoSaveDraftConfiguration",
-		"com.liferay.journal.web.internal.configuration.JournalWebConfiguration"
-	},
 	property = {
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=portlet-journal",
@@ -176,10 +170,12 @@ public class JournalPortlet extends MVCPortlet {
 			DDMFormValuesToMapConverter.class.getName(),
 			_ddmFormValuesToMapConverter);
 		renderRequest.setAttribute(
-			DDMWebConfiguration.class.getName(), _ddmWebConfiguration);
+			DDMWebConfiguration.class.getName(),
+			_ddmWebConfigurationProvider.getDDMWebConfiguration());
 		renderRequest.setAttribute(
 			FFJournalAutoSaveDraftConfiguration.class.getName(),
-			_ffJournalAutoSaveDraftConfiguration);
+			_ffJournalAutoSaveDraftConfigurationProvider.
+				getFFJournalAutoSaveDraftConfiguration());
 		renderRequest.setAttribute(
 			FieldsToDDMFormValuesConverter.class.getName(),
 			_fieldsToDDMFormValuesConverter);
@@ -188,9 +184,11 @@ public class JournalPortlet extends MVCPortlet {
 			JournalHelper.class.getName(), _journalHelper);
 		renderRequest.setAttribute(
 			JournalFileUploadsConfiguration.class.getName(),
-			_journalFileUploadsConfiguration);
+			_journalFileUploadsConfigurationProvider.
+				getJournalFileUploadsConfiguration());
 		renderRequest.setAttribute(
-			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
+			JournalWebConfiguration.class.getName(),
+			_journalWebConfigurationProvider.getJournalWebConfiguration());
 		renderRequest.setAttribute(
 			JournalWebKeys.JOURNAL_CONTENT, _journalContent);
 		renderRequest.setAttribute(
@@ -215,13 +213,15 @@ public class JournalPortlet extends MVCPortlet {
 			DDMTemplateHelper.class.getName(), _ddmTemplateHelper);
 		resourceRequest.setAttribute(
 			FFJournalAutoSaveDraftConfiguration.class.getName(),
-			_ffJournalAutoSaveDraftConfiguration);
+			_ffJournalAutoSaveDraftConfigurationProvider.
+				getFFJournalAutoSaveDraftConfiguration());
 		resourceRequest.setAttribute(
 			ItemSelector.class.getName(), _itemSelector);
 		resourceRequest.setAttribute(
 			JournalHelper.class.getName(), _journalHelper);
 		resourceRequest.setAttribute(
-			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
+			JournalWebConfiguration.class.getName(),
+			_journalWebConfigurationProvider.getJournalWebConfiguration());
 		resourceRequest.setAttribute(
 			TranslationPermission.class.getName(), _translationPermission);
 		resourceRequest.setAttribute(
@@ -229,20 +229,6 @@ public class JournalPortlet extends MVCPortlet {
 		resourceRequest.setAttribute(TrashWebKeys.TRASH_HELPER, _trashHelper);
 
 		super.serveResource(resourceRequest, resourceResponse);
-	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_ddmWebConfiguration = ConfigurableUtil.createConfigurable(
-			DDMWebConfiguration.class, properties);
-		_ffJournalAutoSaveDraftConfiguration =
-			ConfigurableUtil.createConfigurable(
-				FFJournalAutoSaveDraftConfiguration.class, properties);
-		_journalFileUploadsConfiguration = ConfigurableUtil.createConfigurable(
-			JournalFileUploadsConfiguration.class, properties);
-		_journalWebConfiguration = ConfigurableUtil.createConfigurable(
-			JournalWebConfiguration.class, properties);
 	}
 
 	@Override
@@ -377,9 +363,12 @@ public class JournalPortlet extends MVCPortlet {
 	@Reference
 	private DDMTemplateHelper _ddmTemplateHelper;
 
-	private volatile DDMWebConfiguration _ddmWebConfiguration;
-	private volatile FFJournalAutoSaveDraftConfiguration
-		_ffJournalAutoSaveDraftConfiguration;
+	@Reference
+	private DDMWebConfigurationProvider _ddmWebConfigurationProvider;
+
+	@Reference
+	private FFJournalAutoSaveDraftConfigurationProvider
+		_ffJournalAutoSaveDraftConfigurationProvider;
 
 	@Reference
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
@@ -396,8 +385,9 @@ public class JournalPortlet extends MVCPortlet {
 	@Reference
 	private JournalDDMTemplateHelper _journalDDMTemplateHelper;
 
-	private volatile JournalFileUploadsConfiguration
-		_journalFileUploadsConfiguration;
+	@Reference
+	private JournalFileUploadsConfigurationProvider
+		_journalFileUploadsConfigurationProvider;
 
 	@Reference
 	private JournalFolderService _journalFolderService;
@@ -405,7 +395,8 @@ public class JournalPortlet extends MVCPortlet {
 	@Reference
 	private JournalHelper _journalHelper;
 
-	private volatile JournalWebConfiguration _journalWebConfiguration;
+	@Reference
+	private JournalWebConfigurationProvider _journalWebConfigurationProvider;
 
 	@Reference
 	private Portal _portal;
