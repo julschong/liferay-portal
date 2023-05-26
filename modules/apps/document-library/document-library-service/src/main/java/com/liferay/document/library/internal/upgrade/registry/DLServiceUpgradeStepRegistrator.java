@@ -17,7 +17,6 @@ package com.liferay.document.library.internal.upgrade.registry;
 import com.liferay.comment.upgrade.DiscussionSubscriptionClassNameUpgradeProcess;
 import com.liferay.document.library.internal.upgrade.v1_0_0.DocumentLibraryUpgradeProcess;
 import com.liferay.document.library.internal.upgrade.v1_0_1.DLConfigurationUpgradeProcess;
-import com.liferay.document.library.internal.upgrade.v1_0_1.DLFileEntryConfigurationUpgradeProcess;
 import com.liferay.document.library.internal.upgrade.v1_0_2.DLFileShortcutUpgradeProcess;
 import com.liferay.document.library.internal.upgrade.v1_1_0.SchemaUpgradeProcess;
 import com.liferay.document.library.internal.upgrade.v1_1_2.DLFileEntryTypeUpgradeProcess;
@@ -39,6 +38,7 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.ViewCountUpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.subscription.service.SubscriptionLocalService;
@@ -65,8 +65,7 @@ public class DLServiceUpgradeStepRegistrator implements UpgradeStepRegistrator {
 			"1.0.1", "1.0.2",
 			new DLConfigurationUpgradeProcess(
 				_prefsPropsToConfigurationUpgradeHelper),
-			new DLFileEntryConfigurationUpgradeProcess(
-				_prefsPropsToConfigurationUpgradeHelper));
+			_dlConfigurationUpgradeProcess);
 
 		registry.register("1.0.2", "1.1.0", new SchemaUpgradeProcess());
 
@@ -150,6 +149,11 @@ public class DLServiceUpgradeStepRegistrator implements UpgradeStepRegistrator {
 
 	@Reference
 	private DDMPermissionSupport _ddmPermissionSupport;
+
+	@Reference(
+		target = "(upgrade.class.name=com.liferay.document.library.internal.configuration.upgrade.v1_0_1.DLFileEntryConfigurationUpgradeProcess)"
+	)
+	private UpgradeProcess _dlConfigurationUpgradeProcess;
 
 	@Reference
 	private PrefsPropsToConfigurationUpgradeHelper

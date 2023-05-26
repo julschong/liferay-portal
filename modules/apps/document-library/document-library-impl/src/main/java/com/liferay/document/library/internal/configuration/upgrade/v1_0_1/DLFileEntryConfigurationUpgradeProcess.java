@@ -12,26 +12,24 @@
  * details.
  */
 
-package com.liferay.document.library.internal.upgrade.v1_0_1;
+package com.liferay.document.library.internal.configuration.upgrade.v1_0_1;
 
-import com.liferay.document.library.configuration.DLFileEntryConfiguration;
-import com.liferay.document.library.internal.constants.LegacyDLKeys;
+import com.liferay.document.library.internal.configuration.DLFileEntryConfiguration;
 import com.liferay.portal.configuration.upgrade.PrefsPropsToConfigurationUpgradeHelper;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.KeyValuePair;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Drew Brokke
  */
+@Component(
+	properties = "upgrade.class.name=com.liferay.document.library.internal.configuration.upgrade.v1_0_1.DLFileEntryConfigurationUpgradeProcess",
+	service = UpgradeProcess.class
+)
 public class DLFileEntryConfigurationUpgradeProcess extends UpgradeProcess {
-
-	public DLFileEntryConfigurationUpgradeProcess(
-		PrefsPropsToConfigurationUpgradeHelper
-			prefsPropsToConfigurationUpgradeHelper) {
-
-		_prefsPropsToConfigurationUpgradeHelper =
-			prefsPropsToConfigurationUpgradeHelper;
-	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -42,11 +40,12 @@ public class DLFileEntryConfigurationUpgradeProcess extends UpgradeProcess {
 		_prefsPropsToConfigurationUpgradeHelper.mapConfigurations(
 			DLFileEntryConfiguration.class,
 			new KeyValuePair(
-				LegacyDLKeys.DL_FILE_ENTRY_PREVIEWABLE_PROCESSOR_MAX_SIZE,
+				"dl.file.entry.previewable.processor.max.size",
 				"previewableProcessorMaxSize"));
 	}
 
-	private final PrefsPropsToConfigurationUpgradeHelper
+	@Reference
+	private PrefsPropsToConfigurationUpgradeHelper
 		_prefsPropsToConfigurationUpgradeHelper;
 
 }
