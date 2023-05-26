@@ -16,7 +16,7 @@ package com.liferay.adaptive.media.image.internal.size;
 
 import com.liferay.adaptive.media.image.internal.configuration.AMImageConfiguration;
 import com.liferay.adaptive.media.image.size.AMImageSizeProvider;
-import com.liferay.document.library.configuration.DLFileEntryConfiguration;
+import com.liferay.document.library.configuration.DLFileEntryConfigurationProvider;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
 import java.util.Map;
@@ -24,28 +24,27 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Roberto Díaz
  */
 @Component(
-	configurationPid = {
-		"com.liferay.adaptive.media.image.internal.configuration.AMImageConfiguration",
-		"com.liferay.document.library.configuration.DLFileEntryConfiguration"
-	},
+	configurationPid = "com.liferay.adaptive.media.image.internal.configuration.AMImageConfiguration",
 	service = AMImageSizeProvider.class
 )
 public class AMImageSizeProviderImpl implements AMImageSizeProvider {
 
 	@Override
 	public long getImageMaxSize() {
-		if (_dlFileEntryConfiguration.previewableProcessorMaxSize() >
+		if (_dlFileEntryConfigurationProvider.getPreviewableProcessorMaxSize() >
 				_amImageConfiguration.imageMaxSize()) {
 
 			return _amImageConfiguration.imageMaxSize();
 		}
 
-		return _dlFileEntryConfiguration.previewableProcessorMaxSize();
+		return _dlFileEntryConfigurationProvider.
+			getPreviewableProcessorMaxSize();
 	}
 
 	@Activate
@@ -53,11 +52,12 @@ public class AMImageSizeProviderImpl implements AMImageSizeProvider {
 	protected void activate(Map<String, Object> properties) {
 		_amImageConfiguration = ConfigurableUtil.createConfigurable(
 			AMImageConfiguration.class, properties);
-		_dlFileEntryConfiguration = ConfigurableUtil.createConfigurable(
-			DLFileEntryConfiguration.class, properties);
 	}
 
 	private volatile AMImageConfiguration _amImageConfiguration;
-	private volatile DLFileEntryConfiguration _dlFileEntryConfiguration;
+
+	@Reference
+	private volatile DLFileEntryConfigurationProvider
+		_dlFileEntryConfigurationProvider;
 
 }
