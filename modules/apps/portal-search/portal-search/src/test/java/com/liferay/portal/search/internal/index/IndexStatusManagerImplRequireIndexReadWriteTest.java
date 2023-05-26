@@ -14,13 +14,17 @@
 
 package com.liferay.portal.search.internal.index;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import org.mockito.Mockito;
 
 /**
  * @author André de Oliveira
@@ -32,70 +36,89 @@ public class IndexStatusManagerImplRequireIndexReadWriteTest {
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@Before
+	public void setUp() {
+		IndexStatusInternalConfigurationProvider
+			indexStatusInternalConfigurationProvider = Mockito.mock(
+				IndexStatusInternalConfigurationProvider.class);
+
+		Mockito.when(
+			indexStatusInternalConfigurationProvider.getSuppressIndexReadOnly()
+		).thenReturn(
+			false
+		);
+
+		_indexStatusManagerImpl = new IndexStatusManagerImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			_indexStatusManagerImpl,
+			"_indexStatusInternalConfigurationProvider",
+			indexStatusInternalConfigurationProvider);
+	}
+
 	@Test
 	public void testBookendsLikeSetupAndTeardown() {
-		indexStatusManagerImpl.requireIndexReadWrite(true);
+		_indexStatusManagerImpl.requireIndexReadWrite(true);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.setIndexReadOnly(false);
+		_indexStatusManagerImpl.setIndexReadOnly(false);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.requireIndexReadWrite(false);
+		_indexStatusManagerImpl.requireIndexReadWrite(false);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 	}
 
 	@Test
 	public void testReadOnlySetAfterBookends() {
-		indexStatusManagerImpl.requireIndexReadWrite(true);
+		_indexStatusManagerImpl.requireIndexReadWrite(true);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.requireIndexReadWrite(false);
+		_indexStatusManagerImpl.requireIndexReadWrite(false);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.setIndexReadOnly(true);
+		_indexStatusManagerImpl.setIndexReadOnly(true);
 
-		Assert.assertTrue(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertTrue(_indexStatusManagerImpl.isIndexReadOnly());
 	}
 
 	@Test
 	public void testReadOnlySetBeforeBookends() {
-		indexStatusManagerImpl.setIndexReadOnly(true);
+		_indexStatusManagerImpl.setIndexReadOnly(true);
 
-		Assert.assertTrue(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertTrue(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.requireIndexReadWrite(true);
+		_indexStatusManagerImpl.requireIndexReadWrite(true);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.requireIndexReadWrite(false);
+		_indexStatusManagerImpl.requireIndexReadWrite(false);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 	}
 
 	@Test
 	public void testReadOnlySetBetweenBookends() {
-		indexStatusManagerImpl.requireIndexReadWrite(true);
+		_indexStatusManagerImpl.requireIndexReadWrite(true);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.setIndexReadOnly(true);
+		_indexStatusManagerImpl.setIndexReadOnly(true);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 
-		indexStatusManagerImpl.requireIndexReadWrite(false);
+		_indexStatusManagerImpl.requireIndexReadWrite(false);
 
-		Assert.assertFalse(indexStatusManagerImpl.isIndexReadOnly());
+		Assert.assertFalse(_indexStatusManagerImpl.isIndexReadOnly());
 	}
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	protected IndexStatusManagerImpl indexStatusManagerImpl =
-		new IndexStatusManagerImpl();
+	private IndexStatusManagerImpl _indexStatusManagerImpl;
 
 }
