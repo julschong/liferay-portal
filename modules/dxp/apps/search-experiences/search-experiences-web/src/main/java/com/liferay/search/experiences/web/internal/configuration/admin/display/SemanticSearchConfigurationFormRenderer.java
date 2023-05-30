@@ -14,7 +14,7 @@
 
 package com.liferay.search.experiences.web.internal.configuration.admin.display;
 
-import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
+import com.liferay.configuration.admin.display.BaseConfigurationFormRenderer;
 import com.liferay.configuration.admin.display.ConfigurationFormRenderer;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.petra.string.CharPool;
@@ -47,7 +47,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
@@ -62,7 +61,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(enabled = false, service = ConfigurationFormRenderer.class)
 public class SemanticSearchConfigurationFormRenderer
-	implements ConfigurationFormRenderer {
+	extends BaseConfigurationFormRenderer {
 
 	@Override
 	public String getPid() {
@@ -126,8 +125,12 @@ public class SemanticSearchConfigurationFormRenderer
 			setAvailableTextTruncationStrategies(
 				_getAvailableTextTruncationStrategies(httpServletRequest));
 
+		Map<String, Object> configurationsMap = getConfigurationsMap(
+			httpServletRequest, SemanticSearchConfiguration.class);
+
 		SemanticSearchConfiguration semanticSearchConfiguration =
-			_getSemanticSearchConfiguration(httpServletRequest);
+			(SemanticSearchConfiguration)configurationsMap.get(
+				SemanticSearchConfiguration.class.getName());
 
 		semanticSearchCompanyConfigurationDisplayContext.
 			setTextEmbeddingCacheTimeout(
@@ -239,20 +242,6 @@ public class SemanticSearchConfigurationFormRenderer
 		).put(
 			"end", _language.get(httpServletRequest, "end")
 		).build();
-	}
-
-	private SemanticSearchConfiguration _getSemanticSearchConfiguration(
-		HttpServletRequest httpServletRequest) {
-
-		if (Objects.equals(
-				_portal.getPortletId(httpServletRequest),
-				ConfigurationAdminPortletKeys.INSTANCE_SETTINGS)) {
-
-			return _semanticSearchConfigurationProvider.getCompanyConfiguration(
-				_portal.getCompanyId(httpServletRequest));
-		}
-
-		return _semanticSearchConfigurationProvider.getSystemConfiguration();
 	}
 
 	private Map<String, String> _sortByValue(Map<String, String> map) {
