@@ -14,6 +14,10 @@
 
 package com.liferay.portal.search.test.util;
 
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.search.configuration.IndexStatusManagerConfiguration;
 import com.liferay.portal.search.index.IndexStatusManager;
 
 import java.util.concurrent.TimeUnit;
@@ -40,11 +44,24 @@ public class SearchFixture {
 	}
 
 	public void setUp() {
-		retry(() -> _indexStatusManager.requireIndexReadWrite(true));
+		retry(
+			() -> ReflectionTestUtil.setFieldValue(
+				_indexStatusManager, "_indexReadOnly", false));
 	}
 
 	public void tearDown() {
-		_indexStatusManager.requireIndexReadWrite(false);
+		try {
+			IndexStatusManagerConfiguration indexStatusManagerConfiguration =
+				ConfigurationProviderUtil.getSystemConfiguration(
+					IndexStatusManagerConfiguration.class);
+
+			ReflectionTestUtil.setFieldValue(
+				_indexStatusManager, "_indexReadOnly",
+				indexStatusManagerConfiguration.indexReadOnly());
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 	}
 
 	protected void retry(Runnable runnable) {
