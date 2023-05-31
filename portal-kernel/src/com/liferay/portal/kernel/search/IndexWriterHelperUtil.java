@@ -175,28 +175,6 @@ public class IndexWriterHelperUtil {
 			userId, jobName, companyIds, className, taskContextMap);
 	}
 
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             com.liferay.portal.search.index.IndexStatusManager#setIndexReadOnly(
-	 *             boolean)}
-	 */
-	@Deprecated
-	public static void setIndexReadOnly(boolean indexReadOnly) {
-		_indexWriterHelper.setIndexReadOnly(indexReadOnly);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             com.liferay.portal.search.index.IndexStatusManager#setIndexReadOnly(
-	 *             String, boolean)}
-	 */
-	@Deprecated
-	public static void setIndexReadOnly(
-		String className, boolean indexReadOnly) {
-
-		_indexWriterHelper.setIndexReadOnly(className, indexReadOnly);
-	}
-
 	public static void updateDocument(long companyId, Document document)
 		throws SearchException {
 

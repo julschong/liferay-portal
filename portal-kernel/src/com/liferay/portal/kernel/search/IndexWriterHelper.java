@@ -109,22 +109,6 @@ public interface IndexWriterHelper {
 			Map<String, Serializable> taskContextMap)
 		throws SearchException;
 
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             com.liferay.portal.search.index.IndexStatusManager#setIndexReadOnly(
-	 *             boolean)}
-	 */
-	@Deprecated
-	public void setIndexReadOnly(boolean indexReadOnly);
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             com.liferay.portal.search.index.IndexStatusManager#setIndexReadOnly(
-	 *             String, boolean)}
-	 */
-	@Deprecated
-	public void setIndexReadOnly(String className, boolean indexReadOnly);
-
 	public void updateDocument(long companyId, Document document)
 		throws SearchException;
 
