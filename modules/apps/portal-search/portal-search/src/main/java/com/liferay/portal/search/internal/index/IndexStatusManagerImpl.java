@@ -19,7 +19,6 @@ import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.search.IndexStatusManagerThreadLocal;
 import com.liferay.portal.search.configuration.IndexStatusManagerConfiguration;
 import com.liferay.portal.search.index.IndexStatusManager;
-import com.liferay.portal.search.internal.index.configuration.IndexStatusManagerInternalConfiguration;
 
 import java.util.Collections;
 import java.util.Map;
@@ -34,20 +33,13 @@ import org.osgi.service.component.annotations.Modified;
  * @author Michael C. Han
  */
 @Component(
-	configurationPid = {
-		"com.liferay.portal.search.configuration.IndexStatusManagerConfiguration",
-		"com.liferay.portal.search.internal.index.configuration.IndexStatusManagerInternalConfiguration"
-	},
+	configurationPid = "com.liferay.portal.search.configuration.IndexStatusManagerConfiguration",
 	service = IndexStatusManager.class
 )
 public class IndexStatusManagerImpl implements IndexStatusManager {
 
 	@Override
 	public boolean isIndexReadOnly() {
-		if (_suppressIndexReadOnly) {
-			return false;
-		}
-
 		if (IndexStatusManagerThreadLocal.isIndexReadOnly() || _indexReadOnly ||
 			StartupHelperUtil.isUpgrading()) {
 
@@ -70,19 +62,10 @@ public class IndexStatusManagerImpl implements IndexStatusManager {
 				IndexStatusManagerConfiguration.class, properties);
 
 		_indexReadOnly = indexStatusManagerConfiguration.indexReadOnly();
-
-		IndexStatusManagerInternalConfiguration
-			indexStatusManagerInternalConfiguration =
-				ConfigurableUtil.createConfigurable(
-					IndexStatusManagerInternalConfiguration.class, properties);
-
-		_suppressIndexReadOnly =
-			indexStatusManagerInternalConfiguration.suppressIndexReadOnly();
 	}
 
 	private volatile boolean _indexReadOnly;
 	private final Set<String> _indexReadOnlyModels = Collections.newSetFromMap(
 		new ConcurrentHashMap<>());
-	private volatile boolean _suppressIndexReadOnly;
 
 }
