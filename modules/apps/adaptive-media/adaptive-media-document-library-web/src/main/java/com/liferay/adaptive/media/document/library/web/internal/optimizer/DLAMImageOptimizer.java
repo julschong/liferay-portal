@@ -241,9 +241,6 @@ public class DLAMImageOptimizer implements AMImageOptimizer {
 	private AMImageProcessor _amImageProcessor;
 
 	@Reference
-	private AMImageValidator _amImageValidator;
-
-	@Reference
 	private BackgroundTaskStatusMessageSender
 		_backgroundTaskStatusMessageSender;
 

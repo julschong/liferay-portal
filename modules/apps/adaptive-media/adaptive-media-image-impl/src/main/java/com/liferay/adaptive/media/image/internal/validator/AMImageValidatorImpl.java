@@ -134,7 +134,7 @@ public class AMImageValidatorImpl implements AMImageValidator {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"File " + fileVersion.getFileName() +
-						"has an invalid mime type or metada");
+						"has an invalid mime type or meta data");
 			}
 
 			return false;
