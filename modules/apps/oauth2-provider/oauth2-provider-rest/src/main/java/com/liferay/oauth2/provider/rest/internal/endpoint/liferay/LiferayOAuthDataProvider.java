@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -109,8 +110,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 @Component(
 	configurationPid = {
 		"com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration",
-		"com.liferay.oauth2.provider.rest.internal.configuration.OAuth2AuthorizationServerConfiguration",
-		"com.liferay.oauth2.provider.rest.internal.endpoint.authorize.configuration.OAuth2AuthorizationFlowConfiguration"
+		"com.liferay.oauth2.provider.rest.internal.configuration.OAuth2AuthorizationServerConfiguration"
 	},
 	service = LiferayOAuthDataProvider.class
 )
@@ -697,9 +697,6 @@ public class LiferayOAuthDataProvider
 				OAuthConstants.CLIENT_CREDENTIALS_GRANT,
 				StandardCharsets.UTF_8.name()));
 
-		_oAuth2AuthorizationFlowConfiguration =
-			ConfigurableUtil.createConfigurable(
-				OAuth2AuthorizationFlowConfiguration.class, properties);
 		_oAuth2AuthorizationServerConfiguration =
 			ConfigurableUtil.createConfigurable(
 				OAuth2AuthorizationServerConfiguration.class, properties);
@@ -1132,8 +1129,19 @@ public class LiferayOAuthDataProvider
 	}
 
 	private void _init() {
-		setGrantLifetime(
-			_oAuth2AuthorizationFlowConfiguration.authorizationCodeGrantTTL());
+		try {
+			OAuth2AuthorizationFlowConfiguration
+				oAuth2AuthorizationFlowConfiguration =
+					_configurationProvider.getSystemConfiguration(
+						OAuth2AuthorizationFlowConfiguration.class);
+
+			setGrantLifetime(
+				oAuth2AuthorizationFlowConfiguration.
+					authorizationCodeGrantTTL());
+		}
+		catch (ConfigurationException configurationException) {
+			throw new RuntimeException(configurationException);
+		}
 
 		setUseJwtFormatForAccessTokens(
 			_oAuth2AuthorizationServerConfiguration.issueJWTAccessToken());
@@ -1453,9 +1461,6 @@ public class LiferayOAuthDataProvider
 	@Reference
 	private OAuth2ApplicationScopeAliasesLocalService
 		_oAuth2ApplicationScopeAliasesLocalService;
-
-	private OAuth2AuthorizationFlowConfiguration
-		_oAuth2AuthorizationFlowConfiguration;
 
 	@Reference
 	private OAuth2AuthorizationLocalService _oAuth2AuthorizationLocalService;
