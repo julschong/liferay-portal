@@ -21,11 +21,11 @@ import com.liferay.adaptive.media.image.counter.AMImageCounter;
 import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.adaptive.media.image.optimizer.AMImageOptimizer;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
-import com.liferay.adaptive.media.image.size.AMImageSizeProvider;
-import com.liferay.adaptive.media.image.validator.AMImageValidator;
+import com.liferay.document.library.configuration.DLFileEntryConfiguration;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.document.library.kernel.service.DLFileVersionLocalService;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusMessageSender;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
@@ -43,15 +43,19 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sergio González
  */
 @Component(
+	configurationPid = "com.liferay.document.library.configuration.DLFileEntryConfiguration",
 	property = "adaptive.media.key=document-library",
 	service = AMImageOptimizer.class
 )
@@ -91,6 +95,13 @@ public class DLAMImageOptimizer implements AMImageOptimizer {
 			errorCounter);
 	}
 
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_dlFileEntryConfiguration = ConfigurableUtil.createConfigurable(
+			DLFileEntryConfiguration.class, properties);
+	}
+
 	private void _optimize(
 		long companyId, String configurationEntryUuid, int total,
 		AtomicInteger successCounter, AtomicInteger errorCounter) {
@@ -123,7 +134,9 @@ public class DLAMImageOptimizer implements AMImageOptimizer {
 				Property sizeProperty = PropertyFactoryUtil.forName("size");
 
 				dynamicQuery.add(
-					sizeProperty.le(_amImageSizeProvider.getImageMaxSize()));
+					sizeProperty.le(
+						_dlFileEntryConfiguration.
+							previewableProcessorMaxSize()));
 
 				DynamicQuery dlFileVersionDynamicQuery =
 					_dlFileVersionLocalService.dynamicQuery();
@@ -228,14 +241,10 @@ public class DLAMImageOptimizer implements AMImageOptimizer {
 	private AMImageProcessor _amImageProcessor;
 
 	@Reference
-	private AMImageSizeProvider _amImageSizeProvider;
-
-	@Reference
-	private AMImageValidator _amImageValidator;
-
-	@Reference
 	private BackgroundTaskStatusMessageSender
 		_backgroundTaskStatusMessageSender;
+
+	private volatile DLFileEntryConfiguration _dlFileEntryConfiguration;
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
