@@ -1449,3 +1449,25 @@ Delete implementations of `ScriptBundleProvider`, remove script files in `/META-
 ### Why was this change made?
 
 This change was made to address security vulnerabilities.
+
+---------------------------------------
+
+## Removed IndexStatusManagerInternalConfiguration
+- **Date:** 2023-June-21
+- **JIRA Ticket:** [LPS-185105](https://issues.liferay.com/browse/LPS-185105)
+
+### What changed?
+
+`IndexStatusManagerInternalConfiguration` is being removed.
+
+### Who is affected?
+
+This affects anyone using this configuration to bypass indexReadOnly in IndexStatusManager.
+
+### How should I update my code?
+
+This removal of the configuration has no replacement.
+
+### Why was this change made?
+
+This internal configuration currently is only used for testing purpose as a backdoor to turn IndexReadOnly off. We shall close such access.
