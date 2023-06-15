@@ -1404,3 +1404,26 @@ Remove `cacheDirCleanUpExpunge` and `cacheDirCleanUpFrequency` from `com.liferay
 ### Why was this change made?
 
 `S3FileCache` has various design flaws, and all other cloud-based store implementations in Liferay do not provide any caching mechanism.
+
+
+---------------------------------------
+
+## Removed IndexStatusManagerInternalConfiguration
+- **Date:** 2023-June-14
+- **JIRA Ticket:** [LPS-185105](https://issues.liferay.com/browse/LPS-185105)
+
+### What changed?
+
+`IndexStatusManagerInternalConfiguration` is being removed.
+
+### Who is affected?
+
+This affects anyone using this configuration to bypass indexReadOnly in IndexStatusManager.
+
+### How should I update my code?
+
+This removal of the configuration has no replacement.
+
+### Why was this change made?
+
+This internal configuration currently is only used for testing purpose as a backdoor to turn IndexReadOnly off. We shall close such access.
