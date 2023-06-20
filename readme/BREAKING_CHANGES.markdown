@@ -1449,3 +1449,25 @@ Delete implementations of `ScriptBundleProvider`, remove script files in `/META-
 ### Why was this change made?
 
 This change was made to address security vulnerabilities.
+
+---------------------------------------
+
+## Removed AMImageConfiguration and AMImageConfigurationProvider
+- **Date:** 2023-June-21
+- **JIRA Ticket:** [LPS-185768](https://issues.liferay.com/browse/LPS-185768)
+
+### What changed?
+
+`AMImageConfiguration` and its provider `AMImageConfigurationProvider` are removed.
+
+### Who is affected?
+
+This affects anyone using this configuration right now.
+
+### How should I update my code?
+
+Replace configuration usage with `DLFileEntryConfiguration` `previewableProcessorMaxSize`
+
+### Why was this change made?
+
+`AMImageConfiguration` `imageMaxSize` property has been deprecated since 7.2.x in favor of using `DLFileEntryConfiguration` `previewableProcessorMaxSize`.
