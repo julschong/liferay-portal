@@ -3,6 +3,6 @@ dependencies {
 	testIntegrationCompile group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	testIntegrationCompile project(":apps:adaptive-media:adaptive-media-api")
 	testIntegrationCompile project(":apps:adaptive-media:adaptive-media-image-api")
-	testIntegrationCompile project(":apps:adaptive-media:adaptive-media-image-impl")
+	testIntegrationCompile project(":apps:adaptive-media:adaptive-media-image-service")
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
 }
