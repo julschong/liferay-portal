@@ -26,4 +26,25 @@ public interface AssetRendererFactoryRegistry {
 	public List<AssetRendererFactory<?>> getAssetRendererFactories(
 		long companyId);
 
+	public List<AssetRendererFactory<?>> getAssetRendererFactories(
+		long companyId, boolean filterSelectable);
+
+	public <T> AssetRendererFactory<T> getAssetRendererFactoryByClass(
+		Class<T> clazz);
+
+	public AssetRendererFactory<?> getAssetRendererFactoryByClassName(
+		String className);
+
+	public AssetRendererFactory<?> getAssetRendererFactoryByClassNameId(
+		long classNameId);
+
+	public AssetRendererFactory<?> getAssetRendererFactoryByType(String type);
+
+	public long[] getClassNameIds(long companyId);
+
+	public long[] getClassNameIds(long companyId, boolean filterSelectable);
+
+	public long[] getIndexableClassNameIds(
+		long companyId, boolean filterSelectable);
+
 }
