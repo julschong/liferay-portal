@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.internal.asset;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 
