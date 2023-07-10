@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.search.internal.asset;
+package com.liferay.asset.kernel;
 
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 
