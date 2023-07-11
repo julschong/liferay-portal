@@ -15,7 +15,7 @@
 package com.liferay.asset.categories.info.collection.provider.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -213,7 +213,7 @@ public class
 			Assert.assertEquals(pageItems.toString(), 1, pageItems.size());
 
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassName(
 						JournalArticle.class.getName());
 
@@ -256,6 +256,9 @@ public class
 
 	@Inject
 	private AssetCategoryLocalService _assetCategoryLocalService;
+
+	@Inject
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Inject
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

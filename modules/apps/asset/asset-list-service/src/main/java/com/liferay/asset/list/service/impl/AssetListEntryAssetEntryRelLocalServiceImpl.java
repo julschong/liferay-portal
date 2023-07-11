@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.service.impl;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
@@ -313,7 +313,7 @@ public class AssetListEntryAssetEntryRelLocalServiceImpl
 				}
 
 				AssetRendererFactory<?> assetRendererFactory =
-					AssetRendererFactoryRegistryUtil.
+					_assetRendererFactoryRegistry.
 						getAssetRendererFactoryByClassName(
 							assetEntry.getClassName());
 
@@ -336,6 +336,9 @@ public class AssetListEntryAssetEntryRelLocalServiceImpl
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private UserLocalService _userLocalService;

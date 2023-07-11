@@ -14,6 +14,7 @@
 
 package com.liferay.asset.internal.info.collection.provider;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.util.AssetHelper;
@@ -58,7 +59,8 @@ public class RecentContentInfoCollectionProvider
 		AssetEntryQuery assetEntryQuery = getAssetEntryQuery(
 			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
 			collectionQuery.getPagination(),
-			new com.liferay.info.sort.Sort(Field.MODIFIED_DATE, true), null);
+			new com.liferay.info.sort.Sort(Field.MODIFIED_DATE, true), null,
+			_assetRendererFactoryRegistry);
 
 		try {
 			SearchContext searchContext = _getSearchContext();
@@ -110,6 +112,9 @@ public class RecentContentInfoCollectionProvider
 
 	@Reference
 	private AssetHelper _assetHelper;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private Language _language;

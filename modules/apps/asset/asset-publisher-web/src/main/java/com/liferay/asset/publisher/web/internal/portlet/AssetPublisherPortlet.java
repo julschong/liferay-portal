@@ -15,7 +15,7 @@
 package com.liferay.asset.publisher.web.internal.portlet;
 
 import com.liferay.asset.constants.AssetWebKeys;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
 import com.liferay.asset.kernel.model.ClassTypeField;
@@ -149,7 +149,7 @@ public class AssetPublisherPortlet extends MVCPortlet {
 			String fieldName = ParamUtil.getString(resourceRequest, "name");
 
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassName(className);
 
 			ClassTypeReader classTypeReader =
@@ -292,8 +292,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 					assetPublisherCustomizerRegistry.
 						getAssetPublisherCustomizer(rootPortletId),
 					assetPublisherHelper, assetPublisherWebConfiguration,
-					assetPublisherWebHelper, infoItemServiceRegistry,
-					itemSelector, portal, resourceRequest, resourceResponse,
+					assetPublisherWebHelper, _assetRendererFactoryRegistry,
+					infoItemServiceRegistry, itemSelector, portal,
+					resourceRequest, resourceResponse,
 					resourceRequest.getPreferences(), requestContextMapper,
 					segmentsEntryRetriever);
 
@@ -412,10 +413,10 @@ public class AssetPublisherPortlet extends MVCPortlet {
 					assetPublisherCustomizerRegistry.
 						getAssetPublisherCustomizer(rootPortletId),
 					assetPublisherHelper, assetPublisherWebConfiguration,
-					assetPublisherWebHelper, infoItemServiceRegistry,
-					itemSelector, portal, renderRequest, renderResponse,
-					portletPreferences, requestContextMapper,
-					segmentsEntryRetriever);
+					assetPublisherWebHelper, _assetRendererFactoryRegistry,
+					infoItemServiceRegistry, itemSelector, portal,
+					renderRequest, renderResponse, portletPreferences,
+					requestContextMapper, segmentsEntryRetriever);
 
 			renderRequest.setAttribute(
 				AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
@@ -538,5 +539,8 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetPublisherPortlet.class);
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 }

@@ -18,7 +18,7 @@ import com.liferay.asset.display.page.configuration.AssetDisplayPageConfiguratio
 import com.liferay.asset.display.page.constants.AssetDisplayPageConstants;
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryService;
@@ -278,6 +278,9 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 	protected AssetEntryService assetEntryLocalService;
 
 	@Reference
+	protected AssetRendererFactoryRegistry assetRendererFactoryRegistry;
+
+	@Reference
 	protected InfoItemServiceRegistry infoItemServiceRegistry;
 
 	@Reference
@@ -306,7 +309,7 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 			layoutDisplayPageObjectProvider.getClassName());
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				className);
 
 		if (assetRendererFactory == null) {

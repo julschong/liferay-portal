@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.web.internal.display.context;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
 import com.liferay.asset.kernel.model.ClassTypeField;
@@ -45,9 +45,11 @@ public class SelectStructureFieldDisplayContext {
 
 	public SelectStructureFieldDisplayContext(
 		AssetRendererFactoryClassProvider assetRendererFactoryClassProvider,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
 		_assetRendererFactoryClassProvider = assetRendererFactoryClassProvider;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 
@@ -60,7 +62,7 @@ public class SelectStructureFieldDisplayContext {
 			"assetClassName",
 			() -> {
 				AssetRendererFactory<?> assetRendererFactory =
-					AssetRendererFactoryRegistryUtil.
+					_assetRendererFactoryRegistry.
 						getAssetRendererFactoryByClassName(_getClassName());
 
 				Class<? extends AssetRendererFactory<?>> clazz =
@@ -117,7 +119,7 @@ public class SelectStructureFieldDisplayContext {
 
 	public List<SelectOption> getSelectOptions() throws Exception {
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				_getClassName());
 
 		ClassTypeReader classTypeReader =
@@ -189,6 +191,7 @@ public class SelectStructureFieldDisplayContext {
 
 	private final AssetRendererFactoryClassProvider
 		_assetRendererFactoryClassProvider;
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private String _className;
 	private Long _classTypeId;
 	private String _ddmStructureFieldName;

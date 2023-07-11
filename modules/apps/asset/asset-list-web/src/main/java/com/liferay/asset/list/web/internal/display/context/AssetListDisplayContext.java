@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.web.internal.display.context;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
 import com.liferay.asset.kernel.model.ClassTypeReader;
@@ -78,9 +78,11 @@ public class AssetListDisplayContext {
 
 	public AssetListDisplayContext(
 		AssetRendererFactoryClassProvider assetRendererFactoryClassProvider,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
 		_assetRendererFactoryClassProvider = assetRendererFactoryClassProvider;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 
@@ -346,7 +348,7 @@ public class AssetListDisplayContext {
 		String classTypeLabel = StringPool.DASH;
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				assetListEntry.getAssetEntryType());
 
 		if ((assetRendererFactory != null) &&
@@ -556,6 +558,7 @@ public class AssetListDisplayContext {
 	private Integer _assetListEntryType;
 	private final AssetRendererFactoryClassProvider
 		_assetRendererFactoryClassProvider;
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private String _displayStyle;
 	private final HttpServletRequest _httpServletRequest;
 	private String _keywords;

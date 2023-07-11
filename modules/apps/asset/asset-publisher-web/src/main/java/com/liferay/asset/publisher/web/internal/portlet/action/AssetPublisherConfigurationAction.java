@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal.portlet.action;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.asset.kernel.exception.DuplicateQueryRuleException;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -153,9 +153,10 @@ public class AssetPublisherConfigurationAction
 				assetListEntrySegmentsEntryRelLocalService,
 				assetPublisherCustomizer, assetPublisherHelper,
 				assetPublisherWebConfiguration, assetPublisherWebHelper,
-				infoItemServiceRegistry, itemSelector, portal, renderRequest,
-				renderResponse, renderRequest.getPreferences(),
-				requestContextMapper, segmentsEntryRetriever);
+				_assetRendererFactoryRegistry, infoItemServiceRegistry,
+				itemSelector, portal, renderRequest, renderResponse,
+				renderRequest.getPreferences(), requestContextMapper,
+				segmentsEntryRetriever);
 
 		httpServletRequest.setAttribute(
 			AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
@@ -472,7 +473,7 @@ public class AssetPublisherConfigurationAction
 		}
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				portal.getClassName(defaultAssetTypeId));
 
 		return assetPublisherWebHelper.getClassName(assetRendererFactory);
@@ -889,5 +890,8 @@ public class AssetPublisherConfigurationAction
 				queryRule.getName());
 		}
 	}
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 }

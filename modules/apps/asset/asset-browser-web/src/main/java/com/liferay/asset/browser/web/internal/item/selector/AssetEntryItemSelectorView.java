@@ -15,6 +15,7 @@
 package com.liferay.asset.browser.web.internal.item.selector;
 
 import com.liferay.asset.browser.web.internal.display.context.AssetBrowserDisplayContext;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.depot.service.DepotEntryService;
@@ -92,7 +93,7 @@ public class AssetEntryItemSelectorView
 				_assetEntryLocalService, _assetHelper,
 				assetEntryItemSelectorCriterion, _depotEntryService,
 				httpServletRequest, _portal, portletURL, renderRequest,
-				renderResponse);
+				renderResponse, _assetRendererFactoryRegistry);
 
 		_itemSelectorViewDescriptorRenderer.renderHTML(
 			httpServletRequest, servletResponse,
@@ -100,7 +101,8 @@ public class AssetEntryItemSelectorView
 			search,
 			new AssetEntryItemSelectorViewDescriptor(
 				httpServletRequest, assetBrowserDisplayContext,
-				assetEntryItemSelectorCriterion, portletURL));
+				assetEntryItemSelectorCriterion, _assetRendererFactoryRegistry,
+				portletURL));
 	}
 
 	private static final List<ItemSelectorReturnType>
@@ -112,6 +114,9 @@ public class AssetEntryItemSelectorView
 
 	@Reference
 	private AssetHelper _assetHelper;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private DepotEntryService _depotEntryService;

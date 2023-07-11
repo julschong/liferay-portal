@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.web.internal.portlet.action;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
 import com.liferay.asset.kernel.model.ClassTypeField;
@@ -77,7 +77,7 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 				resourceRequest, "className");
 
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassName(className);
 
 			ClassTypeReader classTypeReader =
@@ -198,6 +198,9 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 
 		return fieldValue;
 	}
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private JSONFactory _jsonFactory;

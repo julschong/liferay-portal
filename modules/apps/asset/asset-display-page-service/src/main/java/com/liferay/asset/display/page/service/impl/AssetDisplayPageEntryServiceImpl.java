@@ -16,7 +16,7 @@ package com.liferay.asset.display.page.service.impl;
 
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 import com.liferay.asset.display.page.service.base.AssetDisplayPageEntryServiceBaseImpl;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemPermissionProvider;
@@ -185,7 +185,7 @@ public class AssetDisplayPageEntryServiceImpl
 		}
 		else {
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassName(className);
 
 			if (!assetRendererFactory.hasPermission(
@@ -195,6 +195,9 @@ public class AssetDisplayPageEntryServiceImpl
 			}
 		}
 	}
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private InfoItemServiceRegistry _infoItemServiceRegistry;

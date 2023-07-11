@@ -15,7 +15,7 @@
 package com.liferay.asset.categories.admin.web.internal.change.tracking.spi.display;
 
 import com.liferay.asset.categories.admin.web.constants.AssetCategoriesAdminPortletKeys;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategoryConstants;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
@@ -152,7 +152,7 @@ public class AssetVocabularyCTDisplayRenderer
 			}
 			else {
 				AssetRendererFactory<?> assetRendererFactory =
-					AssetRendererFactoryRegistryUtil.
+					_assetRendererFactoryRegistry.
 						getAssetRendererFactoryByClassNameId(classNameId);
 
 				ClassTypeReader classTypeReader =
@@ -192,6 +192,9 @@ public class AssetVocabularyCTDisplayRenderer
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetVocabularyCTDisplayRenderer.class);
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

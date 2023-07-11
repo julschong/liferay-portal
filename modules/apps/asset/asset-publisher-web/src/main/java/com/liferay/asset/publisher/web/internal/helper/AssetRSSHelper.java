@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal.helper;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.publisher.constants.AssetPublisherWebKeys;
@@ -276,7 +276,7 @@ public class AssetRSSHelper {
 		throws Exception {
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				assetEntry.getClassName());
 
 		return StringBundler.concat(
@@ -318,6 +318,9 @@ public class AssetRSSHelper {
 
 	@Reference
 	private AssetPublisherHelper _assetPublisherHelper;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private Language _language;

@@ -14,7 +14,7 @@
 
 package com.liferay.asset.categories.admin.web.internal.exportimport.data.handler.helper;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategoryConstants;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
@@ -36,11 +36,14 @@ public class AssetVocabularySettingsImportHelper
 	extends AssetVocabularySettingsHelper {
 
 	public AssetVocabularySettingsImportHelper(
-		String settings, ClassNameLocalService classNameLocalService,
-		long[] groupIds, Locale locale, JSONObject settingsMetadataJSONObject) {
+		String settings,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
+		ClassNameLocalService classNameLocalService, long[] groupIds,
+		Locale locale, JSONObject settingsMetadataJSONObject) {
 
 		super(settings);
 
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_classNameLocalService = classNameLocalService;
 		_groupIds = groupIds;
 		_locale = locale;
@@ -134,8 +137,8 @@ public class AssetVocabularySettingsImportHelper
 		}
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.
-				getAssetRendererFactoryByClassNameId(newClassNameId);
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassNameId(
+				newClassNameId);
 
 		ClassTypeReader classTypeReader =
 			assetRendererFactory.getClassTypeReader();
@@ -169,6 +172,7 @@ public class AssetVocabularySettingsImportHelper
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetVocabularySettingsImportHelper.class);
 
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private long[] _classNameIds = new long[0];
 	private final ClassNameLocalService _classNameLocalService;
 	private long[] _classTypePKs = new long[0];

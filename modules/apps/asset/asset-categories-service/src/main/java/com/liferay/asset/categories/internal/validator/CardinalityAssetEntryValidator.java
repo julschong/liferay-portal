@@ -14,7 +14,7 @@
 
 package com.liferay.asset.categories.internal.validator;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.exception.AssetCategoryException;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -92,7 +92,7 @@ public class CardinalityAssetEntryValidator implements AssetEntryValidator {
 		long groupId, String className, long classPK) {
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				className);
 
 		if ((assetRendererFactory == null) ||
@@ -129,6 +129,9 @@ public class CardinalityAssetEntryValidator implements AssetEntryValidator {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CardinalityAssetEntryValidator.class.getName());
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

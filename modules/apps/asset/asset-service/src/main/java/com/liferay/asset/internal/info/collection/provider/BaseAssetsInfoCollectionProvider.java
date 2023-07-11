@@ -14,7 +14,7 @@
 
 package com.liferay.asset.internal.info.collection.provider;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.info.pagination.Pagination;
 import com.liferay.info.sort.Sort;
@@ -30,12 +30,12 @@ public abstract class BaseAssetsInfoCollectionProvider {
 
 	protected AssetEntryQuery getAssetEntryQuery(
 		long companyId, long groupId, Pagination pagination, Sort sort1,
-		Sort sort2) {
+		Sort sort2, AssetRendererFactoryRegistry assetRendererFactoryRegistry) {
 
 		AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
 
 		assetEntryQuery.setClassNameIds(
-			AssetRendererFactoryRegistryUtil.getIndexableClassNameIds(
+			assetRendererFactoryRegistry.getIndexableClassNameIds(
 				companyId, true));
 		assetEntryQuery.setEnablePermissions(true);
 

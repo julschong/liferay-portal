@@ -17,7 +17,7 @@ package com.liferay.asset.publisher.web.internal.portlet;
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
 import com.liferay.asset.display.page.portlet.BaseAssetDisplayPageFriendlyURLResolver;
 import com.liferay.asset.display.page.util.AssetDisplayPageUtil;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
@@ -210,7 +210,7 @@ public class DefaultAssetDisplayPageFriendlyURLResolver
 		}
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				JournalArticle.class.getName());
 
 		try {
@@ -288,7 +288,7 @@ public class DefaultAssetDisplayPageFriendlyURLResolver
 			namespace + "mvcPath", new String[] {"/view_content.jsp"});
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				JournalArticle.class.getName());
 
 		actualParams.put(
@@ -607,6 +607,9 @@ public class DefaultAssetDisplayPageFriendlyURLResolver
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal.util;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
@@ -223,7 +223,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 			String assetEntryType = rootElement.elementText("asset-entry-type");
 
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassName(assetEntryType);
 
 			String portletId = null;
@@ -264,7 +264,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 			}
 
 			assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassName(
 						assetEntry.getClassName());
 
@@ -411,7 +411,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 
 		if (!anyAssetType) {
 			long[] availableClassNameIds =
-				AssetRendererFactoryRegistryUtil.getClassNameIds(
+				_assetRendererFactoryRegistry.getClassNameIds(
 					layout.getCompanyId());
 
 			assetEntryQuery.setClassNameIds(
@@ -1025,7 +1025,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 
 			if (!assetEntries.isEmpty() && (start < groupTotal)) {
 				AssetRendererFactory<?> groupAssetRendererFactory =
-					AssetRendererFactoryRegistryUtil.
+					_assetRendererFactoryRegistry.
 						getAssetRendererFactoryByClassNameId(classNameId);
 
 				String title = ResourceActionsUtil.getModelResource(
@@ -1441,6 +1441,9 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 
 	private volatile AssetPublisherWebConfiguration
 		_assetPublisherWebConfiguration;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;

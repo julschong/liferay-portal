@@ -15,7 +15,7 @@
 package com.liferay.asset.info.display.internal.url.provider;
 
 import com.liferay.asset.info.display.url.provider.AssetInfoEditURLProvider;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.petra.string.StringPool;
@@ -49,7 +49,7 @@ public class AssetInfoEditURLProviderImpl implements AssetInfoEditURLProvider {
 		String className, long classPK, HttpServletRequest httpServletRequest) {
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				className);
 
 		if (assetRendererFactory == null) {
@@ -117,6 +117,9 @@ public class AssetInfoEditURLProviderImpl implements AssetInfoEditURLProvider {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetInfoEditURLProviderImpl.class);
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private Portal _portal;

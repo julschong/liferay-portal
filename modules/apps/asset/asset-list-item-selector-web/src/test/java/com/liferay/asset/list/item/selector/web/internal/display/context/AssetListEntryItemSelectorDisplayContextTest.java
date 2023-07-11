@@ -85,7 +85,7 @@ public class AssetListEntryItemSelectorDisplayContextTest {
 		AssetListEntryItemSelectorDisplayContext
 			assetListEntryItemSelectorDisplayContext =
 				new AssetListEntryItemSelectorDisplayContext(
-					httpServletRequest, infoItemServiceRegistry,
+					httpServletRequest, null, infoItemServiceRegistry,
 					infoSearchClassMapperRegistry, null, null, null);
 
 		String[] infoItemClassNames = ReflectionTestUtil.invoke(

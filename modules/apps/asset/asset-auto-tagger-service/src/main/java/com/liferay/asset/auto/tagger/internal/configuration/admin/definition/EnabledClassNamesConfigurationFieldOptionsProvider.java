@@ -16,7 +16,7 @@ package com.liferay.asset.auto.tagger.internal.configuration.admin.definition;
 
 import com.liferay.asset.auto.tagger.text.extractor.TextExtractor;
 import com.liferay.asset.auto.tagger.text.extractor.TextExtractorRegistry;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.configuration.admin.definition.ConfigurationFieldOptionsProvider;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -44,7 +44,7 @@ public class EnabledClassNamesConfigurationFieldOptionsProvider
 	@Override
 	public List<Option> getOptions() {
 		return TransformUtil.transform(
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
+			_assetRendererFactoryRegistry.getAssetRendererFactories(
 				CompanyThreadLocal.getCompanyId()),
 			assetRendererFactory -> {
 				TextExtractor<?> textExtractor =
@@ -70,6 +70,9 @@ public class EnabledClassNamesConfigurationFieldOptionsProvider
 				};
 			});
 	}
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private TextExtractorRegistry _textExtractorRegistry;

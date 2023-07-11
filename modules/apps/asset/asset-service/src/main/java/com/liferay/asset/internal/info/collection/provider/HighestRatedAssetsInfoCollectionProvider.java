@@ -14,6 +14,7 @@
 
 package com.liferay.asset.internal.info.collection.provider;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
@@ -51,7 +52,7 @@ public class HighestRatedAssetsInfoCollectionProvider
 		AssetEntryQuery assetEntryQuery = getAssetEntryQuery(
 			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
 			collectionQuery.getPagination(), new Sort("ratings", true),
-			new Sort("title", true));
+			new Sort("title", true), _assetRendererFactoryRegistry);
 
 		try {
 			return InfoPage.of(
@@ -77,6 +78,9 @@ public class HighestRatedAssetsInfoCollectionProvider
 
 	@Reference
 	private AssetEntryService _assetEntryService;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private Language _language;

@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.service.impl;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
@@ -586,7 +586,7 @@ public class AssetListEntryLocalServiceImpl
 
 	private String _getAssetRendererFactoryName(String assetEntryType) {
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				assetEntryType);
 
 		Class<?> clazz = assetRendererFactory.getClass();
@@ -739,7 +739,7 @@ public class AssetListEntryLocalServiceImpl
 
 	private boolean _isSupportsItemSubtypes(String assetEntryType) {
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				assetEntryType);
 
 		if ((assetRendererFactory != null) &&
@@ -792,6 +792,9 @@ public class AssetListEntryLocalServiceImpl
 	@Reference
 	private AssetListEntrySegmentsEntryRelPersistence
 		_assetListEntrySegmentsEntryRelPersistence;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private Portal _portal;

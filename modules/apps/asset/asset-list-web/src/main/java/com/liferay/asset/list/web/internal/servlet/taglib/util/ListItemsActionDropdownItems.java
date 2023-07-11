@@ -15,7 +15,7 @@
 package com.liferay.asset.list.web.internal.servlet.taglib.util;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -53,6 +53,7 @@ public class ListItemsActionDropdownItems {
 
 	public ListItemsActionDropdownItems(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
 		DLAppService dlAppService,
 		InfoEditURLProviderRegistry infoEditURLProviderRegistry,
 		InfoItemServiceRegistry infoItemServiceRegistry,
@@ -61,6 +62,7 @@ public class ListItemsActionDropdownItems {
 
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_dlAppService = dlAppService;
 		_infoEditURLProviderRegistry = infoEditURLProviderRegistry;
 		_infoItemServiceRegistry = infoItemServiceRegistry;
@@ -122,7 +124,7 @@ public class ListItemsActionDropdownItems {
 		throws Exception {
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				assetEntry.getClassName());
 
 		if (assetRendererFactory == null) {
@@ -215,6 +217,7 @@ public class ListItemsActionDropdownItems {
 
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private final DLAppService _dlAppService;
 	private final HttpServletRequest _httpServletRequest;
 	private final InfoEditURLProviderRegistry _infoEditURLProviderRegistry;

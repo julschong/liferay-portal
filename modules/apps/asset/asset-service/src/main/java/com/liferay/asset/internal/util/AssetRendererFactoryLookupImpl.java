@@ -14,6 +14,7 @@
 
 package com.liferay.asset.internal.util;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.util.AssetRendererFactoryLookup;
@@ -38,6 +39,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -68,13 +70,13 @@ public class AssetRendererFactoryLookupImpl
 
 		_initializedAssetRendererFactories.add(className);
 
-		return AssetRendererFactoryRegistryUtil.
-			getAssetRendererFactoryByClassName(className);
+		return _assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
+			className);
 	}
 
 	@Override
 	public AssetRendererFactory<?> getAssetRendererFactoryByType(String type) {
-		return AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByType(
+		return _assetRendererFactoryRegistry.getAssetRendererFactoryByType(
 			type);
 	}
 
@@ -148,6 +150,10 @@ public class AssetRendererFactoryLookupImpl
 		AssetRendererFactoryLookupImpl.class);
 
 	private Instant _activated;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
+
 	private final Map<String, CountDownLatch>
 		_assetRenderFactoriesCountDownLatchMap = new ConcurrentHashMap<>();
 	private BundleContext _bundleContext;

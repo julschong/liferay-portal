@@ -14,6 +14,7 @@
 
 package com.liferay.asset.internal.info.collection.provider;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
@@ -56,7 +57,7 @@ public class RelatedAssetsRelatedInfoItemCollectionProvider
 			AssetEntryQuery assetEntryQuery = getAssetEntryQuery(
 				assetEntry.getCompanyId(), assetEntry.getGroupId(),
 				collectionQuery.getPagination(), collectionQuery.getSort(),
-				null);
+				null, _assetRendererFactoryRegistry);
 
 			assetEntryQuery.setLinkedAssetEntryIds(
 				new long[] {assetEntry.getEntryId()});
@@ -78,6 +79,9 @@ public class RelatedAssetsRelatedInfoItemCollectionProvider
 
 	@Reference
 	private AssetEntryService _assetEntryService;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private Language _language;

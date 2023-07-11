@@ -15,6 +15,7 @@
 package com.liferay.asset.browser.web.internal.item.selector;
 
 import com.liferay.asset.browser.web.internal.display.context.AssetBrowserDisplayContext;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
@@ -48,11 +49,13 @@ public class AssetEntryItemSelectorViewDescriptor
 		HttpServletRequest httpServletRequest,
 		AssetBrowserDisplayContext assetBrowserDisplayContext,
 		AssetEntryItemSelectorCriterion assetEntryItemSelectorCriterion,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
 		PortletURL portletURL) {
 
 		_httpServletRequest = httpServletRequest;
 		_assetBrowserDisplayContext = assetBrowserDisplayContext;
 		_assetEntryItemSelectorCriterion = assetEntryItemSelectorCriterion;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_portletURL = portletURL;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
@@ -129,7 +132,9 @@ public class AssetEntryItemSelectorViewDescriptor
 	@Override
 	public ItemDescriptor getItemDescriptor(AssetEntry assetEntry) {
 		return new AssetEntryItemDescriptor(
-			_assetBrowserDisplayContext, assetEntry, _httpServletRequest);
+			_assetBrowserDisplayContext, assetEntry, _httpServletRequest,
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
+				assetEntry.getClassName()));
 	}
 
 	@Override
@@ -182,6 +187,7 @@ public class AssetEntryItemSelectorViewDescriptor
 	private final AssetBrowserDisplayContext _assetBrowserDisplayContext;
 	private final AssetEntryItemSelectorCriterion
 		_assetEntryItemSelectorCriterion;
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private final HttpServletRequest _httpServletRequest;
 	private final PortletURL _portletURL;
 	private final ThemeDisplay _themeDisplay;

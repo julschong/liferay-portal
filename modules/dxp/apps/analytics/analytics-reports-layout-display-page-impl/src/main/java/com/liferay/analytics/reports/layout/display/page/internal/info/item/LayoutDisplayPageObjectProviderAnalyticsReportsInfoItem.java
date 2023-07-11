@@ -18,7 +18,7 @@ import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.asset.display.page.util.AssetDisplayPageUtil;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.info.field.InfoField;
@@ -344,7 +344,7 @@ public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItem
 		throws PortalException {
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				layoutDisplayPageObjectProvider.getClassName());
 
 		AssetRenderer<?> assetRenderer = null;
@@ -371,6 +371,9 @@ public class LayoutDisplayPageObjectProviderAnalyticsReportsInfoItem
 	@Reference
 	private AssetDisplayPageEntryLocalService
 		_assetDisplayPageEntryLocalService;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.web.internal.display.context;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -126,6 +126,7 @@ public class EditAssetListDisplayContext {
 
 	public EditAssetListDisplayContext(
 		AssetRendererFactoryClassProvider assetRendererFactoryClassProvider,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
 		InfoSearchClassMapperRegistry infoSearchClassMapperRegistry,
 		ItemSelector itemSelector, PortletRequest portletRequest,
 		PortletResponse portletResponse,
@@ -133,6 +134,7 @@ public class EditAssetListDisplayContext {
 		UnicodeProperties unicodeProperties) {
 
 		_assetRendererFactoryClassProvider = assetRendererFactoryClassProvider;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_infoSearchClassMapperRegistry = infoSearchClassMapperRegistry;
 		_itemSelector = itemSelector;
 		_portletRequest = portletRequest;
@@ -176,7 +178,7 @@ public class EditAssetListDisplayContext {
 
 		for (long classNameId : classNameIds) {
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassNameId(classNameId);
 
 			if (!assetRendererFactory.isActive(_themeDisplay.getCompanyId()) ||
@@ -491,7 +493,7 @@ public class EditAssetListDisplayContext {
 		}
 
 		List<Long> availableClassNameIds = ListUtil.fromArray(
-			AssetRendererFactoryRegistryUtil.getIndexableClassNameIds(
+			_assetRendererFactoryRegistry.getIndexableClassNameIds(
 				_themeDisplay.getCompanyId(), true));
 
 		availableClassNameIds = ListUtil.sort(
@@ -656,8 +658,8 @@ public class EditAssetListDisplayContext {
 		}
 
 		String className = getClassName(
-			AssetRendererFactoryRegistryUtil.
-				getAssetRendererFactoryByClassNameId(classNameIds[0]));
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassNameId(
+				classNameIds[0]));
 
 		long classTypeId = GetterUtil.getLong(
 			_unicodeProperties.getProperty("anyClassType" + className));
@@ -1045,7 +1047,7 @@ public class EditAssetListDisplayContext {
 							PortalUtil.getClassName(classNameId));
 
 					AssetRendererFactory<?> assetRendererFactory =
-						AssetRendererFactoryRegistryUtil.
+						_assetRendererFactoryRegistry.
 							getAssetRendererFactoryByClassName(className);
 
 					if (assetRendererFactory == null) {
@@ -1146,8 +1148,8 @@ public class EditAssetListDisplayContext {
 		}
 
 		String className = getClassName(
-			AssetRendererFactoryRegistryUtil.
-				getAssetRendererFactoryByClassNameId(classNameIds[0]));
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassNameId(
+				classNameIds[0]));
 
 		_subtypeFieldsFilterEnabled = GetterUtil.getBoolean(
 			_unicodeProperties.getProperty(
@@ -1312,7 +1314,7 @@ public class EditAssetListDisplayContext {
 
 	private long[] _getDefaultClassNameIds() {
 		List<AssetRendererFactory<?>> assetRendererFactories = ListUtil.sort(
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
+			_assetRendererFactoryRegistry.getAssetRendererFactories(
 				_themeDisplay.getCompanyId(), true),
 			new AssetRendererFactoryTypeNameComparator(
 				_themeDisplay.getLocale()));
@@ -1407,7 +1409,7 @@ public class EditAssetListDisplayContext {
 			Validator.isNotNull(_ddmStructureFieldValue)) {
 
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassNameId(classNameIds[0]);
 
 			ClassTypeReader classTypeReader =
@@ -1435,6 +1437,7 @@ public class EditAssetListDisplayContext {
 	private Integer _assetListEntryType;
 	private final AssetRendererFactoryClassProvider
 		_assetRendererFactoryClassProvider;
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private List<Long> _availableClassNameIds;
 	private List<SegmentsEntry> _availableSegmentsEntries;
 	private String _backURL;

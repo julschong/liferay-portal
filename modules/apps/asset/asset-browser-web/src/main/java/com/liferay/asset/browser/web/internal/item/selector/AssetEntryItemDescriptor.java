@@ -16,7 +16,6 @@ package com.liferay.asset.browser.web.internal.item.selector;
 
 import com.liferay.asset.browser.web.internal.display.context.AssetBrowserDisplayContext;
 import com.liferay.asset.browser.web.internal.frontend.taglib.clay.servlet.taglib.AssetEntryVerticalCard;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -48,15 +47,13 @@ public class AssetEntryItemDescriptor
 
 	public AssetEntryItemDescriptor(
 		AssetBrowserDisplayContext assetBrowserDisplayContext,
-		AssetEntry assetEntry, HttpServletRequest httpServletRequest) {
+		AssetEntry assetEntry, HttpServletRequest httpServletRequest,
+		AssetRendererFactory<?> assetRendererFactory) {
 
 		_assetBrowserDisplayContext = assetBrowserDisplayContext;
 		_assetEntry = assetEntry;
 		_httpServletRequest = httpServletRequest;
-
-		_assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
-				assetEntry.getClassName());
+		_assetRendererFactory = assetRendererFactory;
 	}
 
 	@Override

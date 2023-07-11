@@ -16,6 +16,7 @@ package com.liferay.asset.categories.admin.web.internal.exportimport.data.handle
 
 import com.liferay.asset.categories.admin.web.internal.exportimport.data.handler.helper.AssetVocabularySettingsExportHelper;
 import com.liferay.asset.categories.admin.web.internal.exportimport.data.handler.helper.AssetVocabularySettingsImportHelper;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.exportimport.data.handler.base.BaseStagedModelDataHandler;
@@ -266,7 +267,8 @@ public class AssetVocabularyStagedModelDataHandler
 		AssetVocabularySettingsExportHelper
 			assetVocabularySettingsExportHelper =
 				new AssetVocabularySettingsExportHelper(
-					vocabulary.getSettings(), _jsonFactory, locale);
+					vocabulary.getSettings(), _assetRendererFactoryRegistry,
+					_jsonFactory, locale);
 
 		portletDataContext.addZipEntry(
 			settingsMetadataPath,
@@ -297,8 +299,9 @@ public class AssetVocabularyStagedModelDataHandler
 		AssetVocabularySettingsImportHelper
 			assetVocabularySettingsImportHelper =
 				new AssetVocabularySettingsImportHelper(
-					vocabulary.getSettings(), _classNameLocalService, groupIds,
-					locale, settingsMetadataJSONObject);
+					vocabulary.getSettings(), _assetRendererFactoryRegistry,
+					_classNameLocalService, groupIds, locale,
+					settingsMetadataJSONObject);
 
 		return assetVocabularySettingsImportHelper.getSettings();
 	}
@@ -371,6 +374,9 @@ public class AssetVocabularyStagedModelDataHandler
 	}
 
 	private static final String _SETTINGS_METADATA = "settings-metadata";
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

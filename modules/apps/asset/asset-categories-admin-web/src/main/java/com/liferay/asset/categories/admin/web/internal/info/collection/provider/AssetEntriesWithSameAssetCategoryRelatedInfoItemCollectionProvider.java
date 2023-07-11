@@ -14,7 +14,7 @@
 
 package com.liferay.asset.categories.admin.web.internal.info.collection.provider;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -194,7 +194,7 @@ public class AssetEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		return AssetRendererFactoryRegistryUtil.getIndexableClassNameIds(
+		return _assetRendererFactoryRegistry.getIndexableClassNameIds(
 			serviceContext.getCompanyId(), true);
 	}
 
@@ -203,7 +203,7 @@ public class AssetEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 			ServiceContextThreadLocal.getServiceContext();
 
 		List<AssetRendererFactory<?>> assetRendererFactories = ListUtil.filter(
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
+			_assetRendererFactoryRegistry.getAssetRendererFactories(
 				serviceContext.getCompanyId(), true),
 			assetRendererFactory -> {
 				if (!assetRendererFactory.isCategorizable()) {
@@ -271,6 +271,9 @@ public class AssetEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 
 	@Reference
 	private AssetHelper _assetHelper;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private Language _language;

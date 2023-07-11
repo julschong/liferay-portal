@@ -15,7 +15,7 @@
 package com.liferay.asset.info.internal.item.provider;
 
 import com.liferay.asset.info.item.provider.AssetEntryInfoItemFieldSetProvider;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.exception.NoSuchEntryException;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
@@ -135,7 +135,7 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 		throws NoSuchInfoItemException {
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				itemClassName);
 
 		try {
@@ -305,6 +305,9 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 
 		return tags;
 	}
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

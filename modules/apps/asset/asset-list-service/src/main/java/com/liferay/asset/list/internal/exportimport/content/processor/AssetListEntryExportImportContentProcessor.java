@@ -14,6 +14,7 @@
 
 package com.liferay.asset.list.internal.exportimport.content.processor;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -249,7 +250,7 @@ public class AssetListEntryExportImportContentProcessor
 				DDMStructure.class);
 
 		List<AssetRendererFactory<?>> assetRendererFactories =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
+			_assetRendererFactoryRegistry.getAssetRendererFactories(
 				portletDataContext.getCompanyId());
 
 		for (AssetRendererFactory<?> assetRendererFactory :
@@ -407,6 +408,9 @@ public class AssetListEntryExportImportContentProcessor
 	@Reference
 	private AssetRendererFactoryClassProvider
 		_assetRendererFactoryClassProvider;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;

@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.item.selector.web.internal.display.context;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
 import com.liferay.asset.kernel.model.ClassTypeReader;
@@ -61,6 +61,7 @@ public class AssetListEntryItemSelectorDisplayContext {
 
 	public AssetListEntryItemSelectorDisplayContext(
 		HttpServletRequest httpServletRequest,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
 		InfoItemServiceRegistry infoItemServiceRegistry,
 		InfoSearchClassMapperRegistry infoSearchClassMapperRegistry,
 		Language language, PortletURL portletURL,
@@ -68,6 +69,7 @@ public class AssetListEntryItemSelectorDisplayContext {
 			infoCollectionProviderItemSelectorCriterion) {
 
 		_httpServletRequest = httpServletRequest;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_infoItemServiceRegistry = infoItemServiceRegistry;
 		_infoSearchClassMapperRegistry = infoSearchClassMapperRegistry;
 		_language = language;
@@ -262,7 +264,7 @@ public class AssetListEntryItemSelectorDisplayContext {
 		}
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				assetListEntry.getAssetEntryType());
 
 		if ((assetRendererFactory == null) ||
@@ -314,6 +316,7 @@ public class AssetListEntryItemSelectorDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetListEntryItemSelectorDisplayContext.class);
 
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private final HttpServletRequest _httpServletRequest;
 	private final InfoCollectionProviderItemSelectorCriterion
 		_infoCollectionProviderItemSelectorCriterion;

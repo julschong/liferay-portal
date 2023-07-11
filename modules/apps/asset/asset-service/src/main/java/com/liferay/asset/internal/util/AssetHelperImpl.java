@@ -14,7 +14,7 @@
 
 package com.liferay.asset.internal.util;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -143,7 +143,7 @@ public class AssetHelperImpl implements AssetHelper {
 				WebKeys.THEME_DISPLAY);
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				className);
 
 		if ((assetRendererFactory == null) ||
@@ -371,7 +371,7 @@ public class AssetHelperImpl implements AssetHelper {
 			String className = _portal.getClassName(classNameId);
 
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassName(className);
 
 			if ((assetRendererFactory == null) ||
@@ -817,6 +817,9 @@ public class AssetHelperImpl implements AssetHelper {
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private AssetSearcherFactory _assetSearcherFactory;

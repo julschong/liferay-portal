@@ -59,7 +59,7 @@ public class AssetListDisplayContextTest {
 
 		AssetListDisplayContext assetListDisplayContext =
 			new AssetListDisplayContext(
-				_assetRendererFactoryClassProvider,
+				_assetRendererFactoryClassProvider, null,
 				Mockito.mock(RenderRequest.class),
 				Mockito.mock(RenderResponse.class));
 

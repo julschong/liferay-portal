@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal.display.context;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
@@ -170,6 +170,7 @@ public class AssetPublisherDisplayContext {
 			AssetPublisherHelper assetPublisherHelper,
 			AssetPublisherWebConfiguration assetPublisherWebConfiguration,
 			AssetPublisherWebHelper assetPublisherWebHelper,
+			AssetRendererFactoryRegistry assetRendererFactoryRegistry,
 			InfoItemServiceRegistry infoItemServiceRegistry,
 			ItemSelector itemSelector, Portal portal,
 			PortletRequest portletRequest, PortletResponse portletResponse,
@@ -187,6 +188,7 @@ public class AssetPublisherDisplayContext {
 		_assetPublisherHelper = assetPublisherHelper;
 		_assetPublisherWebConfiguration = assetPublisherWebConfiguration;
 		_assetPublisherWebHelper = assetPublisherWebHelper;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_infoItemServiceRegistry = infoItemServiceRegistry;
 		_itemSelector = itemSelector;
 		_portal = portal;
@@ -717,7 +719,7 @@ public class AssetPublisherDisplayContext {
 		}
 
 		_availableClassNameIds =
-			AssetRendererFactoryRegistryUtil.getIndexableClassNameIds(
+			_assetRendererFactoryRegistry.getIndexableClassNameIds(
 				_themeDisplay.getCompanyId(), true);
 
 		return _availableClassNameIds;
@@ -880,7 +882,7 @@ public class AssetPublisherDisplayContext {
 		DropdownItemList dropdownItemList = new DropdownItemList();
 
 		List<AssetRendererFactory<?>> assetRendererFactories = ListUtil.sort(
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
+			_assetRendererFactoryRegistry.getAssetRendererFactories(
 				_themeDisplay.getCompanyId()),
 			new AssetRendererFactoryTypeNameComparator(
 				_themeDisplay.getLocale()));
@@ -1458,7 +1460,7 @@ public class AssetPublisherDisplayContext {
 					}
 
 					AssetRendererFactory<?> assetRendererFactory =
-						AssetRendererFactoryRegistryUtil.
+						_assetRendererFactoryRegistry.
 							getAssetRendererFactoryByClassNameId(classNameId);
 
 					if (assetRendererFactory == null) {
@@ -2176,8 +2178,8 @@ public class AssetPublisherDisplayContext {
 		}
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.
-				getAssetRendererFactoryByClassNameId(classNameIds[0]);
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassNameId(
+				classNameIds[0]);
 
 		ClassTypeReader classTypeReader =
 			assetRendererFactory.getClassTypeReader();
@@ -2371,7 +2373,7 @@ public class AssetPublisherDisplayContext {
 			Validator.isNotNull(_ddmStructureFieldValue)) {
 
 			AssetRendererFactory<?> assetRendererFactory =
-				AssetRendererFactoryRegistryUtil.
+				_assetRendererFactoryRegistry.
 					getAssetRendererFactoryByClassNameId(classNameIds[0]);
 
 			ClassTypeReader classTypeReader =
@@ -2414,6 +2416,7 @@ public class AssetPublisherDisplayContext {
 	private final AssetPublisherWebConfiguration
 		_assetPublisherWebConfiguration;
 	private final AssetPublisherWebHelper _assetPublisherWebHelper;
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private String _assetTagName;
 	private Map<String, Serializable> _attributes;
 	private long[] _availableClassNameIds;

@@ -14,7 +14,7 @@
 
 package com.liferay.asset.categories.admin.web.internal.exportimport.data.handler.helper;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategoryConstants;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
@@ -36,10 +36,13 @@ public class AssetVocabularySettingsExportHelper
 	extends AssetVocabularySettingsHelper {
 
 	public AssetVocabularySettingsExportHelper(
-		String settings, JSONFactory jsonFactory, Locale locale) {
+		String settings,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry,
+		JSONFactory jsonFactory, Locale locale) {
 
 		super(settings);
 
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 		_jsonFactory = jsonFactory;
 		_locale = locale;
 	}
@@ -123,8 +126,8 @@ public class AssetVocabularySettingsExportHelper
 		}
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.
-				getAssetRendererFactoryByClassNameId(classNameId);
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassNameId(
+				classNameId);
 
 		ClassTypeReader classTypeReader =
 			assetRendererFactory.getClassTypeReader();
@@ -136,6 +139,7 @@ public class AssetVocabularySettingsExportHelper
 			String.valueOf(classTypePK), classType.getName());
 	}
 
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private final JSONFactory _jsonFactory;
 	private final Locale _locale;
 

@@ -16,7 +16,7 @@ package com.liferay.asset.browser.web.internal.display.context;
 
 import com.liferay.asset.browser.web.internal.constants.AssetBrowserPortletKeys;
 import com.liferay.asset.browser.web.internal.search.AddAssetEntryChecker;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
@@ -61,7 +61,8 @@ public class AssetBrowserDisplayContext {
 		DepotEntryService depotEntryService,
 		HttpServletRequest httpServletRequest, Portal portal,
 		PortletURL portletURL, RenderRequest renderRequest,
-		RenderResponse renderResponse) {
+		RenderResponse renderResponse,
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry) {
 
 		_assetEntryLocalService = assetEntryLocalService;
 		_assetHelper = assetHelper;
@@ -72,6 +73,7 @@ public class AssetBrowserDisplayContext {
 		_portletURL = portletURL;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+		_assetRendererFactoryRegistry = assetRendererFactoryRegistry;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -140,7 +142,7 @@ public class AssetBrowserDisplayContext {
 		}
 
 		_assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				getTypeSelection());
 
 		return _assetRendererFactory;
@@ -316,6 +318,7 @@ public class AssetBrowserDisplayContext {
 	private SearchContainer<AssetEntry> _assetEntrySearchContainer;
 	private final AssetHelper _assetHelper;
 	private AssetRendererFactory<?> _assetRendererFactory;
+	private final AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 	private long[] _classNameIds;
 	private final DepotEntryService _depotEntryService;
 	private long[] _filterGroupIds;

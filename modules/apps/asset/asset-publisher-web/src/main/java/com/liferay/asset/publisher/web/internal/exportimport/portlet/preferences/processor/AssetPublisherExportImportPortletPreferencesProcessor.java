@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal.exportimport.portlet.preferences.processor;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
@@ -568,7 +568,7 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 		assetEntryQuery.setClassNameIds(
 			assetPublisherHelper.getClassNameIds(
 				portletPreferences,
-				AssetRendererFactoryRegistryUtil.getClassNameIds(
+				_assetRendererFactoryRegistry.getClassNameIds(
 					companyId, true)));
 		assetEntryQuery.setEnablePermissions(false);
 
@@ -1468,5 +1468,8 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 
 	private volatile AssetPublisherWebConfiguration
 		_assetPublisherWebConfiguration;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 }

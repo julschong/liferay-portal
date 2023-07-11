@@ -15,6 +15,7 @@
 package com.liferay.asset.list.web.internal.portlet;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.list.asset.entry.provider.AssetListAssetEntryProvider;
 import com.liferay.asset.list.constants.AssetListPortletKeys;
 import com.liferay.asset.list.exception.AssetListEntryTitleException;
@@ -90,8 +91,8 @@ public class AssetListPortlet extends MVCPortlet {
 
 		AssetListDisplayContext assetListDisplayContext =
 			new AssetListDisplayContext(
-				_assetRendererFactoryClassProvider, renderRequest,
-				renderResponse);
+				_assetRendererFactoryClassProvider,
+				_assetRendererFactoryRegistry, renderRequest, renderResponse);
 
 		renderRequest.setAttribute(
 			AssetListWebKeys.ASSET_LIST_DISPLAY_CONTEXT,
@@ -102,8 +103,9 @@ public class AssetListPortlet extends MVCPortlet {
 			AssetListWebKeys.EDIT_ASSET_LIST_DISPLAY_CONTEXT,
 			new EditAssetListDisplayContext(
 				_assetRendererFactoryClassProvider,
-				_infoSearchClassMapperRegistry, _itemSelector, renderRequest,
-				renderResponse, _segmentsConfigurationProvider,
+				_assetRendererFactoryRegistry, _infoSearchClassMapperRegistry,
+				_itemSelector, renderRequest, renderResponse,
+				_segmentsConfigurationProvider,
 				_getUnicodeProperties(assetListDisplayContext)));
 		renderRequest.setAttribute(
 			AssetListWebKeys.INFO_COLLECTION_PROVIDER_DISPLAY_CONTEXT,
@@ -118,15 +120,16 @@ public class AssetListPortlet extends MVCPortlet {
 		renderRequest.setAttribute(
 			AssetListWebKeys.LIST_ITEMS_ACTION_DROPDOWN_ITEMS,
 			new ListItemsActionDropdownItems(
-				_assetDisplayPageFriendlyURLProvider, _dlAppService,
+				_assetDisplayPageFriendlyURLProvider,
+				_assetRendererFactoryRegistry, _dlAppService,
 				_infoEditURLProviderRegistry, _infoItemServiceRegistry,
 				_infoSearchClassMapperRegistry,
 				_portal.getHttpServletRequest(renderRequest)));
 		renderRequest.setAttribute(
 			AssetListWebKeys.SELECT_STRUCTURE_FIELD_DISPLAY_CONTEXT,
 			new SelectStructureFieldDisplayContext(
-				_assetRendererFactoryClassProvider, renderRequest,
-				renderResponse));
+				_assetRendererFactoryClassProvider,
+				_assetRendererFactoryRegistry, renderRequest, renderResponse));
 
 		super.doDispatch(renderRequest, renderResponse);
 	}
@@ -169,6 +172,9 @@ public class AssetListPortlet extends MVCPortlet {
 	@Reference
 	private AssetRendererFactoryClassProvider
 		_assetRendererFactoryClassProvider;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private DDMIndexer _ddmIndexer;

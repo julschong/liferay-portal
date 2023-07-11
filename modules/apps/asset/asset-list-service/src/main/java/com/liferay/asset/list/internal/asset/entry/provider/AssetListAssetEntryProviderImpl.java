@@ -14,7 +14,7 @@
 
 package com.liferay.asset.list.internal.asset.entry.provider;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -189,7 +189,7 @@ public class AssetListAssetEntryProviderImpl
 		boolean anyAssetType = GetterUtil.getBoolean(
 			unicodeProperties.getProperty("anyAssetType", null), true);
 		long[] availableClassNameIds =
-			AssetRendererFactoryRegistryUtil.getClassNameIds(
+			_assetRendererFactoryRegistry.getClassNameIds(
 				assetListEntry.getCompanyId(), true);
 		long[] classTypeIds = {};
 
@@ -565,7 +565,7 @@ public class AssetListAssetEntryProviderImpl
 		long[] availableClassTypeIds = {};
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
 				className);
 
 		if (assetRendererFactory == null) {
@@ -908,7 +908,7 @@ public class AssetListAssetEntryProviderImpl
 		}
 		else {
 			assetEntryQuery.setClassNameIds(
-				AssetRendererFactoryRegistryUtil.getClassNameIds(
+				_assetRendererFactoryRegistry.getClassNameIds(
 					assetListEntry.getCompanyId(), true));
 		}
 
@@ -1113,6 +1113,9 @@ public class AssetListAssetEntryProviderImpl
 	@Reference
 	private AssetRendererFactoryClassProvider
 		_assetRendererFactoryClassProvider;
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;

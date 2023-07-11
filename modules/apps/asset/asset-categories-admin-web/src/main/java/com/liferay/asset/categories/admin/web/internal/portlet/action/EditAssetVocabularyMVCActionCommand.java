@@ -15,7 +15,7 @@
 package com.liferay.asset.categories.admin.web.internal.portlet.action;
 
 import com.liferay.asset.categories.admin.web.constants.AssetCategoriesAdminPortletKeys;
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.NoSuchClassTypeException;
 import com.liferay.asset.kernel.model.AssetCategoryConstants;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -140,7 +140,7 @@ public class EditAssetVocabularyMVCActionCommand extends BaseMVCActionCommand {
 
 			if (classTypePKs[i] != -1) {
 				AssetRendererFactory<?> assetRendererFactory =
-					AssetRendererFactoryRegistryUtil.
+					_assetRendererFactoryRegistry.
 						getAssetRendererFactoryByClassNameId(classNameIds[i]);
 
 				ClassTypeReader classTypeReader =
@@ -169,6 +169,9 @@ public class EditAssetVocabularyMVCActionCommand extends BaseMVCActionCommand {
 
 		return vocabularySettingsHelper.toString();
 	}
+
+	@Reference
+	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
 
 	@Reference
 	private AssetVocabularyService _assetVocabularyService;
