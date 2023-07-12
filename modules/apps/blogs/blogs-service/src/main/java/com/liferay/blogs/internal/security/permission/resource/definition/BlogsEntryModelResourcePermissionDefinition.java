@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.security.permission.resource.StagedModelPermiss
 import com.liferay.portal.kernel.security.permission.resource.WorkflowedModelPermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.definition.ModelResourcePermissionDefinition;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
 import com.liferay.sharing.security.permission.resource.SharingModelResourcePermissionConfigurator;
 
 import java.util.function.Consumer;
@@ -74,8 +73,8 @@ public class BlogsEntryModelResourcePermissionDefinition
 				BlogsEntry::getEntryId));
 		modelResourcePermissionLogicConsumer.accept(
 			new WorkflowedModelPermissionLogic<>(
-				_workflowPermission, modelResourcePermission,
-				_groupLocalService, BlogsEntry::getEntryId));
+				modelResourcePermission, _groupLocalService,
+				BlogsEntry::getEntryId));
 
 		if (_sharingModelResourcePermissionConfigurator != null) {
 			_sharingModelResourcePermissionConfigurator.configure(
@@ -98,8 +97,5 @@ public class BlogsEntryModelResourcePermissionDefinition
 
 	@Reference
 	private StagingPermission _stagingPermission;
-
-	@Reference
-	private WorkflowPermission _workflowPermission;
 
 }

@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
-import com.liferay.portal.kernel.workflow.permission.WorkflowPermission;
+import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.List;
@@ -130,7 +130,7 @@ public class MBDiscussionPermission implements BaseModelPermissionChecker {
 		}
 
 		if (message.isPending()) {
-			Boolean hasPermission = _workflowPermission.hasPermission(
+			Boolean hasPermission = WorkflowPermissionUtil.hasPermission(
 				permissionChecker, message.getGroupId(),
 				message.getWorkflowClassName(), message.getMessageId(),
 				actionId);
@@ -178,16 +178,8 @@ public class MBDiscussionPermission implements BaseModelPermissionChecker {
 		_mbMessageLocalService = mbMessageLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setWorkflowPermission(
-		WorkflowPermission workflowPermission) {
-
-		_workflowPermission = workflowPermission;
-	}
-
 	private static MBBanLocalService _mbBanLocalService;
 	private static MBDiscussionLocalService _mbDiscussionLocalService;
 	private static MBMessageLocalService _mbMessageLocalService;
-	private static WorkflowPermission _workflowPermission;
 
 }
