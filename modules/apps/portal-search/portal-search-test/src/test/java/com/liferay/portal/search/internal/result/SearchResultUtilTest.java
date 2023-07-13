@@ -14,10 +14,10 @@
 
 package com.liferay.portal.search.internal.result;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
@@ -98,16 +98,19 @@ public class SearchResultUtilTest extends BaseSearchResultUtilTestCase {
 			_assetRenderer
 		);
 
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry =
+			Mockito.mock(AssetRendererFactoryRegistry.class);
+
 		Mockito.when(
-			_serviceTrackerMap.getService(Mockito.anyString())
+			assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
+				Mockito.anyString())
 		).thenReturn(
 			(AssetRendererFactory)_assetRendererFactory
 		);
 
 		ReflectionTestUtil.setFieldValue(
 			AssetRendererFactoryRegistryUtil.class,
-			"_classNameAssetRenderFactoriesServiceTrackerMap",
-			_serviceTrackerMap);
+			"_assetRendererFactoryRegistry", assetRendererFactoryRegistry);
 
 		SearchResult searchResult = assertOneSearchResult(new DocumentImpl());
 
@@ -223,7 +226,5 @@ public class SearchResultUtilTest extends BaseSearchResultUtilTestCase {
 	private final IndexerRegistry _indexerRegistry = Mockito.mock(
 		IndexerRegistry.class);
 	private SearchResultManagerImpl _searchResultManagerImpl;
-	private final ServiceTrackerMap<String, AssetRendererFactory<?>>
-		_serviceTrackerMap = Mockito.mock(ServiceTrackerMap.class);
 
 }

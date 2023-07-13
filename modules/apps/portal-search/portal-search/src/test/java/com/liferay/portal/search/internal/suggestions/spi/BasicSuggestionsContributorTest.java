@@ -14,12 +14,12 @@
 
 package com.liferay.portal.search.internal.suggestions.spi;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.search.Field;
@@ -209,22 +209,31 @@ public class BasicSuggestionsContributorTest {
 			boolean assetRendererFactoryNull, String title, String summary)
 		throws Exception {
 
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry =
+			Mockito.mock(AssetRendererFactoryRegistry.class);
+
 		ReflectionTestUtil.setFieldValue(
 			AssetRendererFactoryRegistryUtil.class,
-			"_classNameAssetRenderFactoriesServiceTrackerMap",
-			_serviceTrackerMap);
+			"_assetRendererFactoryRegistry", assetRendererFactoryRegistry);
 
 		if (assetRendererFactoryNull) {
 			Mockito.doReturn(
 				null
 			).when(
-				_serviceTrackerMap
-			).getService(
+				assetRendererFactoryRegistry
+			).getAssetRendererFactoryByClassName(
 				Mockito.anyString()
 			);
 
 			return;
 		}
+
+		Mockito.when(
+			assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
+				Mockito.anyString())
+		).thenReturn(
+			(AssetRendererFactory)_assetRendererFactory
+		);
 
 		AssetRenderer<?> assetRenderer = Mockito.mock(AssetRenderer.class);
 
@@ -250,14 +259,6 @@ public class BasicSuggestionsContributorTest {
 			_assetRendererFactory
 		).getAssetRenderer(
 			Mockito.anyLong()
-		);
-
-		Mockito.doReturn(
-			_assetRendererFactory
-		).when(
-			_serviceTrackerMap
-		).getService(
-			Mockito.anyString()
 		);
 	}
 
@@ -464,10 +465,6 @@ public class BasicSuggestionsContributorTest {
 
 	@Mock
 	private SearchRequestBuilderFactory _searchRequestBuilderFactory;
-
-	@Mock
-	private ServiceTrackerMap<String, AssetRendererFactory<?>>
-		_serviceTrackerMap;
 
 	private SuggestionsContributorConfiguration
 		_suggestionsContributorConfiguration;

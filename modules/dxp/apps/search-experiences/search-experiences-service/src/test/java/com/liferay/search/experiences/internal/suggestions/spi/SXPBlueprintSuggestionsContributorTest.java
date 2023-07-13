@@ -14,12 +14,12 @@
 
 package com.liferay.search.experiences.internal.suggestions.spi;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistry;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -98,7 +98,7 @@ public class SXPBlueprintSuggestionsContributorTest {
 		int totalHits = 1;
 
 		_setUpAssetRendererFactoryRegistryUtil(
-			"Asset Renderer Title", "Asset Renderer Summary");
+			false, "Asset Renderer Title", "Asset Renderer Summary");
 		_setUpSearcher(totalHits);
 		_setUpSuggestionsContributorConfiguration("testField");
 
@@ -130,7 +130,7 @@ public class SXPBlueprintSuggestionsContributorTest {
 		int totalHits = 1;
 
 		_setUpAssetRendererFactoryRegistryUtil(
-			"Asset Renderer Title", "Asset Renderer Summary");
+			false, "Asset Renderer Title", "Asset Renderer Summary");
 		_setUpSearcher(totalHits);
 		_setUpSuggestionsContributorConfiguration(null);
 
@@ -165,12 +165,14 @@ public class SXPBlueprintSuggestionsContributorTest {
 	}
 
 	@Test
-	public void testSuggestionsContributorConfigurationWithAssetRendererNull() {
+	public void testSuggestionsContributorConfigurationWithAssetRendererNull()
+		throws Exception {
+
 		int totalHits = 1;
 
 		_setUpSearcher(totalHits);
 
-		_setUpAssetRendererFactoryRegistryUtilNull();
+		_setUpAssetRendererFactoryRegistryUtil(true, null, null);
 
 		_setUpSuggestionsContributorConfiguration("testField");
 
@@ -233,8 +235,34 @@ public class SXPBlueprintSuggestionsContributorTest {
 	}
 
 	private void _setUpAssetRendererFactoryRegistryUtil(
-			String title, String summary)
+			boolean assetRendererFactoryRegistryUtilNull, String title,
+			String summary)
 		throws Exception {
+
+		AssetRendererFactoryRegistry assetRendererFactoryRegistry =
+			Mockito.mock(AssetRendererFactoryRegistry.class);
+
+		ReflectionTestUtil.setFieldValue(
+			AssetRendererFactoryRegistryUtil.class,
+			"_assetRendererFactoryRegistry", assetRendererFactoryRegistry);
+
+		if (assetRendererFactoryRegistryUtilNull) {
+			Mockito.when(
+				assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
+					Mockito.anyString())
+			).thenReturn(
+				null
+			);
+
+			return;
+		}
+
+		Mockito.when(
+			assetRendererFactoryRegistry.getAssetRendererFactoryByClassName(
+				Mockito.anyString())
+		).thenReturn(
+			(AssetRendererFactory)_assetRendererFactory
+		);
 
 		AssetRenderer<?> assetRenderer = Mockito.mock(AssetRenderer.class);
 
@@ -261,34 +289,6 @@ public class SXPBlueprintSuggestionsContributorTest {
 		).getAssetRenderer(
 			Mockito.anyLong()
 		);
-
-		Mockito.doReturn(
-			_assetRendererFactory
-		).when(
-			_serviceTrackerMap
-		).getService(
-			Mockito.anyString()
-		);
-
-		ReflectionTestUtil.setFieldValue(
-			AssetRendererFactoryRegistryUtil.class,
-			"_classNameAssetRenderFactoriesServiceTrackerMap",
-			_serviceTrackerMap);
-	}
-
-	private void _setUpAssetRendererFactoryRegistryUtilNull() {
-		Mockito.doReturn(
-			null
-		).when(
-			_serviceTrackerMap
-		).getService(
-			Mockito.anyString()
-		);
-
-		ReflectionTestUtil.setFieldValue(
-			AssetRendererFactoryRegistryUtil.class,
-			"_classNameAssetRenderFactoriesServiceTrackerMap",
-			_serviceTrackerMap);
 	}
 
 	private void _setUpLayoutLocalService() {
@@ -569,10 +569,6 @@ public class SXPBlueprintSuggestionsContributorTest {
 
 	@Mock
 	private SearchRequestBuilderFactory _searchRequestBuilderFactory;
-
-	@Mock
-	private ServiceTrackerMap<String, AssetRendererFactory<?>>
-		_serviceTrackerMap;
 
 	private SuggestionsContributorConfiguration
 		_suggestionsContributorConfiguration;
