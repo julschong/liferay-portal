@@ -19,8 +19,9 @@ import com.liferay.object.storage.salesforce.configuration.SalesforceConfigurati
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -30,16 +31,13 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.webcache.WebCacheItem;
-import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 
 import java.net.HttpURLConnection;
 
-import javax.ws.rs.core.Response;
-
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -94,99 +92,95 @@ public class SalesforceHttp {
 		}
 	}
 
-	public static class SalesforceAccessTokenWebCacheItem
-		implements WebCacheItem {
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
+				SalesforceHttp.class.getName());
+	}
 
-		public SalesforceAccessTokenWebCacheItem(
-			SalesforceConfiguration salesforceConfiguration) {
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(SalesforceHttp.class.getName());
+	}
 
-			_salesforceConfiguration = salesforceConfiguration;
-		}
+	private JSONObject _createSalesforceAccessTokenJSONObject(
+		SalesforceConfiguration salesforceConfiguration) {
 
-		@Override
-		public JSONObject convert(String key) {
-			try {
+		try {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Get Salesforce access token for consumer key " +
+						salesforceConfiguration.consumerKey());
+			}
+
+			Http.Options options = new Http.Options();
+
+			options.setParts(
+				HashMapBuilder.put(
+					"client_id", salesforceConfiguration.consumerKey()
+				).put(
+					"client_secret", salesforceConfiguration.consumerSecret()
+				).put(
+					"grant_type", "password"
+				).put(
+					"password", salesforceConfiguration.password()
+				).put(
+					"username", salesforceConfiguration.username()
+				).build());
+			options.setLocation(
+				salesforceConfiguration.loginURL() + "/services/oauth2/token");
+			options.setPost(true);
+
+			String responseJSON = _http.URLtoString(options);
+
+			Http.Response response = options.getResponse();
+
+			if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
-						"Get Salesforce access token for consumer key " +
-							_salesforceConfiguration.consumerKey());
-				}
-
-				Http.Options options = new Http.Options();
-
-				options.setParts(
-					HashMapBuilder.put(
-						"client_id", _salesforceConfiguration.consumerKey()
-					).put(
-						"client_secret",
-						_salesforceConfiguration.consumerSecret()
-					).put(
-						"grant_type", "password"
-					).put(
-						"password", _salesforceConfiguration.password()
-					).put(
-						"username", _salesforceConfiguration.username()
-					).build());
-				options.setLocation(
-					_salesforceConfiguration.loginURL() +
-						"/services/oauth2/token");
-				options.setPost(true);
-
-				String responseJSON = HttpUtil.URLtoString(options);
-
-				Http.Response response = options.getResponse();
-
-				if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							StringBundler.concat(
-								"Response code ", response.getResponseCode(),
-								": ", responseJSON));
-					}
-
-					return null;
-				}
-
-				return JSONFactoryUtil.createJSONObject(responseJSON);
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception);
+						StringBundler.concat(
+							"Response code ", response.getResponseCode(), ": ",
+							responseJSON));
 				}
 
 				return null;
 			}
+
+			return _jsonFactory.createJSONObject(responseJSON);
 		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
 
-		@Override
-		public long getRefreshTime() {
-			return _REFRESH_TIME;
+			return null;
 		}
-
-		private static final long _REFRESH_TIME = Time.MINUTE * 45;
-
-		private static final Log _log = LogFactoryUtil.getLog(
-			SalesforceAccessTokenWebCacheItem.class);
-
-		private final SalesforceConfiguration _salesforceConfiguration;
-
 	}
 
 	private JSONObject _getSalesforceAccessTokenJSONObject(
 		SalesforceConfiguration salesforceConfiguration) {
 
-		JSONObject jSONObject = (JSONObject)WebCachePoolUtil.get(
-			StringBundler.concat(
-				SalesforceAccessTokenWebCacheItem.class.getName(),
-				StringPool.POUND, salesforceConfiguration.consumerKey(),
-				StringPool.POUND, salesforceConfiguration.consumerSecret(),
-				StringPool.POUND, salesforceConfiguration.username()),
-			new SalesforceAccessTokenWebCacheItem(salesforceConfiguration));
+		String key = StringBundler.concat(
+			StringPool.POUND, salesforceConfiguration.consumerKey(),
+			StringPool.POUND, salesforceConfiguration.consumerSecret(),
+			StringPool.POUND, salesforceConfiguration.username());
+
+		JSONObject jSONObject = _portalCache.get(key);
+
+		if (jSONObject != null) {
+			return jSONObject;
+		}
+
+		jSONObject = _createSalesforceAccessTokenJSONObject(
+			salesforceConfiguration);
 
 		if (jSONObject == null) {
 			throw new ObjectEntryManagerHttpException(
 				"Unable to authenticate with Salesforce");
 		}
+
+		_portalCache.put(key, jSONObject, _REFRESH_TIME_IN_SECONDS);
 
 		return jSONObject;
 	}
@@ -271,10 +265,20 @@ public class SalesforceHttp {
 		return bytes;
 	}
 
+	private static final int _REFRESH_TIME_IN_SECONDS =
+		(int)(Time.MINUTE * 45 / Time.SECOND);
+
+	private static final Log _log = LogFactoryUtil.getLog(SalesforceHttp.class);
+
 	@Reference
 	private Http _http;
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MultiVMPool _multiVMPool;
+
+	private PortalCache<String, JSONObject> _portalCache;
 
 }
