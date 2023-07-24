@@ -6,6 +6,8 @@
 package com.liferay.search.experiences.rest.internal.resource.v1_0;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -15,8 +17,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.webcache.WebCacheItem;
-import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 import com.liferay.portal.search.index.IndexInformation;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -33,7 +33,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
@@ -59,8 +61,9 @@ public class FieldMappingInfoResourceImpl
 	public List<FieldMappingInfo> getFieldMappings(
 		boolean external, String indexName, String query) {
 
-		JSONObject jsonObject = FieldMappingsWebCacheItem.get(
-			_indexInformation, _getIndexName(indexName), _jsonFactory);
+		JSONObject jsonObject = FieldMappingsCache.get(
+			_indexInformation, _getIndexName(indexName), _jsonFactory,
+			_portalCache);
 
 		if (jsonObject.length() == 0) {
 			return Collections.<FieldMappingInfo>emptyList();
@@ -75,20 +78,34 @@ public class FieldMappingInfoResourceImpl
 		return fieldMappingInfos;
 	}
 
-	public static class FieldMappingsWebCacheItem implements WebCacheItem {
+	public static class FieldMappingsCache {
 
 		public static JSONObject get(
 			IndexInformation indexInformation, String indexName,
-			JSONFactory jsonFactory) {
+			JSONFactory jsonFactory,
+			PortalCache<String, JSONObject> portalCache) {
 
-			return (JSONObject)WebCachePoolUtil.get(
-				FieldMappingsWebCacheItem.class.getName() + StringPool.POUND +
-					indexName,
-				new FieldMappingsWebCacheItem(
-					indexInformation, indexName, jsonFactory));
+			JSONObject jsonObject = portalCache.get(indexName);
+
+			if (jsonFactory != null) {
+				return jsonObject;
+			}
+
+			FieldMappingsCache fieldMappingsWebCacheItem =
+				new FieldMappingsCache(
+					indexInformation, indexName, jsonFactory);
+
+			jsonObject = fieldMappingsWebCacheItem.convert();
+
+			portalCache.put(
+				indexName, jsonObject,
+				(int)
+					(fieldMappingsWebCacheItem.getRefreshTime() / Time.SECOND));
+
+			return jsonObject;
 		}
 
-		public FieldMappingsWebCacheItem(
+		public FieldMappingsCache(
 			IndexInformation indexInformation, String indexName,
 			JSONFactory jsonFactory) {
 
@@ -97,8 +114,7 @@ public class FieldMappingInfoResourceImpl
 			_jsonFactory = jsonFactory;
 		}
 
-		@Override
-		public JSONObject convert(String key) {
+		public JSONObject convert() {
 			try {
 				return JSONUtil.getValueAsJSONObject(
 					_jsonFactory.createJSONObject(
@@ -113,7 +129,6 @@ public class FieldMappingInfoResourceImpl
 			return _jsonFactory.createJSONObject();
 		}
 
-		@Override
 		public long getRefreshTime() {
 			return _REFRESH_TIME;
 		}
@@ -124,8 +139,21 @@ public class FieldMappingInfoResourceImpl
 		private final String _indexName;
 		private final JSONFactory _jsonFactory;
 		private final Log _log = LogFactoryUtil.getLog(
-			FieldMappingsWebCacheItem.class);
+			FieldMappingsCache.class);
 
+	}
+
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
+				FieldMappingInfoResourceImpl.class.getName());
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(
+			FieldMappingInfoResourceImpl.class.getName());
 	}
 
 	private void _addFieldMappingInfo(
@@ -234,5 +262,10 @@ public class FieldMappingInfoResourceImpl
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MultiVMPool _multiVMPool;
+
+	private PortalCache<String, JSONObject> _portalCache;
 
 }
