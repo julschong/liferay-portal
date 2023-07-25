@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(enabled = false, service = IpstackCache.class)
 public class IpstackCache {
 
-	public JSONObject get(
+	public JSONObject getJSONObject(
 		ExceptionListener exceptionListener, String ipAddress,
 		IpstackConfiguration ipstackConfiguration) {
 
@@ -58,7 +58,7 @@ public class IpstackCache {
 				return jsonObject;
 			}
 
-			jsonObject = _convert(ipAddress, ipstackConfiguration);
+			jsonObject = _createJSONObject(ipAddress, ipstackConfiguration);
 
 			_portalCache.put(
 				key, jsonObject, _getRefreshTime(ipstackConfiguration));
@@ -88,7 +88,7 @@ public class IpstackCache {
 		_singleVMPool.removePortalCache(IpstackCache.class.getName());
 	}
 
-	private JSONObject _convert(
+	private JSONObject _createJSONObject(
 		String ipAddress, IpstackConfiguration ipstackConfiguration) {
 
 		try {
