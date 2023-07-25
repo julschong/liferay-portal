@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -7,14 +7,15 @@ package com.liferay.search.experiences.internal.web.cache;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.webcache.WebCacheItem;
-import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.search.experiences.blueprint.exception.InvalidWebCacheItemException;
 import com.liferay.search.experiences.blueprint.exception.PrivateIPAddressException;
 import com.liferay.search.experiences.internal.configuration.IpstackConfiguration;
@@ -24,12 +25,18 @@ import java.beans.ExceptionListener;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  */
-public class IpstackWebCacheItem implements WebCacheItem {
+@Component(enabled = false, service = IpstackCache.class)
+public class IpstackCache {
 
-	public static JSONObject get(
+	public JSONObject get(
 		ExceptionListener exceptionListener, String ipAddress,
 		IpstackConfiguration ipstackConfiguration) {
 
@@ -40,12 +47,24 @@ public class IpstackWebCacheItem implements WebCacheItem {
 				return JSONFactoryUtil.createJSONObject();
 			}
 
-			return (JSONObject)WebCachePoolUtil.get(
-				StringBundler.concat(
-					IpstackWebCacheItem.class.getName(), StringPool.POUND,
-					ipstackConfiguration.apiKey(), StringPool.POUND,
-					ipstackConfiguration.apiURL(), StringPool.POUND, ipAddress),
-				new IpstackWebCacheItem(ipAddress, ipstackConfiguration));
+			String key = StringBundler.concat(
+				IpstackCache.class.getName(), StringPool.POUND,
+				ipstackConfiguration.apiKey(), StringPool.POUND,
+				ipstackConfiguration.apiURL(), StringPool.POUND, ipAddress);
+
+			JSONObject jsonObject = _portalCache.get(key);
+
+			if (jsonObject != null) {
+				return jsonObject;
+			}
+
+			jsonObject = _convert(ipAddress, ipstackConfiguration);
+
+			_portalCache.put(
+				key, jsonObject,
+				(int)(_getRefreshTime(ipstackConfiguration) / Time.SECOND));
+
+			return jsonObject;
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -58,25 +77,31 @@ public class IpstackWebCacheItem implements WebCacheItem {
 		}
 	}
 
-	public IpstackWebCacheItem(
-		String ipAddress, IpstackConfiguration ipstackConfiguration) {
-
-		_ipAddress = ipAddress;
-		_ipstackConfiguration = ipstackConfiguration;
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
+				IpstackCache.class.getName());
 	}
 
-	@Override
-	public JSONObject convert(String key) {
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(IpstackCache.class.getName());
+	}
+
+	private JSONObject _convert(
+		String ipAddress, IpstackConfiguration ipstackConfiguration) {
+
 		try {
-			String apiURL = _ipstackConfiguration.apiURL();
+			String apiURL = ipstackConfiguration.apiURL();
 
 			if (!apiURL.endsWith("/")) {
 				apiURL += "/";
 			}
 
 			String url = StringBundler.concat(
-				apiURL, _ipAddress, "?access_key=",
-				_ipstackConfiguration.apiKey());
+				apiURL, ipAddress, "?access_key=",
+				ipstackConfiguration.apiKey());
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Reading " + url);
@@ -94,18 +119,15 @@ public class IpstackWebCacheItem implements WebCacheItem {
 		}
 	}
 
-	@Override
-	public long getRefreshTime() {
-		if (_ipstackConfiguration.enabled()) {
-			return _ipstackConfiguration.cacheTimeout();
+	private long _getRefreshTime(IpstackConfiguration ipstackConfiguration) {
+		if (ipstackConfiguration.enabled()) {
+			return ipstackConfiguration.cacheTimeout();
 		}
 
 		return 0;
 	}
 
-	private static boolean _isPrivateIPAddress(String ipAddress)
-		throws Exception {
-
+	private boolean _isPrivateIPAddress(String ipAddress) throws Exception {
 		Inet4Address inet4Address = (Inet4Address)InetAddress.getByName(
 			ipAddress);
 
@@ -140,10 +162,11 @@ public class IpstackWebCacheItem implements WebCacheItem {
 				")"));
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		IpstackWebCacheItem.class);
+	private static final Log _log = LogFactoryUtil.getLog(IpstackCache.class);
 
-	private final String _ipAddress;
-	private final IpstackConfiguration _ipstackConfiguration;
+	@Reference
+	private MultiVMPool _multiVMPool;
+
+	private PortalCache<String, JSONObject> _portalCache;
 
 }
