@@ -95,7 +95,7 @@ public class FieldMappingInfoResourceImpl
 				new FieldMappingsCache(
 					indexInformation, indexName, jsonFactory);
 
-			jsonObject = fieldMappingsWebCacheItem.convert();
+			jsonObject = fieldMappingsWebCacheItem._convert();
 
 			portalCache.put(
 				indexName, jsonObject, (int) (_REFRESH_TIME / Time.SECOND));
@@ -112,7 +112,7 @@ public class FieldMappingInfoResourceImpl
 			_jsonFactory = jsonFactory;
 		}
 
-		public JSONObject convert() {
+		private JSONObject _convert() {
 			try {
 				return JSONUtil.getValueAsJSONObject(
 					_jsonFactory.createJSONObject(
