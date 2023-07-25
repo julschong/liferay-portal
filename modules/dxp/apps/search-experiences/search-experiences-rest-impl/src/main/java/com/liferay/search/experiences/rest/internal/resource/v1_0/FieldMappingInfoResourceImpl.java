@@ -92,46 +92,37 @@ public class FieldMappingInfoResourceImpl
 			}
 
 			FieldMappingsCache fieldMappingsWebCacheItem =
-				new FieldMappingsCache(
-					indexInformation, indexName, jsonFactory);
+				new FieldMappingsCache();
 
-			jsonObject = fieldMappingsWebCacheItem._convert();
+			jsonObject = fieldMappingsWebCacheItem._convert(
+				indexInformation, indexName, jsonFactory);
 
 			portalCache.put(
-				indexName, jsonObject, (int) (_REFRESH_TIME / Time.SECOND));
+				indexName, jsonObject, (int)(_REFRESH_TIME / Time.SECOND));
 
 			return jsonObject;
 		}
 
-		public FieldMappingsCache(
+		private JSONObject _convert(
 			IndexInformation indexInformation, String indexName,
 			JSONFactory jsonFactory) {
 
-			_indexInformation = indexInformation;
-			_indexName = indexName;
-			_jsonFactory = jsonFactory;
-		}
-
-		private JSONObject _convert() {
 			try {
 				return JSONUtil.getValueAsJSONObject(
-					_jsonFactory.createJSONObject(
-						_indexInformation.getFieldMappings(_indexName)),
-					"JSONObject/" + _indexName, "JSONObject/mappings",
+					jsonFactory.createJSONObject(
+						indexInformation.getFieldMappings(indexName)),
+					"JSONObject/" + indexName, "JSONObject/mappings",
 					"JSONObject/properties");
 			}
 			catch (JSONException jsonException) {
 				_log.error(jsonException);
 			}
 
-			return _jsonFactory.createJSONObject();
+			return jsonFactory.createJSONObject();
 		}
 
 		private static final long _REFRESH_TIME = Time.MINUTE * 30;
 
-		private final IndexInformation _indexInformation;
-		private final String _indexName;
-		private final JSONFactory _jsonFactory;
 		private final Log _log = LogFactoryUtil.getLog(
 			FieldMappingsCache.class);
 
