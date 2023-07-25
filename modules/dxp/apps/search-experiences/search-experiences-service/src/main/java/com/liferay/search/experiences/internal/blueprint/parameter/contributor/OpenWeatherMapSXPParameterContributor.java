@@ -19,7 +19,7 @@ import com.liferay.search.experiences.internal.blueprint.parameter.IntegerSXPPar
 import com.liferay.search.experiences.internal.blueprint.parameter.StringSXPParameter;
 import com.liferay.search.experiences.internal.configuration.IpstackConfiguration;
 import com.liferay.search.experiences.internal.configuration.OpenWeatherMapConfiguration;
-import com.liferay.search.experiences.internal.web.cache.IpstackWebCacheItem;
+import com.liferay.search.experiences.internal.web.cache.IpstackCache;
 import com.liferay.search.experiences.internal.web.cache.OpenWeatherMapWebCacheItem;
 import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
 
@@ -38,9 +38,11 @@ public class OpenWeatherMapSXPParameterContributor
 	implements SXPParameterContributor {
 
 	public OpenWeatherMapSXPParameterContributor(
-		ConfigurationProvider configurationProvider) {
+		ConfigurationProvider configurationProvider,
+		IpstackCache ipstackCache) {
 
 		_configurationProvider = configurationProvider;
+		_ipstackCache = ipstackCache;
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class OpenWeatherMapSXPParameterContributor
 			return;
 		}
 
-		JSONObject jsonObject = IpstackWebCacheItem.get(
+		JSONObject jsonObject = _ipstackCache.getJSONObject(
 			exceptionListener, ipAddress,
 			_getIpstackConfiguration(searchContext.getCompanyId()));
 
@@ -167,5 +169,6 @@ public class OpenWeatherMapSXPParameterContributor
 	}
 
 	private final ConfigurationProvider _configurationProvider;
+	private final IpstackCache _ipstackCache;
 
 }
