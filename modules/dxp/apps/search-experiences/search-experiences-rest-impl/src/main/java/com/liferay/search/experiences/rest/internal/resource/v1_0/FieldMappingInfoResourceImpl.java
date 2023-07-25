@@ -156,11 +156,17 @@ public class FieldMappingInfoResourceImpl
 
 	private JSONObject _createJSONObject(String indexName) {
 		try {
-			return JSONUtil.getValueAsJSONObject(
+			JSONObject jsonObject = JSONUtil.getValueAsJSONObject(
 				_jsonFactory.createJSONObject(
 					_indexInformation.getFieldMappings(indexName)),
 				"JSONObject/" + indexName, "JSONObject/mappings",
 				"JSONObject/properties");
+
+			if (jsonObject == null) {
+				return _jsonFactory.createJSONObject();
+			}
+
+			return jsonObject;
 		}
 		catch (JSONException jsonException) {
 			_log.error(jsonException);
@@ -192,7 +198,7 @@ public class FieldMappingInfoResourceImpl
 	private JSONObject _getJSONObject(String indexName) {
 		JSONObject jsonObject = _portalCache.get(indexName);
 
-		if (_jsonFactory != null) {
+		if (jsonObject != null) {
 			return jsonObject;
 		}
 
