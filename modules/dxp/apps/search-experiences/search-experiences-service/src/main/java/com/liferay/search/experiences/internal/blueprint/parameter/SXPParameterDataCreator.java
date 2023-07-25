@@ -37,6 +37,7 @@ import com.liferay.search.experiences.internal.blueprint.parameter.contributor.O
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.SXPParameterContributor;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.TimeSXPParameterContributor;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.UserSXPParameterContributor;
+import com.liferay.search.experiences.internal.cache.IpstackCache;
 import com.liferay.search.experiences.ml.embedding.text.TextEmbeddingRetriever;
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
 import com.liferay.search.experiences.rest.dto.v1_0.Parameter;
@@ -130,11 +131,13 @@ public class SXPParameterDataCreator
 	protected void activate() {
 		_sxpParameterContributors = new SXPParameterContributor[] {
 			new ContextSXPParameterContributor(_groupLocalService, _language),
-			new IpstackSXPParameterContributor(_configurationProvider),
+			new IpstackSXPParameterContributor(
+				_configurationProvider, _ipstackCache),
 			new MLSXPParameterContributor(
 				_language, _semanticSearchConfigurationProvider,
 				_textEmbeddingRetriever),
-			new OpenWeatherMapSXPParameterContributor(_configurationProvider),
+			new OpenWeatherMapSXPParameterContributor(
+				_configurationProvider, _ipstackCache),
 			new TimeSXPParameterContributor(),
 			new UserSXPParameterContributor(
 				_assetCategoryLocalService, _assetTagLocalService,
@@ -714,6 +717,9 @@ public class SXPParameterDataCreator
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private IpstackCache _ipstackCache;
 
 	@Reference
 	private Language _language;

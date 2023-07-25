@@ -15,8 +15,8 @@ import com.liferay.search.experiences.blueprint.parameter.SXPParameter;
 import com.liferay.search.experiences.blueprint.parameter.contributor.SXPParameterContributorDefinition;
 import com.liferay.search.experiences.internal.blueprint.parameter.DoubleSXPParameter;
 import com.liferay.search.experiences.internal.blueprint.parameter.StringSXPParameter;
+import com.liferay.search.experiences.internal.cache.IpstackCache;
 import com.liferay.search.experiences.internal.configuration.IpstackConfiguration;
-import com.liferay.search.experiences.internal.web.cache.IpstackWebCacheItem;
 import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
 
 import java.beans.ExceptionListener;
@@ -33,9 +33,11 @@ import java.util.Set;
 public class IpstackSXPParameterContributor implements SXPParameterContributor {
 
 	public IpstackSXPParameterContributor(
-		ConfigurationProvider configurationProvider) {
+		ConfigurationProvider configurationProvider,
+		IpstackCache ipstackCache) {
 
 		_configurationProvider = configurationProvider;
+		_ipstackCache = ipstackCache;
 	}
 
 	@Override
@@ -57,7 +59,7 @@ public class IpstackSXPParameterContributor implements SXPParameterContributor {
 			return;
 		}
 
-		JSONObject jsonObject = IpstackWebCacheItem.get(
+		JSONObject jsonObject = _ipstackCache.getJSONObject(
 			exceptionListener, ipAddress, ipstackConfiguration);
 
 		if (jsonObject.length() == 0) {
@@ -156,5 +158,6 @@ public class IpstackSXPParameterContributor implements SXPParameterContributor {
 	}
 
 	private final ConfigurationProvider _configurationProvider;
+	private final IpstackCache _ipstackCache;
 
 }
