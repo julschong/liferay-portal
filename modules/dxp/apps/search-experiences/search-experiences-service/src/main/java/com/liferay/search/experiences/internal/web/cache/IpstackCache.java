@@ -9,12 +9,12 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.search.experiences.blueprint.exception.InvalidWebCacheItemException;
 import com.liferay.search.experiences.blueprint.exception.PrivateIPAddressException;
@@ -44,7 +44,7 @@ public class IpstackCache {
 			if (!ipstackConfiguration.enabled() ||
 				_isPrivateIPAddress(ipAddress)) {
 
-				return JSONFactoryUtil.createJSONObject();
+				return _jsonFactory.createJSONObject();
 			}
 
 			String key = StringBundler.concat(
@@ -73,7 +73,7 @@ public class IpstackCache {
 
 			exceptionListener.exceptionThrown(exception);
 
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 	}
 
@@ -107,8 +107,8 @@ public class IpstackCache {
 				_log.debug("Reading " + url);
 			}
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				HttpUtil.URLtoString(url));
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
+				_http.URLtoString(url));
 
 			_validateResponse(jsonObject);
 
@@ -163,6 +163,12 @@ public class IpstackCache {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(IpstackCache.class);
+
+	@Reference
+	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private MultiVMPool _multiVMPool;
