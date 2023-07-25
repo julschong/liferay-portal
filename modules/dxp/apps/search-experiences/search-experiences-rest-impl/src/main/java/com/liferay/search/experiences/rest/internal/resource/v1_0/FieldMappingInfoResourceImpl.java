@@ -61,7 +61,7 @@ public class FieldMappingInfoResourceImpl
 	public List<FieldMappingInfo> getFieldMappings(
 		boolean external, String indexName, String query) {
 
-		JSONObject jsonObject = _get(_getIndexName(indexName));
+		JSONObject jsonObject = _getJSONObject(_getIndexName(indexName));
 
 		if (jsonObject.length() == 0) {
 			return Collections.<FieldMappingInfo>emptyList();
@@ -154,7 +154,7 @@ public class FieldMappingInfoResourceImpl
 		}
 	}
 
-	private JSONObject _convert(String indexName) {
+	private JSONObject _createJSONObject(String indexName) {
 		try {
 			return JSONUtil.getValueAsJSONObject(
 				_jsonFactory.createJSONObject(
@@ -167,21 +167,6 @@ public class FieldMappingInfoResourceImpl
 		}
 
 		return _jsonFactory.createJSONObject();
-	}
-
-	private JSONObject _get(String indexName) {
-		JSONObject jsonObject = _portalCache.get(indexName);
-
-		if (_jsonFactory != null) {
-			return jsonObject;
-		}
-
-		jsonObject = _convert(indexName);
-
-		_portalCache.put(
-			indexName, jsonObject, (int)(_REFRESH_TIME / Time.SECOND));
-
-		return jsonObject;
 	}
 
 	private String _getIndexName(String indexName) {
@@ -202,6 +187,21 @@ public class FieldMappingInfoResourceImpl
 		}
 
 		return _indexNameBuilder.getIndexName(contextCompany.getCompanyId());
+	}
+
+	private JSONObject _getJSONObject(String indexName) {
+		JSONObject jsonObject = _portalCache.get(indexName);
+
+		if (_jsonFactory != null) {
+			return jsonObject;
+		}
+
+		jsonObject = _createJSONObject(indexName);
+
+		_portalCache.put(
+			indexName, jsonObject, (int)(_REFRESH_TIME / Time.SECOND));
+
+		return jsonObject;
 	}
 
 	private String _getLanguageId(String fieldName) {
