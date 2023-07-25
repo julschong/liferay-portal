@@ -61,9 +61,7 @@ public class FieldMappingInfoResourceImpl
 	public List<FieldMappingInfo> getFieldMappings(
 		boolean external, String indexName, String query) {
 
-		JSONObject jsonObject = _get(
-			_indexInformation, _getIndexName(indexName), _jsonFactory,
-			_portalCache);
+		JSONObject jsonObject = _get(_getIndexName(indexName));
 
 		if (jsonObject.length() == 0) {
 			return Collections.<FieldMappingInfo>emptyList();
@@ -156,14 +154,11 @@ public class FieldMappingInfoResourceImpl
 		}
 	}
 
-	private JSONObject _convert(
-		IndexInformation indexInformation, String indexName,
-		JSONFactory jsonFactory) {
-
+	private JSONObject _convert(String indexName) {
 		try {
 			return JSONUtil.getValueAsJSONObject(
-				jsonFactory.createJSONObject(
-					indexInformation.getFieldMappings(indexName)),
+				_jsonFactory.createJSONObject(
+					_indexInformation.getFieldMappings(indexName)),
 				"JSONObject/" + indexName, "JSONObject/mappings",
 				"JSONObject/properties");
 		}
@@ -171,22 +166,19 @@ public class FieldMappingInfoResourceImpl
 			_log.error(jsonException);
 		}
 
-		return jsonFactory.createJSONObject();
+		return _jsonFactory.createJSONObject();
 	}
 
-	private JSONObject _get(
-		IndexInformation indexInformation, String indexName,
-		JSONFactory jsonFactory, PortalCache<String, JSONObject> portalCache) {
+	private JSONObject _get(String indexName) {
+		JSONObject jsonObject = _portalCache.get(indexName);
 
-		JSONObject jsonObject = portalCache.get(indexName);
-
-		if (jsonFactory != null) {
+		if (_jsonFactory != null) {
 			return jsonObject;
 		}
 
-		jsonObject = _convert(indexInformation, indexName, jsonFactory);
+		jsonObject = _convert(indexName);
 
-		portalCache.put(
+		_portalCache.put(
 			indexName, jsonObject, (int)(_REFRESH_TIME / Time.SECOND));
 
 		return jsonObject;
