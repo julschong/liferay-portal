@@ -98,9 +98,7 @@ public class FieldMappingInfoResourceImpl
 			jsonObject = fieldMappingsWebCacheItem.convert();
 
 			portalCache.put(
-				indexName, jsonObject,
-				(int)
-					(fieldMappingsWebCacheItem.getRefreshTime() / Time.SECOND));
+				indexName, jsonObject, (int) (_REFRESH_TIME / Time.SECOND));
 
 			return jsonObject;
 		}
@@ -127,10 +125,6 @@ public class FieldMappingInfoResourceImpl
 			}
 
 			return _jsonFactory.createJSONObject();
-		}
-
-		public long getRefreshTime() {
-			return _REFRESH_TIME;
 		}
 
 		private static final long _REFRESH_TIME = Time.MINUTE * 30;
