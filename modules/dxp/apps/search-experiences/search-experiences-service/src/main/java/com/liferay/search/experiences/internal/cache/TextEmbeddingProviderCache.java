@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(enabled = false, service = TextEmbeddingProviderCache.class)
 public class TextEmbeddingProviderCache {
 
-	public Double[] get(
+	public Double[] getTextEmbedding(
 		ExceptionListener exceptionListener, String providerName,
 		long refreshTime, String text,
 		TextEmbeddingRetriever textEmbeddingRetriever) {
@@ -44,7 +44,7 @@ public class TextEmbeddingProviderCache {
 				return textEmbedding;
 			}
 
-			textEmbedding = _convert(
+			textEmbedding = _createTextEmbedding(
 				providerName, text, textEmbeddingRetriever);
 
 			_portalCache.put(
@@ -76,7 +76,7 @@ public class TextEmbeddingProviderCache {
 			TextEmbeddingProviderCache.class.getName());
 	}
 
-	private Double[] _convert(
+	private Double[] _createTextEmbedding(
 		String providerName, String text,
 		TextEmbeddingRetriever textEmbeddingRetriever) {
 
