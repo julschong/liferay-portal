@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(enabled = false, service = OpenWeatherMapCache.class)
 public class OpenWeatherMapCache {
 
-	public JSONObject get(
+	public JSONObject getJSONObject(
 		ExceptionListener exceptionListener, String latitude, String longitude,
 		OpenWeatherMapConfiguration openWeatherMapConfiguration) {
 
@@ -53,7 +53,7 @@ public class OpenWeatherMapCache {
 				return jsonObject;
 			}
 
-			jsonObject = _convert(
+			jsonObject = _createJSONObject(
 				latitude, longitude, openWeatherMapConfiguration);
 
 			_portalCache.put(
@@ -84,7 +84,7 @@ public class OpenWeatherMapCache {
 		_multiVMPool.removePortalCache(OpenWeatherMapCache.class.getName());
 	}
 
-	private JSONObject _convert(
+	private JSONObject _createJSONObject(
 		String latitude, String longitude,
 		OpenWeatherMapConfiguration openWeatherMapConfiguration) {
 
