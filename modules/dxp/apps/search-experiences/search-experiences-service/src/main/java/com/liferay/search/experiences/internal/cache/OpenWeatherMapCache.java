@@ -9,12 +9,12 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.search.experiences.blueprint.exception.InvalidWebCacheItemException;
@@ -38,7 +38,7 @@ public class OpenWeatherMapCache {
 		OpenWeatherMapConfiguration openWeatherMapConfiguration) {
 
 		if (!openWeatherMapConfiguration.enabled()) {
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 
 		try {
@@ -68,7 +68,7 @@ public class OpenWeatherMapCache {
 				_log.debug(exception);
 			}
 
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 	}
 
@@ -99,8 +99,8 @@ public class OpenWeatherMapCache {
 				_log.debug("Reading " + url);
 			}
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				HttpUtil.URLtoString(url));
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
+				_http.URLtoString(url));
 
 			_validateResponse(jsonObject);
 
@@ -138,6 +138,12 @@ public class OpenWeatherMapCache {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		OpenWeatherMapCache.class);
+
+	@Reference
+	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private MultiVMPool _multiVMPool;
