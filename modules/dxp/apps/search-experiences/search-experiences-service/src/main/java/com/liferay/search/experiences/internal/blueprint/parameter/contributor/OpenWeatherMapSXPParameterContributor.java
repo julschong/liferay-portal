@@ -17,10 +17,10 @@ import com.liferay.search.experiences.blueprint.parameter.contributor.SXPParamet
 import com.liferay.search.experiences.internal.blueprint.parameter.DoubleSXPParameter;
 import com.liferay.search.experiences.internal.blueprint.parameter.IntegerSXPParameter;
 import com.liferay.search.experiences.internal.blueprint.parameter.StringSXPParameter;
+import com.liferay.search.experiences.internal.cache.IpstackCache;
+import com.liferay.search.experiences.internal.cache.OpenWeatherMapCache;
 import com.liferay.search.experiences.internal.configuration.IpstackConfiguration;
 import com.liferay.search.experiences.internal.configuration.OpenWeatherMapConfiguration;
-import com.liferay.search.experiences.internal.cache.IpstackCache;
-import com.liferay.search.experiences.internal.web.cache.OpenWeatherMapWebCacheItem;
 import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
 
 import java.beans.ExceptionListener;
@@ -38,11 +38,12 @@ public class OpenWeatherMapSXPParameterContributor
 	implements SXPParameterContributor {
 
 	public OpenWeatherMapSXPParameterContributor(
-		ConfigurationProvider configurationProvider,
-		IpstackCache ipstackCache) {
+		ConfigurationProvider configurationProvider, IpstackCache ipstackCache,
+		OpenWeatherMapCache openWeatherMapCache) {
 
 		_configurationProvider = configurationProvider;
 		_ipstackCache = ipstackCache;
+		_openWeatherMapCache = openWeatherMapCache;
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class OpenWeatherMapSXPParameterContributor
 		String latitude = jsonObject.getString("latitude");
 		String longitude = jsonObject.getString("longitude");
 
-		jsonObject = OpenWeatherMapWebCacheItem.get(
+		jsonObject = _openWeatherMapCache.getJSONObject(
 			exceptionListener, latitude, longitude,
 			openWeatherMapConfiguration);
 
@@ -170,5 +171,6 @@ public class OpenWeatherMapSXPParameterContributor
 
 	private final ConfigurationProvider _configurationProvider;
 	private final IpstackCache _ipstackCache;
+	private final OpenWeatherMapCache _openWeatherMapCache;
 
 }

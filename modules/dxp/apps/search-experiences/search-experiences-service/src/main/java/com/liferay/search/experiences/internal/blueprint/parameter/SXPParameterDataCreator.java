@@ -38,6 +38,7 @@ import com.liferay.search.experiences.internal.blueprint.parameter.contributor.S
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.TimeSXPParameterContributor;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.UserSXPParameterContributor;
 import com.liferay.search.experiences.internal.cache.IpstackCache;
+import com.liferay.search.experiences.internal.cache.OpenWeatherMapCache;
 import com.liferay.search.experiences.ml.embedding.text.TextEmbeddingRetriever;
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
 import com.liferay.search.experiences.rest.dto.v1_0.Parameter;
@@ -137,7 +138,7 @@ public class SXPParameterDataCreator
 				_language, _semanticSearchConfigurationProvider,
 				_textEmbeddingRetriever),
 			new OpenWeatherMapSXPParameterContributor(
-				_configurationProvider, _ipstackCache),
+				_configurationProvider, _ipstackCache, _openWeatherMapCache),
 			new TimeSXPParameterContributor(),
 			new UserSXPParameterContributor(
 				_assetCategoryLocalService, _assetTagLocalService,
@@ -723,6 +724,9 @@ public class SXPParameterDataCreator
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private OpenWeatherMapCache _openWeatherMapCache;
 
 	@Reference
 	private Portal _portal;
