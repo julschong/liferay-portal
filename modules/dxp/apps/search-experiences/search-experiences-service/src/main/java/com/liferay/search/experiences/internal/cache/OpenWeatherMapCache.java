@@ -3,30 +3,37 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.search.experiences.internal.web.cache;
+package com.liferay.search.experiences.internal.cache;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.webcache.WebCacheItem;
-import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 import com.liferay.search.experiences.blueprint.exception.InvalidWebCacheItemException;
 import com.liferay.search.experiences.internal.configuration.OpenWeatherMapConfiguration;
 
 import java.beans.ExceptionListener;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  */
-public class OpenWeatherMapWebCacheItem implements WebCacheItem {
+@Component(enabled = false, service = OpenWeatherMapCache.class)
+public class OpenWeatherMapCache {
 
-	public static JSONObject get(
+	public JSONObject get(
 		ExceptionListener exceptionListener, String latitude, String longitude,
 		OpenWeatherMapConfiguration openWeatherMapConfiguration) {
 
@@ -35,14 +42,24 @@ public class OpenWeatherMapWebCacheItem implements WebCacheItem {
 		}
 
 		try {
-			return (JSONObject)WebCachePoolUtil.get(
-				StringBundler.concat(
-					OpenWeatherMapWebCacheItem.class.getName(),
-					StringPool.POUND, openWeatherMapConfiguration.apiKey(),
-					StringPool.POUND, openWeatherMapConfiguration.apiURL(),
-					StringPool.POUND, latitude, StringPool.POUND, longitude),
-				new OpenWeatherMapWebCacheItem(
-					latitude, longitude, openWeatherMapConfiguration));
+			String key = StringBundler.concat(
+				StringPool.POUND, openWeatherMapConfiguration.apiKey(),
+				StringPool.POUND, openWeatherMapConfiguration.apiURL(),
+				StringPool.POUND, latitude, StringPool.POUND, longitude);
+
+			JSONObject jsonObject = _portalCache.get(key);
+
+			if (jsonObject != null) {
+				return jsonObject;
+			}
+
+			jsonObject = _convert(
+				latitude, longitude, openWeatherMapConfiguration);
+
+			_portalCache.put(
+				key, jsonObject, _getRefreshTime(openWeatherMapConfiguration));
+
+			return jsonObject;
 		}
 		catch (Exception exception) {
 			exceptionListener.exceptionThrown(exception);
@@ -55,23 +72,28 @@ public class OpenWeatherMapWebCacheItem implements WebCacheItem {
 		}
 	}
 
-	public OpenWeatherMapWebCacheItem(
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
+				OpenWeatherMapCache.class.getName());
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(OpenWeatherMapCache.class.getName());
+	}
+
+	private JSONObject _convert(
 		String latitude, String longitude,
 		OpenWeatherMapConfiguration openWeatherMapConfiguration) {
 
-		_latitude = latitude;
-		_longitude = longitude;
-		_openWeatherMapConfiguration = openWeatherMapConfiguration;
-	}
-
-	@Override
-	public JSONObject convert(String key) {
 		try {
 			String url = StringBundler.concat(
-				_openWeatherMapConfiguration.apiURL(), "?APPID=",
-				_openWeatherMapConfiguration.apiKey(), "&format=json&lat=",
-				_latitude, "&lon=", _longitude, "&units=",
-				_openWeatherMapConfiguration.units());
+				openWeatherMapConfiguration.apiURL(), "?APPID=",
+				openWeatherMapConfiguration.apiKey(), "&format=json&lat=",
+				latitude, "&lon=", longitude, "&units=",
+				openWeatherMapConfiguration.units());
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Reading " + url);
@@ -89,10 +111,12 @@ public class OpenWeatherMapWebCacheItem implements WebCacheItem {
 		}
 	}
 
-	@Override
-	public long getRefreshTime() {
-		if (_openWeatherMapConfiguration.enabled()) {
-			return _openWeatherMapConfiguration.cacheTimeout();
+	private int _getRefreshTime(
+		OpenWeatherMapConfiguration openWeatherMapConfiguration) {
+
+		if (openWeatherMapConfiguration.enabled()) {
+			return (int)
+				(openWeatherMapConfiguration.cacheTimeout() / Time.SECOND);
 		}
 
 		return 0;
@@ -113,10 +137,11 @@ public class OpenWeatherMapWebCacheItem implements WebCacheItem {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OpenWeatherMapWebCacheItem.class);
+		OpenWeatherMapCache.class);
 
-	private final String _latitude;
-	private final String _longitude;
-	private final OpenWeatherMapConfiguration _openWeatherMapConfiguration;
+	@Reference
+	private MultiVMPool _multiVMPool;
+
+	private PortalCache<String, JSONObject> _portalCache;
 
 }
