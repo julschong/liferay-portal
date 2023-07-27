@@ -30,8 +30,7 @@ public class TextEmbeddingProviderCache {
 
 	public Double[] getTextEmbedding(
 		ExceptionListener exceptionListener, String providerName,
-		long refreshTime, String text,
-		TextEmbeddingRetriever textEmbeddingRetriever) {
+		long refreshTime, String text) {
 
 		try {
 			String key = StringBundler.concat(
@@ -44,8 +43,7 @@ public class TextEmbeddingProviderCache {
 				return textEmbedding;
 			}
 
-			textEmbedding = _createTextEmbedding(
-				providerName, text, textEmbeddingRetriever);
+			textEmbedding = _createTextEmbedding(providerName, text);
 
 			_portalCache.put(
 				key, textEmbedding, (int)(refreshTime / Time.SECOND));
@@ -76,12 +74,9 @@ public class TextEmbeddingProviderCache {
 			TextEmbeddingProviderCache.class.getName());
 	}
 
-	private Double[] _createTextEmbedding(
-		String providerName, String text,
-		TextEmbeddingRetriever textEmbeddingRetriever) {
-
+	private Double[] _createTextEmbedding(String providerName, String text) {
 		try {
-			return textEmbeddingRetriever.getTextEmbedding(providerName, text);
+			return _textEmbeddingRetriever.getTextEmbedding(providerName, text);
 		}
 		catch (Exception exception) {
 			throw new InvalidWebCacheItemException(exception);
@@ -95,5 +90,8 @@ public class TextEmbeddingProviderCache {
 	private MultiVMPool _multiVMPool;
 
 	private PortalCache<String, Double[]> _portalCache;
+
+	@Reference
+	private TextEmbeddingRetriever _textEmbeddingRetriever;
 
 }

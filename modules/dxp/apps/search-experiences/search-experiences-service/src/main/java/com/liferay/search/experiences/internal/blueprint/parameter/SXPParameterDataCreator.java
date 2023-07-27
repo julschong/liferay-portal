@@ -40,7 +40,6 @@ import com.liferay.search.experiences.internal.blueprint.parameter.contributor.U
 import com.liferay.search.experiences.internal.cache.IpstackCache;
 import com.liferay.search.experiences.internal.cache.OpenWeatherMapCache;
 import com.liferay.search.experiences.internal.cache.TextEmbeddingProviderCache;
-import com.liferay.search.experiences.ml.embedding.text.TextEmbeddingRetriever;
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
 import com.liferay.search.experiences.rest.dto.v1_0.Parameter;
 import com.liferay.search.experiences.rest.dto.v1_0.ParameterConfiguration;
@@ -137,7 +136,7 @@ public class SXPParameterDataCreator
 				_configurationProvider, _ipstackCache),
 			new MLSXPParameterContributor(
 				_language, _semanticSearchConfigurationProvider,
-				_textEmbeddingRetriever, _textEmbeddingProviderCache),
+				_textEmbeddingProviderCache),
 			new OpenWeatherMapSXPParameterContributor(
 				_configurationProvider, _ipstackCache, _openWeatherMapCache),
 			new TimeSXPParameterContributor(),
@@ -746,9 +745,6 @@ public class SXPParameterDataCreator
 
 	@Reference
 	private TextEmbeddingProviderCache _textEmbeddingProviderCache;
-
-	@Reference
-	private TextEmbeddingRetriever _textEmbeddingRetriever;
 
 	@Reference
 	private UserGroupGroupRoleLocalService _userGroupGroupRoleLocalService;
