@@ -107,11 +107,7 @@ public class SalesforceHttp {
 
 			jsonObject = salesforceAccessTokenCache.convert();
 
-			portalCache.put(
-				key, jsonObject,
-				(int)
-					(salesforceAccessTokenCache.getRefreshTime() /
-						Time.SECOND));
+			portalCache.put(key, jsonObject, _REFRESH_TIME);
 
 			return jsonObject;
 		}
@@ -176,11 +172,8 @@ public class SalesforceHttp {
 			}
 		}
 
-		public long getRefreshTime() {
-			return _REFRESH_TIME;
-		}
-
-		private static final long _REFRESH_TIME = Time.MINUTE * 45;
+		private static final int _REFRESH_TIME =
+			(int)(Time.MINUTE * 45 / Time.SECOND);
 
 		private static final Log _log = LogFactoryUtil.getLog(
 			SalesforceAccessTokenCache.class);
