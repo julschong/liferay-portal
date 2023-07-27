@@ -85,27 +85,16 @@ public class SalesforceHttp {
 		}
 	}
 
-	private JSONObject _get(
-		SalesforceConfiguration salesforceConfiguration,
-		PortalCache<String, JSONObject> portalCache) {
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
+				SalesforceHttp.class.getName());
+	}
 
-		String key = StringBundler.concat(
-			StringPool.POUND, salesforceConfiguration.consumerKey(),
-			StringPool.POUND, salesforceConfiguration.consumerSecret(),
-			StringPool.POUND, salesforceConfiguration.username());
-
-		JSONObject jsonObject = portalCache.get(key);
-
-		if (jsonObject != null) {
-			return jsonObject;
-		}
-
-		jsonObject = _convert(
-			salesforceConfiguration);
-
-		portalCache.put(key, jsonObject, _REFRESH_TIME);
-
-		return jsonObject;
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(_portalCache.getPortalCacheName());
 	}
 
 	private JSONObject _convert(
@@ -124,8 +113,7 @@ public class SalesforceHttp {
 				HashMapBuilder.put(
 					"client_id", salesforceConfiguration.consumerKey()
 				).put(
-					"client_secret",
-					salesforceConfiguration.consumerSecret()
+					"client_secret", salesforceConfiguration.consumerSecret()
 				).put(
 					"grant_type", "password"
 				).put(
@@ -134,8 +122,7 @@ public class SalesforceHttp {
 					"username", salesforceConfiguration.username()
 				).build());
 			options.setLocation(
-				salesforceConfiguration.loginURL() +
-					"/services/oauth2/token");
+				salesforceConfiguration.loginURL() + "/services/oauth2/token");
 			options.setPost(true);
 
 			String responseJSON = HttpUtil.URLtoString(options);
@@ -146,8 +133,8 @@ public class SalesforceHttp {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						StringBundler.concat(
-							"Response code ", response.getResponseCode(),
-							": ", responseJSON));
+							"Response code ", response.getResponseCode(), ": ",
+							responseJSON));
 				}
 
 				return null;
@@ -164,22 +151,26 @@ public class SalesforceHttp {
 		}
 	}
 
-	private static final int _REFRESH_TIME =
-		(int)(Time.MINUTE * 45 / Time.SECOND);
+	private JSONObject _get(
+		SalesforceConfiguration salesforceConfiguration,
+		PortalCache<String, JSONObject> portalCache) {
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		SalesforceHttp.class);
+		String key = StringBundler.concat(
+			StringPool.POUND, salesforceConfiguration.consumerKey(),
+			StringPool.POUND, salesforceConfiguration.consumerSecret(),
+			StringPool.POUND, salesforceConfiguration.username());
 
-	@Activate
-	protected void activate() {
-		_portalCache =
-			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
-				SalesforceHttp.class.getName());
-	}
+		JSONObject jsonObject = portalCache.get(key);
 
-	@Deactivate
-	protected void deactivate() {
-		_multiVMPool.removePortalCache(_portalCache.getPortalCacheName());
+		if (jsonObject != null) {
+			return jsonObject;
+		}
+
+		jsonObject = _convert(salesforceConfiguration);
+
+		portalCache.put(key, jsonObject, _REFRESH_TIME);
+
+		return jsonObject;
 	}
 
 	private JSONObject _getSalesforceAccessTokenJSONObject(
@@ -274,6 +265,11 @@ public class SalesforceHttp {
 
 		return bytes;
 	}
+
+	private static final int _REFRESH_TIME =
+		(int)(Time.MINUTE * 45 / Time.SECOND);
+
+	private static final Log _log = LogFactoryUtil.getLog(SalesforceHttp.class);
 
 	@Reference
 	private Http _http;
