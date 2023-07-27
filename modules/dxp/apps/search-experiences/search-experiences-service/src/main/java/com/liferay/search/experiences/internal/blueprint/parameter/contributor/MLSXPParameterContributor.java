@@ -17,7 +17,7 @@ import com.liferay.search.experiences.configuration.SemanticSearchConfiguration;
 import com.liferay.search.experiences.configuration.SemanticSearchConfigurationProvider;
 import com.liferay.search.experiences.internal.blueprint.parameter.DoubleArraySXPParameter;
 import com.liferay.search.experiences.internal.blueprint.parameter.IntegerSXPParameter;
-import com.liferay.search.experiences.internal.web.cache.TextEmbeddingProviderWebCacheItem;
+import com.liferay.search.experiences.internal.cache.TextEmbeddingProviderCache;
 import com.liferay.search.experiences.ml.embedding.text.TextEmbeddingRetriever;
 import com.liferay.search.experiences.rest.dto.v1_0.EmbeddingProviderConfiguration;
 import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
@@ -38,12 +38,14 @@ public class MLSXPParameterContributor implements SXPParameterContributor {
 	public MLSXPParameterContributor(
 		Language language,
 		SemanticSearchConfigurationProvider semanticSearchConfigurationProvider,
-		TextEmbeddingRetriever textEmbeddingRetriever) {
+		TextEmbeddingRetriever textEmbeddingRetriever,
+		TextEmbeddingProviderCache textEmbeddingProviderCache) {
 
 		_language = language;
 		_semanticSearchConfigurationProvider =
 			semanticSearchConfigurationProvider;
 		_textEmbeddingRetriever = textEmbeddingRetriever;
+		_textEmbeddingProviderCache = textEmbeddingProviderCache;
 	}
 
 	@Override
@@ -88,7 +90,7 @@ public class MLSXPParameterContributor implements SXPParameterContributor {
 				"ml.text_embeddings.vector_dimensions", true,
 				embeddingProviderConfiguration.getEmbeddingVectorDimensions()));
 
-		Double[] textEmbedding = TextEmbeddingProviderWebCacheItem.get(
+		Double[] textEmbedding = _textEmbeddingProviderCache.getTextEmbedding(
 			exceptionListener, embeddingProviderConfiguration.getProviderName(),
 			semanticSearchConfiguration.textEmbeddingCacheTimeout(),
 			searchContext.getKeywords(), _textEmbeddingRetriever);
@@ -177,6 +179,7 @@ public class MLSXPParameterContributor implements SXPParameterContributor {
 	private final Language _language;
 	private final SemanticSearchConfigurationProvider
 		_semanticSearchConfigurationProvider;
+	private final TextEmbeddingProviderCache _textEmbeddingProviderCache;
 	private final TextEmbeddingRetriever _textEmbeddingRetriever;
 
 }
