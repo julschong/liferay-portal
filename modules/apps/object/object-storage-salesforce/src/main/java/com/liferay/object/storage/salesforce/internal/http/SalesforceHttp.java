@@ -97,7 +97,7 @@ public class SalesforceHttp {
 		_multiVMPool.removePortalCache(_portalCache.getPortalCacheName());
 	}
 
-	private JSONObject _convert(
+	private JSONObject _createJSONObject(
 		SalesforceConfiguration salesforceConfiguration) {
 
 		try {
@@ -165,7 +165,7 @@ public class SalesforceHttp {
 			return jSONObject;
 		}
 
-		jSONObject = _convert(salesforceConfiguration);
+		jSONObject = _createJSONObject(salesforceConfiguration);
 
 		_portalCache.put(key, jSONObject, _REFRESH_TIME);
 
