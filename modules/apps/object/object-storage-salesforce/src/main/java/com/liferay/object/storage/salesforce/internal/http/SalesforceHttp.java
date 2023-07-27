@@ -151,29 +151,23 @@ public class SalesforceHttp {
 		}
 	}
 
-	private JSONObject _get(SalesforceConfiguration salesforceConfiguration) {
+	private JSONObject _getSalesforceAccessTokenJSONObject(
+		SalesforceConfiguration salesforceConfiguration) {
+
 		String key = StringBundler.concat(
 			StringPool.POUND, salesforceConfiguration.consumerKey(),
 			StringPool.POUND, salesforceConfiguration.consumerSecret(),
 			StringPool.POUND, salesforceConfiguration.username());
 
-		JSONObject jsonObject = _portalCache.get(key);
+		JSONObject jSONObject = _portalCache.get(key);
 
-		if (jsonObject != null) {
-			return jsonObject;
+		if (jSONObject != null) {
+			return jSONObject;
 		}
 
-		jsonObject = _convert(salesforceConfiguration);
+		jSONObject = _convert(salesforceConfiguration);
 
-		_portalCache.put(key, jsonObject, _REFRESH_TIME);
-
-		return jsonObject;
-	}
-
-	private JSONObject _getSalesforceAccessTokenJSONObject(
-		SalesforceConfiguration salesforceConfiguration) {
-
-		JSONObject jSONObject = _get(salesforceConfiguration);
+		_portalCache.put(key, jSONObject, _REFRESH_TIME);
 
 		if (jSONObject == null) {
 			throw new ObjectEntryManagerHttpException(
