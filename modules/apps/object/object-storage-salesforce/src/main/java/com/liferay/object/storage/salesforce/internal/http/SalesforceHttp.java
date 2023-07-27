@@ -103,46 +103,43 @@ public class SalesforceHttp {
 			}
 
 			SalesforceAccessTokenCache salesforceAccessTokenCache =
-				new SalesforceAccessTokenCache(salesforceConfiguration);
+				new SalesforceAccessTokenCache();
 
-			jsonObject = salesforceAccessTokenCache.convert();
+			jsonObject = salesforceAccessTokenCache.convert(
+				salesforceConfiguration);
 
 			portalCache.put(key, jsonObject, _REFRESH_TIME);
 
 			return jsonObject;
 		}
 
-		public SalesforceAccessTokenCache(
+		public JSONObject convert(
 			SalesforceConfiguration salesforceConfiguration) {
 
-			_salesforceConfiguration = salesforceConfiguration;
-		}
-
-		public JSONObject convert() {
 			try {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						"Get Salesforce access token for consumer key " +
-							_salesforceConfiguration.consumerKey());
+							salesforceConfiguration.consumerKey());
 				}
 
 				Http.Options options = new Http.Options();
 
 				options.setParts(
 					HashMapBuilder.put(
-						"client_id", _salesforceConfiguration.consumerKey()
+						"client_id", salesforceConfiguration.consumerKey()
 					).put(
 						"client_secret",
-						_salesforceConfiguration.consumerSecret()
+						salesforceConfiguration.consumerSecret()
 					).put(
 						"grant_type", "password"
 					).put(
-						"password", _salesforceConfiguration.password()
+						"password", salesforceConfiguration.password()
 					).put(
-						"username", _salesforceConfiguration.username()
+						"username", salesforceConfiguration.username()
 					).build());
 				options.setLocation(
-					_salesforceConfiguration.loginURL() +
+					salesforceConfiguration.loginURL() +
 						"/services/oauth2/token");
 				options.setPost(true);
 
@@ -177,8 +174,6 @@ public class SalesforceHttp {
 
 		private static final Log _log = LogFactoryUtil.getLog(
 			SalesforceAccessTokenCache.class);
-
-		private final SalesforceConfiguration _salesforceConfiguration;
 
 	}
 
