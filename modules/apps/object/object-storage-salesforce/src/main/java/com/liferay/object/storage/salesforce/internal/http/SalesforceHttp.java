@@ -13,7 +13,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -23,7 +22,6 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Time;
 
 import java.net.HttpURLConnection;
@@ -125,7 +123,7 @@ public class SalesforceHttp {
 				salesforceConfiguration.loginURL() + "/services/oauth2/token");
 			options.setPost(true);
 
-			String responseJSON = HttpUtil.URLtoString(options);
+			String responseJSON = _http.URLtoString(options);
 
 			Http.Response response = options.getResponse();
 
@@ -140,7 +138,7 @@ public class SalesforceHttp {
 				return null;
 			}
 
-			return JSONFactoryUtil.createJSONObject(responseJSON);
+			return _jsonFactory.createJSONObject(responseJSON);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
