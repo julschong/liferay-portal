@@ -105,7 +105,7 @@ public class SalesforceHttp {
 			SalesforceAccessTokenCache salesforceAccessTokenCache =
 				new SalesforceAccessTokenCache();
 
-			jsonObject = salesforceAccessTokenCache.convert(
+			jsonObject = salesforceAccessTokenCache._convert(
 				salesforceConfiguration);
 
 			portalCache.put(key, jsonObject, _REFRESH_TIME);
@@ -113,7 +113,7 @@ public class SalesforceHttp {
 			return jsonObject;
 		}
 
-		public JSONObject convert(
+		private JSONObject _convert(
 			SalesforceConfiguration salesforceConfiguration) {
 
 			try {
