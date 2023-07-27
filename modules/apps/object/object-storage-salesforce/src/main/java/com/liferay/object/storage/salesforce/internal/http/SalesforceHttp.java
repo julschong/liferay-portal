@@ -10,6 +10,8 @@ import com.liferay.object.storage.salesforce.configuration.SalesforceConfigurati
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -23,12 +25,12 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.webcache.WebCacheItem;
-import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 
 import java.net.HttpURLConnection;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -83,29 +85,44 @@ public class SalesforceHttp {
 		}
 	}
 
-	public static class SalesforceAccessTokenWebCacheItem
-		implements WebCacheItem {
+	public static class SalesforceAccessTokenCache {
 
 		public static JSONObject get(
-			SalesforceConfiguration salesforceConfiguration) {
+			SalesforceConfiguration salesforceConfiguration,
+			PortalCache<String, JSONObject> portalCache) {
 
-			return (JSONObject)WebCachePoolUtil.get(
-				StringBundler.concat(
-					SalesforceAccessTokenWebCacheItem.class.getName(),
-					StringPool.POUND, salesforceConfiguration.consumerKey(),
-					StringPool.POUND, salesforceConfiguration.consumerSecret(),
-					StringPool.POUND, salesforceConfiguration.username()),
-				new SalesforceAccessTokenWebCacheItem(salesforceConfiguration));
+			String key = StringBundler.concat(
+				StringPool.POUND, salesforceConfiguration.consumerKey(),
+				StringPool.POUND, salesforceConfiguration.consumerSecret(),
+				StringPool.POUND, salesforceConfiguration.username());
+
+			JSONObject jsonObject = portalCache.get(key);
+
+			if (jsonObject != null) {
+				return jsonObject;
+			}
+
+			SalesforceAccessTokenCache salesforceAccessTokenCache =
+				new SalesforceAccessTokenCache(salesforceConfiguration);
+
+			jsonObject = salesforceAccessTokenCache.convert();
+
+			portalCache.put(
+				key, jsonObject,
+				(int)
+					(salesforceAccessTokenCache.getRefreshTime() /
+						Time.SECOND));
+
+			return jsonObject;
 		}
 
-		public SalesforceAccessTokenWebCacheItem(
+		public SalesforceAccessTokenCache(
 			SalesforceConfiguration salesforceConfiguration) {
 
 			_salesforceConfiguration = salesforceConfiguration;
 		}
 
-		@Override
-		public JSONObject convert(String key) {
+		public JSONObject convert() {
 			try {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
@@ -159,7 +176,6 @@ public class SalesforceHttp {
 			}
 		}
 
-		@Override
 		public long getRefreshTime() {
 			return _REFRESH_TIME;
 		}
@@ -167,17 +183,29 @@ public class SalesforceHttp {
 		private static final long _REFRESH_TIME = Time.MINUTE * 45;
 
 		private static final Log _log = LogFactoryUtil.getLog(
-			SalesforceAccessTokenWebCacheItem.class);
+			SalesforceAccessTokenCache.class);
 
 		private final SalesforceConfiguration _salesforceConfiguration;
 
 	}
 
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<String, JSONObject>)_multiVMPool.getPortalCache(
+				SalesforceHttp.class.getName());
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(_portalCache.getPortalCacheName());
+	}
+
 	private JSONObject _getSalesforceAccessTokenJSONObject(
 		SalesforceConfiguration salesforceConfiguration) {
 
-		JSONObject jSONObject = SalesforceAccessTokenWebCacheItem.get(
-			salesforceConfiguration);
+		JSONObject jSONObject = SalesforceAccessTokenCache.get(
+			salesforceConfiguration, _portalCache);
 
 		if (jSONObject == null) {
 			throw new ObjectEntryManagerHttpException(
@@ -272,5 +300,10 @@ public class SalesforceHttp {
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private MultiVMPool _multiVMPool;
+
+	private PortalCache<String, JSONObject> _portalCache;
 
 }
