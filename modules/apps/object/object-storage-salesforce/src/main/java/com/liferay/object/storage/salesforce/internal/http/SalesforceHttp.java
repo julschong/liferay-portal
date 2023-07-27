@@ -28,8 +28,6 @@ import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 
 import java.net.HttpURLConnection;
 
-import javax.ws.rs.core.Response;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
