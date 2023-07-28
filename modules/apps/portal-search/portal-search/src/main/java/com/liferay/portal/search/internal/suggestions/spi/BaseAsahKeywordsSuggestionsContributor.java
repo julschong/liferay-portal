@@ -212,35 +212,35 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			return jsonObject;
 		}
 
+		String url = _getURL(
+			analyticsConfiguration, displayLanguageId, groupId, minCounts, size,
+			sort);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Reading " + url);
+		}
+
+		Http.Options options = new Http.Options();
+
+		options.addHeader(
+			"OSB-Asah-Faro-Backend-Security-Signature",
+			analyticsConfiguration.
+				liferayAnalyticsFaroBackendSecuritySignature());
+		options.addHeader(
+			"OSB-Asah-Project-ID",
+			analyticsConfiguration.liferayAnalyticsProjectId());
+
+		options.setLocation(url);
+
 		try {
-			Http.Options options = new Http.Options();
-
-			options.addHeader(
-				"OSB-Asah-Faro-Backend-Security-Signature",
-				analyticsConfiguration.
-					liferayAnalyticsFaroBackendSecuritySignature());
-			options.addHeader(
-				"OSB-Asah-Project-ID",
-				analyticsConfiguration.liferayAnalyticsProjectId());
-
-			String url = _getURL(
-				analyticsConfiguration, displayLanguageId, groupId, minCounts,
-				size, sort);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Reading " + url);
-			}
-
-			options.setLocation(url);
-
 			jsonObject = jsonFactory.createJSONObject(
 				http.URLtoString(options));
-
-			_validateResponse(jsonObject, options.getResponse());
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
+
+		_validateResponse(jsonObject, options.getResponse());
 
 		_portalCache.put(
 			key, jsonObject,
