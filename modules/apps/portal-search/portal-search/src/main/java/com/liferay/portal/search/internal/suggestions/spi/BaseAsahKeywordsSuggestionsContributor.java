@@ -240,14 +240,24 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			throw new RuntimeException(exception);
 		}
 
-		_validateResponse(jsonObject, options.getResponse());
+		Http.Response response = options.getResponse();
 
-		_portalCache.put(
-			key, jsonObject,
-			(int)
-				(asahSearchKeywordsConfiguration.cacheTimeout() / Time.SECOND));
+		if ((response.getResponseCode() == HttpURLConnection.HTTP_OK) &&
+			jsonObject.has("_embedded")) {
 
-		return jsonObject;
+			_portalCache.put(
+				key, jsonObject,
+				(int)
+					(asahSearchKeywordsConfiguration.cacheTimeout() /
+						Time.SECOND));
+
+			return jsonObject;
+		}
+
+		throw new RuntimeException(
+			StringBundler.concat(
+				"Response body: ", jsonObject, "\nResponse code: ",
+				response.getResponseCode()));
 	}
 
 	private int _getMinCounts(Map<String, Object> attributes) {
@@ -338,21 +348,6 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		}
 
 		return false;
-	}
-
-	private void _validateResponse(
-		JSONObject jsonObject, Http.Response response) {
-
-		if ((response.getResponseCode() == HttpURLConnection.HTTP_OK) &&
-			jsonObject.has("_embedded")) {
-
-			return;
-		}
-
-		throw new RuntimeException(
-			StringBundler.concat(
-				"Response body: ", jsonObject, "\nResponse code: ",
-				response.getResponseCode()));
 	}
 
 	private static final int _CHARACTER_THRESHOLD = 2;
