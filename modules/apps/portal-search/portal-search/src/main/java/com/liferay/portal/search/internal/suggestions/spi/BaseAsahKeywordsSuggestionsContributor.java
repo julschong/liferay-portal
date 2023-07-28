@@ -128,48 +128,10 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 	@Reference
 	protected JSONFactory jsonFactory;
 
-	@Reference
 	protected Language language;
 
 	@Reference
 	protected SingleVMPool singleVMPool;
-
-	private JSONObject _createJSONObject(
-		AnalyticsConfiguration analyticsConfiguration, String displayLanguageId,
-		long groupId, int minCounts, int size, String sort) {
-
-		try {
-			Http.Options options = new Http.Options();
-
-			options.addHeader(
-				"OSB-Asah-Faro-Backend-Security-Signature",
-				analyticsConfiguration.
-					liferayAnalyticsFaroBackendSecuritySignature());
-			options.addHeader(
-				"OSB-Asah-Project-ID",
-				analyticsConfiguration.liferayAnalyticsProjectId());
-
-			String url = _getURL(
-				analyticsConfiguration, displayLanguageId, groupId, minCounts,
-				size, sort);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Reading " + url);
-			}
-
-			options.setLocation(url);
-
-			JSONObject jsonObject = jsonFactory.createJSONObject(
-				http.URLtoString(options));
-
-			_validateResponse(jsonObject, options.getResponse());
-
-			return jsonObject;
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-	}
 
 	private boolean _exceedsCharacterThreshold(
 		Map<String, Object> attributes, String keywords) {
@@ -250,9 +212,35 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 			return jsonObject;
 		}
 
-		jsonObject = _createJSONObject(
-			analyticsConfiguration, displayLanguageId, groupId, minCounts, size,
-			sort);
+		try {
+			Http.Options options = new Http.Options();
+
+			options.addHeader(
+				"OSB-Asah-Faro-Backend-Security-Signature",
+				analyticsConfiguration.
+					liferayAnalyticsFaroBackendSecuritySignature());
+			options.addHeader(
+				"OSB-Asah-Project-ID",
+				analyticsConfiguration.liferayAnalyticsProjectId());
+
+			String url = _getURL(
+				analyticsConfiguration, displayLanguageId, groupId, minCounts,
+				size, sort);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Reading " + url);
+			}
+
+			options.setLocation(url);
+
+			jsonObject = jsonFactory.createJSONObject(
+				http.URLtoString(options));
+
+			_validateResponse(jsonObject, options.getResponse());
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 
 		_portalCache.put(
 			key, jsonObject,
