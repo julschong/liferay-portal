@@ -57,10 +57,7 @@ public class OpenWeatherMapCache {
 				latitude, longitude, openWeatherMapConfiguration);
 
 			_portalCache.put(
-				key, jsonObject,
-				(int)
-					(_getRefreshTime(openWeatherMapConfiguration) /
-						Time.SECOND));
+				key, jsonObject, _getRefreshTime(openWeatherMapConfiguration));
 
 			return jsonObject;
 		}
@@ -114,11 +111,12 @@ public class OpenWeatherMapCache {
 		}
 	}
 
-	private long _getRefreshTime(
+	private int _getRefreshTime(
 		OpenWeatherMapConfiguration openWeatherMapConfiguration) {
 
 		if (openWeatherMapConfiguration.enabled()) {
-			return openWeatherMapConfiguration.cacheTimeout();
+			return (int)
+				(openWeatherMapConfiguration.cacheTimeout() / Time.SECOND);
 		}
 
 		return 0;
