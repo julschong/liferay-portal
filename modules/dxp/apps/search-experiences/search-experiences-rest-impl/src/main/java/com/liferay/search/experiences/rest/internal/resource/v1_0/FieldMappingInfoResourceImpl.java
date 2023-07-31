@@ -66,7 +66,7 @@ public class FieldMappingInfoResourceImpl
 		JSONObject jsonObject = _portalCache.get(indexName);
 
 		if (jsonObject == null) {
-			jsonObject = _convert(indexName);
+			jsonObject = _createJSONObject(indexName);
 
 			_portalCache.put(
 				indexName, jsonObject, (int)(_REFRESH_TIME / Time.SECOND));
@@ -163,7 +163,7 @@ public class FieldMappingInfoResourceImpl
 		}
 	}
 
-	private JSONObject _convert(String indexName) {
+	private JSONObject _createJSONObject(String indexName) {
 		try {
 			return JSONUtil.getValueAsJSONObject(
 				_jsonFactory.createJSONObject(
