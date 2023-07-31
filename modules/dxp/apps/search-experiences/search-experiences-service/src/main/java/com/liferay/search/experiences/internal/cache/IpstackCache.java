@@ -61,8 +61,7 @@ public class IpstackCache {
 			jsonObject = _convert(ipAddress, ipstackConfiguration);
 
 			_portalCache.put(
-				key, jsonObject,
-				(int)(_getRefreshTime(ipstackConfiguration) / Time.SECOND));
+				key, jsonObject, _getRefreshTime(ipstackConfiguration));
 
 			return jsonObject;
 		}
@@ -119,9 +118,9 @@ public class IpstackCache {
 		}
 	}
 
-	private long _getRefreshTime(IpstackConfiguration ipstackConfiguration) {
+	private int _getRefreshTime(IpstackConfiguration ipstackConfiguration) {
 		if (ipstackConfiguration.enabled()) {
-			return ipstackConfiguration.cacheTimeout();
+			return (int)(ipstackConfiguration.cacheTimeout() / Time.SECOND);
 		}
 
 		return 0;
