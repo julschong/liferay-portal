@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -113,7 +112,7 @@ public class SXPBlueprintSearchRequestContributorTest {
 								"2345", "34.94.32.240", "true")) {
 
 					ReflectionTestUtil.setFieldValue(
-						HttpUtil.class, "_http",
+						_ipstackCache, "_http",
 						_getHttp(
 							JSONUtil.put(
 								"city", "diamond bar"
@@ -123,7 +122,7 @@ public class SXPBlueprintSearchRequestContributorTest {
 				}
 				finally {
 					ReflectionTestUtil.setFieldValue(
-						HttpUtil.class, "_http", _http);
+						_ipstackCache, "_http", _http);
 				}
 
 				try (ConfigurationTemporarySwapper
@@ -132,7 +131,7 @@ public class SXPBlueprintSearchRequestContributorTest {
 								"2345", "91.233.116.229", "true")) {
 
 					ReflectionTestUtil.setFieldValue(
-						HttpUtil.class, "_http",
+						_ipstackCache, "_http",
 						_getHttp(
 							JSONUtil.put(
 								"city", "walnut"
@@ -142,7 +141,7 @@ public class SXPBlueprintSearchRequestContributorTest {
 				}
 				finally {
 					ReflectionTestUtil.setFieldValue(
-						HttpUtil.class, "_http", _http);
+						_ipstackCache, "_http", _http);
 				}
 			});
 	}
@@ -252,6 +251,12 @@ public class SXPBlueprintSearchRequestContributorTest {
 
 	@Inject
 	private Http _http;
+
+	@Inject(
+		filter = "component.name=com.liferay.search.experiences.internal.cache.IpstackCache",
+		type = Inject.NoType.class
+	)
+	private Object _ipstackCache;
 
 	@Inject
 	private Searcher _searcher;
