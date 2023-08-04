@@ -58,6 +58,10 @@ public class IpstackWebCacheItem implements WebCacheItem {
 		}
 	}
 
+	public static void removeCache() {
+		WebCachePoolUtil.removeCache(IpstackWebCacheItem.class.getName());
+	}
+
 	public IpstackWebCacheItem(
 		String ipAddress, IpstackConfiguration ipstackConfiguration) {
 

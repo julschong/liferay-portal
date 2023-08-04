@@ -52,6 +52,11 @@ public class AsahSearchKeywordsWebCacheItem implements WebCacheItem {
 		}
 	}
 
+	public static void removeCache() {
+		WebCachePoolUtil.removeCache(
+			AsahSearchKeywordsWebCacheItem.class.getName());
+	}
+
 	public AsahSearchKeywordsWebCacheItem(
 		AnalyticsConfiguration analyticsConfiguration,
 		AsahSearchKeywordsConfiguration asahSearchKeywordsConfiguration,

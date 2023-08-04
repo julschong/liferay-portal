@@ -31,6 +31,10 @@ public class FieldMappingsWebCacheItem implements WebCacheItem {
 				indexInformation, indexName, jsonFactory));
 	}
 
+	public static void removeCache() {
+		WebCachePoolUtil.removeCache(FieldMappingsWebCacheItem.class.getName());
+	}
+
 	public FieldMappingsWebCacheItem(
 		IndexInformation indexInformation, String indexName,
 		JSONFactory jsonFactory) {

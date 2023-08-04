@@ -55,6 +55,11 @@ public class OpenWeatherMapWebCacheItem implements WebCacheItem {
 		}
 	}
 
+	public static void removeCache() {
+		WebCachePoolUtil.removeCache(
+			OpenWeatherMapWebCacheItem.class.getName());
+	}
+
 	public OpenWeatherMapWebCacheItem(
 		String latitude, String longitude,
 		OpenWeatherMapConfiguration openWeatherMapConfiguration) {

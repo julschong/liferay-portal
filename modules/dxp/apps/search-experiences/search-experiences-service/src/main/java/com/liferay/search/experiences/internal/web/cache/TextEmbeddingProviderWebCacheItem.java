@@ -44,6 +44,11 @@ public class TextEmbeddingProviderWebCacheItem implements WebCacheItem {
 		}
 	}
 
+	public static void removeCache() {
+		WebCachePoolUtil.removeCache(
+			TextEmbeddingProviderWebCacheItem.class.getName());
+	}
+
 	public TextEmbeddingProviderWebCacheItem(
 		String providerName, long refreshTime, String text,
 		TextEmbeddingRetriever textEmbeddingRetriever) {
