@@ -10,20 +10,26 @@ package com.liferay.portal.kernel.webcache;
  */
 public class WebCachePoolUtil {
 
-	public static void clear() {
-		_webCachePool.clear();
+	public static void clearCache(String cacheName) {
+		_webCachePool.clearCache(cacheName);
 	}
 
-	public static Object get(String key, WebCacheItem webCacheItem) {
-		return _webCachePool.get(key, webCacheItem);
+	public static Object get(
+		String cacheName, String key, WebCacheItem webCacheItem) {
+
+		return _webCachePool.get(cacheName, key, webCacheItem);
 	}
 
 	public static WebCachePool getWebCachePool() {
 		return _webCachePool;
 	}
 
-	public static void remove(String key) {
-		_webCachePool.remove(key);
+	public static void remove(String cacheName, String key) {
+		_webCachePool.remove(cacheName, key);
+	}
+
+	public static void removeCache(String cacheName) {
+		_webCachePool.removeCache(cacheName);
 	}
 
 	public void setWebCachePool(WebCachePool webCachePool) {

@@ -15,24 +15,35 @@ import com.liferay.portal.kernel.webcache.WebCacheException;
 import com.liferay.portal.kernel.webcache.WebCacheItem;
 import com.liferay.portal.kernel.webcache.WebCachePool;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public class WebCachePoolImpl implements WebCachePool {
 
-	public void afterPropertiesSet() {
-		_portalCache = PortalCacheHelperUtil.getPortalCache(
-			PortalCacheManagerNames.SINGLE_VM, _CACHE_NAME);
+	@Override
+	public void clearCache(String cacheName) {
+		PortalCache<String, ?> portalCache = _portalCacheMap.get(cacheName);
+
+		if (portalCache == null) {
+			return;
+		}
+
+		portalCache.removeAll();
 	}
 
 	@Override
-	public void clear() {
-		_portalCache.removeAll();
-	}
+	public Object get(String cacheName, String key, WebCacheItem webCacheItem) {
+		PortalCache<String, Object> portalCache =
+			_portalCacheMap.computeIfAbsent(
+				webCacheItem.getClass(
+				).getName(),
+				k -> PortalCacheHelperUtil.getPortalCache(
+					PortalCacheManagerNames.SINGLE_VM, cacheName));
 
-	@Override
-	public Object get(String key, WebCacheItem webCacheItem) {
-		Object object = _portalCache.get(key);
+		Object object = portalCache.get(key);
 
 		if (object != null) {
 			return object;
@@ -48,7 +59,7 @@ public class WebCachePoolImpl implements WebCachePool {
 			int timeToLive = (int)(webCacheItem.getRefreshTime() / Time.SECOND);
 
 			if (timeToLive > 0) {
-				_portalCache.put(key, object, timeToLive);
+				portalCache.put(key, object, timeToLive);
 			}
 		}
 		catch (WebCacheException webCacheException) {
@@ -68,15 +79,26 @@ public class WebCachePoolImpl implements WebCachePool {
 	}
 
 	@Override
-	public void remove(String key) {
-		_portalCache.remove(key);
+	public void remove(String cacheName, String key) {
+		PortalCache<String, Object> portalCache = _portalCacheMap.get(
+			cacheName);
+
+		if (portalCache == null) {
+			return;
+		}
+
+		portalCache.remove(key);
 	}
 
-	private static final String _CACHE_NAME = WebCachePool.class.getName();
+	@Override
+	public void removeCache(String cacheName) {
+		_portalCacheMap.remove(cacheName);
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WebCachePoolImpl.class);
 
-	private PortalCache<String, Object> _portalCache;
+	private final Map<String, PortalCache<String, Object>> _portalCacheMap =
+		new HashMap<>();
 
 }

@@ -10,10 +10,12 @@ package com.liferay.portal.kernel.webcache;
  */
 public interface WebCachePool {
 
-	public void clear();
+	public void clearCache(String cacheName);
 
-	public Object get(String key, WebCacheItem webCacheItem);
+	public Object get(String cacheName, String key, WebCacheItem webCacheItem);
 
-	public void remove(String key);
+	public void remove(String cacheName, String key);
+
+	public void removeCache(String cacheName);
 
 }
