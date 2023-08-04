@@ -21,9 +21,8 @@ import com.liferay.portal.kernel.util.Http;
 
 import java.net.HttpURLConnection;
 
-import javax.ws.rs.core.Response;
-
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -76,6 +75,11 @@ public class SalesforceHttp {
 		catch (Exception exception) {
 			return ReflectionUtil.throwException(exception);
 		}
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		SalesforceAccessTokenWebCacheItem.removeCache();
 	}
 
 	private JSONObject _getSalesforceAccessTokenJSONObject(

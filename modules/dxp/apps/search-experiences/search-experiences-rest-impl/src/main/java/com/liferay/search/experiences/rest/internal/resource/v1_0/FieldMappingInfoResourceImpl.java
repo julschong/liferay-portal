@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
@@ -67,6 +68,11 @@ public class FieldMappingInfoResourceImpl
 			StringPool.BLANK, query);
 
 		return fieldMappingInfos;
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		FieldMappingsWebCacheItem.removeCache();
 	}
 
 	private void _addFieldMappingInfo(

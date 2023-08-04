@@ -37,6 +37,9 @@ import com.liferay.search.experiences.internal.blueprint.parameter.contributor.O
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.SXPParameterContributor;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.TimeSXPParameterContributor;
 import com.liferay.search.experiences.internal.blueprint.parameter.contributor.UserSXPParameterContributor;
+import com.liferay.search.experiences.internal.web.cache.IpstackWebCacheItem;
+import com.liferay.search.experiences.internal.web.cache.OpenWeatherMapWebCacheItem;
+import com.liferay.search.experiences.internal.web.cache.TextEmbeddingProviderWebCacheItem;
 import com.liferay.search.experiences.ml.embedding.text.TextEmbeddingRetriever;
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
 import com.liferay.search.experiences.rest.dto.v1_0.Parameter;
@@ -66,6 +69,7 @@ import org.apache.commons.lang.StringUtils;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -143,6 +147,13 @@ public class SXPParameterDataCreator
 				_userGroupGroupRoleLocalService, _userGroupLocalService,
 				_userGroupRoleLocalService, _userLocalService)
 		};
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		IpstackWebCacheItem.removeCache();
+		OpenWeatherMapWebCacheItem.removeCache();
+		TextEmbeddingProviderWebCacheItem.removeCache();
 	}
 
 	private void _add(

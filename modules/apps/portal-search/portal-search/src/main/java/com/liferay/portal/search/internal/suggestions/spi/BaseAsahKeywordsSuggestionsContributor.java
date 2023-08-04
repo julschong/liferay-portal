@@ -36,6 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Petteri Karttunen
@@ -46,6 +47,11 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 	protected void activate(Map<String, Object> properties) {
 		asahSearchKeywordsConfiguration = ConfigurableUtil.createConfigurable(
 			AsahSearchKeywordsConfiguration.class, properties);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		AsahSearchKeywordsWebCacheItem.removeCache();
 	}
 
 	protected SuggestionsContributorResults getSuggestionsContributorResults(

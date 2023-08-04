@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -69,6 +70,11 @@ public class DSHttp {
 		catch (Exception exception) {
 			return ReflectionUtil.throwException(exception);
 		}
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		DSAccessTokenWebCacheItem.removeCache();
 	}
 
 	private String _getDocuSignAccessToken(
