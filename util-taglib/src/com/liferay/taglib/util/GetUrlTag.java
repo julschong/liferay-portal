@@ -5,7 +5,6 @@
 
 package com.liferay.taglib.util;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.webcache.WebCacheItem;
@@ -28,8 +27,7 @@ public class GetUrlTag extends TagSupport {
 			WebCacheItem webCacheItem = new GetUrlWebCacheItem(_url, _expires);
 
 			String content = (String)WebCachePoolUtil.get(
-				GetUrlTag.class.getName() + StringPool.POUND + _url,
-				webCacheItem);
+				GetUrlTag.class.getName(), _url, webCacheItem);
 
 			if (Validator.isNotNull(_var)) {
 				pageContext.setAttribute(_var, content);

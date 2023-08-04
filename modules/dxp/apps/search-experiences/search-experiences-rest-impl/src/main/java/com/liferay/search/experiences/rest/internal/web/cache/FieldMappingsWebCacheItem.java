@@ -5,7 +5,6 @@
 
 package com.liferay.search.experiences.rest.internal.web.cache;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -27,8 +26,7 @@ public class FieldMappingsWebCacheItem implements WebCacheItem {
 		JSONFactory jsonFactory) {
 
 		return (JSONObject)WebCachePoolUtil.get(
-			FieldMappingsWebCacheItem.class.getName() + StringPool.POUND +
-				indexName,
+			FieldMappingsWebCacheItem.class.getName(), indexName,
 			new FieldMappingsWebCacheItem(
 				indexInformation, indexName, jsonFactory));
 	}

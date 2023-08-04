@@ -36,11 +36,11 @@ public class OpenWeatherMapWebCacheItem implements WebCacheItem {
 
 		try {
 			return (JSONObject)WebCachePoolUtil.get(
+				OpenWeatherMapWebCacheItem.class.getName(),
 				StringBundler.concat(
-					OpenWeatherMapWebCacheItem.class.getName(),
-					StringPool.POUND, openWeatherMapConfiguration.apiKey(),
-					StringPool.POUND, openWeatherMapConfiguration.apiURL(),
-					StringPool.POUND, latitude, StringPool.POUND, longitude),
+					openWeatherMapConfiguration.apiKey(), StringPool.POUND,
+					openWeatherMapConfiguration.apiURL(), StringPool.POUND,
+					latitude, StringPool.POUND, longitude),
 				new OpenWeatherMapWebCacheItem(
 					latitude, longitude, openWeatherMapConfiguration));
 		}

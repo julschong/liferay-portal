@@ -6,7 +6,6 @@
 package com.liferay.learn;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -25,8 +24,7 @@ public class LearnMessageUtil {
 
 	public static JSONObject getJSONObject(String resource) {
 		return (JSONObject)WebCachePoolUtil.get(
-			JSONObjectWebCacheItem.class.getName() + StringPool.POUND +
-				resource,
+			JSONObjectWebCacheItem.class.getName(), resource,
 			new JSONObjectWebCacheItem(resource));
 	}
 

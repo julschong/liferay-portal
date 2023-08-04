@@ -137,7 +137,7 @@ public class RSSFeed {
 			_rssWebCacheConfiguration, _url);
 
 		_syndFeed = (SyndFeed)WebCachePoolUtil.get(
-			RSSFeed.class.getName() + StringPool.POUND + _url, webCacheItem);
+			RSSFeed.class.getName(), _url, webCacheItem);
 
 		return _syndFeed;
 	}
