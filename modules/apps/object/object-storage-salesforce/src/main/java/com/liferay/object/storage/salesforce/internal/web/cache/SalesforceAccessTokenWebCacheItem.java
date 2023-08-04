@@ -38,6 +38,11 @@ public class SalesforceAccessTokenWebCacheItem implements WebCacheItem {
 			new SalesforceAccessTokenWebCacheItem(salesforceConfiguration));
 	}
 
+	public static void removeCache() {
+		WebCachePoolUtil.removeCache(
+			SalesforceAccessTokenWebCacheItem.class.getName());
+	}
+
 	public SalesforceAccessTokenWebCacheItem(
 		SalesforceConfiguration salesforceConfiguration) {
 

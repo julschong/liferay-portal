@@ -46,6 +46,10 @@ public class DSAccessTokenWebCacheItem implements WebCacheItem {
 				apiUsername, integrationKey, rsaPrivateKey));
 	}
 
+	public static void removeCache() {
+		WebCachePoolUtil.removeCache(DSAccessTokenWebCacheItem.class.getName());
+	}
+
 	public DSAccessTokenWebCacheItem(
 		String apiUsername, String integrationKey, String rsaPrivateKey) {
 
