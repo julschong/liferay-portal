@@ -136,7 +136,7 @@ public class IpstackSXPParameterContributorTest {
 		webCachePoolUtil.setWebCachePool(webCachePool);
 
 		Mockito.when(
-			webCachePool.get(Mockito.anyString(), Mockito.any())
+			webCachePool.get(Mockito.anyString(), Mockito.anyString(), Mockito.any())
 		).thenReturn(
 			JSONUtil.put("city", "Diamond Bar")
 		);
