@@ -38,8 +38,8 @@ public class DSAccessTokenWebCacheItem implements WebCacheItem {
 		String apiUsername, String integrationKey, String rsaPrivateKey) {
 
 		return (JSONObject)WebCachePoolUtil.get(
+			DSAccessTokenWebCacheItem.class.getName(),
 			StringBundler.concat(
-				DSAccessTokenWebCacheItem.class.getName(), StringPool.POUND,
 				apiUsername, StringPool.POUND, integrationKey, StringPool.POUND,
 				rsaPrivateKey),
 			new DSAccessTokenWebCacheItem(

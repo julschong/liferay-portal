@@ -28,9 +28,8 @@ public class TextEmbeddingProviderWebCacheItem implements WebCacheItem {
 
 		try {
 			return (Double[])WebCachePoolUtil.get(
-				StringBundler.concat(
-					TextEmbeddingProviderWebCacheItem.class.getName(),
-					StringPool.POUND, providerName, StringPool.POUND, text),
+				TextEmbeddingProviderWebCacheItem.class.getName(),
+				StringBundler.concat(providerName, StringPool.POUND, text),
 				new TextEmbeddingProviderWebCacheItem(
 					providerName, refreshTime, text, textEmbeddingRetriever));
 		}

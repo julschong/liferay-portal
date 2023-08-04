@@ -41,8 +41,8 @@ public class IpstackWebCacheItem implements WebCacheItem {
 			}
 
 			return (JSONObject)WebCachePoolUtil.get(
+				IpstackWebCacheItem.class.getName(),
 				StringBundler.concat(
-					IpstackWebCacheItem.class.getName(), StringPool.POUND,
 					ipstackConfiguration.apiKey(), StringPool.POUND,
 					ipstackConfiguration.apiURL(), StringPool.POUND, ipAddress),
 				new IpstackWebCacheItem(ipAddress, ipstackConfiguration));

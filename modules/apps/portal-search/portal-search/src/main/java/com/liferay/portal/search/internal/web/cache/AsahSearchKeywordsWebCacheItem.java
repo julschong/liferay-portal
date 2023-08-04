@@ -34,11 +34,11 @@ public class AsahSearchKeywordsWebCacheItem implements WebCacheItem {
 
 		try {
 			return (JSONObject)WebCachePoolUtil.get(
+				AsahSearchKeywordsWebCacheItem.class.getName(),
 				StringBundler.concat(
-					AsahSearchKeywordsWebCacheItem.class.getName(),
-					StringPool.POUND, companyId, StringPool.POUND, minCounts,
-					StringPool.POUND, displayLanguageId, StringPool.POUND,
-					groupId, StringPool.POUND, sort),
+					companyId, StringPool.POUND, minCounts, StringPool.POUND,
+					displayLanguageId, StringPool.POUND, groupId,
+					StringPool.POUND, sort),
 				new AsahSearchKeywordsWebCacheItem(
 					analyticsConfiguration, asahSearchKeywordsConfiguration,
 					displayLanguageId, groupId, minCounts, size, sort));
