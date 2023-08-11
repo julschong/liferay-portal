@@ -27,7 +27,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskContextMapConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.image.Ghostscript;
+import com.liferay.portal.kernel.image.GhostscriptUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -437,7 +437,7 @@ public class PDFProcessorImpl
 			FileVersion fileVersion, File file, int maxNumberOfPages)
 		throws Exception {
 
-		if (_ghostscript.isEnabled()) {
+		if (GhostscriptUtil.isEnabled()) {
 			_generateImagesGS(fileVersion, file, maxNumberOfPages);
 		}
 		else {
@@ -513,7 +513,7 @@ public class PDFProcessorImpl
 			int maxNumberOfPages)
 		throws Exception {
 
-		if (_ghostscript.isEnabled()) {
+		if (GhostscriptUtil.isEnabled()) {
 			_generateImagesGS(fileVersion, inputStream, maxNumberOfPages);
 		}
 		else {
@@ -561,7 +561,7 @@ public class PDFProcessorImpl
 		throws Exception {
 
 		if (!_ghostscriptInitialized) {
-			_ghostscript.reset();
+			GhostscriptUtil.reset();
 
 			_ghostscriptInitialized = true;
 		}
@@ -599,7 +599,7 @@ public class PDFProcessorImpl
 
 		arguments.add(file.getPath());
 
-		Future<?> future = _ghostscript.execute(arguments);
+		Future<?> future = GhostscriptUtil.execute(arguments);
 
 		String processIdentity = String.valueOf(fileVersion.getFileVersionId());
 
@@ -1112,9 +1112,6 @@ public class PDFProcessorImpl
 
 	@Reference
 	private FileVersionPreviewEventListener _fileVersionPreviewEventListener;
-
-	@Reference
-	private Ghostscript _ghostscript;
 
 	private boolean _ghostscriptInitialized;
 
