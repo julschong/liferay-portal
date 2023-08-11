@@ -85,7 +85,7 @@ public class GhostscriptImpl implements Ghostscript {
 			try {
 				_globalSearchPath = ImageMagickUtil.getGlobalSearchPath();
 
-				_commandPath = getCommandPath();
+				_commandPath = _getCommandPath();
 			}
 			catch (Exception exception) {
 				_log.error(exception);
@@ -93,14 +93,14 @@ public class GhostscriptImpl implements Ghostscript {
 		}
 	}
 
-	protected String getCommandPath() throws Exception {
+	private String _getCommandPath() throws Exception {
 		String commandPath = null;
 
 		if (OSDetector.isWindows()) {
-			commandPath = getCommandPathWindows();
+			commandPath = _getCommandPathWindows();
 		}
 		else {
-			commandPath = getCommandPathUnix();
+			commandPath = _getCommandPathUnix();
 		}
 
 		if (commandPath == null) {
@@ -115,7 +115,7 @@ public class GhostscriptImpl implements Ghostscript {
 		return commandPath;
 	}
 
-	protected String getCommandPathUnix() throws Exception {
+	private String _getCommandPathUnix() throws Exception {
 		String[] dirNames = _globalSearchPath.split(File.pathSeparator);
 
 		for (String dirName : dirNames) {
@@ -129,7 +129,7 @@ public class GhostscriptImpl implements Ghostscript {
 		return null;
 	}
 
-	protected String getCommandPathWindows() throws Exception {
+	private String _getCommandPathWindows() throws Exception {
 		String[] dirNames = _globalSearchPath.split(File.pathSeparator);
 
 		for (String dirName : dirNames) {
