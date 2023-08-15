@@ -8,9 +8,7 @@ package com.liferay.server.admin.web.internal.image;
 import com.liferay.portal.kernel.image.ImageMagick;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
-import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.Future;
 
 /**
  * The ImageMagick utility class.
@@ -20,24 +18,6 @@ import java.util.concurrent.Future;
 public class ImageMagickUtil {
 
 	/**
-	 * Executes the <code>convert</code> command in ImageMagick.
-	 *
-	 * @param  arguments the command arguments being passed to <code>convert
-	 *         </code>
-	 * @return the converted command arguments
-	 * @throws Exception if an unexpected error occurred while executing command
-	 * @see    <a href="http://www.imagemagick.org/script/convert.php">Convert
-	 *         documentation</a>
-	 */
-	public static Future<?> convert(List<String> arguments) throws Exception {
-		return _imageMagick.convert(arguments);
-	}
-
-	public static void destroy() {
-		_imageMagick.destroy();
-	}
-
-	/**
 	 * Returns the global search path configured for ImageMagick.
 	 *
 	 * @return the global search path
@@ -45,10 +25,6 @@ public class ImageMagickUtil {
 	 */
 	public static String getGlobalSearchPath() throws Exception {
 		return _imageMagick.getGlobalSearchPath();
-	}
-
-	public static ImageMagick getImageMagick() {
-		return _imageMagick;
 	}
 
 	/**
@@ -62,20 +38,6 @@ public class ImageMagickUtil {
 	}
 
 	/**
-	 * Executes the <code>identify</code> command in ImageMagick.
-	 *
-	 * @param  arguments the command arguments being passed to <code>identify
-	 *         </code>
-	 * @return the results of the <code>identify</code> call
-	 * @throws Exception if an unexpected error occurred while executing command
-	 * @see    <a href="http://www.imagemagick.org/script/identify.php">Identify
-	 *         documentation</a>
-	 */
-	public static String[] identify(List<String> arguments) throws Exception {
-		return _imageMagick.identify(arguments);
-	}
-
-	/**
 	 * Returns <code>true</code> if ImageMagick is enabled.
 	 *
 	 * @return <code>true</code> if ImageMagick is enabled; <code>false</code>
@@ -83,20 +45,6 @@ public class ImageMagickUtil {
 	 */
 	public static boolean isEnabled() {
 		return _imageMagick.isEnabled();
-	}
-
-	/**
-	 * Resets the global search path and resource limits for ImageMagick.
-	 */
-	public static void reset() {
-		_imageMagick.reset();
-	}
-
-	public static byte[] scale(
-			byte[] bytes, String mimeType, int width, int height)
-		throws Exception {
-
-		return _imageMagick.scale(bytes, mimeType, width, height);
 	}
 
 	private static volatile ImageMagick _imageMagick =
