@@ -39,6 +39,11 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.image.ImageBag;
+import com.liferay.portal.kernel.image.ImageMagickUtil;
+import com.liferay.portal.kernel.image.ImageTool;
+import com.liferay.portal.kernel.image.ImageToolUtil;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -69,7 +74,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
-import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelectorProcessor;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.social.SocialActivityManagerUtil;
@@ -109,6 +113,8 @@ import com.liferay.trash.exception.TrashEntryException;
 import com.liferay.trash.model.TrashEntry;
 import com.liferay.trash.service.TrashEntryLocalService;
 import com.liferay.upload.UniqueFileNameProvider;
+
+import java.awt.image.RenderedImage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -1585,11 +1591,9 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		try {
-			ImageSelectorProcessor imageSelectorProcessor =
-				new ImageSelectorProcessor(imageSelector.getImageBytes());
-
-			imageBytes = imageSelectorProcessor.cropImage(
-				imageSelector.getImageCropRegion());
+			imageBytes = _cropImage(
+				imageSelector.getImageCropRegion(),
+				imageSelector.getImageBytes());
 
 			if (imageBytes == null) {
 				throw new EntryCoverImageCropException();
@@ -1663,11 +1667,9 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			BlogsGroupServiceSettings blogsGroupServiceSettings =
 				BlogsGroupServiceSettings.getInstance(groupId);
 
-			ImageSelectorProcessor imageSelectorProcessor =
-				new ImageSelectorProcessor(imageSelector.getImageBytes());
-
-			imageBytes = imageSelectorProcessor.scaleImage(
-				blogsGroupServiceSettings.getSmallImageWidth());
+			imageBytes = _scaleImage(
+				blogsGroupServiceSettings.getSmallImageWidth(),
+				imageSelector.getImageBytes());
 
 			if (imageBytes == null) {
 				throw new EntrySmallImageScaleException();
@@ -1689,6 +1691,30 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		throws PortalException {
 
 		return _addFolder(userId, groupId, _SMALL_IMAGE_FOLDER_NAME);
+	}
+
+	private byte[] _cropImage(String cropRegion, byte[] bytes)
+		throws IOException, PortalException {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(cropRegion);
+
+		int height = jsonObject.getInt("height");
+		int width = jsonObject.getInt("width");
+		int x = jsonObject.getInt("x");
+		int y = jsonObject.getInt("y");
+
+		if ((x > 0) || (y > 0) || (width > 0) || (height > 0)) {
+			ImageBag imageBag = ImageToolUtil.read(bytes);
+
+			RenderedImage renderedImage = imageBag.getRenderedImage();
+
+			renderedImage = ImageToolUtil.crop(
+				renderedImage, height, width, x, y);
+
+			return ImageToolUtil.getBytes(renderedImage, imageBag.getType());
+		}
+
+		return bytes;
 	}
 
 	private void _deleteDiscussion(BlogsEntry entry) throws PortalException {
@@ -2251,6 +2277,29 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 			blogsEntryPersistence.update(entry);
 		}
+	}
+
+	private byte[] _scaleImage(int width, byte[] bytes) throws Exception {
+		try {
+			ImageBag imageBag = ImageToolUtil.read(bytes);
+
+			RenderedImage renderedImage = imageBag.getRenderedImage();
+
+			renderedImage = ImageToolUtil.scale(renderedImage, width);
+
+			bytes = ImageToolUtil.getBytes(renderedImage, imageBag.getType());
+		}
+		catch (IOException ioException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(ioException);
+			}
+		}
+
+		if ((bytes == null) && ImageMagickUtil.isEnabled()) {
+			bytes = ImageMagickUtil.scale(bytes, ImageTool.TYPE_PNG, width, 0);
+		}
+
+		return bytes;
 	}
 
 	private BlogsEntry _startWorkflowInstance(
