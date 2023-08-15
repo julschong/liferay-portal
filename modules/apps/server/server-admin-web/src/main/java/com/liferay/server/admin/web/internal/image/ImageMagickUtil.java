@@ -5,7 +5,7 @@
 
 package com.liferay.server.admin.web.internal.image;
 
-import com.liferay.portal.kernel.image.ImageMagick;
+import com.liferay.image.ImageMagick;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.Properties;
