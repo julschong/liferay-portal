@@ -8,8 +8,8 @@ package com.liferay.portal.kernel.cache.key;
 import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCache;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,7 +56,14 @@ public class CacheKeyGeneratorUtil {
 	}
 
 	private static Map<String, CacheKeyGenerator> _cacheKeyGenerators =
-		new HashMap<>();
-	private static CacheKeyGenerator _defaultCacheKeyGenerator;
+		HashMapBuilder.<String, CacheKeyGenerator>put(
+			"com.liferay.portal.kernel.dao.orm.FinderCache#BaseModel",
+			new HashCodeHexStringCacheKeyGenerator()
+		).put(
+			"com.liferay.portlet.PortletPreferencesFactoryImpl",
+			new MessageDigestCacheKeyGenerator("SHA-1")
+		).build();
+	private static CacheKeyGenerator _defaultCacheKeyGenerator =
+		new SimpleCacheKeyGenerator();
 
 }
