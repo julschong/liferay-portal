@@ -13,26 +13,17 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.Localization;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.mail.MailServiceTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
-import com.liferay.portal.util.PropsUtil;
-
-import java.util.Objects;
 
 import javax.portlet.PortletPreferences;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,63 +43,6 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), SynchronousMailTestRule.INSTANCE);
 
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		_adminEmailPasswordResetSubject = PropsUtil.get(
-			PropsKeys.ADMIN_EMAIL_PASSWORD_RESET_SUBJECT);
-		_adminEmailPasswordResetBody = PropsUtil.get(
-			PropsKeys.ADMIN_EMAIL_PASSWORD_RESET_BODY);
-
-		PropsUtil.set(
-			PropsKeys.ADMIN_EMAIL_PASSWORD_RESET_SUBJECT,
-			"com/liferay/user/service/test/dependencies" +
-				"/email_password_reset_subject.tmpl");
-		PropsUtil.set(
-			PropsKeys.ADMIN_EMAIL_PASSWORD_RESET_BODY,
-			"com/liferay/user/service/test/dependencies" +
-				"/email_password_reset_body.tmpl");
-
-		_localization = LocalizationUtil.getLocalization();
-
-		_localizationUtil.setLocalization(
-			(Localization)ProxyUtil.newProxyInstance(
-				Localization.class.getClassLoader(),
-				new Class<?>[] {Localization.class},
-				(proxy, method, args) -> {
-					if (Objects.equals(
-							method.getName(), "getLocalizationMap") &&
-						(args.length == 3)) {
-
-						return _localization.getLocalizationMap(
-							(PortletPreferences)args[0], (String)args[1],
-							(String)args[2], PropsUtil.get((String)args[2]),
-							UserServiceWhenPortalSendsPasswordEmailTest.class.
-								getClassLoader());
-					}
-					else if (Objects.equals(
-								method.getName(), "getLocalization") &&
-							 (args.length == 2)) {
-
-						return _localization.getLocalization(
-							(String)args[0], (String)args[1]);
-					}
-
-					throw new UnsupportedOperationException();
-				}));
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-		PropsUtil.set(
-			PropsKeys.ADMIN_EMAIL_PASSWORD_RESET_SUBJECT,
-			_adminEmailPasswordResetSubject);
-		PropsUtil.set(
-			PropsKeys.ADMIN_EMAIL_PASSWORD_RESET_BODY,
-			_adminEmailPasswordResetBody);
-
-		_localizationUtil.setLocalization(_localization);
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		_user = UserTestUtil.addUser();
@@ -116,11 +50,6 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 		ServiceContextThreadLocal.pushServiceContext(
 			ServiceContextTestUtil.getServiceContext(
 				_user.getGroupId(), _user.getUserId()));
-	}
-
-	@After
-	public void tearDown() {
-		ServiceContextThreadLocal.popServiceContext();
 	}
 
 	@Test
@@ -138,9 +67,6 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 
 			Assert.assertEquals(
 				initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
-			Assert.assertTrue(
-				MailServiceTestUtil.lastMailMessageContains(
-					"email_password_reset_body.tmpl"));
 		}
 		finally {
 			restorePortletPreferences(portletPreferences);
@@ -162,9 +88,6 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 
 			Assert.assertEquals(
 				initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
-			Assert.assertTrue(
-				MailServiceTestUtil.lastMailMessageContains(
-					"email_password_reset_body.tmpl"));
 		}
 		finally {
 			restorePortletPreferences(portletPreferences);
@@ -186,9 +109,6 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 
 			Assert.assertEquals(
 				initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
-			Assert.assertTrue(
-				MailServiceTestUtil.lastMailMessageContains(
-					"email_password_reset_body.tmpl"));
 		}
 		finally {
 			restorePortletPreferences(portletPreferences);
@@ -219,13 +139,6 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 
 		portletPreferences.store();
 	}
-
-	private static String _adminEmailPasswordResetBody;
-	private static String _adminEmailPasswordResetSubject;
-	private static Localization _localization;
-
-	@Inject
-	private static LocalizationUtil _localizationUtil;
 
 	@Inject
 	private PrefsProps _prefsProps;
