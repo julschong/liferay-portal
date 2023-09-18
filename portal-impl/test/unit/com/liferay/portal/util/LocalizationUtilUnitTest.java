@@ -32,7 +32,7 @@ import org.junit.Test;
 /**
  * @author Manuel de la Peña
  */
-public class LocalizationImplUnitTest {
+public class LocalizationUtilUnitTest {
 
 	@ClassRule
 	@Rule
@@ -60,7 +60,7 @@ public class LocalizationImplUnitTest {
 	@Test
 	public void testGetDefaultImportLocale4() {
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
-				LocalizationImpl.class.getName(), Level.WARNING)) {
+				LocalizationUtil.class.getName(), Level.WARNING)) {
 
 			_testGetDefaultImportLocale("bg_BG", "bg_BG,fr_FR", "bg_BG", true);
 
@@ -138,10 +138,6 @@ public class LocalizationImplUnitTest {
 
 		LocaleUtil.setDefault(
 			locale.getLanguage(), locale.getCountry(), locale.getVariant());
-
-		LocalizationUtil localizationUtil = new LocalizationUtil();
-
-		localizationUtil.setLocalization(new LocalizationImpl());
 
 		Locale contentDefaultLocale = LocaleUtil.fromLanguageId("es_ES", false);
 

@@ -18,8 +18,8 @@ import org.junit.runner.RunWith;
  * @author Eric Yan
  */
 @RunWith(Arquillian.class)
-public class LocalizationImplDefaultXmlFactoryImplTest
-	extends LocalizationImplTest {
+public class LocalizationUtilDefaultXmlFactoryImplTest
+	extends LocalizationUtilTest {
 
 	@Before
 	@Override

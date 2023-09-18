@@ -12,20 +12,17 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.SAXReader;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.LocalizationImpl;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portletmvc4spring.test.mock.web.portlet.MockPortletRequest;
-
-import java.lang.reflect.Field;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -49,7 +46,7 @@ import org.junit.runner.RunWith;
  * @author Péter Borkuti
  */
 @RunWith(Arquillian.class)
-public class LocalizationImplTest {
+public class LocalizationUtilTest {
 
 	@ClassRule
 	@Rule
@@ -58,13 +55,7 @@ public class LocalizationImplTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		_cache = LocalizationImpl.class.getDeclaredField("_cache");
-
-		_cache.setAccessible(true);
-
 		_defaultLocale = LocaleUtil.getDefault();
-
-		_localization = LocalizationUtil.getLocalization();
 	}
 
 	@AfterClass
@@ -92,8 +83,8 @@ public class LocalizationImplTest {
 
 		_xml = sb.toString();
 
-		_cache.set(
-			_localization,
+		ReflectionTestUtil.setFieldValue(
+			LocalizationUtil.class, "_cache",
 			new ConcurrentReferenceKeyHashMap<>(
 				FinalizeManager.SOFT_REFERENCE_FACTORY));
 	}
@@ -457,9 +448,7 @@ public class LocalizationImplTest {
 	private static final String _SPANISH_LANGUAGE_ID = LocaleUtil.toLanguageId(
 		LocaleUtil.SPAIN);
 
-	private static Field _cache;
 	private static Locale _defaultLocale;
-	private static Localization _localization;
 
 	@Inject
 	private Language _language;
