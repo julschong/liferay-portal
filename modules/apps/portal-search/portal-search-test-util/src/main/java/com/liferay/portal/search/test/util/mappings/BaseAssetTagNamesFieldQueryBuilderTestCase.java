@@ -7,12 +7,10 @@ package com.liferay.portal.search.test.util.mappings;
 
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
-import com.liferay.portal.util.LocalizationImpl;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import org.junit.Test;
 
@@ -137,14 +135,7 @@ public abstract class BaseAssetTagNamesFieldQueryBuilderTestCase
 		return _FIELD;
 	}
 
-	private static String _getLocalizedName(String name, Locale locale) {
-		Localization localization = new LocalizationImpl();
-
-		return localization.getLocalizedName(
-			name, LocaleUtil.toLanguageId(locale));
-	}
-
-	private static final String _FIELD = _getLocalizedName(
-		Field.ASSET_TAG_NAMES, LocaleUtil.US);
+	private static final String _FIELD = LocalizationUtil.getLocalizedName(
+		Field.ASSET_TAG_NAMES, LocaleUtil.toLanguageId(LocaleUtil.US));
 
 }
