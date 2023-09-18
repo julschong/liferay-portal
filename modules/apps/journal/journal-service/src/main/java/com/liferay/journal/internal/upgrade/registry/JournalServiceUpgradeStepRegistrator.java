@@ -93,7 +93,6 @@ import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
-import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.subscription.service.SubscriptionLocalService;
@@ -352,8 +351,7 @@ public class JournalServiceUpgradeStepRegistrator
 				_assetCategoryLocalService,
 				_assetEntryAssetCategoryRelLocalService,
 				_assetEntryLocalService, _assetVocabularyLocalService,
-				_companyLocalService, _language, _localization, _portal,
-				_userLocalService));
+				_companyLocalService, _language, _portal, _userLocalService));
 
 		registry.register(
 			"4.4.4", "5.0.0",
@@ -481,9 +479,6 @@ public class JournalServiceUpgradeStepRegistrator
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

@@ -68,7 +68,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -1027,7 +1027,7 @@ public class ObjectDefinitionResourceImpl
 				active = objectDefinition.isActive();
 				dateCreated = objectDefinition.getCreateDate();
 				dateModified = objectDefinition.getModifiedDate();
-				defaultLanguageId = _localization.getDefaultLanguageId(
+				defaultLanguageId = LocalizationUtil.getDefaultLanguageId(
 					objectDefinition.getLabel());
 				enableCategorization =
 					objectDefinition.getEnableCategorization();
@@ -1210,9 +1210,6 @@ public class ObjectDefinitionResourceImpl
 
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private NotificationTemplateLocalService _notificationTemplateLocalService;

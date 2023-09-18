@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.service.permission.PortletPermission;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -79,7 +79,7 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
 		subscriptionSender.setLocalizedBodyMap(
-			_localization.getMap(bodyLocalizedValuesMap));
+			LocalizationUtil.getMap(bodyLocalizedValuesMap));
 		subscriptionSender.setClassName(className);
 		subscriptionSender.setClassPK(classPK);
 		subscriptionSender.setCompanyId(user.getCompanyId());
@@ -102,7 +102,7 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 		subscriptionSender.setScopeGroupId(groupId);
 		subscriptionSender.setServiceContext(serviceContext);
 		subscriptionSender.setLocalizedSubjectMap(
-			_localization.getMap(subjectLocalizedValuesMap));
+			LocalizationUtil.getMap(subjectLocalizedValuesMap));
 
 		for (String mentionedUserScreenName : mentionedUsersScreenNames) {
 			User mentionedUser = _userLocalService.fetchUserByScreenName(
@@ -186,9 +186,6 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 
 	@Reference
 	private LayoutPermission _layoutPermission;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private MentionsMatcherRegistry _mentionsMatcherRegistry;

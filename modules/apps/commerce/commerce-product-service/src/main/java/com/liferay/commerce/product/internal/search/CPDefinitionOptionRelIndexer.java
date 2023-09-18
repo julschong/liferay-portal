@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -132,9 +132,10 @@ public class CPDefinitionOptionRelIndexer
 			cpDefinitionOptionRel.getCPDefinitionOptionValueRels();
 
 		String cpDefinitionOptionRelDefaultLanguageId =
-			_localization.getDefaultLanguageId(cpDefinitionOptionRel.getName());
+			LocalizationUtil.getDefaultLanguageId(
+				cpDefinitionOptionRel.getName());
 
-		String[] languageIds = _localization.getAvailableLanguageIds(
+		String[] languageIds = LocalizationUtil.getAvailableLanguageIds(
 			cpDefinitionOptionRel.getName());
 
 		for (String languageId : languageIds) {
@@ -160,16 +161,18 @@ public class CPDefinitionOptionRelIndexer
 				cpDefinitionOptionValueRelNamesList.toArray(new String[0]);
 
 			document.addText(
-				_localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					CPField.DEFINITION_OPTION_VALUE_REL_NAME, languageId),
 				cpDefinitionOptionValueRelNames);
 
 			document.addText(Field.CONTENT, name);
 			document.addText(
-				_localization.getLocalizedName(Field.DESCRIPTION, languageId),
+				LocalizationUtil.getLocalizedName(
+					Field.DESCRIPTION, languageId),
 				description);
 			document.addText(
-				_localization.getLocalizedName(Field.NAME, languageId), name);
+				LocalizationUtil.getLocalizedName(Field.NAME, languageId),
+				name);
 
 			if (languageId.equals(cpDefinitionOptionRelDefaultLanguageId)) {
 				document.addText(
@@ -262,8 +265,5 @@ public class CPDefinitionOptionRelIndexer
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
-
-	@Reference
-	private Localization _localization;
 
 }

@@ -119,7 +119,7 @@ import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -2304,12 +2304,12 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		if (bodyLocalizedValuesMap != null) {
 			subscriptionSender.setLocalizedBodyMap(
-				_localization.getMap(bodyLocalizedValuesMap));
+				LocalizationUtil.getMap(bodyLocalizedValuesMap));
 		}
 
 		if (subjectLocalizedValuesMap != null) {
 			subscriptionSender.setLocalizedSubjectMap(
-				_localization.getMap(subjectLocalizedValuesMap));
+				LocalizationUtil.getMap(subjectLocalizedValuesMap));
 		}
 
 		Date modifiedDate = message.getModifiedDate();
@@ -2435,16 +2435,16 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		Map<Locale, String> localizedSubjectMap = null;
 
 		if (serviceContext.isCommandUpdate()) {
-			localizedBodyMap = _localization.getMap(
+			localizedBodyMap = LocalizationUtil.getMap(
 				commentGroupServiceConfiguration.discussionEmailUpdatedBody());
-			localizedSubjectMap = _localization.getMap(
+			localizedSubjectMap = LocalizationUtil.getMap(
 				commentGroupServiceConfiguration.
 					discussionEmailUpdatedSubject());
 		}
 		else {
-			localizedBodyMap = _localization.getMap(
+			localizedBodyMap = LocalizationUtil.getMap(
 				commentGroupServiceConfiguration.discussionEmailBody());
-			localizedSubjectMap = _localization.getMap(
+			localizedSubjectMap = LocalizationUtil.getMap(
 				commentGroupServiceConfiguration.discussionEmailSubject());
 		}
 
@@ -3072,9 +3072,6 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 	@Reference
 	private LiferayJSONDeserializationWhitelist
 		_liferayJSONDeserializationWhitelist;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private MBCategoryPersistence _mbCategoryPersistence;

@@ -55,7 +55,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -845,10 +845,11 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 
 		String nameXML = layoutPrototype.getName();
 
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(nameXML);
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
+			nameXML);
 
 		Locale defaultLocale = LocaleUtil.fromLanguageId(
-			_localization.getDefaultLanguageId(nameXML));
+			LocalizationUtil.getDefaultLanguageId(nameXML));
 
 		Layout layout = layoutPrototype.getLayout();
 
@@ -1080,9 +1081,6 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 
 	@Reference
 	private LayoutSetLocalService _layoutSetLocalService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

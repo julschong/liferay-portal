@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.suggest.QuerySuggester;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
@@ -29,7 +28,6 @@ import com.liferay.portal.search.internal.legacy.searcher.SearchRequestBuilderFa
 import com.liferay.portal.search.internal.legacy.searcher.SearchResponseBuilderFactoryImpl;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.util.DigesterImpl;
-import com.liferay.portal.util.LocalizationImpl;
 
 import java.util.Map;
 
@@ -96,16 +94,12 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 
 		IndexNameBuilder indexNameBuilder = String::valueOf;
 
-		Localization localization = new LocalizationImpl();
-
 		ElasticsearchIndexSearcher elasticsearchIndexSearcher =
 			_createIndexSearcher(
-				_elasticsearchFixture, searchEngineAdapter, indexNameBuilder,
-				localization);
+				_elasticsearchFixture, searchEngineAdapter, indexNameBuilder);
 
 		IndexWriter indexWriter = _createIndexWriter(
-			_elasticsearchFixture, searchEngineAdapter, indexNameBuilder,
-			localization);
+			_elasticsearchFixture, searchEngineAdapter, indexNameBuilder);
 
 		_indexSearcher = elasticsearchIndexSearcher;
 		_indexWriter = indexWriter;
@@ -165,14 +159,10 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 
 	private QuerySuggester _createElasticsearchQuerySuggester(
 		SearchEngineAdapter searchEngineAdapter,
-		IndexNameBuilder indexNameBuilder, Localization localization) {
+		IndexNameBuilder indexNameBuilder) {
 
 		ElasticsearchQuerySuggester elasticsearchQuerySuggester =
-			new ElasticsearchQuerySuggester() {
-				{
-					setLocalization(localization);
-				}
-			};
+			new ElasticsearchQuerySuggester();
 
 		ReflectionTestUtil.setFieldValue(
 			elasticsearchQuerySuggester, "_indexNameBuilder", indexNameBuilder);
@@ -186,14 +176,12 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 	private ElasticsearchSpellCheckIndexWriter
 		_createElasticsearchSpellCheckIndexWriter(
 			SearchEngineAdapter searchEngineAdapter,
-			IndexNameBuilder indexNameBuilder, Localization localization) {
+			IndexNameBuilder indexNameBuilder) {
 
 		ElasticsearchSpellCheckIndexWriter elasticsearchSpellCheckIndexWriter =
 			new ElasticsearchSpellCheckIndexWriter() {
 				{
 					digester = new DigesterImpl();
-
-					setLocalization(localization);
 				}
 			};
 
@@ -223,7 +211,7 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 	private ElasticsearchIndexSearcher _createIndexSearcher(
 		ElasticsearchFixture elasticsearchFixture,
 		SearchEngineAdapter searchEngineAdapter,
-		IndexNameBuilder indexNameBuilder, Localization localization) {
+		IndexNameBuilder indexNameBuilder) {
 
 		ElasticsearchIndexSearcher elasticsearchIndexSearcher =
 			new ElasticsearchIndexSearcher();
@@ -240,7 +228,7 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 		ReflectionTestUtil.setFieldValue(
 			elasticsearchIndexSearcher, "_querySuggester",
 			_createElasticsearchQuerySuggester(
-				searchEngineAdapter, indexNameBuilder, localization));
+				searchEngineAdapter, indexNameBuilder));
 		ReflectionTestUtil.setFieldValue(
 			elasticsearchIndexSearcher, "_searchEngineAdapter",
 			searchEngineAdapter);
@@ -257,7 +245,7 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 	private IndexWriter _createIndexWriter(
 		ElasticsearchFixture elasticsearchFixture,
 		SearchEngineAdapter searchEngineAdapter,
-		IndexNameBuilder indexNameBuilder, Localization localization) {
+		IndexNameBuilder indexNameBuilder) {
 
 		ElasticsearchIndexWriter elasticsearchIndexWriter =
 			new ElasticsearchIndexWriter();
@@ -275,7 +263,7 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 		ReflectionTestUtil.setFieldValue(
 			elasticsearchIndexWriter, "_spellCheckIndexWriter",
 			_createElasticsearchSpellCheckIndexWriter(
-				searchEngineAdapter, indexNameBuilder, localization));
+				searchEngineAdapter, indexNameBuilder));
 
 		return elasticsearchIndexWriter;
 	}

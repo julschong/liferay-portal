@@ -100,7 +100,7 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -378,10 +378,10 @@ public class CalendarPortlet extends MVCPortlet {
 
 		long calendarId = ParamUtil.getLong(actionRequest, "calendarId");
 
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "description");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "description");
 		String timeZoneId = ParamUtil.getString(actionRequest, "timeZoneId");
 		int color = ParamUtil.getInteger(actionRequest, "color");
 		boolean defaultCalendar = ParamUtil.getBoolean(
@@ -467,10 +467,10 @@ public class CalendarPortlet extends MVCPortlet {
 		long calendarResourceId = ParamUtil.getLong(
 			actionRequest, "calendarResourceId");
 
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "description");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "description");
 		boolean active = ParamUtil.getBoolean(actionRequest, "active");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
@@ -514,10 +514,10 @@ public class CalendarPortlet extends MVCPortlet {
 			actionRequest, "childCalendarIds");
 		long[] reinvitableCalendarIds = ParamUtil.getLongValues(
 			actionRequest, "reinvitableCalendarIds");
-		Map<Locale, String> titleMap = _localization.getLocalizationMap(
+		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "title");
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "description");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "description");
 		String location = ParamUtil.getString(actionRequest, "location");
 		java.util.Calendar startTimeJCalendar = _getJCalendar(
 			actionRequest, "startTime");
@@ -1243,11 +1243,11 @@ public class CalendarPortlet extends MVCPortlet {
 		keywords = StringUtil.toLowerCase(keywords);
 
 		searchContext.setAttribute(
-			_localization.getLocalizedName(
+			LocalizationUtil.getLocalizedName(
 				Field.NAME, searchContext.getLanguageId()),
 			keywords);
 		searchContext.setAttribute(
-			_localization.getLocalizedName(
+			LocalizationUtil.getLocalizedName(
 				"resourceName", searchContext.getLanguageId()),
 			keywords);
 
@@ -1854,9 +1854,6 @@ public class CalendarPortlet extends MVCPortlet {
 
 	@Reference
 	private JSONFactory _jsonFactory;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

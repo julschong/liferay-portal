@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -59,15 +59,15 @@ public class AddDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		String name = ParamUtil.getString(actionRequest, "name");
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
 
 		if (Validator.isNotNull(name)) {
 			nameMap.put(LocaleUtil.getDefault(), name);
 		}
 
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "description");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "description");
 
 		try {
 			MultiSessionMessages.add(
@@ -173,9 +173,6 @@ public class AddDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

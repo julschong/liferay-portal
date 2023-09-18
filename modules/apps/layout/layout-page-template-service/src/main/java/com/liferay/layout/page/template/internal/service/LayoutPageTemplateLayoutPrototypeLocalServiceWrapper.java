@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Locale;
@@ -120,7 +120,7 @@ public class LayoutPageTemplateLayoutPrototypeLocalServiceWrapper
 		}
 
 		Locale defaultLocale = LocaleUtil.fromLanguageId(
-			_localization.getDefaultLanguageId(layoutPrototype.getName()));
+			LocalizationUtil.getDefaultLanguageId(layoutPrototype.getName()));
 
 		int status = WorkflowConstants.STATUS_INACTIVE;
 
@@ -138,8 +138,5 @@ public class LayoutPageTemplateLayoutPrototypeLocalServiceWrapper
 	@Reference
 	private LayoutPageTemplateEntryLocalService
 		_layoutPageTemplateEntryLocalService;
-
-	@Reference
-	private Localization _localization;
 
 }

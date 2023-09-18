@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.upload.LiferayFileItemException;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -107,7 +107,7 @@ public class UpdateDataEngineDefaultValuesMVCActionCommand
 		long groupId = ParamUtil.getLong(uploadPortletRequest, "groupId");
 		String articleId = ParamUtil.getString(
 			uploadPortletRequest, "articleId");
-		Map<Locale, String> titleMap = _localization.getLocalizationMap(
+		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "titleMapAsXML");
 
 		long ddmStructureId = ParamUtil.getLong(
@@ -128,8 +128,9 @@ public class UpdateDataEngineDefaultValuesMVCActionCommand
 		String content = _journalConverter.getContent(
 			ddmStructure, fields, groupId);
 
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "descriptionMapAsXML");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(
+				actionRequest, "descriptionMapAsXML");
 
 		String ddmTemplateKey = ParamUtil.getString(
 			uploadPortletRequest, "ddmTemplateKey");
@@ -323,9 +324,6 @@ public class UpdateDataEngineDefaultValuesMVCActionCommand
 
 	@Reference
 	private JournalHelper _journalHelper;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

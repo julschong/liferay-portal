@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 
@@ -111,8 +111,9 @@ public class CommerceOrderModelDocumentContributor
 					locale);
 
 				if (Validator.isNull(commerceOrderItemName)) {
-					commerceOrderItemName = _localization.getDefaultLanguageId(
-						commerceOrderItem.getName());
+					commerceOrderItemName =
+						LocalizationUtil.getDefaultLanguageId(
+							commerceOrderItem.getName());
 				}
 
 				commerceOrderItemNamesList.add(commerceOrderItemName);
@@ -158,9 +159,6 @@ public class CommerceOrderModelDocumentContributor
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private UserLocalService _userLocalService;

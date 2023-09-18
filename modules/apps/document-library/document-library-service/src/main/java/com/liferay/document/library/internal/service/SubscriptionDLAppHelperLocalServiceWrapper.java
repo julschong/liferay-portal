@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -285,13 +285,13 @@ public class SubscriptionDLAppHelperLocalServiceWrapper
 		subscriptionSender.setFrom(fromAddress, fromName);
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setLocalizedBodyMap(
-			_localization.getMap(bodyLocalizedValuesMap));
+			LocalizationUtil.getMap(bodyLocalizedValuesMap));
 		subscriptionSender.setLocalizedContextAttribute(
 			"[$DOCUMENT_TYPE$]",
 			new EscapableLocalizableFunction(
 				locale -> dlFileEntryType.getName(locale)));
 		subscriptionSender.setLocalizedSubjectMap(
-			_localization.getMap(subjectLocalizedValuesMap));
+			LocalizationUtil.getMap(subjectLocalizedValuesMap));
 		subscriptionSender.setMailId(
 			"file_entry", fileVersion.getFileEntryId());
 
@@ -366,9 +366,6 @@ public class SubscriptionDLAppHelperLocalServiceWrapper
 	@Reference
 	private LiferayJSONDeserializationWhitelist
 		_liferayJSONDeserializationWhitelist;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

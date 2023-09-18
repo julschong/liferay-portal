@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
@@ -168,11 +168,11 @@ public class SXPBlueprintDTOConverter
 							locale, serviceBuilderSXPElement.getTitle(locale)));
 				}
 				else {
-					String descriptionXml = _localization.getXml(
+					String descriptionXml = LocalizationUtil.getXml(
 						sxpElement.getDescription_i18n(),
 						LocaleUtil.toLanguageId(LocaleUtil.getDefault()),
 						"Description");
-					String titleXml = _localization.getXml(
+					String titleXml = LocalizationUtil.getXml(
 						sxpElement.getTitle_i18n(),
 						LocaleUtil.toLanguageId(LocaleUtil.getDefault()),
 						"Title");
@@ -180,13 +180,13 @@ public class SXPBlueprintDTOConverter
 					sxpElement.setDescription(
 						_language.get(
 							locale,
-							_localization.getLocalization(
+							LocalizationUtil.getLocalization(
 								descriptionXml,
 								LocaleUtil.toLanguageId(locale))));
 					sxpElement.setTitle(
 						_language.get(
 							locale,
-							_localization.getLocalization(
+							LocalizationUtil.getLocalization(
 								titleXml, LocaleUtil.toLanguageId(locale))));
 				}
 			}
@@ -207,9 +207,6 @@ public class SXPBlueprintDTOConverter
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private SXPBlueprintLocalService _sxpBlueprintLocalService;

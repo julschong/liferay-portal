@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -494,18 +494,18 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 		Map<Locale, String> localizedBodyMap = null;
 
 		if (notification) {
-			localizedBodyMap = _localization.getMap(
+			localizedBodyMap = LocalizationUtil.getMap(
 				reportsGroupServiceEmailConfiguration.emailNotificationsBody());
 
-			localizedSubjectMap = _localization.getMap(
+			localizedSubjectMap = LocalizationUtil.getMap(
 				reportsGroupServiceEmailConfiguration.
 					emailNotificationsSubject());
 		}
 		else {
-			localizedBodyMap = _localization.getMap(
+			localizedBodyMap = LocalizationUtil.getMap(
 				reportsGroupServiceEmailConfiguration.emailDeliveryBody());
 
-			localizedSubjectMap = _localization.getMap(
+			localizedSubjectMap = LocalizationUtil.getMap(
 				reportsGroupServiceEmailConfiguration.emailDeliverySubject());
 		}
 
@@ -604,9 +604,6 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 	@Reference
 	private JSONFactory _jsonFactory;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private MessageBus _messageBus;

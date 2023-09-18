@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.model.uid.UIDFactory;
@@ -83,7 +83,7 @@ public class JournalArticleModelDocumentContributor
 						ddmStructure, ddmFormValues, contentAvailableLocale);
 
 					document.addText(
-						_localization.getLocalizedName(
+						LocalizationUtil.getLocalizedName(
 							Field.CONTENT,
 							LocaleUtil.toLanguageId(contentAvailableLocale)),
 						content);
@@ -95,7 +95,7 @@ public class JournalArticleModelDocumentContributor
 		}
 
 		String[] descriptionAvailableLanguageIds =
-			_localization.getAvailableLanguageIds(
+			LocalizationUtil.getAvailableLanguageIds(
 				journalArticle.getDescriptionMapAsXML());
 
 		for (String descriptionAvailableLanguageId :
@@ -105,7 +105,7 @@ public class JournalArticleModelDocumentContributor
 				journalArticle.getDescription(descriptionAvailableLanguageId));
 
 			document.addText(
-				_localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					Field.DESCRIPTION, descriptionAvailableLanguageId),
 				description);
 		}
@@ -117,14 +117,14 @@ public class JournalArticleModelDocumentContributor
 		document.addKeyword(Field.LAYOUT_UUID, journalArticle.getLayoutUuid());
 
 		String[] titleAvailableLanguageIds =
-			_localization.getAvailableLanguageIds(
+			LocalizationUtil.getAvailableLanguageIds(
 				journalArticle.getTitleMapAsXML());
 
 		for (String titleAvailableLanguageId : titleAvailableLanguageIds) {
 			String title = journalArticle.getTitle(titleAvailableLanguageId);
 
 			document.addText(
-				_localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					Field.TITLE, titleAvailableLanguageId),
 				title);
 		}
@@ -171,7 +171,7 @@ public class JournalArticleModelDocumentContributor
 		for (String titleAvailableLanguageId : titleAvailableLanguageIds) {
 			try {
 				document.addKeywordSortable(
-					_localization.getLocalizedName(
+					LocalizationUtil.getLocalizedName(
 						"urlTitle", titleAvailableLanguageId),
 					journalArticle.getUrlTitle(
 						LocaleUtil.fromLanguageId(titleAvailableLanguageId)));
@@ -216,9 +216,6 @@ public class JournalArticleModelDocumentContributor
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

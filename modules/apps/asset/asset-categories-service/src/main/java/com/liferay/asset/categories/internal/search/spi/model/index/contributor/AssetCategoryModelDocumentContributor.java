@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -57,12 +57,13 @@ public class AssetCategoryModelDocumentContributor
 		document.addKeyword(
 			Field.ASSET_VOCABULARY_ID, assetCategory.getVocabularyId());
 
-		String[] availableLanguageIds = _localization.getAvailableLanguageIds(
-			assetCategory.getDescription());
+		String[] availableLanguageIds =
+			LocalizationUtil.getAvailableLanguageIds(
+				assetCategory.getDescription());
 
 		for (String availableLanguageId : availableLanguageIds) {
 			document.addText(
-				_localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					Field.DESCRIPTION, availableLanguageId),
 				_html.stripHtml(
 					assetCategory.getDescription(availableLanguageId)));
@@ -83,7 +84,7 @@ public class AssetCategoryModelDocumentContributor
 		document.addKeyword("treePath", assetCategory.getTreePath());
 		document.addLocalizedKeyword(
 			"localized_title",
-			_localization.populateLocalizationMap(
+			LocalizationUtil.populateLocalizationMap(
 				assetCategory.getTitleMap(),
 				assetCategory.getDefaultLanguageId(),
 				assetCategory.getGroupId()),
@@ -154,9 +155,6 @@ public class AssetCategoryModelDocumentContributor
 
 	@Reference
 	private Html _html;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private SearchLocalizationHelper _searchLocalizationHelper;

@@ -11,6 +11,7 @@ import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.Locale;
@@ -54,10 +55,10 @@ public class UpdateRecordSetMVCActionCommand
 
 		long ddmStructureId = ParamUtil.getLong(
 			actionRequest, "ddmStructureId");
-		Map<Locale, String> nameMap = localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
-		Map<Locale, String> descriptionMap = localization.getLocalizationMap(
-			actionRequest, "description");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "description");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			DDLRecordSet.class.getName(), actionRequest);

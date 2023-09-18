@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
@@ -64,14 +64,14 @@ public class EditSEOMVCActionCommand extends BaseMVCActionCommand {
 		Layout layout = _layoutLocalService.getLayout(
 			groupId, privateLayout, layoutId);
 
-		Map<Locale, String> titleMap = _localization.getLocalizationMap(
+		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "title");
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "description");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "description");
 
-		Map<Locale, String> keywordsMap = _localization.getLocalizationMap(
+		Map<Locale, String> keywordsMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "keywords");
-		Map<Locale, String> robotsMap = _localization.getLocalizationMap(
+		Map<Locale, String> robotsMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "robots");
 
 		ServiceContext serviceContext = _getServiceContent(
@@ -87,8 +87,8 @@ public class EditSEOMVCActionCommand extends BaseMVCActionCommand {
 
 		boolean canonicalURLEnabled = ParamUtil.getBoolean(
 			actionRequest, "canonicalURLEnabled");
-		Map<Locale, String> canonicalURLMap = _localization.getLocalizationMap(
-			actionRequest, "canonicalURL");
+		Map<Locale, String> canonicalURLMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "canonicalURL");
 
 		_layoutSEOEntryService.updateLayoutSEOEntry(
 			groupId, privateLayout, layoutId, canonicalURLEnabled,
@@ -150,9 +150,6 @@ public class EditSEOMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private LayoutService _layoutService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

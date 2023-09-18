@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -40,7 +39,6 @@ import com.liferay.portal.search.solr8.internal.search.engine.adapter.SolrSearch
 import com.liferay.portal.search.solr8.internal.suggest.NGramHolderBuilderImpl;
 import com.liferay.portal.search.solr8.internal.suggest.NGramQueryBuilderImpl;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.util.LocalizationImpl;
 
 import java.nio.ByteBuffer;
 
@@ -299,8 +297,6 @@ public class SolrIndexingFixture implements IndexingFixture {
 
 		SolrQuerySuggester solrQuerySuggester = new SolrQuerySuggester() {
 			{
-				setLocalization(_localization);
-
 				activate(_properties);
 			}
 		};
@@ -342,7 +338,6 @@ public class SolrIndexingFixture implements IndexingFixture {
 	private FacetProcessor<SolrQuery> _facetProcessor;
 	private IndexSearcher _indexSearcher;
 	private IndexWriter _indexWriter;
-	private final Localization _localization = new LocalizationImpl();
 	private final Map<String, Object> _properties;
 	private SearchEngineAdapter _searchEngineAdapter;
 	private SolrSearchEngineAdapterFixture _solrSearchEngineAdapterFixture;

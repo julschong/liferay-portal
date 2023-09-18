@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
@@ -73,14 +73,15 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			long groupId = ParamUtil.getLong(actionRequest, "groupId");
-			Map<Locale, String> nameMap = _localization.getLocalizationMap(
+			Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 				actionRequest, "nameMapAsXML");
 			long selPlid = ParamUtil.getLong(actionRequest, "selPlid");
 			String type = ParamUtil.getString(uploadPortletRequest, "type");
 			boolean hidden = ParamUtil.getBoolean(
 				uploadPortletRequest, "hidden");
 			Map<Locale, String> friendlyURLMap =
-				_localization.getLocalizationMap(actionRequest, "friendlyURL");
+				LocalizationUtil.getLocalizationMap(
+					actionRequest, "friendlyURL");
 
 			Layout layout = _layoutLocalService.getLayout(selPlid);
 
@@ -262,9 +263,6 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private LayoutSetPrototypeHelper _layoutSetPrototypeHelper;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

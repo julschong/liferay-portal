@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -258,7 +258,7 @@ public class WorkflowDefinitionResourceImpl
 			return workflowDefinition.getTitle();
 		}
 
-		return _localization.getXml(
+		return LocalizationUtil.getXml(
 			workflowDefinition.getTitle_i18n(),
 			_language.getLanguageId(contextCompany.getLocale()), "title");
 	}
@@ -353,7 +353,7 @@ public class WorkflowDefinitionResourceImpl
 						Map<String, String> title_i18n = new HashMap<>();
 
 						Map<Locale, String> map =
-							_localization.getLocalizationMap(
+							LocalizationUtil.getLocalizationMap(
 								workflowDefinition.getTitle());
 
 						for (Map.Entry<Locale, String> entry : map.entrySet()) {
@@ -373,9 +373,6 @@ public class WorkflowDefinitionResourceImpl
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private WorkflowComparatorFactory _workflowComparatorFactory;

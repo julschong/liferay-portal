@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.search.suggest.WeightedWord;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -271,10 +270,6 @@ public class SolrQuerySuggester implements QuerySuggester {
 		return options.get(0);
 	}
 
-	protected void setLocalization(Localization localization) {
-		_localization = localization;
-	}
-
 	protected List<String> suggestKeywords(
 			SearchContext searchContext, int max, String input)
 		throws SearchException {
@@ -410,9 +405,6 @@ public class SolrQuerySuggester implements QuerySuggester {
 	private final StringDistance _defaultStringDistance =
 		new LevenshteinDistance();
 	private volatile double _distanceThreshold;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private NGramQueryBuilder _nGramQueryBuilder;

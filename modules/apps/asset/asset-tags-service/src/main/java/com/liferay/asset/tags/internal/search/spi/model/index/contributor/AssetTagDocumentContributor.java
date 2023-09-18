@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 
 import java.util.List;
@@ -78,7 +78,7 @@ public class AssetTagDocumentContributor
 		}
 
 		document.addText(
-			_localization.getLocalizedName(
+			LocalizationUtil.getLocalizedName(
 				Field.ASSET_TAG_NAMES,
 				LocaleUtil.toLanguageId(_getSiteDefaultLocale(groupId))),
 			_getNames(assetTags));
@@ -130,8 +130,5 @@ public class AssetTagDocumentContributor
 		return TransformUtil.transformToArray(
 			assetTags, assetTag -> assetTag.getTagId(), Long.class);
 	}
-
-	@Reference
-	private Localization _localization;
 
 }

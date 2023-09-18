@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.MultiMatchQuery;
 import com.liferay.portal.kernel.search.generic.TermQueryImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -249,7 +249,7 @@ public class CPInstanceIndexer extends BaseIndexer<CPInstance> {
 				cpInstance.getCPDefinitionId());
 
 		String cpDefinitionDefaultLanguageId =
-			_localization.getDefaultLanguageId(cpDefinition.getName());
+			LocalizationUtil.getDefaultLanguageId(cpDefinition.getName());
 
 		for (String languageId : languageIds) {
 			String name = cpDefinition.getName(languageId);
@@ -260,7 +260,8 @@ public class CPInstanceIndexer extends BaseIndexer<CPInstance> {
 			}
 
 			document.addText(
-				_localization.getLocalizedName(Field.NAME, languageId), name);
+				LocalizationUtil.getLocalizedName(Field.NAME, languageId),
+				name);
 		}
 
 		CommerceCatalog commerceCatalog = cpDefinition.getCommerceCatalog();
@@ -346,8 +347,5 @@ public class CPInstanceIndexer extends BaseIndexer<CPInstance> {
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
-
-	@Reference
-	private Localization _localization;
 
 }

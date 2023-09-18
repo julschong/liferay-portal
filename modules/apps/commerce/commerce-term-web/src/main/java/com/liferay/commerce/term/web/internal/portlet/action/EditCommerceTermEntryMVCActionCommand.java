@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -60,7 +60,7 @@ public class EditCommerceTermEntryMVCActionCommand
 
 				boolean active = ParamUtil.getBoolean(actionRequest, "active");
 				Map<Locale, String> descriptionMap =
-					_localization.getLocalizationMap(
+					LocalizationUtil.getLocalizationMap(
 						actionRequest, "descriptionMapAsXML");
 				int displayDateMonth = ParamUtil.getInteger(
 					actionRequest, "displayDateMonth");
@@ -100,8 +100,9 @@ public class EditCommerceTermEntryMVCActionCommand
 					actionRequest, "expirationDateMinute");
 				boolean neverExpire = ParamUtil.getBoolean(
 					actionRequest, "neverExpire");
-				Map<Locale, String> labelMap = _localization.getLocalizationMap(
-					actionRequest, "labelMapAsXML");
+				Map<Locale, String> labelMap =
+					LocalizationUtil.getLocalizationMap(
+						actionRequest, "labelMapAsXML");
 				String name = ParamUtil.getString(actionRequest, "name");
 				double priority = ParamUtil.getDouble(
 					actionRequest, "priority");
@@ -170,8 +171,5 @@ public class EditCommerceTermEntryMVCActionCommand
 
 	@Reference
 	private CommerceTermEntryService _commerceTermEntryService;
-
-	@Reference
-	private Localization _localization;
 
 }

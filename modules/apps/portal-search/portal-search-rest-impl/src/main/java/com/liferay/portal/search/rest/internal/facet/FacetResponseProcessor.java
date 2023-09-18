@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.document.Document;
@@ -243,7 +243,7 @@ public class FacetResponseProcessor {
 		).size(
 			1
 		).fields(
-			_localization.getLocalizedName(
+			LocalizationUtil.getLocalizedName(
 				com.liferay.portal.kernel.search.Field.TITLE,
 				_language.getLanguageId(locale))
 		).withSearchContext(
@@ -420,9 +420,6 @@ public class FacetResponseProcessor {
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;

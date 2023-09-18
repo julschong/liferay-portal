@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.LinkedHashMap;
@@ -127,7 +127,7 @@ public class CPDefinitionOptionValueRelIndexer
 			Field.PRIORITY, cpDefinitionOptionValueRel.getPriority());
 
 		String cpDefinitionOptionValueRelDefaultLanguageId =
-			_localization.getDefaultLanguageId(
+			LocalizationUtil.getDefaultLanguageId(
 				cpDefinitionOptionValueRel.getName());
 
 		Locale locale = LocaleUtil.fromLanguageId(
@@ -225,8 +225,5 @@ public class CPDefinitionOptionValueRelIndexer
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
-
-	@Reference
-	private Localization _localization;
 
 }

@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -68,9 +68,9 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 
 			_depotEntryService.updateDepotEntry(
 				depotEntryId,
-				_localization.getLocalizationMap(
+				LocalizationUtil.getLocalizationMap(
 					actionRequest, "name", group.getNameMap()),
-				_localization.getLocalizationMap(
+				LocalizationUtil.getLocalizationMap(
 					actionRequest, "description", group.getDescriptionMap()),
 				_toStringBooleanMap(depotAppCustomizationUnicodeProperties),
 				PropertiesParamUtil.getProperties(
@@ -154,8 +154,5 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private DLSizeLimitConfigurationProvider _dlSizeLimitConfigurationProvider;
-
-	@Reference
-	private Localization _localization;
 
 }

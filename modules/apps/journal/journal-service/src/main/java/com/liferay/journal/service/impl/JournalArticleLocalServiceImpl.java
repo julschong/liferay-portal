@@ -174,7 +174,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MathUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -6373,7 +6373,8 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	protected Locale getArticleDefaultLocale(String content) {
-		String defaultLanguageId = _localization.getDefaultLanguageId(content);
+		String defaultLanguageId = LocalizationUtil.getDefaultLanguageId(
+			content);
 
 		if (Validator.isNotNull(defaultLanguageId)) {
 			return LocaleUtil.fromLanguageId(defaultLanguageId);
@@ -7604,63 +7605,63 @@ public class JournalArticleLocalServiceImpl
 		JournalGroupServiceConfiguration journalGroupServiceConfiguration) {
 
 		if (emailType.equals("add")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleAddedBody());
 		}
 
 		if (emailType.equals("denied")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleApprovalDeniedBody());
 		}
 
 		if (emailType.equals("expired")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleExpiredBody());
 		}
 
 		if (emailType.equals("granted")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleApprovalGrantedBody());
 		}
 
 		if (emailType.equals("move_to")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedToFolderBody());
 		}
 
 		if (emailType.equals("move_to_trash")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedToTrashBody());
 		}
 		else if (emailType.equals("move_from")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedFromFolderBody());
 		}
 
 		if (emailType.equals("move_from_trash")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedFromTrashBody());
 		}
 
 		if (emailType.equals("requested")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleApprovalRequestedBody());
 		}
 
 		if (emailType.equals("review")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleReviewBody());
 		}
 
 		if (emailType.equals("update")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleUpdatedBody());
 		}
 
@@ -7672,64 +7673,64 @@ public class JournalArticleLocalServiceImpl
 		JournalGroupServiceConfiguration journalGroupServiceConfiguration) {
 
 		if (emailType.equals("add")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleAddedSubject());
 		}
 
 		if (emailType.equals("denied")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleApprovalDeniedSubject());
 		}
 
 		if (emailType.equals("expired")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleExpiredSubject());
 		}
 
 		if (emailType.equals("granted")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleApprovalGrantedSubject());
 		}
 
 		if (emailType.equals("move_to")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedToFolderSubject());
 		}
 
 		if (emailType.equals("move_to_trash")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedToTrashSubject());
 		}
 
 		if (emailType.equals("move_from")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedFromFolderSubject());
 		}
 
 		if (emailType.equals("move_from_trash")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleMovedFromTrashSubject());
 		}
 
 		if (emailType.equals("requested")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.
 					emailArticleApprovalRequestedSubject());
 		}
 
 		if (emailType.equals("review")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleReviewSubject());
 		}
 
 		if (emailType.equals("update")) {
-			return _localization.getMap(
+			return LocalizationUtil.getMap(
 				journalGroupServiceConfiguration.emailArticleUpdatedSubject());
 		}
 
@@ -8155,9 +8156,6 @@ public class JournalArticleLocalServiceImpl
 	@Reference
 	private LayoutPageTemplateEntryLocalService
 		_layoutPageTemplateEntryLocalService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

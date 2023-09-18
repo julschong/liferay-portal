@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.search.model.uid.UIDFactory;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.trash.TrashHelper;
@@ -73,10 +73,11 @@ public class WikiPageModelDocumentContributor
 			String languageId = LocaleUtil.toLanguageId(locale);
 
 			document.addText(
-				_localization.getLocalizedName(Field.CONTENT, languageId),
+				LocalizationUtil.getLocalizedName(Field.CONTENT, languageId),
 				content);
 			document.addText(
-				_localization.getLocalizedName(Field.TITLE, languageId), title);
+				LocalizationUtil.getLocalizedName(Field.TITLE, languageId),
+				title);
 		}
 
 		document.addNumber(
@@ -94,9 +95,6 @@ public class WikiPageModelDocumentContributor
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private TrashHelper _trashHelper;

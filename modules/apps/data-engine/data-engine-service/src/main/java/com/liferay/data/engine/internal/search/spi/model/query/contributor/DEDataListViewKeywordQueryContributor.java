@@ -8,7 +8,7 @@ package com.liferay.data.engine.internal.search.spi.model.query.contributor;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.query.QueryHelper;
 import com.liferay.portal.search.spi.model.query.contributor.KeywordQueryContributor;
@@ -40,7 +40,7 @@ public class DEDataListViewKeywordQueryContributor
 		}
 
 		searchContext.setAttribute(
-			_localization.getLocalizedName(
+			LocalizationUtil.getLocalizedName(
 				Field.NAME, searchContext.getLanguageId()),
 			searchContext.getAttribute(Field.NAME));
 
@@ -51,8 +51,5 @@ public class DEDataListViewKeywordQueryContributor
 
 	@Reference
 	protected QueryHelper queryHelper;
-
-	@Reference
-	private Localization _localization;
 
 }

@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.language.LanguageResources;
@@ -129,7 +129,8 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 					null)) {
 
 			Locale defaultLocale = LocaleUtil.fromLanguageId(
-				_localization.getDefaultLanguageId(layoutPrototype.getName()));
+				LocalizationUtil.getDefaultLanguageId(
+					layoutPrototype.getName()));
 
 			String name = LanguageResources.getMessage(
 				defaultLocale, "layout-prototype-search-title");
@@ -208,7 +209,7 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 	}
 
 	private Map<Locale, String> _getFriendlyURLMap() {
-		return _localization.getLocalizationMap("/search");
+		return LocalizationUtil.getLocalizationMap("/search");
 	}
 
 	private Map<Locale, String> _getLocalizationMap(String key) {
@@ -286,8 +287,5 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 	private final SearchLayoutPrototypeCustomizer
 		_defaultSearchLayoutPrototypeCustomizer =
 			new DefaultSearchLayoutPrototypeCustomizer();
-
-	@Reference
-	private Localization _localization;
 
 }

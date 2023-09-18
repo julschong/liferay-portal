@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.Locale;
@@ -48,7 +48,7 @@ public class EditCPOptionValueMVCActionCommand extends BaseMVCActionCommand {
 		long cpOptionValueId = ParamUtil.getLong(
 			actionRequest, "cpOptionValueId");
 
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
 		double priority = ParamUtil.getDouble(actionRequest, "priority");
 		String key = ParamUtil.getString(actionRequest, "key");
@@ -80,8 +80,5 @@ public class EditCPOptionValueMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private CPOptionValueService _cpOptionValueService;
-
-	@Reference
-	private Localization _localization;
 
 }

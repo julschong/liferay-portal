@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.workflow.comparator.WorkflowComparatorFactory;
@@ -299,7 +299,7 @@ public class DefaultPortalKaleoManager
 		throws Exception {
 
 		if (!Objects.equals(_DEFINITION_NAME, definitionName)) {
-			return _localization.updateLocalization(
+			return LocalizationUtil.updateLocalization(
 				StringPool.BLANK, "title", definitionName,
 				LocaleUtil.toLanguageId(LocaleUtil.getDefault()));
 		}
@@ -319,7 +319,7 @@ public class DefaultPortalKaleoManager
 					"single-approver"));
 		}
 
-		return _localization.getXml(localizedValuesMap, "title");
+		return LocalizationUtil.getXml(localizedValuesMap, "title");
 	}
 
 	private static final String _DEFINITION_NAME = "Single Approver";
@@ -336,9 +336,6 @@ public class DefaultPortalKaleoManager
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private WorkflowDefinitionManager _workflowDefinitionManager;

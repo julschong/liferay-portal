@@ -59,7 +59,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -839,12 +839,12 @@ public class BookmarksEntryLocalServiceImpl
 
 		if (bodyLocalizedValuesMap != null) {
 			subscriptionSender.setLocalizedBodyMap(
-				_localization.getMap(bodyLocalizedValuesMap));
+				LocalizationUtil.getMap(bodyLocalizedValuesMap));
 		}
 
 		if (subjectLocalizedValuesMap != null) {
 			subscriptionSender.setLocalizedSubjectMap(
-				_localization.getMap(subjectLocalizedValuesMap));
+				LocalizationUtil.getMap(subjectLocalizedValuesMap));
 		}
 
 		subscriptionSender.setMailId("bookmarks_entry", entry.getEntryId());
@@ -910,9 +910,6 @@ public class BookmarksEntryLocalServiceImpl
 
 	@Reference
 	private GroupLocalService _groupLocalService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

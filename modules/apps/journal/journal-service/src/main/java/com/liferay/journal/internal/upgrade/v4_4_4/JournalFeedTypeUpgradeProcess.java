@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -56,8 +56,7 @@ public class JournalFeedTypeUpgradeProcess extends UpgradeProcess {
 		AssetEntryLocalService assetEntryLocalService,
 		AssetVocabularyLocalService assetVocabularyLocalService,
 		CompanyLocalService companyLocalService, Language language,
-		Localization localization, Portal portal,
-		UserLocalService userLocalService) {
+		Portal portal, UserLocalService userLocalService) {
 
 		_assetCategoryLocalService = assetCategoryLocalService;
 		_assetEntryAssetCategoryRelLocalService =
@@ -66,7 +65,6 @@ public class JournalFeedTypeUpgradeProcess extends UpgradeProcess {
 		_assetVocabularyLocalService = assetVocabularyLocalService;
 		_companyLocalService = companyLocalService;
 		_language = language;
-		_localization = localization;
 		_portal = portal;
 		_userLocalService = userLocalService;
 	}
@@ -209,7 +207,7 @@ public class JournalFeedTypeUpgradeProcess extends UpgradeProcess {
 						String assetVocabularyTitle = "type";
 
 						Map<Locale, String> assetVocabularyTitleMap =
-							_localization.getLocalizationMap(
+							LocalizationUtil.getLocalizationMap(
 								_language.getAvailableLocales(
 									company.getGroupId()),
 								defaultLocale, assetVocabularyTitle);
@@ -376,7 +374,6 @@ public class JournalFeedTypeUpgradeProcess extends UpgradeProcess {
 	private final AssetVocabularyLocalService _assetVocabularyLocalService;
 	private final CompanyLocalService _companyLocalService;
 	private final Language _language;
-	private final Localization _localization;
 	private final Portal _portal;
 	private final UserLocalService _userLocalService;
 

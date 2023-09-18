@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -99,7 +99,7 @@ public class KaleoInstanceModelPreFilterContributor
 
 		try {
 			booleanQuery.addTerm(
-				_localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					"assetDescription", searchContext.getLanguageId()),
 				assetDescription);
 		}
@@ -124,7 +124,7 @@ public class KaleoInstanceModelPreFilterContributor
 
 		try {
 			booleanQuery.addTerm(
-				_localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					"assetTitle", searchContext.getLanguageId()),
 				assetTitle);
 		}
@@ -364,8 +364,5 @@ public class KaleoInstanceModelPreFilterContributor
 		booleanFilter.addRequiredTerm(
 			"rootKaleoInstanceTokenId", rootKaleoInstanceTokenId);
 	}
-
-	@Reference
-	private Localization _localization;
 
 }

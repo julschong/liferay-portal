@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 
 import java.util.List;
@@ -58,13 +58,14 @@ public class CPDefinitionGroupedEntryModelDocumentContributor
 				String name = entryCPDefinition.getName(languageId);
 
 				document.addText(
-					_localization.getLocalizedName(
+					LocalizationUtil.getLocalizedName(
 						"entryCPDefinitionName", languageId),
 					name);
 			}
 
 			String cpDefinitionDefaultLanguageId =
-				_localization.getDefaultLanguageId(entryCPDefinition.getName());
+				LocalizationUtil.getDefaultLanguageId(
+					entryCPDefinition.getName());
 
 			document.addText(
 				"entryCPDefinitionName",
@@ -96,8 +97,5 @@ public class CPDefinitionGroupedEntryModelDocumentContributor
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 }

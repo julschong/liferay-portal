@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.search.suggest.Suggester;
 import com.liferay.portal.kernel.search.suggest.SuggesterResult;
 import com.liferay.portal.kernel.search.suggest.SuggesterResults;
 import com.liferay.portal.kernel.search.suggest.TermSuggester;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.search.SuggestSearchRequest;
@@ -157,10 +157,6 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 		return keywordQueries.toArray(new String[0]);
 	}
 
-	protected void setLocalization(Localization localization) {
-		_localization = localization;
-	}
-
 	protected SuggesterResults translate(
 		SuggestSearchResponse suggestSearchResponse) {
 
@@ -220,7 +216,7 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 	private PhraseSuggester _createQuerySuggester(
 		SearchContext searchContext, int max) {
 
-		String field = _localization.getLocalizedName(
+		String field = LocalizationUtil.getLocalizedName(
 			Field.KEYWORD_SEARCH, searchContext.getLanguageId());
 
 		PhraseSuggester phraseSuggester = new PhraseSuggester(
@@ -234,7 +230,7 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 	private Suggester _createSpellCheckSuggester(
 		SearchContext searchContext, int max) {
 
-		String field = _localization.getLocalizedName(
+		String field = LocalizationUtil.getLocalizedName(
 			Field.SPELL_CHECK_WORD, searchContext.getLanguageId());
 
 		TermSuggester termSuggester = new TermSuggester(
@@ -338,9 +334,6 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private SearchEngineAdapter _searchEngineAdapter;

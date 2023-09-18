@@ -7,7 +7,7 @@ package com.liferay.portal.workflow.kaleo.internal.search.spi.model.query.contri
 
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.query.QueryHelper;
 import com.liferay.portal.search.spi.model.query.contributor.KeywordQueryContributor;
@@ -68,9 +68,10 @@ public class KaleoInstanceTokenKeywordQueryContributor
 		SearchContext searchContext =
 			keywordQueryContributorHelper.getSearchContext();
 
-		String assetDescriptionLocalizedName = _localization.getLocalizedName(
-			KaleoInstanceTokenField.ASSET_DESCRIPTION,
-			searchContext.getLanguageId());
+		String assetDescriptionLocalizedName =
+			LocalizationUtil.getLocalizedName(
+				KaleoInstanceTokenField.ASSET_DESCRIPTION,
+				searchContext.getLanguageId());
 
 		searchContext.setAttribute(
 			assetDescriptionLocalizedName, assetDescription);
@@ -91,7 +92,7 @@ public class KaleoInstanceTokenKeywordQueryContributor
 		SearchContext searchContext =
 			keywordQueryContributorHelper.getSearchContext();
 
-		String assetTitleLocalizedName = _localization.getLocalizedName(
+		String assetTitleLocalizedName = LocalizationUtil.getLocalizedName(
 			KaleoInstanceTokenField.ASSET_TITLE, searchContext.getLanguageId());
 
 		searchContext.setAttribute(assetTitleLocalizedName, assetTitle);
@@ -171,8 +172,5 @@ public class KaleoInstanceTokenKeywordQueryContributor
 		return (KaleoInstanceTokenQuery)searchContext.getAttribute(
 			"kaleoInstanceTokenQuery");
 	}
-
-	@Reference
-	private Localization _localization;
 
 }

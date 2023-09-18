@@ -160,7 +160,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -940,7 +940,7 @@ public class ObjectEntryLocalServiceImpl
 				primaryKey);
 
 			if (value instanceof String) {
-				value = _localization.getLocalization(
+				value = LocalizationUtil.getLocalization(
 					(String)value, null, true);
 			}
 
@@ -4495,9 +4495,6 @@ public class ObjectEntryLocalServiceImpl
 
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
-
-	@Reference
-	private Localization _localization;
 
 	private volatile ObjectConfiguration _objectConfiguration;
 

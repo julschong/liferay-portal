@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -87,7 +87,7 @@ public class EditMoneyOrderCommercePaymentMethodConfigurationMVCActionCommand
 			messageMap.put(entry.getKey(), entry.getValue());
 		}
 
-		String messageAsLocalizedXML = _localization.getXml(
+		String messageAsLocalizedXML = LocalizationUtil.getXml(
 			messageMap, StringPool.BLANK, "messageAsLocalizedXML");
 
 		modifiableSettings.setValue(
@@ -98,8 +98,5 @@ public class EditMoneyOrderCommercePaymentMethodConfigurationMVCActionCommand
 
 	@Reference
 	private CommerceChannelService _commerceChannelService;
-
-	@Reference
-	private Localization _localization;
 
 }

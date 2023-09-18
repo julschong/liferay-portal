@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.localization.SearchLocalizationHelper;
@@ -210,9 +210,10 @@ public class WikiPageIndexer extends BaseIndexer<WikiPage> {
 
 		String languageId = LocaleUtil.toLanguageId(locale);
 
-		String content = _localization.getLocalizedName(
+		String content = LocalizationUtil.getLocalizedName(
 			Field.CONTENT, languageId);
-		String title = _localization.getLocalizedName(Field.TITLE, languageId);
+		String title = LocalizationUtil.getLocalizedName(
+			Field.TITLE, languageId);
 
 		Summary summary = createSummary(document, title, content);
 
@@ -364,9 +365,6 @@ public class WikiPageIndexer extends BaseIndexer<WikiPage> {
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private SearchLocalizationHelper _searchLocalizationHelper;

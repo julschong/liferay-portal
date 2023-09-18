@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.util.Locale;
 
@@ -83,9 +83,9 @@ public class CPOptionValueIndexer extends BaseIndexer<CPOptionValue> {
 		Document document = getBaseModelDocument(CLASS_NAME, cpOptionValue);
 
 		String cpOptionValueDefaultLanguageId =
-			_localization.getDefaultLanguageId(cpOptionValue.getName());
+			LocalizationUtil.getDefaultLanguageId(cpOptionValue.getName());
 
-		String[] languageIds = _localization.getAvailableLanguageIds(
+		String[] languageIds = LocalizationUtil.getAvailableLanguageIds(
 			cpOptionValue.getName());
 
 		for (String languageId : languageIds) {
@@ -96,7 +96,8 @@ public class CPOptionValueIndexer extends BaseIndexer<CPOptionValue> {
 			document.addText(CPField.KEY, cpOptionValue.getKey());
 			document.addText(Field.CONTENT, name);
 			document.addText(
-				_localization.getLocalizedName(Field.NAME, languageId), name);
+				LocalizationUtil.getLocalizedName(Field.NAME, languageId),
+				name);
 			document.addNumber(Field.PRIORITY, cpOptionValue.getPriority());
 
 			if (languageId.equals(cpOptionValueDefaultLanguageId)) {
@@ -177,8 +178,5 @@ public class CPOptionValueIndexer extends BaseIndexer<CPOptionValue> {
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
-
-	@Reference
-	private Localization _localization;
 
 }

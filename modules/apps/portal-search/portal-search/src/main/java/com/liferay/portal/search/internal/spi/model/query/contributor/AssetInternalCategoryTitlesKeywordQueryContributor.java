@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.search.query.QueryHelper;
 import com.liferay.portal.search.spi.model.query.contributor.KeywordQueryContributor;
 import com.liferay.portal.search.spi.model.query.contributor.helper.KeywordQueryContributorHelper;
@@ -38,7 +38,7 @@ public class AssetInternalCategoryTitlesKeywordQueryContributor
 
 		queryHelper.addSearchTerm(
 			booleanQuery, searchContext,
-			_localization.getLocalizedName(
+			LocalizationUtil.getLocalizedName(
 				Field.ASSET_INTERNAL_CATEGORY_TITLES,
 				LocaleUtil.toLanguageId(searchContext.getLocale())),
 			false);
@@ -46,8 +46,5 @@ public class AssetInternalCategoryTitlesKeywordQueryContributor
 
 	@Reference
 	protected QueryHelper queryHelper;
-
-	@Reference
-	private Localization _localization;
 
 }
