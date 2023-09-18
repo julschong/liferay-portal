@@ -15,14 +15,11 @@ import com.liferay.portal.kernel.search.HitsImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.UserTrackerPathImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.LocalizationImpl;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,13 +33,6 @@ public class JSONSerializerTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
-
-	@Before
-	public void setUp() throws Exception {
-		LocalizationUtil localizationUtil = new LocalizationUtil();
-
-		localizationUtil.setLocalization(new LocalizationImpl());
-	}
 
 	@Test
 	public void testSerializeDDMStructure() {

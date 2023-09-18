@@ -6,14 +6,11 @@
 package com.liferay.portal.search.test.util.highlight;
 
 import com.liferay.petra.function.transform.TransformUtil;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.highlight.HighlightUtil;
-import com.liferay.portal.kernel.util.Localization;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.test.util.DocumentsAssert;
 import com.liferay.portal.search.test.util.IdempotentRetryAssert;
@@ -22,8 +19,6 @@ import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
-import org.mockito.Mockito;
 
 /**
  * @author Wade Cao
@@ -34,10 +29,6 @@ public abstract class BaseHighlightTestCase extends BaseIndexingTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-
-		LocalizationUtil localizationUtil = new LocalizationUtil();
-
-		localizationUtil.setLocalization(createLocalization());
 	}
 
 	protected void assertSearch(
@@ -48,20 +39,6 @@ public abstract class BaseHighlightTestCase extends BaseIndexingTestCase {
 		IdempotentRetryAssert.retryAssert(
 			5, TimeUnit.SECONDS,
 			() -> doAssertSearch(fieldName, query, consumer, expectedValues));
-	}
-
-	protected Localization createLocalization() {
-		Localization localization = Mockito.mock(Localization.class);
-
-		Mockito.doReturn(
-			StringPool.BLANK
-		).when(
-			localization
-		).getLocalizedName(
-			Mockito.anyString(), Mockito.anyString()
-		);
-
-		return localization;
 	}
 
 	protected Void doAssertSearch(

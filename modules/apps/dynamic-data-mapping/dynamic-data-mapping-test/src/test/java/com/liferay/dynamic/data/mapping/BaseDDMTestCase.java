@@ -66,7 +66,6 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -76,7 +75,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
-import com.liferay.portal.util.LocalizationImpl;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.xml.SAXReaderImpl;
 
@@ -725,12 +723,6 @@ public abstract class BaseDDMTestCase {
 
 		ReflectionTestUtil.setFieldValue(
 			ddmFormValuesJSONDeserializer, "_language", language);
-	}
-
-	protected void setUpLocalizationUtil() {
-		LocalizationUtil localizationUtil = new LocalizationUtil();
-
-		localizationUtil.setLocalization(new LocalizationImpl());
 	}
 
 	protected void setUpPortalClassLoaderUtil() {
