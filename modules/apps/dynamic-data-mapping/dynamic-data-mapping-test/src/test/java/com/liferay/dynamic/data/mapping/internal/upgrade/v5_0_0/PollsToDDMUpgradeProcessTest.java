@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -27,12 +26,14 @@ import java.util.Set;
 
 import org.hamcrest.CoreMatchers;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
@@ -61,8 +62,13 @@ public class PollsToDDMUpgradeProcessTest extends BaseDDMTestCase {
 				"radio-field-type-label", "Single Selection"
 			).build());
 		setUpLanguageUtil();
-		_setUpLocalizationUtil();
+		_mockLocalizationUtil();
 		_setUpPollsToDDMUpgradeProcess();
+	}
+
+	@After
+	public void tearDown() {
+		_localizationUtilMockedStatic.close();
 	}
 
 	@Test
@@ -190,18 +196,19 @@ public class PollsToDDMUpgradeProcessTest extends BaseDDMTestCase {
 		return sb.toString();
 	}
 
-	private void _setUpLocalizationUtil() {
-		LocalizationUtil localizationUtil = new LocalizationUtil();
+	private void _mockLocalizationUtil() {
+		_localizationUtilMockedStatic = Mockito.mockStatic(
+			LocalizationUtil.class);
 
-		Mockito.when(
-			_localization.getAvailableLanguageIds(
+		_localizationUtilMockedStatic.when(
+			() -> LocalizationUtil.getAvailableLanguageIds(
 				Mockito.nullable(String.class))
 		).thenReturn(
 			new String[] {"en_US", "pt_BR"}
 		);
 
-		Mockito.when(
-			_localization.getLocalization(
+		_localizationUtilMockedStatic.when(
+			() -> LocalizationUtil.getLocalization(
 				Mockito.nullable(String.class), Mockito.nullable(String.class))
 		).then(
 			(Answer<String>)invocationOnMock -> {
@@ -224,8 +231,6 @@ public class PollsToDDMUpgradeProcessTest extends BaseDDMTestCase {
 					0, languageIdElement.indexOf("</"));
 			}
 		);
-
-		localizationUtil.setLocalization(_localization);
 	}
 
 	private void _setUpPollsToDDMUpgradeProcess() {
@@ -240,7 +245,7 @@ public class PollsToDDMUpgradeProcessTest extends BaseDDMTestCase {
 			_pollsToDDMUpgradeProcess, "_defaultLocale", LocaleUtil.US);
 	}
 
-	private final Localization _localization = Mockito.mock(Localization.class);
+	private MockedStatic<LocalizationUtil> _localizationUtilMockedStatic;
 	private PollsToDDMUpgradeProcess _pollsToDDMUpgradeProcess;
 
 }
