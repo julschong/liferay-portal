@@ -5,8 +5,6 @@
 
 package com.liferay.portal.servlet.filters.strip;
 
-import com.liferay.portal.cache.key.CacheKeyGeneratorUtil;
-import com.liferay.portal.cache.key.HashCodeHexStringCacheKeyGenerator;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.minifier.MinifierUtil;
@@ -45,12 +43,6 @@ public class StripFilterTest {
 	@BeforeClass
 	public static void setUpClass() {
 		ToolDependencies.wireCaches();
-
-		CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
-			new CacheKeyGeneratorUtil();
-
-		cacheKeyGeneratorUtil.setDefaultCacheKeyGenerator(
-			new HashCodeHexStringCacheKeyGenerator());
 
 		_minifierEnabled = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.MINIFIER_ENABLED));

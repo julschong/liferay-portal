@@ -119,7 +119,7 @@ public class StripFilter extends BasePortalFilter {
 		if (PropsValues.MINIFIER_INLINE_CONTENT_CACHE_ENABLED) {
 			CacheKeyGenerator cacheKeyGenerator =
 				CacheKeyGeneratorUtil.getCacheKeyGenerator(
-					StripFilter.class.getName());
+					CacheKeyGenerator.SIMPLE_CACHE_GENERATOR_NAME);
 
 			String key = String.valueOf(cacheKeyGenerator.getCacheKey(content));
 
@@ -263,7 +263,7 @@ public class StripFilter extends BasePortalFilter {
 		if (PropsValues.MINIFIER_INLINE_CONTENT_CACHE_ENABLED) {
 			CacheKeyGenerator cacheKeyGenerator =
 				CacheKeyGeneratorUtil.getCacheKeyGenerator(
-					StripFilter.class.getName());
+					CacheKeyGenerator.SIMPLE_CACHE_GENERATOR_NAME);
 
 			String key = String.valueOf(cacheKeyGenerator.getCacheKey(content));
 

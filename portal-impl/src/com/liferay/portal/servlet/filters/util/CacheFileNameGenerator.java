@@ -30,7 +30,8 @@ public class CacheFileNameGenerator {
 		HttpServletRequest httpServletRequest, String cacheName) {
 
 		CacheKeyGenerator cacheKeyGenerator =
-			CacheKeyGeneratorUtil.getCacheKeyGenerator(cacheName);
+			CacheKeyGeneratorUtil.getCacheKeyGenerator(
+				CacheKeyGenerator.SIMPLE_CACHE_GENERATOR_NAME);
 
 		cacheKeyGenerator.append(
 			HttpComponentsUtil.getProtocol(httpServletRequest.isSecure()));

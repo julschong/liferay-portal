@@ -7,7 +7,6 @@ package com.liferay.portal.cache.internal.dao.orm;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cache.key.CacheKeyGenerator;
-import com.liferay.portal.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.cache.key.HashCodeHexStringCacheKeyGenerator;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
@@ -70,11 +69,6 @@ public class FinderCacheImplTest {
 		_notSerializedMultiVMPool = (MultiVMPool)ProxyUtil.newProxyInstance(
 			_classLoader, new Class<?>[] {MultiVMPool.class},
 			new MultiVMPoolInvocationHandler(_classLoader, false));
-
-		CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
-			new CacheKeyGeneratorUtil();
-
-		cacheKeyGeneratorUtil.setDefaultCacheKeyGenerator(_cacheKeyGenerator);
 	}
 
 	@Before

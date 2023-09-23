@@ -70,7 +70,7 @@ public class BufferedIncrementAdvice extends ChainableMethodAdvice {
 
 		CacheKeyGenerator cacheKeyGenerator =
 			CacheKeyGeneratorUtil.getCacheKeyGenerator(
-				BufferedIncrementAdvice.class.getName());
+				CacheKeyGenerator.SIMPLE_CACHE_GENERATOR_NAME);
 
 		for (int i = 0; i < (arguments.length - 1); i++) {
 			cacheKeyGenerator.append(StringUtil.toHexString(arguments[i]));

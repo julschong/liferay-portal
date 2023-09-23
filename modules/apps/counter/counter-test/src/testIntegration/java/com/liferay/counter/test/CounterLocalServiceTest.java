@@ -13,8 +13,6 @@ import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.process.ProcessException;
 import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.cache.key.CacheKeyGeneratorUtil;
-import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.ClassTestRule;
@@ -225,12 +223,6 @@ public class CounterLocalServiceTest {
 
 			System.setProperty("portal:jdbc.default.maximumPoolSize", "1");
 			System.setProperty("portal:jdbc.default.minimumIdle", "0");
-
-			CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
-				new CacheKeyGeneratorUtil();
-
-			cacheKeyGeneratorUtil.setDefaultCacheKeyGenerator(
-				new SimpleCacheKeyGenerator());
 
 			InitUtil.initWithSpring(
 				Arrays.asList(

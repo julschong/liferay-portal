@@ -585,28 +585,12 @@ public class FinderCacheImpl
 
 	private CacheKeyGenerator _getCacheKeyGenerator(boolean baseModel) {
 		if (baseModel) {
-			CacheKeyGenerator cacheKeyGenerator = _baseModelCacheKeyGenerator;
-
-			if (cacheKeyGenerator == null) {
-				cacheKeyGenerator = CacheKeyGeneratorUtil.getCacheKeyGenerator(
-					FinderCache.class.getName() + "#BaseModel");
-
-				_baseModelCacheKeyGenerator = cacheKeyGenerator;
-			}
-
-			return cacheKeyGenerator;
+			return CacheKeyGeneratorUtil.getCacheKeyGenerator(
+				CacheKeyGenerator.HASH_CODE_CACHE_GENERATOR_NAME);
 		}
 
-		CacheKeyGenerator cacheKeyGenerator = _cacheKeyGenerator;
-
-		if (cacheKeyGenerator == null) {
-			cacheKeyGenerator = CacheKeyGeneratorUtil.getCacheKeyGenerator(
-				FinderCache.class.getName());
-
-			_cacheKeyGenerator = cacheKeyGenerator;
-		}
-
-		return cacheKeyGenerator;
+		return CacheKeyGeneratorUtil.getCacheKeyGenerator(
+			CacheKeyGenerator.SIMPLE_CACHE_GENERATOR_NAME);
 	}
 
 	private String _getCacheNameWithoutPagination(String cacheName) {
@@ -731,9 +715,7 @@ public class FinderCacheImpl
 	private static final MethodKey _clearDSLQueryCacheMethodKey = new MethodKey(
 		FinderCacheUtil.class, "clearDSLQueryCache", String.class);
 
-	private volatile CacheKeyGenerator _baseModelCacheKeyGenerator;
 	private BundleContext _bundleContext;
-	private volatile CacheKeyGenerator _cacheKeyGenerator;
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;

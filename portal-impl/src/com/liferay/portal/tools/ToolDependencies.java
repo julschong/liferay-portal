@@ -5,8 +5,6 @@
 
 package com.liferay.portal.tools;
 
-import com.liferay.portal.cache.key.CacheKeyGeneratorUtil;
-import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
@@ -76,12 +74,6 @@ public class ToolDependencies {
 
 		bundleContext.registerService(
 			FullNameGenerator.class, new DefaultFullNameGenerator(), null);
-
-		CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
-			new CacheKeyGeneratorUtil();
-
-		cacheKeyGeneratorUtil.setDefaultCacheKeyGenerator(
-			new SimpleCacheKeyGenerator());
 
 		DigesterUtil digesterUtil = new DigesterUtil();
 
