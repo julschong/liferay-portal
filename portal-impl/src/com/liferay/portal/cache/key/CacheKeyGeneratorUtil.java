@@ -5,11 +5,9 @@
 
 package com.liferay.portal.cache.key;
 
-import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
-import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCache;
-import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
+import com.liferay.portal.kernel.util.Digester;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,45 +16,41 @@ import java.util.Map;
  */
 public class CacheKeyGeneratorUtil {
 
-	public static CacheKeyGenerator getCacheKeyGenerator(String cacheName) {
-		ThreadLocalCache<CacheKeyGenerator> threadLocalCacheKeyGenerators =
-			ThreadLocalCacheManager.getThreadLocalCache(
-				Lifecycle.ETERNAL, CacheKeyGeneratorUtil.class.getName());
-
-		CacheKeyGenerator cacheKeyGenerator = threadLocalCacheKeyGenerators.get(
-			cacheName);
-
-		if (cacheKeyGenerator != null) {
-			return cacheKeyGenerator;
-		}
-
-		cacheKeyGenerator = _cacheKeyGenerators.get(cacheName);
+	public static void addCacheKeyGenerator(
+		String name, CacheKeyGenerator cacheKeyGenerator) {
 
 		if (cacheKeyGenerator == null) {
-			cacheKeyGenerator = _defaultCacheKeyGenerator;
+			throw new IllegalArgumentException(
+				"Cache key generator cannot be null");
 		}
 
-		cacheKeyGenerator = cacheKeyGenerator.clone();
+		if (_cacheKeyGeneratorsMap.containsKey(name)) {
+			throw new IllegalArgumentException(
+				"Cache key generator with name: " + name + " already exists");
+		}
 
-		threadLocalCacheKeyGenerators.put(cacheName, cacheKeyGenerator);
-
-		return cacheKeyGenerator;
+		_cacheKeyGeneratorsMap.put(name, cacheKeyGenerator);
 	}
 
-	public void setCacheKeyGenerators(
-		Map<String, CacheKeyGenerator> cacheKeyGenerators) {
+	public static CacheKeyGenerator getCacheKeyGenerator(String name) {
+		if (!_cacheKeyGeneratorsMap.containsKey(name)) {
+			throw new IllegalArgumentException(
+				"Cannot get cache key generator with name: " + name);
+		}
 
-		_cacheKeyGenerators = cacheKeyGenerators;
+		return _cacheKeyGeneratorsMap.get(name);
 	}
 
-	public void setDefaultCacheKeyGenerator(
-		CacheKeyGenerator defaultCacheKeyGenerator) {
-
-		_defaultCacheKeyGenerator = defaultCacheKeyGenerator;
-	}
-
-	private static Map<String, CacheKeyGenerator> _cacheKeyGenerators =
-		new HashMap<>();
-	private static CacheKeyGenerator _defaultCacheKeyGenerator;
+	private static final Map<String, CacheKeyGenerator> _cacheKeyGeneratorsMap =
+		HashMapBuilder.<String, CacheKeyGenerator>put(
+			CacheKeyGenerator.DIGEST_CACHE_GENERATOR_NAME,
+			new MessageDigestCacheKeyGenerator(Digester.SHA_1)
+		).put(
+			CacheKeyGenerator.HASH_CODE_CACHE_GENERATOR_NAME,
+			new HashCodeHexStringCacheKeyGenerator()
+		).put(
+			CacheKeyGenerator.SIMPLE_CACHE_GENERATOR_NAME,
+			new SimpleCacheKeyGenerator()
+		).build();
 
 }

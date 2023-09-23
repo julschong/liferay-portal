@@ -15,6 +15,12 @@ import java.io.Serializable;
  */
 public interface CacheKeyGenerator extends Cloneable {
 
+	public static final String DIGEST_CACHE_GENERATOR_NAME = "DIGEST";
+
+	public static final String HASH_CODE_CACHE_GENERATOR_NAME = "HASH_CODE";
+
+	public static final String SIMPLE_CACHE_GENERATOR_NAME = "SIMPLE";
+
 	public CacheKeyGenerator append(String key);
 
 	public CacheKeyGenerator append(String[] keys);
