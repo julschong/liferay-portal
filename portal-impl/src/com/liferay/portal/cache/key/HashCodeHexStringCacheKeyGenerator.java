@@ -6,7 +6,6 @@
 package com.liferay.portal.cache.key;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
