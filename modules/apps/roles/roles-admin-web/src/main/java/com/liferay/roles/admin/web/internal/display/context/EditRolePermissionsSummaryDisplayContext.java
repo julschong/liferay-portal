@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
-import com.liferay.portal.kernel.security.permission.PermissionConverterUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.RolePermissions;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -36,6 +35,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.impl.ResourceImpl;
+import com.liferay.portal.security.permission.converter.PermissionConverterUtil;
 import com.liferay.roles.admin.web.internal.group.type.contributor.util.GroupTypeContributorUtil;
 import com.liferay.taglib.search.ResultRow;
 

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.adapter.ModelAdapterUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionConversionFilter;
-import com.liferay.portal.kernel.security.permission.PermissionConverterUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.security.permission.converter.PermissionConverterUtil;
 import com.liferay.site.model.adapter.StagedGroup;
 
 import java.util.List;
