@@ -18,26 +18,6 @@ import java.util.List;
  */
 public class PermissionConverterUtil {
 
-	public static List<Permission> convertPermissions(long roleId)
-		throws PortalException {
-
-		PermissionConverter permissionConverter =
-			_permissionConverterSnapshot.get();
-
-		return permissionConverter.convertPermissions(roleId);
-	}
-
-	public static List<Permission> convertPermissions(
-			long roleId, PermissionConversionFilter permissionConversionFilter)
-		throws PortalException {
-
-		PermissionConverter permissionConverter =
-			_permissionConverterSnapshot.get();
-
-		return permissionConverter.convertPermissions(
-			roleId, permissionConversionFilter);
-	}
-
 	public static List<Permission> convertPermissions(Role role)
 		throws PortalException {
 
