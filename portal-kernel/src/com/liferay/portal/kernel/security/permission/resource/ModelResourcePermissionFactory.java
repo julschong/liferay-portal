@@ -12,14 +12,12 @@ import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.resource.definition.ModelResourcePermissionDefinition;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToLongFunction;
 import java.util.function.UnaryOperator;
@@ -55,15 +53,11 @@ public class ModelResourcePermissionFactory {
 		List<ModelResourcePermissionLogic<T>> modelResourcePermissionLogics =
 			new ArrayList<>();
 
-		ModelResourcePermissionDefinition<T> modelResourcePermissionDefinition =
-			new DefaultModelResourcePermissionDefinition<>(
-				modelClass, primKeyToLongFunction, getModelUnsafeFunction,
-				portletResourcePermission, actionIdMapper);
-
 		ModelResourcePermission<T> modelResourcePermission =
 			new DefaultModelResourcePermission<>(
-				modelResourcePermissionDefinition,
-				modelResourcePermissionLogics);
+				modelResourcePermissionLogics, modelClass, actionIdMapper,
+				getModelUnsafeFunction, portletResourcePermission,
+				primKeyToLongFunction);
 
 		modelResourcePermissionConfigurator.
 			configureModelResourcePermissionLogics(
@@ -97,19 +91,21 @@ public class ModelResourcePermissionFactory {
 		implements ModelResourcePermission<T> {
 
 		public DefaultModelResourcePermission(
-			ModelResourcePermissionDefinition<T>
-				modelResourcePermissionDefinition,
-			List<ModelResourcePermissionLogic<T>>
-				modelResourcePermissionLogics) {
+			List<ModelResourcePermissionLogic<T>> modelResourcePermissionLogics,
+			Class<?> modelClass, UnaryOperator<String> actionIdMapper,
+			UnsafeFunction<Long, T, ? extends PortalException>
+				getModelUnsafeFunction,
+			PortletResourcePermission portletResourcePermission,
+			ToLongFunction<T> primKeyToLongFunction) {
 
-			_modelResourcePermissionDefinition =
-				modelResourcePermissionDefinition;
 			_modelResourcePermissionLogics = modelResourcePermissionLogics;
 
-			Class<T> modelClass =
-				modelResourcePermissionDefinition.getModelClass();
-
 			_modelName = modelClass.getName();
+
+			_actionIdMapper = actionIdMapper;
+			_getModelUnsafeFunction = getModelUnsafeFunction;
+			_portletResourcePermission = portletResourcePermission;
+			_primKeyToLongFunction = primKeyToLongFunction;
 		}
 
 		@Override
@@ -132,8 +128,7 @@ public class ModelResourcePermissionFactory {
 			if (!contains(permissionChecker, model, actionId)) {
 				throw new PrincipalException.MustHavePermission(
 					permissionChecker, _modelName,
-					_modelResourcePermissionDefinition.getPrimaryKey(model),
-					actionId);
+					_primKeyToLongFunction.applyAsLong(model), actionId);
 			}
 		}
 
@@ -155,8 +150,7 @@ public class ModelResourcePermissionFactory {
 			if (contains == null) {
 				contains = _contains(
 					permissionChecker,
-					_modelResourcePermissionDefinition.getModel(primaryKey),
-					actionId);
+					_getModelUnsafeFunction.apply(primaryKey), actionId);
 
 				permissionChecksMap.put(permissionCacheKey, contains);
 			}
@@ -173,8 +167,7 @@ public class ModelResourcePermissionFactory {
 				permissionChecker.getPermissionChecksMap();
 
 			PermissionCacheKey permissionCacheKey = new PermissionCacheKey(
-				_modelName,
-				_modelResourcePermissionDefinition.getPrimaryKey(model),
+				_modelName, _primKeyToLongFunction.applyAsLong(model),
 				actionId);
 
 			Boolean contains = (Boolean)permissionChecksMap.get(
@@ -196,15 +189,14 @@ public class ModelResourcePermissionFactory {
 
 		@Override
 		public PortletResourcePermission getPortletResourcePermission() {
-			return _modelResourcePermissionDefinition.
-				getPortletResourcePermission();
+			return _portletResourcePermission;
 		}
 
 		private boolean _contains(
 				PermissionChecker permissionChecker, T model, String actionId)
 			throws PortalException {
 
-			actionId = _modelResourcePermissionDefinition.mapActionId(actionId);
+			actionId = _actionIdMapper.apply(actionId);
 
 			for (ModelResourcePermissionLogic<T> modelResourcePermissionLogic :
 					_modelResourcePermissionLogics) {
@@ -218,7 +210,7 @@ public class ModelResourcePermissionFactory {
 			}
 
 			String primKey = String.valueOf(
-				_modelResourcePermissionDefinition.getPrimaryKey(model));
+				_primKeyToLongFunction.applyAsLong(model));
 
 			if (permissionChecker.hasOwnerPermission(
 					model.getCompanyId(), _modelName, primKey,
@@ -231,69 +223,12 @@ public class ModelResourcePermissionFactory {
 				model.getGroupId(), _modelName, primKey, actionId);
 		}
 
-		private final String _modelName;
-		private final ModelResourcePermissionDefinition<T>
-			_modelResourcePermissionDefinition;
-		private final List<ModelResourcePermissionLogic<T>>
-			_modelResourcePermissionLogics;
-
-	}
-
-	private static class DefaultModelResourcePermissionDefinition
-		<T extends GroupedModel>
-			implements ModelResourcePermissionDefinition<T> {
-
-		@Override
-		public T getModel(long primaryKey) throws PortalException {
-			return _getModelUnsafeFunction.apply(primaryKey);
-		}
-
-		@Override
-		public Class<T> getModelClass() {
-			return _modelClass;
-		}
-
-		@Override
-		public PortletResourcePermission getPortletResourcePermission() {
-			return _portletResourcePermission;
-		}
-
-		@Override
-		public long getPrimaryKey(T t) {
-			return _primKeyToLongFunction.applyAsLong(t);
-		}
-
-		@Override
-		public String mapActionId(String actionId) {
-			return _actionIdMapper.apply(actionId);
-		}
-
-		@Override
-		public void registerModelResourcePermissionLogics(
-			ModelResourcePermission<T> modelResourcePermission,
-			Consumer<ModelResourcePermissionLogic<T>> logicConsumer) {
-		}
-
-		private DefaultModelResourcePermissionDefinition(
-			Class<T> modelClass, ToLongFunction<T> primKeyToLongFunction,
-			UnsafeFunction<Long, T, ? extends PortalException>
-				getModelUnsafeFunction,
-			PortletResourcePermission portletResourcePermission,
-			UnaryOperator<String> actionIdMapper) {
-
-			_modelClass = Objects.requireNonNull(modelClass);
-			_primKeyToLongFunction = Objects.requireNonNull(
-				primKeyToLongFunction);
-			_getModelUnsafeFunction = Objects.requireNonNull(
-				getModelUnsafeFunction);
-			_portletResourcePermission = portletResourcePermission;
-			_actionIdMapper = Objects.requireNonNull(actionIdMapper);
-		}
-
 		private final UnaryOperator<String> _actionIdMapper;
 		private final UnsafeFunction<Long, T, ? extends PortalException>
 			_getModelUnsafeFunction;
-		private final Class<T> _modelClass;
+		private final String _modelName;
+		private final List<ModelResourcePermissionLogic<T>>
+			_modelResourcePermissionLogics;
 		private final PortletResourcePermission _portletResourcePermission;
 		private final ToLongFunction<T> _primKeyToLongFunction;
 
