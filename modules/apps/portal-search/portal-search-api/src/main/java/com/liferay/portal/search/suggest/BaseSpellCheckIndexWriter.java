@@ -160,17 +160,6 @@ public abstract class BaseSpellCheckIndexWriter
 		_querySuggestionMaxNGramLength = querySuggestionMaxNGramLength;
 	}
 
-	protected Digester getDigester() {
-
-		// See LPS-72507 and LPS-76500
-
-		if (digester != null) {
-			return digester;
-		}
-
-		return DigesterUtil.getDigester();
-	}
-
 	protected URL getResource(String name) {
 		Thread thread = Thread.currentThread();
 
@@ -211,8 +200,6 @@ public abstract class BaseSpellCheckIndexWriter
 		}
 
 		try {
-			Digester digester = getDigester();
-
 			CharsetEncoder charsetEncoder =
 				CharsetEncoderUtil.getCharsetEncoder(StringPool.UTF8);
 
@@ -234,7 +221,7 @@ public abstract class BaseSpellCheckIndexWriter
 
 			String key = keySB.toString();
 
-			byte[] bytes = digester.digestRaw(
+			byte[] bytes = DigesterUtil.digestRaw(
 				Digester.MD5, charsetEncoder.encode(CharBuffer.wrap(key)));
 
 			uidSB.append(Base64.encode(bytes));

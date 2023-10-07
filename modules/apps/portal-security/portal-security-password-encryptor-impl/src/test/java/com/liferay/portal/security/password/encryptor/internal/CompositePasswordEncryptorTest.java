@@ -12,10 +12,8 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptorUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.DigesterImpl;
 import com.liferay.portal.util.PropsValues;
 
 import org.junit.Assert;
@@ -38,10 +36,6 @@ public class CompositePasswordEncryptorTest {
 
 	@Before
 	public void setUp() {
-		DigesterUtil digesterUtil = new DigesterUtil();
-
-		digesterUtil.setDigester(new DigesterImpl());
-
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
 		CompositePasswordEncryptor compositePasswordEncryptor =
