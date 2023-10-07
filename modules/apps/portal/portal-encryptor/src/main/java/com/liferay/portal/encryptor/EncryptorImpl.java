@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.encryptor.EncryptorException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.Digester;
+import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -39,8 +39,6 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(service = Encryptor.class)
 public class EncryptorImpl implements Encryptor {
-
-	public static final String ENCODING = Digester.ENCODING;
 
 	public static final String IBM_PROVIDER_CLASS =
 		"com.ibm.crypto.provider.IBMJCE";
@@ -151,7 +149,7 @@ public class EncryptorImpl implements Encryptor {
 		throws EncryptorException {
 
 		try {
-			byte[] decryptedBytes = plainText.getBytes(ENCODING);
+			byte[] decryptedBytes = plainText.getBytes(DigesterUtil.ENCODING);
 
 			return encryptUnencoded(key, decryptedBytes);
 		}
@@ -177,7 +175,7 @@ public class EncryptorImpl implements Encryptor {
 			byte[] decryptedBytes = decryptUnencodedAsBytes(
 				key, encryptedBytes);
 
-			return new String(decryptedBytes, ENCODING);
+			return new String(decryptedBytes, DigesterUtil.ENCODING);
 		}
 		catch (Exception exception) {
 			throw new EncryptorException(exception);

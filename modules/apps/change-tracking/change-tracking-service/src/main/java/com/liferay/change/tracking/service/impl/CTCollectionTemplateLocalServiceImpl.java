@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
@@ -197,7 +196,7 @@ public class CTCollectionTemplateLocalServiceImpl
 				Instant now = Instant.now();
 
 				return DigesterUtil.digestHex(
-					Digester.MD5, String.valueOf(ctCollectionTemplateId),
+					DigesterUtil.MD5, String.valueOf(ctCollectionTemplateId),
 					String.valueOf(now.getEpochSecond()));
 			}
 		).put(

@@ -67,7 +67,6 @@ import com.liferay.portal.kernel.service.SystemEventLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -662,7 +661,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 
 		return TempFileEntryUtil.getTempFileEntry(
 			groupId, userId,
-			DigesterUtil.digestHex(Digester.SHA_256, folderName),
+			DigesterUtil.digestHex(DigesterUtil.SHA_256, folderName),
 			tempFileNames[0]);
 	}
 

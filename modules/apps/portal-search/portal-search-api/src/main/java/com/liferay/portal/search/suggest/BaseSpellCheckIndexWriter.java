@@ -222,7 +222,7 @@ public abstract class BaseSpellCheckIndexWriter
 			String key = keySB.toString();
 
 			byte[] bytes = DigesterUtil.digestRaw(
-				Digester.MD5, charsetEncoder.encode(CharBuffer.wrap(key)));
+				DigesterUtil.MD5, charsetEncoder.encode(CharBuffer.wrap(key)));
 
 			uidSB.append(Base64.encode(bytes));
 		}

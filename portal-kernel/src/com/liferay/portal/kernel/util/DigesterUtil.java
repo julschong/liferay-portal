@@ -39,15 +39,15 @@ public class DigesterUtil {
 	public static final String SHA_256 = "SHA-256";
 
 	public static String digest(ByteBuffer byteBuffer) {
-		return digest(Digester.DEFAULT_ALGORITHM, byteBuffer);
+		return digest(DEFAULT_ALGORITHM, byteBuffer);
 	}
 
 	public static String digest(InputStream inputStream) {
-		return digest(Digester.DEFAULT_ALGORITHM, inputStream);
+		return digest(DEFAULT_ALGORITHM, inputStream);
 	}
 
 	public static String digest(String text) {
-		return digest(Digester.DEFAULT_ALGORITHM, text);
+		return digest(DEFAULT_ALGORITHM, text);
 	}
 
 	public static String digest(String algorithm, ByteBuffer byteBuffer) {
@@ -75,15 +75,15 @@ public class DigesterUtil {
 	}
 
 	public static String digestBase64(ByteBuffer byteBuffer) {
-		return digestBase64(Digester.DEFAULT_ALGORITHM, byteBuffer);
+		return digestBase64(DEFAULT_ALGORITHM, byteBuffer);
 	}
 
 	public static String digestBase64(InputStream inputStream) {
-		return digestBase64(Digester.DEFAULT_ALGORITHM, inputStream);
+		return digestBase64(DEFAULT_ALGORITHM, inputStream);
 	}
 
 	public static String digestBase64(String text) {
-		return digestBase64(Digester.DEFAULT_ALGORITHM, text);
+		return digestBase64(DEFAULT_ALGORITHM, text);
 	}
 
 	public static String digestBase64(String algorithm, ByteBuffer byteBuffer) {
@@ -107,15 +107,15 @@ public class DigesterUtil {
 	}
 
 	public static String digestHex(ByteBuffer byteBuffer) {
-		return digestHex(Digester.DEFAULT_ALGORITHM, byteBuffer);
+		return digestHex(DEFAULT_ALGORITHM, byteBuffer);
 	}
 
 	public static String digestHex(InputStream inputStream) {
-		return digestHex(Digester.DEFAULT_ALGORITHM, inputStream);
+		return digestHex(DEFAULT_ALGORITHM, inputStream);
 	}
 
 	public static String digestHex(String text) {
-		return digestHex(Digester.DEFAULT_ALGORITHM, text);
+		return digestHex(DEFAULT_ALGORITHM, text);
 	}
 
 	public static String digestHex(String algorithm, ByteBuffer byteBuffer) {
@@ -137,11 +137,11 @@ public class DigesterUtil {
 	}
 
 	public static byte[] digestRaw(ByteBuffer byteBuffer) {
-		return digestRaw(Digester.DEFAULT_ALGORITHM, byteBuffer);
+		return digestRaw(DEFAULT_ALGORITHM, byteBuffer);
 	}
 
 	public static byte[] digestRaw(String text) {
-		return digestRaw(Digester.DEFAULT_ALGORITHM, text);
+		return digestRaw(DEFAULT_ALGORITHM, text);
 	}
 
 	public static byte[] digestRaw(String algorithm, ByteBuffer byteBuffer) {
@@ -203,7 +203,7 @@ public class DigesterUtil {
 
 			String s = sb.toString();
 
-			messageDigest.update(s.getBytes(Digester.ENCODING));
+			messageDigest.update(s.getBytes(ENCODING));
 		}
 		catch (NoSuchAlgorithmException noSuchAlgorithmException) {
 			_log.error(noSuchAlgorithmException);
