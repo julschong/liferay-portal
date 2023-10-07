@@ -5,8 +5,6 @@
 
 package com.liferay.portal.kernel.util;
 
-import com.liferay.petra.string.StringPool;
-
 import java.io.InputStream;
 
 import java.nio.ByteBuffer;
@@ -17,18 +15,6 @@ import java.nio.ByteBuffer;
  * @author Connor McKay
  */
 public interface Digester {
-
-	public static final String DEFAULT_ALGORITHM = "SHA";
-
-	public static final String ENCODING = StringPool.UTF8;
-
-	public static final String MD5 = "MD5";
-
-	public static final String SHA = "SHA";
-
-	public static final String SHA_1 = "SHA-1";
-
-	public static final String SHA_256 = "SHA-256";
 
 	public String digest(ByteBuffer byteBuffer);
 

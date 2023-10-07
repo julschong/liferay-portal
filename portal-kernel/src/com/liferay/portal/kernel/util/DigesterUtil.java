@@ -26,6 +26,18 @@ import java.security.NoSuchAlgorithmException;
  */
 public class DigesterUtil {
 
+	public static final String DEFAULT_ALGORITHM = "SHA";
+
+	public static final String ENCODING = StringPool.UTF8;
+
+	public static final String MD5 = "MD5";
+
+	public static final String SHA = "SHA";
+
+	public static final String SHA_1 = "SHA-1";
+
+	public static final String SHA_256 = "SHA-256";
+
 	public static String digest(ByteBuffer byteBuffer) {
 		return digest(Digester.DEFAULT_ALGORITHM, byteBuffer);
 	}
