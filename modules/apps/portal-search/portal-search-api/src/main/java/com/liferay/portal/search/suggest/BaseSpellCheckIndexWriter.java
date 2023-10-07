@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.search.suggest.SuggestionConstants;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Props;
@@ -313,8 +312,6 @@ public abstract class BaseSpellCheckIndexWriter
 				maxNGramLength);
 		}
 	}
-
-	protected Digester digester;
 
 	@Reference
 	protected GroupLocalService groupLocalService;

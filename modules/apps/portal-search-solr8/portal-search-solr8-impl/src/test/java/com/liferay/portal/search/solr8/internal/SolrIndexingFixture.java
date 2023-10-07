@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.suggest.NGramHolderBuilder;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.Digester;
+import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.Props;
@@ -49,6 +49,7 @@ import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import org.osgi.framework.BundleContext;
@@ -120,6 +121,21 @@ public class SolrIndexingFixture implements IndexingFixture {
 			searchEngineAdapter, solrClientManager);
 		_indexWriter = createIndexWriter(searchEngineAdapter);
 		_searchEngineAdapter = searchEngineAdapter;
+
+		_digesterUtilMockedStatic = Mockito.mockStatic(DigesterUtil.class);
+
+		_digesterUtilMockedStatic.when(
+			() -> DigesterUtil.digestRaw(
+				Mockito.anyString(), (ByteBuffer)Mockito.any())
+		).thenAnswer(
+			invocation -> {
+				Object[] args = invocation.getArguments();
+
+				ByteBuffer byteBuffer = (ByteBuffer)args[1];
+
+				return byteBuffer.array();
+			}
+		);
 	}
 
 	@Override
@@ -129,6 +145,8 @@ public class SolrIndexingFixture implements IndexingFixture {
 		}
 
 		_serviceRegistration.unregister();
+
+		_digesterUtilMockedStatic.close();
 	}
 
 	protected static SolrQueryTranslator createSolrQueryTranslator() {
@@ -189,26 +207,6 @@ public class SolrIndexingFixture implements IndexingFixture {
 				setSolrDocumentFactory(new DefaultSolrDocumentFactory());
 			}
 		};
-	}
-
-	protected Digester createDigester() {
-		Digester digester = Mockito.mock(Digester.class);
-
-		Mockito.doAnswer(
-			invocation -> {
-				Object[] args = invocation.getArguments();
-
-				ByteBuffer byteBuffer = (ByteBuffer)args[1];
-
-				return byteBuffer.array();
-			}
-		).when(
-			digester
-		).digestRaw(
-			Mockito.anyString(), (ByteBuffer)Mockito.any()
-		);
-
-		return digester;
 	}
 
 	protected IndexSearcher createIndexSearcher(
@@ -320,8 +318,6 @@ public class SolrIndexingFixture implements IndexingFixture {
 		SolrSpellCheckIndexWriter solrSpellCheckIndexWriter =
 			new SolrSpellCheckIndexWriter() {
 				{
-					digester = createDigester();
-
 					activate(_properties);
 				}
 			};
@@ -339,6 +335,7 @@ public class SolrIndexingFixture implements IndexingFixture {
 		SystemBundleUtil.getBundleContext();
 	private static ServiceRegistration<NGramHolderBuilder> _serviceRegistration;
 
+	private MockedStatic<DigesterUtil> _digesterUtilMockedStatic;
 	private FacetProcessor<SolrQuery> _facetProcessor;
 	private IndexSearcher _indexSearcher;
 	private IndexWriter _indexWriter;
