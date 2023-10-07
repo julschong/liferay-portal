@@ -203,14 +203,6 @@ public class DigesterUtil {
 		return messageDigest.digest();
 	}
 
-	public static Digester getDigester() {
-		return _digester;
-	}
-
-	public void setDigester(Digester digester) {
-		_digester = digester;
-	}
-
 	private static final boolean _BASE_64 = PropsUtil.get(
 		PropsKeys.PASSWORDS_DIGEST_ENCODING
 	).equals(
@@ -218,7 +210,5 @@ public class DigesterUtil {
 	);
 
 	private static final Log _log = LogFactoryUtil.getLog(DigesterUtil.class);
-
-	private static Digester _digester;
 
 }
