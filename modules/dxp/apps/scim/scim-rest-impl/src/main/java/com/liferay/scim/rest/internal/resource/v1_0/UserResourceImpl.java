@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.scim.rest.dto.v1_0.User;
 import com.liferay.scim.rest.internal.manager.UserManagerImpl;
@@ -201,7 +202,7 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 			)
 		).toString();
 
-		File file = _file.createTempFile(json.getBytes());
+		File file = FileUtil.createTempFile(json.getBytes());
 
 		scimUserSchemaExtensionBuilder.buildUserSchemaExtension(file.getPath());
 	}
@@ -223,9 +224,6 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 
 	@Reference
 	private ExpandoValueLocalService _expandoValueLocalService;
-
-	@Reference
-	private com.liferay.portal.kernel.util.File _file;
 
 	@Reference
 	private JSONFactory _jsonFactory;

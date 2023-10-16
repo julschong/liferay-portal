@@ -31,12 +31,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -275,7 +276,7 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 
 			String dataFileName = batchEngineUnit.getDataFileName();
 
-			java.io.File processedFile = bundle.getDataFile(
+			File processedFile = bundle.getDataFile(
 				com.liferay.petra.string.StringUtil.merge(
 					Arrays.asList(
 						dataFileName.replaceAll("\\W+", "."),
@@ -291,7 +292,8 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 				bundle.getLastModified());
 
 			if (processedFile.exists() &&
-				Objects.equals(_file.read(processedFile), lastModifiedString)) {
+				Objects.equals(
+					FileUtil.read(processedFile), lastModifiedString)) {
 
 				return true;
 			}
@@ -300,7 +302,7 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 				processedFile.createNewFile();
 			}
 
-			_file.write(processedFile, lastModifiedString, true);
+			FileUtil.write(processedFile, lastModifiedString, true);
 
 			return false;
 		}
@@ -338,7 +340,8 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 
 			content = compressedUnsyncByteArrayOutputStream.toByteArray();
 
-			contentType = _file.getExtension(batchEngineUnit.getDataFileName());
+			contentType = FileUtil.getExtension(
+				batchEngineUnit.getDataFileName());
 		}
 
 		if ((batchEngineUnitConfiguration == null) || (content == null) ||
@@ -427,9 +430,6 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 	@Reference
 	private FeatureFlagBatchEngineUnitProcessor
 		_featureFlagBatchEngineUnitProcessor;
-
-	@Reference
-	private File _file;
 
 	@Reference
 	private UserLocalService _userLocalService;
