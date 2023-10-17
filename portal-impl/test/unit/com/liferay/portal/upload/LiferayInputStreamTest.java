@@ -5,17 +5,11 @@
 
 package com.liferay.portal.upload;
 
-import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.io.File;
 import java.io.InputStream;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -23,6 +17,9 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -38,37 +35,25 @@ public class LiferayInputStreamTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Field field = ReflectionUtil.getDeclaredField(FileUtil.class, "_file");
+		_fileUtilMockedStatic = Mockito.mockStatic(FileUtil.class);
 
-		field.set(
-			null,
-			ProxyUtil.newProxyInstance(
-				ClassLoader.getSystemClassLoader(), new Class<?>[] {File.class},
-				new InvocationHandler() {
+		_fileUtilMockedStatic.when(
+			FileUtil::createTempFile
+		).thenAnswer(
+			invocation -> {
+				_file = File.createTempFile(
+					"temp", String.valueOf(System.nanoTime()));
 
-					@Override
-					public Object invoke(
-							Object proxy, Method method, Object[] args)
-						throws Throwable {
-
-						if (method.equals(
-								File.class.getMethod("createTempFile"))) {
-
-							_file = java.io.File.createTempFile(
-								"temp", String.valueOf(System.nanoTime()));
-
-							return _file;
-						}
-
-						return null;
-					}
-
-				}));
+				return _file;
+			}
+		);
 	}
 
 	@After
 	public void tearDown() {
 		_liferayInputStream.cleanUp();
+
+		_fileUtilMockedStatic.close();
 	}
 
 	@Test
@@ -189,6 +174,8 @@ public class LiferayInputStreamTest {
 	private static final byte[] _UNCACHEABLE_BYTES =
 		new byte[(int)LiferayInputStream.THRESHOLD_SIZE];
 
+	private static MockedStatic<FileUtil> _fileUtilMockedStatic;
+
 	static {
 		for (int i = 0; i < _CACHEABLE_BYTES.length; i++) {
 			_CACHEABLE_BYTES[i] = (byte)i;
@@ -199,7 +186,7 @@ public class LiferayInputStreamTest {
 		}
 	}
 
-	private java.io.File _file;
+	private File _file;
 	private LiferayInputStream _liferayInputStream;
 	private final MockHttpServletRequest _mockHttpServletRequest =
 		new MockHttpServletRequest();
