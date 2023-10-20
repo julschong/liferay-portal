@@ -55,8 +55,6 @@
 		</property>
 	</bean>
 	<bean class="com.liferay.portal.security.access.control.AccessControlImpl" id="com.liferay.portal.security.access.control.AccessControl" />
-	<bean class="com.liferay.portal.security.access.control.AllowedHostsAccessControlPolicy" id="com.liferay.portal.security.access.control.AllowedHostsAccessControlPolicy" />
-	<bean class="com.liferay.portal.security.access.control.AuthenticatedAccessControlPolicy" id="com.liferay.portal.security.access.control.AuthenticatedAccessControlPolicy" />
 	<bean class="com.liferay.portal.security.auth.MVCPortletAuthTokenWhitelist" id="com.liferay.portal.security.auth.MVCPortletAuthTokenWhitelist" />
 	<bean class="com.liferay.portal.security.auth.SessionAuthToken" id="com.liferay.portal.security.auth.SessionAuthToken" />
 	<bean class="com.liferay.portal.security.auth.StrutsPortletAuthTokenWhitelist" id="com.liferay.portal.security.auth.StrutsPortletAuthTokenWhitelist" />
