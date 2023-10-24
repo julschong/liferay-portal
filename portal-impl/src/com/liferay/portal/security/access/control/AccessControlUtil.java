@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.security.access.control;
+package com.liferay.portal.security.access.control;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.internal.security.access.control.AllowedIPAddressesValidator;
 import com.liferay.portal.kernel.internal.security.access.control.AllowedIPAddressesValidatorFactory;
 import com.liferay.portal.kernel.module.service.Snapshot;
+import com.liferay.portal.kernel.security.access.control.AccessControl;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
