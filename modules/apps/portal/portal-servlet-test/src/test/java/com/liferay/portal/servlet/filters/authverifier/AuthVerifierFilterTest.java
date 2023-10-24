@@ -7,13 +7,13 @@ package com.liferay.portal.servlet.filters.authverifier;
 
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControl;
-import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.security.access.control.AccessControlImpl;
+import com.liferay.portal.security.access.control.AccessControlUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PropsValues;

@@ -5,8 +5,8 @@
 
 package com.liferay.portal.remote.jaxrs.security.internal.container.response.filter;
 
-import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
+import com.liferay.portal.security.access.control.AccessControlUtil;
 
 import java.io.IOException;
 

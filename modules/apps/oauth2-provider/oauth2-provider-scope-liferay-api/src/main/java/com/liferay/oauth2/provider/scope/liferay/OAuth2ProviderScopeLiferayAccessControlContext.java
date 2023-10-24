@@ -6,11 +6,11 @@
 package com.liferay.oauth2.provider.scope.liferay;
 
 import com.liferay.oauth2.provider.scope.liferay.constants.OAuth2ProviderScopeLiferayConstants;
-import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.access.control.AccessControlUtil;
 
 /**
  * @author Carlos Sierra Andrés

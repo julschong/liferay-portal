@@ -5,12 +5,12 @@
 
 package com.liferay.oauth2.provider.jsonws.internal.servlet.filters.authverifier;
 
-import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierConfiguration;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.servlet.filters.authverifier.AuthVerifierFilter;
 
 import java.util.Map;

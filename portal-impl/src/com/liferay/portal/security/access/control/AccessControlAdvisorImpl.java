@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlPolicy;
-import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.util.PropsValues;
 

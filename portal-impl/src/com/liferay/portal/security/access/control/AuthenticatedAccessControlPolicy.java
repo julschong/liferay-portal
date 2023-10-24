@@ -5,7 +5,6 @@
 
 package com.liferay.portal.security.access.control;
 
-import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.security.access.control.BaseAccessControlPolicy;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;

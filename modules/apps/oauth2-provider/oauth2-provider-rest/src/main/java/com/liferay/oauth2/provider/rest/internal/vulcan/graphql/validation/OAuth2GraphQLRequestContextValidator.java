@@ -9,7 +9,6 @@ import com.liferay.oauth2.provider.rest.internal.scope.logic.ScopeLogic;
 import com.liferay.oauth2.provider.scope.ScopeChecker;
 import com.liferay.oauth2.provider.scope.liferay.OAuth2ProviderScopeLiferayAccessControlContext;
 import com.liferay.oauth2.provider.scope.liferay.ScopeContext;
-import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
@@ -18,6 +17,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.access.control.AccessControlAdvisor;
 import com.liferay.portal.security.access.control.AccessControlAdvisorImpl;
+import com.liferay.portal.security.access.control.AccessControlUtil;
 import com.liferay.portal.vulcan.graphql.validation.GraphQLRequestContext;
 import com.liferay.portal.vulcan.graphql.validation.GraphQLRequestContextValidator;
 

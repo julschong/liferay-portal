@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.json.JSONSerializable;
 import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.struts.JSONAction;
 import com.liferay.portal.util.PropsValues;
 

@@ -8,9 +8,9 @@ package com.liferay.portal.servlet;
 import com.liferay.portal.action.JSONServiceAction;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.servlet.PluginContextListener;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
+import com.liferay.portal.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.struts.JSONAction;
 
 import java.io.IOException;

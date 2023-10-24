@@ -8,9 +8,9 @@ package com.liferay.portal.remote.cxf.common.internal;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.remote.cxf.common.configuration.CXFEndpointPublisherConfiguration;
+import com.liferay.portal.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.servlet.filters.authverifier.AuthVerifierFilter;
 
 import java.io.IOException;

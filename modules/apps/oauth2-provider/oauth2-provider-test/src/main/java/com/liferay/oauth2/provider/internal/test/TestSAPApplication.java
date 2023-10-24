@@ -5,10 +5,10 @@
 
 package com.liferay.oauth2.provider.internal.test;
 
-import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicy;
+import com.liferay.portal.security.access.control.AccessControlUtil;
 
 import java.util.Collections;
 import java.util.List;
