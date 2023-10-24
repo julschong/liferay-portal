@@ -9,12 +9,17 @@ import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.internal.security.access.control.AllowedIPAddressesValidator;
 import com.liferay.portal.kernel.internal.security.access.control.AllowedIPAddressesValidatorFactory;
-import com.liferay.portal.kernel.module.service.Snapshot;
-import com.liferay.portal.kernel.security.access.control.AccessControl;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.AuthException;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.security.auth.AuthVerifierPipeline;
 
 import java.util.Map;
 import java.util.Set;
@@ -29,10 +34,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AccessControlUtil {
 
-	public static AccessControl getAccessControl() {
-		return _accessControlSnapshot.get();
-	}
-
 	public static AccessControlContext getAccessControlContext() {
 		return _accessControlContext.get();
 	}
@@ -41,16 +42,42 @@ public class AccessControlUtil {
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse, Map<String, Object> settings) {
 
-		AccessControl accessControl = _accessControlSnapshot.get();
+		AccessControlContext accessControlContext = getAccessControlContext();
 
-		accessControl.initAccessControlContext(
-			httpServletRequest, httpServletResponse, settings);
+		if (accessControlContext != null) {
+			throw new IllegalStateException(
+				"Authentication context is already initialized");
+		}
+
+		accessControlContext = new AccessControlContext();
+
+		accessControlContext.setRequest(httpServletRequest);
+		accessControlContext.setResponse(httpServletResponse);
+
+		Map<String, Object> accessControlContextSettings =
+			accessControlContext.getSettings();
+
+		accessControlContextSettings.putAll(settings);
+
+		setAccessControlContext(accessControlContext);
 	}
 
 	public static void initContextUser(long userId) throws AuthException {
-		AccessControl accessControl = _accessControlSnapshot.get();
+		try {
+			User user = UserLocalServiceUtil.getUser(userId);
 
-		accessControl.initContextUser(userId);
+			CompanyThreadLocal.setCompanyId(user.getCompanyId());
+
+			PrincipalThreadLocal.setName(userId);
+
+			PermissionThreadLocal.setPermissionChecker(
+				PermissionCheckerFactoryUtil.create(user));
+
+			AccessControlThreadLocal.setRemoteAccess(false);
+		}
+		catch (Exception exception) {
+			throw new AuthException(exception.getMessage(), exception);
+		}
 	}
 
 	public static boolean isAccessAllowed(
@@ -91,9 +118,50 @@ public class AccessControlUtil {
 	public static AuthVerifierResult.State verifyRequest()
 		throws PortalException {
 
-		AccessControl accessControl = _accessControlSnapshot.get();
+		AuthVerifierResult authVerifierResult = null;
 
-		return accessControl.verifyRequest();
+		AccessControlContext accessControlContext = getAccessControlContext();
+
+		Map<String, Object> settings = accessControlContext.getSettings();
+
+		if (!settings.containsKey(AuthVerifierPipeline.class.getName())) {
+			AuthVerifierPipeline portalAuthVerifierPipeline =
+				AuthVerifierPipeline.getPortalAuthVerifierPipeline();
+
+			authVerifierResult = portalAuthVerifierPipeline.verifyRequest(
+				accessControlContext);
+		}
+		else {
+			AuthVerifierPipeline authVerifierPipeline =
+				(AuthVerifierPipeline)settings.get(
+					AuthVerifierPipeline.class.getName());
+
+			authVerifierResult = authVerifierPipeline.verifyRequest(
+				accessControlContext);
+
+			if ((authVerifierResult.getState() ==
+					AuthVerifierResult.State.NOT_APPLICABLE) ||
+				(authVerifierResult.getState() ==
+					AuthVerifierResult.State.UNSUCCESSFUL)) {
+
+				AuthVerifierPipeline portalAuthVerifierPipeline =
+					AuthVerifierPipeline.getPortalAuthVerifierPipeline();
+
+				authVerifierResult = portalAuthVerifierPipeline.verifyRequest(
+					accessControlContext);
+			}
+		}
+
+		Map<String, Object> authVerifierResultSettings =
+			authVerifierResult.getSettings();
+
+		if (authVerifierResultSettings != null) {
+			settings.putAll(authVerifierResultSettings);
+		}
+
+		accessControlContext.setAuthVerifierResult(authVerifierResult);
+
+		return authVerifierResult.getState();
 	}
 
 	private AccessControlUtil() {
@@ -104,7 +172,5 @@ public class AccessControlUtil {
 	private static final ThreadLocal<AccessControlContext>
 		_accessControlContext = new CentralizedThreadLocal<>(
 			AccessControlUtil.class + "._accessControlContext");
-	private static final Snapshot<AccessControl> _accessControlSnapshot =
-		new Snapshot<>(AccessControlUtil.class, AccessControl.class);
 
 }
