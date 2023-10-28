@@ -879,7 +879,7 @@ public class PortletPreferencesFactoryImpl
 
 		CacheKeyGenerator cacheKeyGenerator =
 			CacheKeyGeneratorUtil.getCacheKeyGenerator(
-				PortletPreferencesFactoryImpl.class.getName());
+				CacheKeyGeneratorUtil.MESSAGE_DIGEST);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Cache key generator " + cacheKeyGenerator.getClass());

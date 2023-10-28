@@ -61,7 +61,7 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 
 	protected String getCacheFileName(HttpServletRequest httpServletRequest) {
 		String cacheFileName = CacheFileNameGenerator.getCacheFileName(
-			httpServletRequest, DynamicCSSFilter.class.getName());
+			httpServletRequest);
 
 		if (PortalUtil.isRightToLeft(httpServletRequest)) {
 			return cacheFileName + _CACHE_FILE_NAME_RTL;

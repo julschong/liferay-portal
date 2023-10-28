@@ -589,7 +589,7 @@ public class FinderCacheImpl
 
 			if (cacheKeyGenerator == null) {
 				cacheKeyGenerator = CacheKeyGeneratorUtil.getCacheKeyGenerator(
-					FinderCache.class.getName() + "#BaseModel");
+					CacheKeyGeneratorUtil.HASH_CODE_HEX_STRING);
 
 				_baseModelCacheKeyGenerator = cacheKeyGenerator;
 			}
@@ -601,7 +601,7 @@ public class FinderCacheImpl
 
 		if (cacheKeyGenerator == null) {
 			cacheKeyGenerator = CacheKeyGeneratorUtil.getCacheKeyGenerator(
-				FinderCache.class.getName());
+				CacheKeyGeneratorUtil.HASH_CODE_HEX_STRING);
 
 			_cacheKeyGenerator = cacheKeyGenerator;
 		}

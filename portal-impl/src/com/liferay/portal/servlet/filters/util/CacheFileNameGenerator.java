@@ -27,10 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 public class CacheFileNameGenerator {
 
 	public static String getCacheFileName(
-		HttpServletRequest httpServletRequest, String cacheName) {
+		HttpServletRequest httpServletRequest) {
 
 		CacheKeyGenerator cacheKeyGenerator =
-			CacheKeyGeneratorUtil.getCacheKeyGenerator(cacheName);
+			CacheKeyGeneratorUtil.getCacheKeyGenerator(
+				CacheKeyGeneratorUtil.DEFAULT);
 
 		cacheKeyGenerator.append(
 			HttpComponentsUtil.getProtocol(httpServletRequest.isSecure()));
