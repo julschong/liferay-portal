@@ -5,8 +5,8 @@
 
 package com.liferay.portal.servlet.filters.strip;
 
+import com.liferay.portal.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.cache.key.HashCodeHexStringCacheKeyGenerator;
-import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.minifier.MinifierUtil;
