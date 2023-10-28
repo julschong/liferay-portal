@@ -5,13 +5,13 @@
 
 package com.liferay.portal.increment;
 
+import com.liferay.portal.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.internal.increment.BufferedIncreasableEntry;
 import com.liferay.portal.internal.increment.BufferedIncrementProcessor;
 import com.liferay.portal.internal.increment.BufferedIncrementProcessorUtil;
 import com.liferay.portal.kernel.aop.AopMethodInvocation;
 import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
-import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
 import com.liferay.portal.kernel.increment.Increment;
 import com.liferay.portal.kernel.increment.IncrementFactory;
