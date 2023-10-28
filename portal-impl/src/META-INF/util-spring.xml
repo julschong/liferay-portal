@@ -14,23 +14,6 @@
 	<bean class="com.liferay.portal.kernel.bean.BeanPropertiesUtil" id="com.liferay.portal.kernel.bean.BeanPropertiesUtil">
 		<property name="beanProperties" ref="com.liferay.portal.bean.BeanPropertiesImpl" />
 	</bean>
-	<bean class="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil" id="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil">
-		<property name="cacheKeyGenerators">
-			<map>
-				<entry key="com.liferay.portal.kernel.dao.orm.FinderCache#BaseModel">
-					<bean class="com.liferay.portal.cache.key.HashCodeHexStringCacheKeyGenerator" />
-				</entry>
-				<entry key="com.liferay.portlet.PortletPreferencesFactoryImpl">
-					<bean class="com.liferay.portal.cache.key.MessageDigestCacheKeyGenerator">
-						<constructor-arg value="SHA-1" />
-					</bean>
-				</entry>
-			</map>
-		</property>
-		<property name="defaultCacheKeyGenerator">
-			<bean class="com.liferay.portal.cache.key.SimpleCacheKeyGenerator" />
-		</property>
-	</bean>
 	<bean class="com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil">
 		<property name="currentConnection" ref="com.liferay.portal.dao.jdbc.CurrentConnectionImpl" />
 	</bean>
