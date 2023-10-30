@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.access.control;
+package com.liferay.portal.security.access.control.internal.advice;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
@@ -13,9 +13,13 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlPolicy;
 import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
+import com.liferay.portal.security.access.control.advice.AccessControlAdvisor;
 import com.liferay.portal.util.PropsValues;
 
 import java.lang.reflect.Method;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Tomas Polesovsky
@@ -23,6 +27,7 @@ import java.lang.reflect.Method;
  * @author Michael C. Han
  * @author Raymond Augé
  */
+@Component(service = AccessControlAdvisor.class)
 public class AccessControlAdvisorImpl implements AccessControlAdvisor {
 
 	@Override
@@ -62,11 +67,16 @@ public class AccessControlAdvisorImpl implements AccessControlAdvisor {
 		}
 	}
 
+	@Activate
+	protected void activate() {
+		_accessControlPolicies = ServiceTrackerListFactory.open(
+			SystemBundleUtil.getBundleContext(), AccessControlPolicy.class);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccessControlAdvisorImpl.class.getName());
 
-	private static final ServiceTrackerList<AccessControlPolicy>
-		_accessControlPolicies = ServiceTrackerListFactory.open(
-			SystemBundleUtil.getBundleContext(), AccessControlPolicy.class);
+	private static ServiceTrackerList<AccessControlPolicy>
+		_accessControlPolicies;
 
 }
