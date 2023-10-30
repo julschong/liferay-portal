@@ -3,18 +3,22 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.access.control;
+package com.liferay.portal.security.access.control.internal.advice;
 
 import com.liferay.portal.kernel.aop.AopMethodInvocation;
 import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
+import com.liferay.portal.security.access.control.AccessControlAdvisor;
+import com.liferay.portal.security.access.control.AccessControlAdvisorImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import java.util.Map;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Tomas Polesovsky
@@ -23,6 +27,7 @@ import java.util.Map;
  * @author Raymond Augé
  * @author Shuyang Zhou
  */
+@Component(service = ChainableMethodAdvice.class)
 public class AccessControlAdvice extends ChainableMethodAdvice {
 
 	@Override
