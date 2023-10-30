@@ -11,7 +11,6 @@ import com.liferay.portal.internal.cluster.ClusterableAdvice;
 import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.search.IndexableAdvice;
-import com.liferay.portal.security.access.control.AccessControlAdvice;
 import com.liferay.portal.service.ServiceContextAdvice;
 import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.systemevent.SystemEventAdvice;
@@ -57,8 +56,6 @@ public class AopCacheManager {
 		_createStaticChainableMethodAdvices() {
 
 		List<ChainableMethodAdvice> chainableMethodAdvices = new ArrayList<>();
-
-		chainableMethodAdvices.add(new AccessControlAdvice());
 
 		chainableMethodAdvices.add(new BufferedIncrementAdvice());
 
