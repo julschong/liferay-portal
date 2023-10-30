@@ -16,8 +16,7 @@ import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicy;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.access.control.AccessControlAdvisor;
-import com.liferay.portal.security.access.control.AccessControlAdvisorImpl;
+import com.liferay.portal.security.access.control.advice.AccessControlAdvisor;
 import com.liferay.portal.vulcan.graphql.validation.GraphQLRequestContext;
 import com.liferay.portal.vulcan.graphql.validation.GraphQLRequestContextValidator;
 
@@ -230,8 +229,9 @@ public class OAuth2GraphQLRequestContextValidator
 
 		};
 
-	private final AccessControlAdvisor _accessControlAdvisor =
-		new AccessControlAdvisorImpl();
+	@Reference
+	private AccessControlAdvisor _accessControlAdvisor;
+
 	private BundleContext _bundleContext;
 
 	@Reference
