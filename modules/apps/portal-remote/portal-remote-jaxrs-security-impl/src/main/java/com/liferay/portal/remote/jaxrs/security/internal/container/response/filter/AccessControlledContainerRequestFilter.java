@@ -9,8 +9,7 @@ import com.liferay.petra.reflect.AnnotationLocator;
 import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
-import com.liferay.portal.security.access.control.AccessControlAdvisor;
-import com.liferay.portal.security.access.control.AccessControlAdvisorImpl;
+import com.liferay.portal.security.access.control.advice.AccessControlAdvisor;
 
 import java.io.IOException;
 
@@ -26,6 +25,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
 /**
@@ -104,8 +104,8 @@ public class AccessControlledContainerRequestFilter
 
 		};
 
-	private final AccessControlAdvisor _accessControlAdvisor =
-		new AccessControlAdvisorImpl();
+	@Reference
+	private AccessControlAdvisor _accessControlAdvisor;
 
 	@Context
 	private Request _request;

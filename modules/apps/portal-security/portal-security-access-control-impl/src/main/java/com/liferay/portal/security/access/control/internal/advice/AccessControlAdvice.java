@@ -10,8 +10,7 @@ import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
-import com.liferay.portal.security.access.control.AccessControlAdvisor;
-import com.liferay.portal.security.access.control.AccessControlAdvisorImpl;
+import com.liferay.portal.security.access.control.advice.AccessControlAdvisor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -19,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tomas Polesovsky
@@ -109,7 +109,7 @@ public class AccessControlAdvice extends ChainableMethodAdvice {
 			serviceDepth);
 	}
 
-	private final AccessControlAdvisor _accessControlAdvisor =
-		new AccessControlAdvisorImpl();
+	@Reference
+	private AccessControlAdvisor _accessControlAdvisor;
 
 }
