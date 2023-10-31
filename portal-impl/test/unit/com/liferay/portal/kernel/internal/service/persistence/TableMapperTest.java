@@ -28,13 +28,13 @@ import com.liferay.portal.kernel.model.ModelListenerRegistrationUtil;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.ToolDependencies;
 
