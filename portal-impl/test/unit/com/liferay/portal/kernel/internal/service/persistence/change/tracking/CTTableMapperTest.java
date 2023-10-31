@@ -8,6 +8,7 @@ package com.liferay.portal.kernel.internal.service.persistence.change.tracking;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.internal.service.persistence.change.tracking.CTTableMapper;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
