@@ -9,7 +9,6 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.init.DBInitUtil;
-import com.liferay.portal.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.dao.jdbc.util.ConnectionWrapper;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
 import com.liferay.portal.db.partition.DBPartitionUtil;
@@ -18,7 +17,6 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.model.Company;
@@ -32,6 +30,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.spring.hibernate.SpringHibernateThreadLocalUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -49,6 +48,7 @@ import org.junit.Assume;
 import org.junit.ClassRule;
 import org.junit.Rule;
 
+import org.springframework.jdbc.datasource.ConnectionHolder;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 /**
@@ -70,24 +70,22 @@ public abstract class BaseDBPartitionTestCase {
 	}
 
 	protected static void addDBPartitions() throws Exception {
-		CurrentConnection defaultCurrentConnection =
-			CurrentConnectionUtil.getCurrentConnection();
+		ConnectionHolder defaultConnectionHolder =
+			SpringHibernateThreadLocalUtil.getResource(
+				InfrastructureUtil.getDataSource());
+		DataSource dataSource = InfrastructureUtil.getDataSource();
 
 		try {
-			CurrentConnection currentConnection = dataSource -> connection;
-
-			ReflectionTestUtil.setFieldValue(
-				CurrentConnectionUtil.class, "_currentConnection",
-				currentConnection);
+			SpringHibernateThreadLocalUtil.setResource(
+				dataSource, new ConnectionHolder(connection));
 
 			for (long companyId : COMPANY_IDS) {
 				DBPartitionUtil.addDBPartition(companyId);
 			}
 		}
 		finally {
-			ReflectionTestUtil.setFieldValue(
-				CurrentConnectionUtil.class, "_currentConnection",
-				defaultCurrentConnection);
+			SpringHibernateThreadLocalUtil.setResource(
+				dataSource, defaultConnectionHolder);
 		}
 	}
 
@@ -324,15 +322,14 @@ public abstract class BaseDBPartitionTestCase {
 	protected static void removeDBPartitions(long[] companyIds, boolean migrate)
 		throws Exception {
 
-		CurrentConnection defaultCurrentConnection =
-			CurrentConnectionUtil.getCurrentConnection();
+		ConnectionHolder defaultConnectionHolder =
+			SpringHibernateThreadLocalUtil.getResource(
+				InfrastructureUtil.getDataSource());
+		DataSource dataSource = InfrastructureUtil.getDataSource();
 
 		try {
-			CurrentConnection currentConnection = dataSource -> connection;
-
-			ReflectionTestUtil.setFieldValue(
-				CurrentConnectionUtil.class, "_currentConnection",
-				currentConnection);
+			SpringHibernateThreadLocalUtil.setResource(
+				dataSource, new ConnectionHolder(connection));
 
 			ReflectionTestUtil.setFieldValue(
 				DBPartitionUtil.class, "_DATABASE_PARTITION_MIGRATE_ENABLED",
@@ -343,9 +340,8 @@ public abstract class BaseDBPartitionTestCase {
 			}
 		}
 		finally {
-			ReflectionTestUtil.setFieldValue(
-				CurrentConnectionUtil.class, "_currentConnection",
-				defaultCurrentConnection);
+			SpringHibernateThreadLocalUtil.setResource(
+				dataSource, defaultConnectionHolder);
 			ReflectionTestUtil.setFieldValue(
 				DBPartitionUtil.class, "_DATABASE_PARTITION_MIGRATE_ENABLED",
 				_DATABASE_PARTITION_MIGRATE_ENABLED);
