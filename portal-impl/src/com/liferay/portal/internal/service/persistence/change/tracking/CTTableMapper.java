@@ -6,12 +6,12 @@
 package com.liferay.portal.internal.service.persistence.change.tracking;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.dao.jdbc.MappingSqlQueryFactoryUtil;
 import com.liferay.portal.internal.service.persistence.TableMapperImpl;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.jdbc.MappingSqlQuery;
-import com.liferay.portal.kernel.dao.jdbc.MappingSqlQueryFactoryUtil;
+import com.liferay.portal.dao.jdbc.MappingSqlQuery;
 import com.liferay.portal.kernel.dao.jdbc.ParamSetter;
 import com.liferay.portal.kernel.dao.jdbc.RowMapper;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
