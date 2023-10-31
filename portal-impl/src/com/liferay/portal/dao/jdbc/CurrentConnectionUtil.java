@@ -5,11 +5,13 @@
 
 package com.liferay.portal.dao.jdbc;
 
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
+import com.liferay.portal.spring.hibernate.SpringHibernateThreadLocalUtil;
 
 import java.sql.Connection;
 
 import javax.sql.DataSource;
+
+import org.springframework.jdbc.datasource.ConnectionHolder;
 
 /**
  * @author Shuyang Zhou
@@ -17,17 +19,16 @@ import javax.sql.DataSource;
 public class CurrentConnectionUtil {
 
 	public static Connection getConnection(DataSource dataSource) {
-		return _currentConnection.getConnection(dataSource);
-	}
+		ConnectionHolder connectionHolder =
+			SpringHibernateThreadLocalUtil.getResource(dataSource);
 
-	public static CurrentConnection getCurrentConnection() {
-		return _currentConnection;
-	}
+		if ((connectionHolder == null) ||
+			(connectionHolder.getConnectionHandle() == null)) {
 
-	public void setCurrentConnection(CurrentConnection currentConnection) {
-		_currentConnection = currentConnection;
-	}
+			return null;
+		}
 
-	private static CurrentConnection _currentConnection;
+		return connectionHolder.getConnection();
+	}
 
 }
