@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.dao.jdbc;
+package com.liferay.portal.dao.jdbc;
+
+import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
 
 import java.sql.Connection;
 
