@@ -57,9 +57,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -430,7 +430,7 @@ public class CTCollectionLocalServiceImpl
 
 			ctService.updateWithUnsafeFunction(
 				ctPersistence -> {
-					Connection connection = _currentConnection.getConnection(
+					Connection connection = CurrentConnectionUtil.getConnection(
 						ctPersistence.getDataSource());
 
 					try (PreparedStatement preparedStatement =
@@ -1100,7 +1100,7 @@ public class CTCollectionLocalServiceImpl
 
 				sb.setStringAt(")", sb.index() - 1);
 
-				Connection connection = _currentConnection.getConnection(
+				Connection connection = CurrentConnectionUtil.getConnection(
 					ctPersistence.getDataSource());
 
 				try (PreparedStatement preparedStatement =
@@ -1269,7 +1269,7 @@ public class CTCollectionLocalServiceImpl
 
 				sb.setStringAt(")", sb.index() - 1);
 
-				Connection connection = _currentConnection.getConnection(
+				Connection connection = CurrentConnectionUtil.getConnection(
 					ctPersistence.getDataSource());
 
 				try (PreparedStatement preparedStatement =
@@ -1436,9 +1436,6 @@ public class CTCollectionLocalServiceImpl
 
 	@Reference
 	private CTServiceRegistry _ctServiceRegistry;
-
-	@Reference
-	private CurrentConnection _currentConnection;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

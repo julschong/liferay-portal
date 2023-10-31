@@ -65,8 +65,8 @@ import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -761,7 +761,7 @@ public class ObjectFieldLocalServiceImpl
 					objectField))) {
 
 			ObjectDBManagerUtil.createIndexMetadata(
-				_currentConnection.getConnection(
+				CurrentConnectionUtil.getConnection(
 					objectFieldPersistence.getDataSource()),
 				dbTableName, true, dbColumnNames);
 		}
@@ -860,7 +860,7 @@ public class ObjectFieldLocalServiceImpl
 
 	private void _alterTableDropColumn(String tableName, String columnName) {
 		try {
-			Connection connection = _currentConnection.getConnection(
+			Connection connection = CurrentConnectionUtil.getConnection(
 				objectFieldPersistence.getDataSource());
 
 			DB db = objectFieldPersistence.getDB();
@@ -1570,9 +1570,6 @@ public class ObjectFieldLocalServiceImpl
 	).put(
 		"String", "Text"
 	).build();
-
-	@Reference
-	private CurrentConnection _currentConnection;
 
 	@Reference
 	private DDMExpressionFactory _ddmExpressionFactory;

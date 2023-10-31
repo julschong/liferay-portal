@@ -86,11 +86,11 @@ import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
@@ -1542,7 +1542,7 @@ public class ObjectDefinitionLocalServiceImpl
 		throws PortalException {
 
 		ObjectDBManagerUtil.createIndexMetadata(
-			_currentConnection.getConnection(
+			CurrentConnectionUtil.getConnection(
 				objectDefinitionPersistence.getDataSource()),
 			dbTableName, unique, dbColumnNames);
 	}
@@ -2381,9 +2381,6 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
-
-	@Reference
-	private CurrentConnection _currentConnection;
 
 	@Reference
 	private DynamicQueryBatchIndexingActionableFactory

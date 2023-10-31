@@ -99,10 +99,10 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.dao.jdbc.postgresql.PostgreSQLJDBCUtil;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.encryptor.Encryptor;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -1278,7 +1278,7 @@ public class ObjectEntryLocalServiceImpl
 
 		int count = 0;
 
-		Connection connection = _currentConnection.getConnection(
+		Connection connection = CurrentConnectionUtil.getConnection(
 			objectEntryPersistence.getDataSource());
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -3188,7 +3188,7 @@ public class ObjectEntryLocalServiceImpl
 			_log.debug("SQL: " + sql);
 		}
 
-		Connection connection = _currentConnection.getConnection(
+		Connection connection = CurrentConnectionUtil.getConnection(
 			objectEntryPersistence.getDataSource());
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -3324,7 +3324,7 @@ public class ObjectEntryLocalServiceImpl
 			_log.debug("SQL: " + sql);
 		}
 
-		Connection connection = _currentConnection.getConnection(
+		Connection connection = CurrentConnectionUtil.getConnection(
 			objectEntryPersistence.getDataSource());
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -3829,7 +3829,7 @@ public class ObjectEntryLocalServiceImpl
 			_log.debug("SQL: " + sql);
 		}
 
-		Connection connection = _currentConnection.getConnection(
+		Connection connection = CurrentConnectionUtil.getConnection(
 			objectEntryPersistence.getDataSource());
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -4043,7 +4043,7 @@ public class ObjectEntryLocalServiceImpl
 
 		int count = 0;
 
-		Connection connection = _currentConnection.getConnection(
+		Connection connection = CurrentConnectionUtil.getConnection(
 			objectEntryPersistence.getDataSource());
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -4080,7 +4080,7 @@ public class ObjectEntryLocalServiceImpl
 
 		int count = 0;
 
-		Connection connection = _currentConnection.getConnection(
+		Connection connection = CurrentConnectionUtil.getConnection(
 			objectEntryPersistence.getDataSource());
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -4522,9 +4522,6 @@ public class ObjectEntryLocalServiceImpl
 
 	@Reference
 	private AssetLinkLocalService _assetLinkLocalService;
-
-	@Reference
-	private CurrentConnection _currentConnection;
 
 	@Reference
 	private DDMExpressionFactory _ddmExpressionFactory;
