@@ -5,7 +5,6 @@
 
 package com.liferay.portal.dao.jdbc;
 
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
