@@ -6,7 +6,6 @@
 package com.liferay.portal.dao.jdbc;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.dao.jdbc.ConnectionUtil;
 import com.liferay.portal.kernel.dao.jdbc.ParamSetter;
 import com.liferay.portal.kernel.dao.jdbc.RowMapper;
 

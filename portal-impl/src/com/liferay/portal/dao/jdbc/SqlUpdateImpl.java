@@ -6,7 +6,6 @@
 package com.liferay.portal.dao.jdbc;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.dao.jdbc.ConnectionUtil;
 import com.liferay.portal.kernel.dao.jdbc.ParamSetter;
 
 import java.sql.Connection;
@@ -39,7 +38,7 @@ public class SqlUpdateImpl implements SqlUpdate {
 		}
 
 		try (Connection connection = ConnectionUtil.getConnection(_dataSource);
-			 PreparedStatement preparedStatement = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				_sql)) {
 
 			for (int i = 0; i < _paramSetters.length; i++) {
