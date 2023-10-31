@@ -3,9 +3,11 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.dao.jdbc;
+package com.liferay.portal.dao.jdbc;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.jdbc.ConnectionUtil;
+import com.liferay.portal.kernel.dao.jdbc.ParamSetter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,7 +39,7 @@ public class SqlUpdateImpl implements SqlUpdate {
 		}
 
 		try (Connection connection = ConnectionUtil.getConnection(_dataSource);
-			PreparedStatement preparedStatement = connection.prepareStatement(
+			 PreparedStatement preparedStatement = connection.prepareStatement(
 				_sql)) {
 
 			for (int i = 0; i < _paramSetters.length; i++) {
