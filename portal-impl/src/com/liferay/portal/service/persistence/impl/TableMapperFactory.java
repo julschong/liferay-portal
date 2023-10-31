@@ -5,8 +5,8 @@
 
 package com.liferay.portal.service.persistence.impl;
 
-import com.liferay.portal.kernel.internal.service.persistence.TableMapperImpl;
-import com.liferay.portal.kernel.internal.service.persistence.change.tracking.CTTableMapper;
+import com.liferay.portal.internal.service.persistence.TableMapperImpl;
+import com.liferay.portal.internal.service.persistence.change.tracking.CTTableMapper;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
