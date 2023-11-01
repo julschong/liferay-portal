@@ -3,19 +3,16 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.service.persistence.impl;
+package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 /**
  * @author Shuyang Zhou
  */
-@ProviderType
 public interface TableMapper<L extends BaseModel<L>, R extends BaseModel<R>> {
 
 	public boolean addTableMapping(
