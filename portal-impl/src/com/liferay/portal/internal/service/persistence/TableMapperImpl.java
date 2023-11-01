@@ -26,11 +26,11 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.ModelListenerRegistrationUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.service.persistence.impl.TableMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;

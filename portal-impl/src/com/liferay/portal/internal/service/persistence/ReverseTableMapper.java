@@ -6,8 +6,8 @@
 package com.liferay.portal.internal.service.persistence;
 
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.service.persistence.impl.TableMapper;
 
 import java.util.List;
 

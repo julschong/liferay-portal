@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
+import com.liferay.portal.service.persistence.impl.TableMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
