@@ -10,10 +10,10 @@ import com.liferay.commerce.product.service.CommerceChannelAccountEntryRelServic
 import com.liferay.commerce.product.service.CommerceChannelAccountEntryRelServiceUtil;
 import com.liferay.commerce.product.service.persistence.CommerceChannelAccountEntryRelPersistence;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.dao.jdbc.SqlUpdate;
+import com.liferay.portal.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
-import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
