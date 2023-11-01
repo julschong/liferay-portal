@@ -6,6 +6,7 @@
 package com.liferay.portal.internal.service.persistence.change.tracking;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.internal.service.persistence.ReverseTableMapper;
 import com.liferay.portal.internal.service.persistence.TableMapperImpl;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.db.DB;
