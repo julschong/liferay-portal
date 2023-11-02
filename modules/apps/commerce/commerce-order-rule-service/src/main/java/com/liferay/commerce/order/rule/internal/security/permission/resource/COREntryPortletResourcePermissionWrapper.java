@@ -5,20 +5,28 @@
 
 package com.liferay.commerce.order.rule.internal.security.permission.resource;
 
+import com.liferay.commerce.order.rule.constants.COREntryConstants;
 import com.liferay.portal.kernel.security.permission.resource.BasePortletResourcePermissionWrapper;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Alessio Antonio Rendina
  */
-@Component(service = PortletResourcePermission.class)
+@Component(
+	property = "resource.name=" + COREntryConstants.RESOURCE_NAME,
+	service = PortletResourcePermission.class
+)
 public class COREntryPortletResourcePermissionWrapper
 	extends BasePortletResourcePermissionWrapper {
 
 	@Override
 	protected PortletResourcePermission doGetPortletResourcePermission() {
+		return PortletResourcePermissionFactory.create(
+			COREntryConstants.RESOURCE_NAME,
+			new CORServicePortletResourcePermissionLogic());
 	}
 
 }

@@ -5,7 +5,6 @@
 
 package com.liferay.commerce.order.rule.internal.security.permission.resource;
 
-import com.liferay.commerce.order.rule.constants.COREntryConstants;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.definition.PortletResourcePermissionDefinition;
 
@@ -21,15 +20,6 @@ public class COREntryPortletResourcePermissionDefinition
 	@Override
 	public PortletResourcePermissionLogic[]
 		getPortletResourcePermissionLogics() {
-
-		return new PortletResourcePermissionLogic[] {
-			new CORServicePortletResourcePermissionLogic()
-		};
-	}
-
-	@Override
-	public String getResourceName() {
-		return COREntryConstants.RESOURCE_NAME;
 	}
 
 }
