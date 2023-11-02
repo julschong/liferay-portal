@@ -5,7 +5,6 @@
 
 package com.liferay.change.tracking.internal.security.permission.resource.definition;
 
-import com.liferay.change.tracking.constants.CTConstants;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.definition.PortletResourcePermissionDefinition;
 
@@ -21,13 +20,6 @@ public class ChangeListsPortletResourcePermissionDefinition
 	@Override
 	public PortletResourcePermissionLogic[]
 		getPortletResourcePermissionLogics() {
-
-		return new PortletResourcePermissionLogic[0];
-	}
-
-	@Override
-	public String getResourceName() {
-		return CTConstants.RESOURCE_NAME;
 	}
 
 }
