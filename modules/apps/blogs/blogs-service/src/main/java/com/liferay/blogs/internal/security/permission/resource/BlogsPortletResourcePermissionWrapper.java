@@ -5,15 +5,22 @@
 
 package com.liferay.blogs.internal.security.permission.resource;
 
+import com.liferay.blogs.constants.BlogsConstants;
+import com.liferay.blogs.constants.BlogsPortletKeys;
+import com.liferay.exportimport.kernel.staging.permission.StagingPermission;
 import com.liferay.portal.kernel.security.permission.resource.BasePortletResourcePermissionWrapper;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
+import com.liferay.portal.kernel.security.permission.resource.StagedPortletPermissionLogic;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Pei-Jung Lan
  */
 @Component(
+	property = "resource.name=" + BlogsConstants.RESOURCE_NAME,
 	service = PortletResourcePermission.class
 )
 public class BlogsPortletResourcePermissionWrapper
@@ -21,6 +28,13 @@ public class BlogsPortletResourcePermissionWrapper
 
 	@Override
 	protected PortletResourcePermission doGetPortletResourcePermission() {
+		return PortletResourcePermissionFactory.create(
+			BlogsConstants.RESOURCE_NAME,
+			new StagedPortletPermissionLogic(
+				_stagingPermission, BlogsPortletKeys.BLOGS_ADMIN));
 	}
+
+	@Reference
+	private StagingPermission _stagingPermission;
 
 }
