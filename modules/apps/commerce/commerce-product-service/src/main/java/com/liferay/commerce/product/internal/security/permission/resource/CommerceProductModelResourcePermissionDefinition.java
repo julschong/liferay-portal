@@ -5,7 +5,6 @@
 
 package com.liferay.commerce.product.internal.security.permission.resource;
 
-import com.liferay.commerce.product.constants.CPConstants;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.definition.PortletResourcePermissionDefinition;
 
@@ -21,15 +20,6 @@ public class CommerceProductModelResourcePermissionDefinition
 	@Override
 	public PortletResourcePermissionLogic[]
 		getPortletResourcePermissionLogics() {
-
-		return new PortletResourcePermissionLogic[] {
-			new CommerceProductPortletResourcePermissionLogic()
-		};
-	}
-
-	@Override
-	public String getResourceName() {
-		return CPConstants.RESOURCE_NAME_PRODUCT;
 	}
 
 }
