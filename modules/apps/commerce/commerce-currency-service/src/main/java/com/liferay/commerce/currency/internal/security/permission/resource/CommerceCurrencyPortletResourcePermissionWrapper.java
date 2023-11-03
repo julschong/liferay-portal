@@ -5,8 +5,10 @@
 
 package com.liferay.commerce.currency.internal.security.permission.resource;
 
+import com.liferay.commerce.currency.model.CommerceCurrencyConstants;
 import com.liferay.portal.kernel.security.permission.resource.BasePortletResourcePermissionWrapper;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -14,12 +16,24 @@ import org.osgi.service.component.annotations.Component;
  * @author Alessio Antonio Rendina
  * @author Julius Lee
  */
-@Component(service = PortletResourcePermission.class)
+@Component(
+	property = "resource.name=" + CommerceCurrencyConstants.RESOURCE_NAME,
+	service = PortletResourcePermission.class
+)
 public class CommerceCurrencyPortletResourcePermissionWrapper
 	extends BasePortletResourcePermissionWrapper {
 
 	@Override
 	protected PortletResourcePermission doGetPortletResourcePermission() {
+		return PortletResourcePermissionFactory.create(
+			CommerceCurrencyConstants.RESOURCE_NAME,
+			(permissionChecker, name, group, actionId) -> {
+				if (permissionChecker.hasPermission(group, name, 0, actionId)) {
+					return true;
+				}
+
+				return false;
+			});
 	}
 
 }

@@ -5,7 +5,6 @@
 
 package com.liferay.commerce.currency.internal.security.permission.resource;
 
-import com.liferay.commerce.currency.model.CommerceCurrencyConstants;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.definition.PortletResourcePermissionDefinition;
 
@@ -21,21 +20,6 @@ public class CommerceCurrencyPortletResourcePermissionDefinition
 	@Override
 	public PortletResourcePermissionLogic[]
 		getPortletResourcePermissionLogics() {
-
-		return new PortletResourcePermissionLogic[] {
-			(permissionChecker, name, group, actionId) -> {
-				if (permissionChecker.hasPermission(group, name, 0, actionId)) {
-					return true;
-				}
-
-				return false;
-			}
-		};
-	}
-
-	@Override
-	public String getResourceName() {
-		return CommerceCurrencyConstants.RESOURCE_NAME;
 	}
 
 }
