@@ -5,7 +5,6 @@
 
 package com.liferay.commerce.pricing.internal.security.permission.resource;
 
-import com.liferay.commerce.discount.constants.CommerceDiscountConstants;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionLogic;
 import com.liferay.portal.kernel.security.permission.resource.definition.PortletResourcePermissionDefinition;
 
@@ -21,15 +20,6 @@ public class CommerceDiscountPortletResourcePermissionDefinition
 	@Override
 	public PortletResourcePermissionLogic[]
 		getPortletResourcePermissionLogics() {
-
-		return new PortletResourcePermissionLogic[] {
-			new PricingPortletResourcePermissionLogic()
-		};
-	}
-
-	@Override
-	public String getResourceName() {
-		return CommerceDiscountConstants.RESOURCE_NAME;
 	}
 
 }

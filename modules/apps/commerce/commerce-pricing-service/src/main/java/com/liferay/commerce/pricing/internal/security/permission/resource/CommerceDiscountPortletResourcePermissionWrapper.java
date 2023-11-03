@@ -5,8 +5,10 @@
 
 package com.liferay.commerce.pricing.internal.security.permission.resource;
 
+import com.liferay.commerce.discount.constants.CommerceDiscountConstants;
 import com.liferay.portal.kernel.security.permission.resource.BasePortletResourcePermissionWrapper;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -14,12 +16,18 @@ import org.osgi.service.component.annotations.Component;
  * @author Alessio Antonio Rendina
  * @author Julius Lee
  */
-@Component(service = PortletResourcePermission.class)
+@Component(
+	property = "resource.name=" + CommerceDiscountConstants.RESOURCE_NAME,
+	service = PortletResourcePermission.class
+)
 public class CommerceDiscountPortletResourcePermissionWrapper
 	extends BasePortletResourcePermissionWrapper {
 
 	@Override
 	protected PortletResourcePermission doGetPortletResourcePermission() {
+		return PortletResourcePermissionFactory.create(
+			CommerceDiscountConstants.RESOURCE_NAME,
+			new PricingPortletResourcePermissionLogic());
 	}
 
 }
