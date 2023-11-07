@@ -21,21 +21,6 @@ public class CommerceInventoryWarehousePortletResourcePermissionDefinition
 	@Override
 	public PortletResourcePermissionLogic[]
 		getPortletResourcePermissionLogics() {
-
-		return new PortletResourcePermissionLogic[] {
-			(permissionChecker, name, group, actionId) -> {
-				if (permissionChecker.hasPermission(group, name, 0, actionId)) {
-					return true;
-				}
-
-				return false;
-			}
-		};
-	}
-
-	@Override
-	public String getResourceName() {
-		return CommerceInventoryConstants.RESOURCE_NAME;
 	}
 
 }
