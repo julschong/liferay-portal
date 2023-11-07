@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.security.auth.tunnel;
+package com.liferay.portal.security.auth.tunnel;
 
 import com.liferay.portal.kernel.security.auth.AuthException;
+import com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManager;
 
 import java.net.HttpURLConnection;
 
