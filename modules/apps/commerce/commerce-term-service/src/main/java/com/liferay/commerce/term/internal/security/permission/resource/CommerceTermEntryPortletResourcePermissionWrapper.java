@@ -5,8 +5,10 @@
 
 package com.liferay.commerce.term.internal.security.permission.resource;
 
+import com.liferay.commerce.term.constants.CommerceTermEntryConstants;
 import com.liferay.portal.kernel.security.permission.resource.BasePortletResourcePermissionWrapper;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -14,12 +16,18 @@ import org.osgi.service.component.annotations.Component;
  * @author Alessio Antonio Rendina
  * @author Julius Lee
  */
-@Component(service = PortletResourcePermission.class)
+@Component(
+	property = "resource.name=" + CommerceTermEntryConstants.RESOURCE_NAME,
+	service = PortletResourcePermission.class
+)
 public class CommerceTermEntryPortletResourcePermissionWrapper
 	extends BasePortletResourcePermissionWrapper {
 
 	@Override
 	protected PortletResourcePermission doGetPortletResourcePermission() {
+		return PortletResourcePermissionFactory.create(
+			CommerceTermEntryConstants.RESOURCE_NAME,
+			new CommerceTermServicePortletResourcePermissionLogic());
 	}
 
 }
