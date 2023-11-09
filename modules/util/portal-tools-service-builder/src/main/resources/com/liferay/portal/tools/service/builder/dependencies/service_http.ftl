@@ -7,7 +7,14 @@ package ${packagePath}.service.http;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+
+<#if serviceBuilder.isVersionGTE_7_4_0()>
+import com.liferay.portal.service.http.TunnelUtil;
+
+<#else>
 import com.liferay.portal.kernel.service.http.TunnelUtil;
+</#if>
+
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 
