@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 /**
  * @author Preston Crary
  */
-public class HashCodeHexStringCacheKeyGenerator extends BaseCacheKeyGenerator {
+public class HashCodeHexStringCacheKeyGenerator implements CacheKeyGenerator {
 
 	@Override
 	public CacheKeyGenerator clone() {

@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 /**
  * @author Shuyang Zhou
  */
-public class SimpleCacheKeyGenerator extends BaseCacheKeyGenerator {
+public class SimpleCacheKeyGenerator implements CacheKeyGenerator {
 
 	@Override
 	public CacheKeyGenerator clone() {

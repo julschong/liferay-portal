@@ -25,7 +25,7 @@ import java.security.MessageDigest;
 /**
  * @author Shuyang Zhou
  */
-public class MessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
+public class MessageDigestCacheKeyGenerator implements CacheKeyGenerator {
 
 	@Override
 	public CacheKeyGenerator clone() {
