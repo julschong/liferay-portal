@@ -5,6 +5,7 @@
 
 package com.liferay.portal.increment;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.internal.increment.BufferedIncreasableEntry;
 import com.liferay.portal.internal.increment.BufferedIncrementProcessor;
@@ -72,11 +73,13 @@ public class BufferedIncrementAdvice extends ChainableMethodAdvice {
 			CacheKeyGeneratorUtil.getCacheKeyGenerator(
 				CacheKeyGeneratorUtil.DEFAULT);
 
-		for (int i = 0; i < (arguments.length - 1); i++) {
-			cacheKeyGenerator.append(StringUtil.toHexString(arguments[i]));
+		StringBundler sb = new StringBundler(arguments.length);
+
+		for (Object argument : arguments) {
+			sb.append(StringUtil.toHexString(argument));
 		}
 
-		Serializable batchKey = cacheKeyGenerator.finish();
+		Serializable batchKey = cacheKeyGenerator.getCacheKey(sb);
 
 		try {
 			Increment<?> increment = IncrementFactory.createIncrement(

@@ -33,10 +33,12 @@ public class CacheFileNameGenerator {
 			CacheKeyGeneratorUtil.getCacheKeyGenerator(
 				CacheKeyGeneratorUtil.DEFAULT);
 
-		cacheKeyGenerator.append(
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(
 			HttpComponentsUtil.getProtocol(httpServletRequest.isSecure()));
-		cacheKeyGenerator.append(StringPool.UNDERLINE);
-		cacheKeyGenerator.append(httpServletRequest.getRequestURI());
+		sb.append(StringPool.UNDERLINE);
+		sb.append(httpServletRequest.getRequestURI());
 
 		StringBundler queryStringSB = new StringBundler(
 			_cacheFileNameContributors.size() * 4);
@@ -57,11 +59,12 @@ public class CacheFileNameGenerator {
 			queryStringSB.append(value);
 		}
 
-		cacheKeyGenerator.append(
+		sb.append(
 			DigesterUtil.digestBase64(
 				Digester.SHA_256, queryStringSB.toString()));
 
-		return _sterilizeFileName(String.valueOf(cacheKeyGenerator.finish()));
+		return _sterilizeFileName(
+			String.valueOf(cacheKeyGenerator.getCacheKey(sb)));
 	}
 
 	private static String _sterilizeFileName(String fileName) {
