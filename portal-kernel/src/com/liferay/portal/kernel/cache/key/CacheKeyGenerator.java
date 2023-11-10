@@ -15,17 +15,7 @@ import java.io.Serializable;
  */
 public interface CacheKeyGenerator extends Cloneable {
 
-	public CacheKeyGenerator append(String key);
-
-	public CacheKeyGenerator append(String[] keys);
-
-	public default CacheKeyGenerator append(StringBundler sb) {
-		return append(sb.getStrings());
-	}
-
 	public CacheKeyGenerator clone();
-
-	public Serializable finish();
 
 	public Serializable getCacheKey(String key);
 
