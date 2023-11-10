@@ -27,20 +27,9 @@ import java.security.MessageDigest;
  */
 public class MessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
 
-	public MessageDigestCacheKeyGenerator(String algorithm) {
-		this(algorithm, StringPool.UTF8);
-	}
-
-	public MessageDigestCacheKeyGenerator(
-		String algorithm, String charsetName) {
-
-		_algorithm = algorithm;
-		_charsetName = charsetName;
-	}
-
 	@Override
 	public CacheKeyGenerator clone() {
-		return new MessageDigestCacheKeyGenerator(_algorithm, _charsetName);
+		return new MessageDigestCacheKeyGenerator();
 	}
 
 	@Override
@@ -65,16 +54,18 @@ public class MessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
 					Lifecycle.ETERNAL,
 					MessageDigestCacheKeyGenerator.class.getName());
 
-			MessageDigest messageDigest = threadLocalCache.get(_algorithm);
+			String algorithm = "SHA-1";
+
+			MessageDigest messageDigest = threadLocalCache.get(algorithm);
 
 			if (messageDigest == null) {
-				messageDigest = MessageDigest.getInstance(_algorithm);
+				messageDigest = MessageDigest.getInstance(algorithm);
 
-				threadLocalCache.put(_algorithm, messageDigest);
+				threadLocalCache.put(algorithm, messageDigest);
 			}
 
 			CharsetEncoder charsetEncoder =
-				CharsetEncoderUtil.getCharsetEncoder(_charsetName);
+				CharsetEncoderUtil.getCharsetEncoder(StringPool.UTF8);
 
 			for (int i = 0; i < length; i++) {
 				messageDigest.update(
@@ -87,8 +78,5 @@ public class MessageDigestCacheKeyGenerator extends BaseCacheKeyGenerator {
 			throw new SystemException(exception);
 		}
 	}
-
-	private final String _algorithm;
-	private final String _charsetName;
 
 }
