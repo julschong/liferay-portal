@@ -48,7 +48,7 @@ public class CacheKeyGeneratorUtil {
 		).put(
 			HASH_CODE_HEX_STRING, new HashCodeHexStringCacheKeyGenerator()
 		).put(
-			MESSAGE_DIGEST, new MessageDigestCacheKeyGenerator("SHA-1")
+			MESSAGE_DIGEST, new MessageDigestCacheKeyGenerator()
 		).put(
 			SIMPLE, new SimpleCacheKeyGenerator()
 		).build();
