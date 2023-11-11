@@ -53,8 +53,6 @@ public interface File {
 
 	public java.io.File createTempFolder() throws IOException;
 
-	public String decodeSafeFileName(String fileName);
-
 	public boolean delete(java.io.File file);
 
 	public boolean delete(String file);
@@ -62,8 +60,6 @@ public interface File {
 	public void deltree(java.io.File directory);
 
 	public void deltree(String directory);
-
-	public String encodeSafeFileName(String fileName);
 
 	public boolean exists(java.io.File file);
 
