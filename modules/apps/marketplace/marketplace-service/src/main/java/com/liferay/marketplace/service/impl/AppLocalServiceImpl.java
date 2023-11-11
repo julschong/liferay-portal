@@ -7,6 +7,7 @@ package com.liferay.marketplace.service.impl;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.document.library.util.DLStoreFileUtil;
 import com.liferay.marketplace.exception.AppPropertiesException;
 import com.liferay.marketplace.exception.AppTitleException;
 import com.liferay.marketplace.exception.AppVersionException;
@@ -404,7 +405,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 			return StringPool.BLANK;
 		}
 
-		fileName = FileUtil.encodeSafeFileName(fileName);
+		fileName = DLStoreFileUtil.encodeSafeFileName(fileName);
 
 		return StringUtil.replace(
 			fileName, _SAFE_FILE_NAME_1, _SAFE_FILE_NAME_2);

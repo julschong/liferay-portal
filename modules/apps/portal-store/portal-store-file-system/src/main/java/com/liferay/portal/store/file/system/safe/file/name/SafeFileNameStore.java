@@ -7,8 +7,8 @@ package com.liferay.portal.store.file.system.safe.file.name;
 
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLUtil;
+import com.liferay.document.library.util.DLStoreFileUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.InputStream;
 
@@ -32,7 +32,7 @@ public class SafeFileNameStore implements Store {
 			String versionLabel, InputStream inputStream)
 		throws PortalException {
 
-		String safeFileName = FileUtil.encodeSafeFileName(fileName);
+		String safeFileName = DLStoreFileUtil.encodeSafeFileName(fileName);
 
 		if (!safeFileName.equals(fileName)) {
 			_store.deleteFile(companyId, repositoryId, fileName, versionLabel);
@@ -46,7 +46,7 @@ public class SafeFileNameStore implements Store {
 	public void deleteDirectory(
 		long companyId, long repositoryId, String dirName) {
 
-		String safeDirName = FileUtil.encodeSafeFileName(dirName);
+		String safeDirName = DLStoreFileUtil.encodeSafeFileName(dirName);
 
 		if (!safeDirName.equals(dirName)) {
 			_store.deleteDirectory(companyId, repositoryId, dirName);
@@ -60,7 +60,7 @@ public class SafeFileNameStore implements Store {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		String safeFileName = FileUtil.encodeSafeFileName(fileName);
+		String safeFileName = DLStoreFileUtil.encodeSafeFileName(fileName);
 
 		if (!safeFileName.equals(fileName)) {
 			_store.deleteFile(companyId, repositoryId, fileName, versionLabel);
@@ -75,7 +75,7 @@ public class SafeFileNameStore implements Store {
 			String versionLabel)
 		throws PortalException {
 
-		String safeFileName = FileUtil.encodeSafeFileName(fileName);
+		String safeFileName = DLStoreFileUtil.encodeSafeFileName(fileName);
 
 		if (safeFileName.equals(fileName) ||
 			_store.hasFile(
@@ -95,19 +95,21 @@ public class SafeFileNameStore implements Store {
 
 		Set<String> decodedFileNameSet = new HashSet<>();
 
-		String safeDirName = FileUtil.encodeSafeFileName(dirName);
+		String safeDirName = DLStoreFileUtil.encodeSafeFileName(dirName);
 
 		for (String fileName :
 				_store.getFileNames(companyId, repositoryId, safeDirName)) {
 
-			decodedFileNameSet.add(FileUtil.decodeSafeFileName(fileName));
+			decodedFileNameSet.add(
+				DLStoreFileUtil.decodeSafeFileName(fileName));
 		}
 
 		if (!safeDirName.equals(dirName)) {
 			for (String fileName :
 					_store.getFileNames(companyId, repositoryId, dirName)) {
 
-				decodedFileNameSet.add(FileUtil.decodeSafeFileName(fileName));
+				decodedFileNameSet.add(
+					DLStoreFileUtil.decodeSafeFileName(fileName));
 			}
 		}
 
@@ -124,7 +126,7 @@ public class SafeFileNameStore implements Store {
 			String versionLabel)
 		throws PortalException {
 
-		String safeFileName = FileUtil.encodeSafeFileName(fileName);
+		String safeFileName = DLStoreFileUtil.encodeSafeFileName(fileName);
 
 		if (safeFileName.equals(fileName) ||
 			_store.hasFile(
@@ -144,7 +146,7 @@ public class SafeFileNameStore implements Store {
 
 		Set<String> versionSet = new HashSet<>();
 
-		String safeFileName = FileUtil.encodeSafeFileName(fileName);
+		String safeFileName = DLStoreFileUtil.encodeSafeFileName(fileName);
 
 		Collections.addAll(
 			versionSet,
@@ -168,7 +170,7 @@ public class SafeFileNameStore implements Store {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		String safeFileName = FileUtil.encodeSafeFileName(fileName);
+		String safeFileName = DLStoreFileUtil.encodeSafeFileName(fileName);
 
 		if (_store.hasFile(
 				companyId, repositoryId, safeFileName, versionLabel)) {
