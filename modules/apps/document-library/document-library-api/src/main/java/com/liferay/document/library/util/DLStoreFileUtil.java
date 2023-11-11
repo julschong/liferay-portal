@@ -17,7 +17,7 @@ public class DLStoreFileUtil {
 
 	public static String decodeSafeFileName(String fileName) {
 		return StringUtil.replace(
-			fileName, _SAFE_FILE_NAME_2, _SAFE_FILE_NAME_1);
+			fileName, _SAFE_FILE_NAME_CHARACTERS, _UNSAFE_FILE_NAME_CHARACTERS);
 	}
 
 	public static String encodeSafeFileName(String fileName) {
@@ -26,21 +26,21 @@ public class DLStoreFileUtil {
 		}
 
 		return StringUtil.replace(
-			fileName, _SAFE_FILE_NAME_1, _SAFE_FILE_NAME_2);
+			fileName, _UNSAFE_FILE_NAME_CHARACTERS, _SAFE_FILE_NAME_CHARACTERS);
 	}
 
-	private static final String[] _SAFE_FILE_NAME_1 = {
-		StringPool.AMPERSAND, StringPool.CLOSE_PARENTHESIS,
-		StringPool.OPEN_PARENTHESIS, StringPool.SEMICOLON
-	};
-
-	private static final String[] _SAFE_FILE_NAME_2 = {
+	private static final String[] _SAFE_FILE_NAME_CHARACTERS = {
 		PropsUtil.get(PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_AMPERSAND),
 		PropsUtil.get(
 			PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_CLOSE_PARENTHESIS),
 		PropsUtil.get(
 			PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_OPEN_PARENTHESIS),
 		PropsUtil.get(PropsKeys.DL_STORE_FILE_IMPL_SAFE_FILE_NAME_2_SEMICOLON)
+	};
+
+	private static final String[] _UNSAFE_FILE_NAME_CHARACTERS = {
+		StringPool.AMPERSAND, StringPool.CLOSE_PARENTHESIS,
+		StringPool.OPEN_PARENTHESIS, StringPool.SEMICOLON
 	};
 
 }
