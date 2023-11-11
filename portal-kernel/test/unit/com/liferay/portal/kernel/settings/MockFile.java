@@ -92,11 +92,6 @@ public class MockFile implements com.liferay.portal.kernel.util.File {
 	}
 
 	@Override
-	public String decodeSafeFileName(String fileName) {
-		return null;
-	}
-
-	@Override
 	public boolean delete(File file) {
 		return false;
 	}
@@ -112,11 +107,6 @@ public class MockFile implements com.liferay.portal.kernel.util.File {
 
 	@Override
 	public void deltree(String directory) {
-	}
-
-	@Override
-	public String encodeSafeFileName(String fileName) {
-		return null;
 	}
 
 	@Override

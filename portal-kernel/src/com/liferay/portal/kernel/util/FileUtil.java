@@ -93,10 +93,6 @@ public class FileUtil {
 		return _file.createTempFolder();
 	}
 
-	public static String decodeSafeFileName(String fileName) {
-		return _file.decodeSafeFileName(fileName);
-	}
-
 	public static boolean delete(File file) {
 		return _file.delete(file);
 	}
@@ -111,10 +107,6 @@ public class FileUtil {
 
 	public static void deltree(String directory) {
 		_file.deltree(directory);
-	}
-
-	public static String encodeSafeFileName(String fileName) {
-		return _file.encodeSafeFileName(fileName);
 	}
 
 	public static boolean exists(File file) {
