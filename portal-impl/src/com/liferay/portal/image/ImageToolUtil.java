@@ -18,12 +18,12 @@ import com.liferay.portal.kernel.model.ImageConstants;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.ImageImpl;
 import com.liferay.portal.module.framework.ModuleFrameworkUtil;
-import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -516,19 +516,19 @@ public class ImageToolUtil {
 	public static Image getImage(File file)
 		throws ImageResolutionException, IOException {
 
-		return getImage(_fileImpl.getBytes(file));
+		return getImage(FileUtil.getBytes(file));
 	}
 
 	public static Image getImage(InputStream inputStream)
 		throws ImageResolutionException, IOException {
 
-		return getImage(_fileImpl.getBytes(inputStream, -1, true));
+		return getImage(FileUtil.getBytes(inputStream, -1, true));
 	}
 
 	public static Image getImage(InputStream inputStream, boolean cleanUpStream)
 		throws ImageResolutionException, IOException {
 
-		return getImage(_fileImpl.getBytes(inputStream, -1, cleanUpStream));
+		return getImage(FileUtil.getBytes(inputStream, -1, cleanUpStream));
 	}
 
 	public static boolean isNullOrDefaultSpacer(byte[] bytes) {
@@ -665,13 +665,13 @@ public class ImageToolUtil {
 	public static ImageBag read(File file)
 		throws ImageResolutionException, IOException {
 
-		return read(_fileImpl.getBytes(file));
+		return read(FileUtil.getBytes(file));
 	}
 
 	public static ImageBag read(InputStream inputStream)
 		throws ImageResolutionException, IOException {
 
-		return read(_fileImpl.getBytes(inputStream));
+		return read(FileUtil.getBytes(inputStream));
 	}
 
 	public static RenderedImage rotate(
@@ -970,7 +970,6 @@ public class ImageToolUtil {
 	private static Image _defaultUserFemalePortrait;
 	private static Image _defaultUserMalePortrait;
 	private static Image _defaultUserPortrait;
-	private static final FileImpl _fileImpl = FileImpl.getInstance();
 
 	static {
 		ImageIO.setUseCache(PropsValues.IMAGE_IO_USE_DISK_CACHE);
