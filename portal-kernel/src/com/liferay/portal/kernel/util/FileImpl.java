@@ -47,10 +47,6 @@ import java.util.zip.ZipInputStream;
  */
 public class FileImpl implements com.liferay.portal.kernel.util.File {
 
-	public static FileImpl getInstance() {
-		return _fileImpl;
-	}
-
 	@Override
 	public String appendParentheticalSuffix(String fileName, String suffix) {
 		String fileNameWithoutExtension = stripExtension(fileName);
@@ -916,7 +912,5 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(FileImpl.class);
-
-	private static final FileImpl _fileImpl = new FileImpl();
 
 }
