@@ -363,6 +363,6 @@ public class FileUtil {
 		_file = file;
 	}
 
-	private static com.liferay.portal.kernel.util.File _file;
+	private static com.liferay.portal.kernel.util.File _file = new FileImpl();
 
 }
