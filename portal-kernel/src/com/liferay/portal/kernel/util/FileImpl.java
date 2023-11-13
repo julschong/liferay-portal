@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.nio.CharsetEncoderUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
@@ -14,15 +14,6 @@ import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
-import com.liferay.portal.kernel.util.FileComparator;
-import com.liferay.portal.kernel.util.PwdGenerator;
-import com.liferay.portal.kernel.util.StreamUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.SystemProperties;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 import java.io.FileInputStream;

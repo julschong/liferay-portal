@@ -6,10 +6,10 @@
 package com.liferay.portal.util;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.FileImpl;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,8 +24,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -33,11 +31,6 @@ import org.junit.Test;
  * @author Roberto Díaz
  */
 public class FileImplTest {
-
-	@ClassRule
-	@Rule
-	public static final LiferayUnitTestRule liferayUnitTestRule =
-		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testAppendParentheticalSuffixWhenFileNameHasParenthesis() {
