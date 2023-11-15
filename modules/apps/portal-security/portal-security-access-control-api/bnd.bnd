@@ -1,4 +1,6 @@
 Bundle-Name: Liferay Portal Security Access Control API
 Bundle-SymbolicName: com.liferay.portal.security.access.control.api
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.portal.security.access.control.advice
+Export-Package:\
+	com.liferay.portal.security.access.control.advice,\
+	com.liferay.portal.security.access.control.policy
