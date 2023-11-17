@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.language;
+package com.liferay.portal.kernel.language;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -17,8 +17,6 @@ import com.liferay.portal.kernel.cookies.CookiesManagerUtil;
 import com.liferay.portal.kernel.cookies.constants.CookiesConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.language.LanguageWrapper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
@@ -43,13 +41,13 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
 
@@ -263,7 +261,9 @@ public class LanguageImpl implements Language, Serializable {
 		HttpServletRequest httpServletRequest, String pattern,
 		LanguageWrapper[] arguments, boolean translateArguments) {
 
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.TRANSLATIONS_DISABLED))) {
+
 			return pattern;
 		}
 
@@ -442,7 +442,9 @@ public class LanguageImpl implements Language, Serializable {
 		HttpServletRequest httpServletRequest, String pattern,
 		Object[] arguments, boolean translateArguments) {
 
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.TRANSLATIONS_DISABLED))) {
+
 			return pattern;
 		}
 
@@ -623,7 +625,9 @@ public class LanguageImpl implements Language, Serializable {
 		Locale locale, String pattern, Object[] arguments,
 		boolean translateArguments) {
 
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.TRANSLATIONS_DISABLED))) {
+
 			return pattern;
 		}
 
@@ -761,7 +765,9 @@ public class LanguageImpl implements Language, Serializable {
 		ResourceBundle resourceBundle, String pattern, Object[] arguments,
 		boolean translateArguments) {
 
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.TRANSLATIONS_DISABLED))) {
+
 			return pattern;
 		}
 
@@ -938,7 +944,9 @@ public class LanguageImpl implements Language, Serializable {
 	 */
 	@Override
 	public String get(Locale locale, String key, String defaultValue) {
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.TRANSLATIONS_DISABLED))) {
+
 			return key;
 		}
 
@@ -1737,7 +1745,7 @@ public class LanguageImpl implements Language, Serializable {
 	private ObjectValuePair<HashMap<String, Locale>, HashMap<String, Locale>>
 		_createGroupLocales(long groupId) {
 
-		String[] languageIds = PropsValues.LOCALES_ENABLED;
+		String[] languageIds = PropsUtil.getArray(PropsKeys.LOCALES_ENABLED);
 
 		Locale defaultLocale = LocaleUtil.getDefault();
 
@@ -1841,7 +1849,9 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	private String _get(ResourceBundle resourceBundle, String key) {
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.TRANSLATIONS_DISABLED))) {
+
 			return key;
 		}
 
@@ -2062,13 +2072,13 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		private CompanyLocalesBag(long companyId) {
-			String[] languageIds = PropsValues.LOCALES;
+			String[] languageIds = PropsUtil.getArray(PropsKeys.LOCALES);
 
 			if (companyId != CompanyConstants.SYSTEM) {
 				try {
 					languageIds = PrefsPropsUtil.getStringArray(
 						companyId, PropsKeys.LOCALES, StringPool.COMMA,
-						PropsValues.LOCALES_ENABLED);
+						PropsUtil.getArray(PropsKeys.LOCALES_ENABLED));
 				}
 				catch (SystemException systemException) {
 
@@ -2078,7 +2088,7 @@ public class LanguageImpl implements Language, Serializable {
 						_log.debug(systemException);
 					}
 
-					languageIds = PropsValues.LOCALES_ENABLED;
+					languageIds = PropsUtil.getArray(PropsKeys.LOCALES_ENABLED);
 				}
 			}
 
@@ -2140,7 +2150,9 @@ public class LanguageImpl implements Language, Serializable {
 				_duplicateLanguageCodes = duplicateLanguageCodes;
 			}
 
-			for (String languageId : PropsValues.LOCALES_BETA) {
+			for (String languageId :
+					PropsUtil.getArray(PropsKeys.LOCALES_BETA)) {
+
 				_localesBetaSet.add(
 					LocaleUtil.fromLanguageId(languageId, false));
 			}

@@ -3,11 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.language;
+package com.liferay.portal.kernel.language;
 
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
-import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,9 +26,8 @@ public class ResourceBundleEnumerationTest {
 
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, LiferayUnitTestRule.INSTANCE);
+	public static final CodeCoverageAssertor codeCoverageAssertor =
+		CodeCoverageAssertor.INSTANCE;
 
 	@Test
 	public void testWithEnumeration() {

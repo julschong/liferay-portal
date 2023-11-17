@@ -38,7 +38,8 @@
 	<bean class="com.liferay.portal.kernel.json.JSONFactoryUtil" id="com.liferay.portal.kernel.json.JSONFactoryUtil">
 		<property name="JSONFactory" ref="com.liferay.portal.kernel.json.JSONFactory" />
 	</bean>
-	<bean class="com.liferay.portal.language.LanguageImpl" id="com.liferay.portal.kernel.language.Language" />
+	<bean class="com.liferay.portal.kernel.language.LanguageImpl" id="com.liferay.portal.kernel.language.Language" />
+	<bean class="com.liferay.portal.kernel.language.LanguageResources" id="com.liferay.portal.kernel.language.LanguageResources" />
 	<bean class="com.liferay.portal.kernel.language.LanguageUtil" id="com.liferay.portal.kernel.language.LanguageUtil">
 		<property name="language" ref="com.liferay.portal.kernel.language.Language" />
 	</bean>
@@ -88,7 +89,6 @@
 	</bean>
 	<bean class="com.liferay.portal.zip.ZipReaderFactoryImpl" id="com.liferay.portal.kernel.zip.ZipReaderFactory" />
 	<bean class="com.liferay.portal.zip.ZipWriterFactoryImpl" id="com.liferay.portal.kernel.zip.ZipWriterFactory" />
-	<bean class="com.liferay.portal.language.LanguageResources" id="com.liferay.portal.language.LanguageResources" />
 	<bean class="com.liferay.portal.servlet.filters.util.BrowserIdCacheFileNameContributor" id="com.liferay.portal.servlet.filters.util.BrowserIdCacheFileNameContributor" />
 	<bean class="com.liferay.portal.servlet.filters.util.LanguageIdCacheFileNameContributor" id="com.liferay.portal.servlet.filters.util.LanguageIdCacheFileNameContributor" />
 	<bean class="com.liferay.portal.servlet.filters.util.MinifierTypeCacheFileNameContributor" id="com.liferay.portal.servlet.filters.util.MinifierTypeCacheFileNameContributor" />
