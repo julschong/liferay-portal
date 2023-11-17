@@ -5,8 +5,6 @@
 
 package com.liferay.portal.repository.registry;
 
-import com.liferay.portal.kernel.language.LanguageImpl;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.repository.RepositoryConfigurationBuilder;
@@ -41,10 +39,6 @@ public class RepositoryClassDefinitionCatalogImplTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
-
 		_repositoryClassDefinitionCatalogImpl =
 			new RepositoryClassDefinitionCatalogImpl();
 

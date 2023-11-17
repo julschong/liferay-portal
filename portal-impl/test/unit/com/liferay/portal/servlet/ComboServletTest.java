@@ -6,8 +6,6 @@
 package com.liferay.portal.servlet;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.language.LanguageImpl;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletWrapper;
@@ -189,10 +187,6 @@ public class ComboServletTest {
 
 	@Test
 	public void testMixedExtensionsRequest() throws Exception {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
-
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 

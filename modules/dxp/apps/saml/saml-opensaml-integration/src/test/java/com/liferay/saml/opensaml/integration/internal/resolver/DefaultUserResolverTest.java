@@ -7,8 +7,6 @@ package com.liferay.saml.opensaml.integration.internal.resolver;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
-import com.liferay.portal.kernel.language.LanguageImpl;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
@@ -97,7 +95,6 @@ public class DefaultUserResolverTest extends BaseSamlTestCase {
 		super.setUp();
 
 		_mockDigesterUtil();
-		_mockLanguageUtil();
 
 		getMockPortalService(
 			OrganizationLocalServiceUtil.class, OrganizationLocalService.class);
@@ -776,12 +773,6 @@ public class DefaultUserResolverTest extends BaseSamlTestCase {
 		);
 
 		digesterUtil.setDigester(digester);
-	}
-
-	private void _mockLanguageUtil() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
 	}
 
 	private PrefsProps _mockPrefsProps() {

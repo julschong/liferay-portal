@@ -6,8 +6,6 @@
 package com.liferay.accessibility.menu.web.internal.util;
 
 import com.liferay.accessibility.menu.web.internal.model.AccessibilitySetting;
-import com.liferay.portal.kernel.language.LanguageImpl;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,10 +31,6 @@ public class AccessibilitySettingsUtilTest {
 	@Before
 	public void setUp() throws Exception {
 		_httpServletRequest = new MockHttpServletRequest();
-
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
 	}
 
 	@Test

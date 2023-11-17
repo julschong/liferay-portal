@@ -14,7 +14,6 @@ import com.liferay.content.dashboard.web.internal.item.filter.ContentDashboardIt
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.item.selector.ItemSelector;
-import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
@@ -36,7 +35,6 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -52,13 +50,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 	@ClassRule
 	public static LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
-
-	@BeforeClass
-	public static void setUpClass() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
-	}
 
 	@Test
 	public void testGetClearResultsURL() {

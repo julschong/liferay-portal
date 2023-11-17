@@ -10,8 +10,6 @@ import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageImpl;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.security.permission.ResourceActionsImpl;
@@ -35,10 +33,6 @@ public class BlogsEntryContentDashboardItemSubtypeTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
-
 		ResourceActionsUtil resourceActionsUtil = new ResourceActionsUtil();
 
 		resourceActionsUtil.setResourceActions(new ResourceActionsImpl());
