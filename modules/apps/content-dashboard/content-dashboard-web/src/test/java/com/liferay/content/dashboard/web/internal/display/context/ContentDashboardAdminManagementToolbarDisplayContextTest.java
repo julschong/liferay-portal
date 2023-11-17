@@ -14,7 +14,6 @@ import com.liferay.content.dashboard.web.internal.item.filter.ContentDashboardIt
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.item.selector.ItemSelector;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -176,7 +175,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
-					LanguageUtil.getLanguage(), mockLiferayPortletActionRequest,
+					mockLiferayPortletActionRequest,
 					new MockLiferayPortletActionResponse(), LocaleUtil.US,
 					Mockito.mock(UserLocalService.class));
 
@@ -229,7 +228,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
-					LanguageUtil.getLanguage(), mockLiferayPortletActionRequest,
+					mockLiferayPortletActionRequest,
 					new MockLiferayPortletActionResponse(), LocaleUtil.US,
 					Mockito.mock(UserLocalService.class));
 
@@ -365,7 +364,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContextTest {
 					Mockito.mock(GroupLocalService.class),
 					new MockHttpServletRequest(),
 					Mockito.mock(ItemSelector.class),
-					LanguageUtil.getLanguage(), mockLiferayPortletActionRequest,
+					mockLiferayPortletActionRequest,
 					new MockLiferayPortletActionResponse(), LocaleUtil.US,
 					Mockito.mock(UserLocalService.class));
 

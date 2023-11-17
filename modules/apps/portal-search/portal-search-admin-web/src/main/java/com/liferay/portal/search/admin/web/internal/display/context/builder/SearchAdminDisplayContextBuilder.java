@@ -6,7 +6,7 @@
 package com.liferay.portal.search.admin.web.internal.display.context.builder;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
-import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.admin.web.internal.display.context.SearchAdminDisplayContext;
@@ -24,10 +24,9 @@ import javax.portlet.RenderResponse;
 public class SearchAdminDisplayContextBuilder {
 
 	public SearchAdminDisplayContextBuilder(
-		Language language, Portal portal, RenderRequest renderRequest,
+		Portal portal, RenderRequest renderRequest,
 		RenderResponse renderResponse) {
 
-		_language = language;
 		_portal = portal;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
@@ -100,7 +99,7 @@ public class SearchAdminDisplayContextBuilder {
 				navigationItem.setHref(
 					_renderResponse.createRenderURL(), "tabs1", label);
 				navigationItem.setLabel(
-					_language.get(
+					LanguageUtil.get(
 						_portal.getHttpServletRequest(_renderRequest), label));
 			});
 	}
@@ -115,7 +114,6 @@ public class SearchAdminDisplayContextBuilder {
 
 	private IndexInformation _indexInformation;
 	private List<String> _indexReindexerClassNames;
-	private final Language _language;
 	private final Portal _portal;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

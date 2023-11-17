@@ -8,7 +8,7 @@ package com.liferay.dynamic.data.mapping.form.builder.internal.helper;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunctionRegistry;
 import com.liferay.dynamic.data.mapping.form.builder.internal.util.DDMExpressionFunctionMetadata;
-import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
@@ -123,12 +123,12 @@ public class DDMExpressionFunctionMetadataHelper {
 		_addDDMExpressionFunctionMetadata(
 			ddmExpressionFunctionMetadatasMap,
 			new DDMExpressionFunctionMetadata(
-				"belongs-to", _language.get(resourceBundle, "belongs-to"),
+				"belongs-to", LanguageUtil.get(resourceBundle, "belongs-to"),
 				_TYPE_BOOLEAN, new String[] {_TYPE_USER, _TYPE_LIST}));
 		_addDDMExpressionFunctionMetadata(
 			ddmExpressionFunctionMetadatasMap,
 			new DDMExpressionFunctionMetadata(
-				"equals-to", _language.get(resourceBundle, "is-equal-to"),
+				"equals-to", LanguageUtil.get(resourceBundle, "is-equal-to"),
 				_TYPE_BOOLEAN, new String[] {_TYPE_BOOLEAN, _TYPE_BOOLEAN}));
 
 		for (Map.Entry<String, String> entry : _binaryFunctions.entrySet()) {
@@ -136,13 +136,13 @@ public class DDMExpressionFunctionMetadataHelper {
 				ddmExpressionFunctionMetadatasMap,
 				new DDMExpressionFunctionMetadata(
 					entry.getKey(),
-					_language.get(resourceBundle, entry.getValue()),
+					LanguageUtil.get(resourceBundle, entry.getValue()),
 					_TYPE_BOOLEAN, new String[] {_TYPE_NUMBER, _TYPE_NUMBER}));
 			_addDDMExpressionFunctionMetadata(
 				ddmExpressionFunctionMetadatasMap,
 				new DDMExpressionFunctionMetadata(
 					entry.getKey(),
-					_language.get(resourceBundle, entry.getValue()),
+					LanguageUtil.get(resourceBundle, entry.getValue()),
 					_TYPE_BOOLEAN, new String[] {_TYPE_TEXT, _TYPE_TEXT}));
 		}
 
@@ -153,7 +153,7 @@ public class DDMExpressionFunctionMetadataHelper {
 				ddmExpressionFunctionMetadatasMap,
 				new DDMExpressionFunctionMetadata(
 					entry.getKey(),
-					_language.get(resourceBundle, entry.getValue()),
+					LanguageUtil.get(resourceBundle, entry.getValue()),
 					_TYPE_BOOLEAN, new String[] {_TYPE_NUMBER, _TYPE_NUMBER}));
 		}
 
@@ -164,7 +164,7 @@ public class DDMExpressionFunctionMetadataHelper {
 				ddmExpressionFunctionMetadatasMap,
 				new DDMExpressionFunctionMetadata(
 					entry.getKey(),
-					_language.get(resourceBundle, entry.getValue()),
+					LanguageUtil.get(resourceBundle, entry.getValue()),
 					_TYPE_BOOLEAN, new String[] {_TYPE_TEXT, _TYPE_TEXT}));
 		}
 
@@ -173,13 +173,13 @@ public class DDMExpressionFunctionMetadataHelper {
 				ddmExpressionFunctionMetadatasMap,
 				new DDMExpressionFunctionMetadata(
 					entry.getKey(),
-					_language.get(resourceBundle, entry.getValue()),
+					LanguageUtil.get(resourceBundle, entry.getValue()),
 					_TYPE_BOOLEAN, new String[] {_TYPE_NUMBER}));
 			_addDDMExpressionFunctionMetadata(
 				ddmExpressionFunctionMetadatasMap,
 				new DDMExpressionFunctionMetadata(
 					entry.getKey(),
-					_language.get(resourceBundle, entry.getValue()),
+					LanguageUtil.get(resourceBundle, entry.getValue()),
 					_TYPE_BOOLEAN, new String[] {_TYPE_TEXT}));
 		}
 	}
@@ -256,9 +256,6 @@ public class DDMExpressionFunctionMetadataHelper {
 
 	@Reference
 	private DDMExpressionFunctionRegistry _ddmExpressionFunctionRegistry;
-
-	@Reference
-	private Language _language;
 
 	@Reference
 	private Portal _portal;

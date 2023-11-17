@@ -77,7 +77,7 @@ public class SearchAdminPortlet extends MVCPortlet {
 
 		SearchAdminDisplayContextBuilder searchAdminDisplayContextBuilder =
 			new SearchAdminDisplayContextBuilder(
-				_language, _portal, renderRequest, renderResponse);
+				_portal, renderRequest, renderResponse);
 
 		searchAdminDisplayContextBuilder.setIndexInformation(
 			_indexInformationSnapshot.get());

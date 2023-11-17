@@ -141,8 +141,7 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 					contentDashboardDataProvider.getAssetVocabularyMetric(
 						assetVocabularies),
 					new ContentDashboardDropdownItemsProvider(
-						_language, liferayPortletRequest,
-						liferayPortletResponse, _portal),
+						liferayPortletRequest, liferayPortletResponse, _portal),
 					_contentDashboardItemSubtypeFactoryRegistry, _itemSelector,
 					_language.get(
 						_portal.getLocale(liferayPortletRequest),
@@ -162,7 +161,7 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 					_contentDashboardItemFilterProviderRegistry,
 					_groupLocalService,
 					_portal.getHttpServletRequest(renderRequest), _itemSelector,
-					_language, liferayPortletRequest, liferayPortletResponse,
+					liferayPortletRequest, liferayPortletResponse,
 					_portal.getLocale(renderRequest), _userLocalService);
 
 		renderRequest.setAttribute(

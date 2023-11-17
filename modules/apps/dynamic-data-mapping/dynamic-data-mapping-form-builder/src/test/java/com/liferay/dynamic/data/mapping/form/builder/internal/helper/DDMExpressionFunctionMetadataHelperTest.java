@@ -9,7 +9,6 @@ import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunctionRegistry;
 import com.liferay.dynamic.data.mapping.form.builder.internal.util.DDMExpressionFunctionMetadata;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -67,10 +66,6 @@ public class DDMExpressionFunctionMetadataHelperTest {
 		).thenReturn(
 			ResourceBundleUtil.EMPTY_RESOURCE_BUNDLE
 		);
-
-		ReflectionTestUtil.setFieldValue(
-			_ddmExpressionFunctionMetadataHelper, "_language",
-			new LanguageImpl());
 	}
 
 	@Test

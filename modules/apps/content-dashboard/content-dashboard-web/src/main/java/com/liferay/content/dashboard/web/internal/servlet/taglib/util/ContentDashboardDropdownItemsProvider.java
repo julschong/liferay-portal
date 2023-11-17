@@ -15,7 +15,7 @@ import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.petra.function.transform.TransformUtil;
-import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
@@ -33,10 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 public class ContentDashboardDropdownItemsProvider {
 
 	public ContentDashboardDropdownItemsProvider(
-		Language language, LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, Portal portal) {
 
-		_language = language;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 		_portal = portal;
@@ -93,7 +92,7 @@ public class ContentDashboardDropdownItemsProvider {
 					).setIcon(
 						"info-circle-open"
 					).setLabel(
-						_language.get(locale, "info")
+						LanguageUtil.get(locale, "info")
 					).setQuickAction(
 						true
 					).build();
@@ -167,7 +166,6 @@ public class ContentDashboardDropdownItemsProvider {
 		).build();
 	}
 
-	private final Language _language;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final Portal _portal;

@@ -16,7 +16,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -35,15 +35,13 @@ public class DLFileEntryTypeContentDashboardItemSubtype
 	public DLFileEntryTypeContentDashboardItemSubtype(
 		DLFileEntryType basicDocumentDLFileEntryType, DLFileEntry dlFileEntry,
 		DLFileEntryType dlFileEntryType,
-		FileExtensionGroupsProvider fileExtensionGroupsProvider, Group group,
-		Language language) {
+		FileExtensionGroupsProvider fileExtensionGroupsProvider, Group group) {
 
 		_basicDocumentDLFileEntryType = basicDocumentDLFileEntryType;
 		_dlFileEntry = dlFileEntry;
 		_dlFileEntryType = dlFileEntryType;
 		_fileExtensionGroupsProvider = fileExtensionGroupsProvider;
 		_group = group;
-		_language = language;
 
 		_infoItemReference = new InfoItemReference(
 			FileEntry.class.getName(),
@@ -130,7 +128,7 @@ public class DLFileEntryTypeContentDashboardItemSubtype
 			return StringBundler.concat(
 				_dlFileEntryType.getName(locale), StringPool.SPACE,
 				StringPool.OPEN_PARENTHESIS,
-				_language.get(
+				LanguageUtil.get(
 					locale,
 					_fileExtensionGroupsProvider.getFileGroupKey(
 						_dlFileEntry.getExtension())),
@@ -184,6 +182,5 @@ public class DLFileEntryTypeContentDashboardItemSubtype
 	private final FileExtensionGroupsProvider _fileExtensionGroupsProvider;
 	private final Group _group;
 	private final InfoItemReference _infoItemReference;
-	private final Language _language;
 
 }

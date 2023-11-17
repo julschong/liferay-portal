@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -233,7 +233,7 @@ public class FragmentEntryValidatorImpl implements FragmentEntryValidator {
 
 	private String _getMessage(String message) {
 		return StringBundler.concat(
-			_language.get(
+			LanguageUtil.get(
 				LocaleUtil.getDefault(), "fragment-configuration-is-invalid"),
 			System.lineSeparator(), message);
 	}
@@ -249,8 +249,5 @@ public class FragmentEntryValidatorImpl implements FragmentEntryValidator {
 
 	@Reference
 	private JSONFactory _jsonFactory;
-
-	@Reference
-	private Language _language;
 
 }

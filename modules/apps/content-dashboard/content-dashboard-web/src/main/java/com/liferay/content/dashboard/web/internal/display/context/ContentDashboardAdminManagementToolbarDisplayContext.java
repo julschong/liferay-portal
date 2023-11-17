@@ -33,7 +33,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -78,7 +78,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardItemFilterProviderRegistry,
 		GroupLocalService groupLocalService,
 		HttpServletRequest httpServletRequest, ItemSelector itemSelector,
-		Language language, LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, Locale locale,
 		UserLocalService userLocalService) {
 
@@ -94,7 +94,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardItemFilterProviderRegistry;
 		_groupLocalService = groupLocalService;
 		_itemSelector = itemSelector;
-		_language = language;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 		_locale = locale;
@@ -157,7 +156,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(_getFilterDropdownItems());
 				dropdownGroupItem.setLabel(
-					_language.get(httpServletRequest, "filter-by") +
+					LanguageUtil.get(httpServletRequest, "filter-by") +
 						StringPool.TRIPLE_PERIOD);
 			}
 		).addGroup(
@@ -165,21 +164,22 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				dropdownGroupItem.setDropdownItems(
 					_getFilterAuthorDropdownItems());
 				dropdownGroupItem.setLabel(
-					_language.get(httpServletRequest, "filter-by-author"));
+					LanguageUtil.get(httpServletRequest, "filter-by-author"));
 			}
 		).addGroup(
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(
 					_getFilterStatusDropdownItems());
 				dropdownGroupItem.setLabel(
-					_language.get(httpServletRequest, "filter-by-status"));
+					LanguageUtil.get(httpServletRequest, "filter-by-status"));
 			}
 		).addGroup(
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(
 					_getFilterByReviewDateDropdownItems());
 				dropdownGroupItem.setLabel(
-					_language.get(httpServletRequest, "filter-by-review-date"));
+					LanguageUtil.get(
+						httpServletRequest, "filter-by-review-date"));
 			}
 		).addGroup(
 			() -> !FeatureFlagManagerUtil.isEnabled("LPS-144527"),
@@ -306,7 +306,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					labelItem.setLabel(
 						_getLabel(
 							"author",
-							_language.get(httpServletRequest, fullName)));
+							LanguageUtil.get(httpServletRequest, fullName)));
 				});
 		}
 
@@ -334,7 +334,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				labelItem.setLabel(
 					_getLabel(
 						"review-date",
-						_language.get(httpServletRequest, "to-be-reviewed")));
+						LanguageUtil.get(
+							httpServletRequest, "to-be-reviewed")));
 			});
 
 		Set<String> assetTagIds =
@@ -612,7 +613,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					"authorIds", (String)null
 				).buildPortletURL()
 			).setLabel(
-				_language.get(httpServletRequest, "all")
+				LanguageUtil.get(httpServletRequest, "all")
 			).build(),
 			() -> {
 				DropdownItem dropdownItem = new DropdownItem();
@@ -627,7 +628,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				dropdownItem.setHref(
 					getPortletURL(), "authorIds",
 					_contentDashboardAdminDisplayContext.getUserId());
-				dropdownItem.setLabel(_language.get(httpServletRequest, "me"));
+				dropdownItem.setLabel(
+					LanguageUtil.get(httpServletRequest, "me"));
 
 				return dropdownItem;
 			},
@@ -635,7 +637,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				"action", "selectAuthor"
 			).putData(
 				"dialogTitle",
-				_language.get(httpServletRequest, "select-author")
+				LanguageUtil.get(httpServletRequest, "select-author")
 			).putData(
 				"redirectURL",
 				PortletURLBuilder.create(
@@ -660,7 +662,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					return null;
 				}
 			).setLabel(
-				_language.get(httpServletRequest, "author") +
+				LanguageUtil.get(httpServletRequest, "author") +
 					StringPool.TRIPLE_PERIOD
 			).build());
 	}
@@ -673,7 +675,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 			dropdownItem -> {
 				dropdownItem.setActive(Validator.isNull(reviewDate));
 				dropdownItem.setHref(getPortletURL(), "reviewDate", null);
-				dropdownItem.setLabel(_language.get(httpServletRequest, "all"));
+				dropdownItem.setLabel(
+					LanguageUtil.get(httpServletRequest, "all"));
 			}
 		).add(
 			dropdownItem -> {
@@ -681,7 +684,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				dropdownItem.setHref(
 					getPortletURL(), "reviewDate", "toBeReviewed");
 				dropdownItem.setLabel(
-					_language.get(httpServletRequest, "to-be-reviewed"));
+					LanguageUtil.get(httpServletRequest, "to-be-reviewed"));
 			}
 		).build();
 	}
@@ -692,7 +695,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				"action", "selectAssetCategory"
 			).putData(
 				"dialogTitle",
-				_language.get(httpServletRequest, "select-categories")
+				LanguageUtil.get(httpServletRequest, "select-categories")
 			).putData(
 				"redirectURL",
 				PortletURLBuilder.create(
@@ -706,18 +709,18 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				ListUtil.isNotEmpty(
 					_contentDashboardAdminDisplayContext.getAssetCategoryIds())
 			).setLabel(
-				_language.get(httpServletRequest, "categories") +
+				LanguageUtil.get(httpServletRequest, "categories") +
 					StringPool.TRIPLE_PERIOD
 			).build(),
 			() -> {
-				String label = _language.get(
+				String label = LanguageUtil.get(
 					httpServletRequest, "site-or-asset-library");
 
 				return DropdownItemBuilder.putData(
 					"action", "selectScope"
 				).putData(
 					"dialogTitle",
-					_language.get(
+					LanguageUtil.get(
 						httpServletRequest, "select-site-or-asset-library")
 				).putData(
 					"redirectURL",
@@ -741,7 +744,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				"action", "selectContentDashboardItemSubtype"
 			).putData(
 				"dialogTitle",
-				_language.get(httpServletRequest, "filter-by-type")
+				LanguageUtil.get(httpServletRequest, "filter-by-type")
 			).putData(
 				"redirectURL",
 				PortletURLBuilder.create(
@@ -759,13 +762,14 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					_contentDashboardAdminDisplayContext.
 						getContentDashboardItemSubtypes())
 			).setLabel(
-				_language.get(httpServletRequest, "type") +
+				LanguageUtil.get(httpServletRequest, "type") +
 					StringPool.TRIPLE_PERIOD
 			).build(),
 			() -> DropdownItemBuilder.putData(
 				"action", "selectAssetTag"
 			).putData(
-				"dialogTitle", _language.get(httpServletRequest, "select-tags")
+				"dialogTitle",
+				LanguageUtil.get(httpServletRequest, "select-tags")
 			).putData(
 				"redirectURL",
 				PortletURLBuilder.create(
@@ -779,7 +783,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 				SetUtil.isNotEmpty(
 					_contentDashboardAdminDisplayContext.getAssetTagIds())
 			).setLabel(
-				_language.get(httpServletRequest, "tags") +
+				LanguageUtil.get(httpServletRequest, "tags") +
 					StringPool.TRIPLE_PERIOD
 			).build());
 
@@ -811,7 +815,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 	private String _getLabel(String key, String value) {
 		return StringBundler.concat(
-			_language.get(httpServletRequest, key), StringPool.COLON,
+			LanguageUtil.get(httpServletRequest, key), StringPool.COLON,
 			StringPool.SPACE, value);
 	}
 
@@ -897,7 +901,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	private String _getStatusLabel(int status) {
 		String label = WorkflowConstants.getStatusLabel(status);
 
-		return _language.get(httpServletRequest, label);
+		return LanguageUtil.get(httpServletRequest, label);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -911,7 +915,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		_contentDashboardItemFilterProviderRegistry;
 	private final GroupLocalService _groupLocalService;
 	private final ItemSelector _itemSelector;
-	private final Language _language;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final Locale _locale;

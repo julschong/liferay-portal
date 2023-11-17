@@ -14,8 +14,6 @@ import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtype;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderRequest;
@@ -59,8 +57,6 @@ public class ContentDashboardDropdownItemsProviderTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		_language = new LanguageImpl();
-
 		_mockResourceURL();
 
 		_portal = Mockito.mock(Portal.class);
@@ -85,7 +81,7 @@ public class ContentDashboardDropdownItemsProviderTest {
 		ContentDashboardDropdownItemsProvider
 			contentDashboardDropdownItemsProvider =
 				new ContentDashboardDropdownItemsProvider(
-					_language, mockLiferayPortletRenderRequest,
+					mockLiferayPortletRenderRequest,
 					new MockLiferayPortletRenderResponse(), _portal);
 
 		DropdownItem dropdownItem = _findFirstDropdownItem(
@@ -116,7 +112,7 @@ public class ContentDashboardDropdownItemsProviderTest {
 		ContentDashboardDropdownItemsProvider
 			contentDashboardDropdownItemsProvider =
 				new ContentDashboardDropdownItemsProvider(
-					_language, mockLiferayPortletRenderRequest,
+					mockLiferayPortletRenderRequest,
 					new MockLiferayPortletRenderResponse(), _portal);
 
 		DropdownItem dropdownItem = _findFirstDropdownItem(
@@ -152,7 +148,7 @@ public class ContentDashboardDropdownItemsProviderTest {
 		ContentDashboardDropdownItemsProvider
 			contentDashboardDropdownItemsProvider =
 				new ContentDashboardDropdownItemsProvider(
-					_language, mockLiferayPortletRenderRequest,
+					mockLiferayPortletRenderRequest,
 					new MockLiferayPortletRenderResponse(), _portal);
 
 		DropdownItem dropdownItems = _findFirstDropdownItem(
@@ -420,7 +416,6 @@ public class ContentDashboardDropdownItemsProviderTest {
 		};
 	}
 
-	private static Language _language;
 	private static Portal _portal;
 
 }

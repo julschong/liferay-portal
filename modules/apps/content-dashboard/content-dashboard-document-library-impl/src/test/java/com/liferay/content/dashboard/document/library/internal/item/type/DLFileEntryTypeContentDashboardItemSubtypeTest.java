@@ -12,7 +12,6 @@ import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -49,8 +48,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeTest {
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					Mockito.mock(DLFileEntryType.class),
 					Mockito.mock(DLFileEntry.class), dLFileEntryType,
-					new FileExtensionGroupsProvider(), _getGroup("groupName"),
-					new LanguageImpl());
+					new FileExtensionGroupsProvider(), _getGroup("groupName"));
 
 		Assert.assertEquals(
 			"fileEntryTypeName (groupName)",
@@ -106,8 +104,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeTest {
 			dLFileEntryTypeContentDashboardItemSubtype =
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					dLFileEntryType, dlFileEntry, dLFileEntryType,
-					fileExtensionGroupsProvider, _getGroup("groupName"),
-					new LanguageImpl());
+					fileExtensionGroupsProvider, _getGroup("groupName"));
 
 		Assert.assertEquals(
 			"fileEntryTypeName (image) (groupName)",
@@ -137,8 +134,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeTest {
 			dLFileEntryTypeContentDashboardItemSubtype =
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					dLFileEntryType, dlFileEntry, dLFileEntryType,
-					new FileExtensionGroupsProvider(), _getGroup("groupName"),
-					new LanguageImpl());
+					new FileExtensionGroupsProvider(), _getGroup("groupName"));
 
 		Assert.assertEquals(
 			"fileEntryTypeName (other) (groupName)",
@@ -159,15 +155,13 @@ public class DLFileEntryTypeContentDashboardItemSubtypeTest {
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					Mockito.mock(DLFileEntryType.class),
 					Mockito.mock(DLFileEntry.class), dLFileEntryType,
-					new FileExtensionGroupsProvider(), _getGroup("groupName"),
-					new LanguageImpl());
+					new FileExtensionGroupsProvider(), _getGroup("groupName"));
 		DLFileEntryTypeContentDashboardItemSubtype
 			dLFileEntryTypeContentDashboardItemSubtype2 =
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					Mockito.mock(DLFileEntryType.class),
 					Mockito.mock(DLFileEntry.class), dLFileEntryType,
-					new FileExtensionGroupsProvider(), _getGroup("groupName"),
-					new LanguageImpl());
+					new FileExtensionGroupsProvider(), _getGroup("groupName"));
 
 		Assert.assertTrue(
 			dLFileEntryTypeContentDashboardItemSubtype1.equals(
@@ -184,8 +178,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeTest {
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					Mockito.mock(DLFileEntryType.class),
 					Mockito.mock(DLFileEntry.class), dLFileEntryType1,
-					new FileExtensionGroupsProvider(), _getGroup("groupName"),
-					new LanguageImpl());
+					new FileExtensionGroupsProvider(), _getGroup("groupName"));
 
 		DLFileEntryType dLFileEntryType2 = _getDLFileEntryType(
 			"fileEntryTypeName");
@@ -195,8 +188,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeTest {
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					Mockito.mock(DLFileEntryType.class),
 					Mockito.mock(DLFileEntry.class), dLFileEntryType2,
-					new FileExtensionGroupsProvider(), _getGroup("groupName"),
-					new LanguageImpl());
+					new FileExtensionGroupsProvider(), _getGroup("groupName"));
 
 		Assert.assertFalse(
 			dLFileEntryTypeContentDashboardItemSubtype1.equals(
@@ -213,8 +205,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeTest {
 				new DLFileEntryTypeContentDashboardItemSubtype(
 					Mockito.mock(DLFileEntryType.class),
 					Mockito.mock(DLFileEntry.class), dLFileEntryType,
-					new FileExtensionGroupsProvider(), _getGroup("groupName"),
-					new LanguageImpl());
+					new FileExtensionGroupsProvider(), _getGroup("groupName"));
 
 		InfoItemReference infoItemReference =
 			dLFileEntryTypeContentDashboardItemSubtype.getInfoItemReference();

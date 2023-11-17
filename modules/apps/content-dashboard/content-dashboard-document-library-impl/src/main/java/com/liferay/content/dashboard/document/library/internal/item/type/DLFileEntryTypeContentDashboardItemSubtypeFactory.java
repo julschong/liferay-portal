@@ -41,8 +41,7 @@ public class DLFileEntryTypeContentDashboardItemSubtypeFactory
 			basicDocumentDLFileEntryType,
 			_dlFileEntryLocalService.fetchDLFileEntry(entryClassPK),
 			dlFileEntryType, _fileExtensionGroupsProvider,
-			_groupLocalService.fetchGroup(dlFileEntryType.getGroupId()),
-			_language);
+			_groupLocalService.fetchGroup(dlFileEntryType.getGroupId()));
 	}
 
 	@Reference
