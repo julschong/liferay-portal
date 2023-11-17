@@ -15,6 +15,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderRequest;
@@ -26,7 +27,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;

@@ -10,11 +10,11 @@ import com.liferay.change.tracking.spi.resolver.context.ConstraintResolverContex
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.service.DLFolderLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
-import com.liferay.portal.language.LanguageResources;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

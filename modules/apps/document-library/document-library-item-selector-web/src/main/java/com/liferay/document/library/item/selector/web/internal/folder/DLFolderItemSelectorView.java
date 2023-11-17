@@ -18,6 +18,7 @@ import com.liferay.item.selector.PortletItemSelectorView;
 import com.liferay.item.selector.criteria.FolderItemSelectorReturnType;
 import com.liferay.item.selector.criteria.folder.criterion.FolderItemSelectorCriterion;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -32,7 +33,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.language.LanguageResources;
 
 import java.io.IOException;
 

@@ -6,6 +6,7 @@
 package com.liferay.portal.servlet;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
@@ -18,7 +19,6 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.model.impl.PortletAppImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.ToolDependencies;

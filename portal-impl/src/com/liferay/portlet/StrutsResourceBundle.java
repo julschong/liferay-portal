@@ -7,12 +7,12 @@ package com.liferay.portlet;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.LanguageResources;
+import com.liferay.portal.kernel.language.ResourceBundleEnumeration;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.language.LanguageResources;
-import com.liferay.portal.language.ResourceBundleEnumeration;
 
 import java.util.Enumeration;
 import java.util.HashSet;

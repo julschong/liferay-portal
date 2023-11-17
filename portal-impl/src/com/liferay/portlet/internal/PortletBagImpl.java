@@ -12,6 +12,7 @@ import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.notifications.UserNotificationHandler;
@@ -34,7 +35,6 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.xmlrpc.Method;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialRequestInterpreter;
 

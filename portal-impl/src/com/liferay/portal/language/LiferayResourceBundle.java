@@ -5,6 +5,7 @@
 
 package com.liferay.portal.language;
 
+import com.liferay.portal.kernel.language.ResourceBundleEnumeration;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 
 import java.io.IOException;

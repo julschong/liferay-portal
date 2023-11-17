@@ -8,7 +8,7 @@ package com.liferay.document.library.internal.change.tracking.spi.resolver;
 import com.liferay.change.tracking.spi.resolver.ConstraintResolver;
 import com.liferay.change.tracking.spi.resolver.context.ConstraintResolverContext;
 import com.liferay.document.library.kernel.model.DLFileEntry;
-import com.liferay.portal.language.LanguageResources;
+import com.liferay.portal.kernel.language.LanguageResources;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

@@ -12,7 +12,7 @@ import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.language.LanguageResources;
+import com.liferay.portal.kernel.language.LanguageResources;
 
 import java.util.List;
 import java.util.Locale;

@@ -5,8 +5,8 @@
 
 package com.liferay.document.library.layout.set.prototype.internal.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.upgrade.BaseLocalizedColumnUpgradeProcess;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.PortalInstances;
 
 /**

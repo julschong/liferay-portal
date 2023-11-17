@@ -76,6 +76,7 @@ page import="com.liferay.portal.kernel.exception.PortletPreferencesException" %>
 page import="com.liferay.portal.kernel.json.JSONArray" %><%@
 page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
+page import="com.liferay.portal.kernel.language.LanguageResources" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.log.Log" %><%@
@@ -107,7 +108,6 @@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
-page import="com.liferay.portal.language.LanguageResources" %><%@
 page import="com.liferay.portal.template.engine.TemplateContextHelper" %><%@
 page import="com.liferay.taglib.search.ResultRow" %>
 

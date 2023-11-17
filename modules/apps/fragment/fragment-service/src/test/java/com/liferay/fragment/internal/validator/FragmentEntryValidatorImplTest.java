@@ -8,12 +8,12 @@ package com.liferay.fragment.internal.validator;
 import com.liferay.fragment.exception.FragmentEntryConfigurationException;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.hamcrest.core.StringContains;

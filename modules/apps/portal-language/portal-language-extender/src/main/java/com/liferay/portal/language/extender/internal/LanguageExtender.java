@@ -5,8 +5,8 @@
 
 package com.liferay.portal.language.extender.internal;
 
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.language.LanguageResources;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import com.liferay.change.tracking.spi.resolver.context.ConstraintResolverContex
 import com.liferay.layout.model.LayoutClassedModelUsage;
 import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.language.LanguageResources;
+import com.liferay.portal.kernel.language.LanguageResources;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

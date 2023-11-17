@@ -10,10 +10,10 @@ import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.security.permission.ResourceActionsImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 

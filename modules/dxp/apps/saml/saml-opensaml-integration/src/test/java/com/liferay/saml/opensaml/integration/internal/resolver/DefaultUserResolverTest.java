@@ -7,6 +7,7 @@ package com.liferay.saml.opensaml.integration.internal.resolver;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
+import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Contact;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.model.impl.UserGroupImpl;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;

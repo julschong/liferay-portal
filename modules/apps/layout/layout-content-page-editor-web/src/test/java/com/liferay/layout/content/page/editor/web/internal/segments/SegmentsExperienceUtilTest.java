@@ -6,9 +6,9 @@
 package com.liferay.layout.content.page.editor.web.internal.segments;
 
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.LanguageImpl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.segments.model.SegmentsExperience;
 
