@@ -358,6 +358,6 @@ public class LanguageUtil {
 		_language = language;
 	}
 
-	private static Language _language;
+	private static Language _language = new LanguageImpl();
 
 }
