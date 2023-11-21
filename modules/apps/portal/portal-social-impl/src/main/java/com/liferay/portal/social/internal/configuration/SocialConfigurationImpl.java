@@ -34,9 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Zsolt Berentey
  */
+@Component(service = SocialConfiguration.class)
 public class SocialConfigurationImpl implements SocialConfiguration {
 
 	@Override
