@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Tomas Polesovsky
@@ -73,10 +74,14 @@ public class AccessControlAdvisorImpl implements AccessControlAdvisor {
 			SystemBundleUtil.getBundleContext(), AccessControlPolicy.class);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_accessControlPolicies.close();
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccessControlAdvisorImpl.class.getName());
 
-	private static ServiceTrackerList<AccessControlPolicy>
-		_accessControlPolicies;
+	private ServiceTrackerList<AccessControlPolicy> _accessControlPolicies;
 
 }
