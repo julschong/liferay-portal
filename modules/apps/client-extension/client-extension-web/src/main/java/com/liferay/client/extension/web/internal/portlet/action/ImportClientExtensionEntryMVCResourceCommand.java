@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -159,7 +159,7 @@ public class ImportClientExtensionEntryMVCResourceCommand
 					_clientExtensionEntryService.addClientExtensionEntry(
 						externalReferenceCode,
 						jsonObject.getString("description"),
-						_localization.getLocalizationMap(
+						LocalizationUtil.getLocalizationMap(
 							jsonObject.getString("name")),
 						jsonObject.getString("properties"),
 						jsonObject.getString("sourceCodeURL"),
@@ -170,7 +170,7 @@ public class ImportClientExtensionEntryMVCResourceCommand
 					_clientExtensionEntryService.updateClientExtensionEntry(
 						clientExtensionEntry.getClientExtensionEntryId(),
 						jsonObject.getString("description"),
-						_localization.getLocalizationMap(
+						LocalizationUtil.getLocalizationMap(
 							jsonObject.getString("name")),
 						jsonObject.getString("properties"),
 						jsonObject.getString("sourceCodeURL"),
@@ -255,9 +255,6 @@ public class ImportClientExtensionEntryMVCResourceCommand
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

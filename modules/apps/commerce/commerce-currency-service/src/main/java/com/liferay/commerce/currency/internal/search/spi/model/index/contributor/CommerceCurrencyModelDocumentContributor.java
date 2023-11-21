@@ -9,11 +9,10 @@ import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.product.constants.CPField;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Mahmoud Azzam
@@ -34,7 +33,7 @@ public class CommerceCurrencyModelDocumentContributor
 		document.addNumberSortable(
 			Field.PRIORITY, commerceCurrency.getPriority());
 
-		String[] languageIds = _localization.getAvailableLanguageIds(
+		String[] languageIds = LocalizationUtil.getAvailableLanguageIds(
 			commerceCurrency.getName());
 
 		for (String languageId : languageIds) {
@@ -42,10 +41,12 @@ public class CommerceCurrencyModelDocumentContributor
 
 			document.addText(Field.CONTENT, name);
 			document.addText(
-				_localization.getLocalizedName(Field.NAME, languageId), name);
+				LocalizationUtil.getLocalizedName(Field.NAME, languageId),
+				name);
 
 			String commerceCurrencyDefaultLanguageId =
-				_localization.getDefaultLanguageId(commerceCurrency.getName());
+				LocalizationUtil.getDefaultLanguageId(
+					commerceCurrency.getName());
 
 			if (languageId.equals(commerceCurrencyDefaultLanguageId)) {
 				document.addText(Field.NAME, name);
@@ -53,8 +54,5 @@ public class CommerceCurrencyModelDocumentContributor
 			}
 		}
 	}
-
-	@Reference
-	private Localization _localization;
 
 }

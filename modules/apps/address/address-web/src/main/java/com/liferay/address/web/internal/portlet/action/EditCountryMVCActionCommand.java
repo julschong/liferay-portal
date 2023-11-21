@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -101,7 +101,7 @@ public class EditCountryMVCActionCommand
 				Map<String, String> titleMap = new HashMap<>();
 
 				Map<Locale, String> titleLocalizationMap =
-					_localization.getLocalizationMap(actionRequest, "title");
+					LocalizationUtil.getLocalizationMap(actionRequest, "title");
 
 				for (Map.Entry<Locale, String> entry :
 						titleLocalizationMap.entrySet()) {
@@ -146,8 +146,5 @@ public class EditCountryMVCActionCommand
 
 	@Reference
 	private Language _language;
-
-	@Reference
-	private Localization _localization;
 
 }

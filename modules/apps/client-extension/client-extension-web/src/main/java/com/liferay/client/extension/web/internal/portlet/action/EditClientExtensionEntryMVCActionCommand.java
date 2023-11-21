@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -101,7 +101,7 @@ public class EditClientExtensionEntryMVCActionCommand
 
 	private void _add(ActionRequest actionRequest) throws PortalException {
 		String description = ParamUtil.getString(actionRequest, "description");
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
 		String sourceCodeURL = ParamUtil.getString(
 			actionRequest, "sourceCodeURL");
@@ -137,7 +137,7 @@ public class EditClientExtensionEntryMVCActionCommand
 			actionRequest);
 
 		String description = ParamUtil.getString(actionRequest, "description");
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
 		String properties = ParamUtil.getString(actionRequest, "properties");
 		String sourceCodeURL = ParamUtil.getString(
@@ -159,9 +159,6 @@ public class EditClientExtensionEntryMVCActionCommand
 
 	@Reference
 	private ClientExtensionEntryService _clientExtensionEntryService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

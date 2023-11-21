@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.localization.SearchLocalizationHelper;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
@@ -53,7 +53,7 @@ public class AssetVocabularyModelDocumentContributor
 			Field.VISIBILITY_TYPE, assetVocabulary.getVisibilityType());
 		document.addLocalizedKeyword(
 			"localized_title",
-			_localization.populateLocalizationMap(
+			LocalizationUtil.populateLocalizationMap(
 				assetVocabulary.getTitleMap(),
 				assetVocabulary.getDefaultLanguageId(),
 				assetVocabulary.getGroupId()),
@@ -68,9 +68,6 @@ public class AssetVocabularyModelDocumentContributor
 			throw new SystemException(portalException);
 		}
 	}
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;

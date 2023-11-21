@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.util.Locale;
 
@@ -78,10 +78,10 @@ public class ClientExtensionEntryIndexer
 			CLASS_NAME, clientExtensionEntry);
 
 		String[] nameAvailableLanguageIds =
-			_localization.getAvailableLanguageIds(
+			LocalizationUtil.getAvailableLanguageIds(
 				clientExtensionEntry.getName());
 
-		String nameDefaultLanguageId = _localization.getDefaultLanguageId(
+		String nameDefaultLanguageId = LocalizationUtil.getDefaultLanguageId(
 			clientExtensionEntry.getName());
 
 		for (String nameAvailableLanguageId : nameAvailableLanguageIds) {
@@ -92,7 +92,7 @@ public class ClientExtensionEntryIndexer
 			}
 
 			document.addText(
-				_localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					Field.NAME, nameAvailableLanguageId),
 				name);
 		}
@@ -175,8 +175,5 @@ public class ClientExtensionEntryIndexer
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
-
-	@Reference
-	private Localization _localization;
 
 }

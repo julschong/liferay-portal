@@ -58,7 +58,7 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -481,22 +481,24 @@ public class EditCPDefinitionMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, CPDefinition cpDefinition)
 		throws Exception {
 
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "nameMapAsXML");
 		Map<Locale, String> shortDescriptionMap =
-			_localization.getLocalizationMap(
+			LocalizationUtil.getLocalizationMap(
 				actionRequest, "shortDescriptionMapAsXML");
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "descriptionMapAsXML");
-		Map<Locale, String> urlTitleMap = _localization.getLocalizationMap(
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(
+				actionRequest, "descriptionMapAsXML");
+		Map<Locale, String> urlTitleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "urlTitleMapAsXML");
-		Map<Locale, String> metaTitleMap = _localization.getLocalizationMap(
+		Map<Locale, String> metaTitleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "metaTitleMapAsXML");
 		Map<Locale, String> metaDescriptionMap =
-			_localization.getLocalizationMap(
+			LocalizationUtil.getLocalizationMap(
 				actionRequest, "metaDescriptionMapAsXML");
-		Map<Locale, String> metaKeywordsMap = _localization.getLocalizationMap(
-			actionRequest, "metaKeywordsMapAsXML");
+		Map<Locale, String> metaKeywordsMap =
+			LocalizationUtil.getLocalizationMap(
+				actionRequest, "metaKeywordsMapAsXML");
 		boolean published = ParamUtil.getBoolean(actionRequest, "published");
 
 		int displayDateMonth = ParamUtil.getInteger(
@@ -731,9 +733,6 @@ public class EditCPDefinitionMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private CPDefinitionService _cpDefinitionService;
-
-	@Reference
-	private Localization _localization;
 
 	private class CPDefinitionCallable implements Callable<CPDefinition> {
 

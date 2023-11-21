@@ -10,13 +10,12 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
 
 import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Fabiano Nazar
@@ -36,8 +35,9 @@ public class BlogsEntryModelSummaryContributor
 		String languageId = LocaleUtil.toLanguageId(locale);
 
 		return _createSummary(
-			document, _localization.getLocalizedName(Field.CONTENT, languageId),
-			_localization.getLocalizedName(Field.TITLE, languageId));
+			document,
+			LocalizationUtil.getLocalizedName(Field.CONTENT, languageId),
+			LocalizationUtil.getLocalizedName(Field.TITLE, languageId));
 	}
 
 	private Summary _createSummary(
@@ -53,8 +53,5 @@ public class BlogsEntryModelSummaryContributor
 
 		return summary;
 	}
-
-	@Reference
-	private Localization _localization;
 
 }

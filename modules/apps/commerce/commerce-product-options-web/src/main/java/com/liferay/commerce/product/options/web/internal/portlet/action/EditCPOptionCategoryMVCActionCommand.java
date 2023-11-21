@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.Locale;
@@ -111,10 +111,10 @@ public class EditCPOptionCategoryMVCActionCommand extends BaseMVCActionCommand {
 		long cpOptionCategoryId = ParamUtil.getLong(
 			actionRequest, "cpOptionCategoryId");
 
-		Map<Locale, String> titleMap = _localization.getLocalizationMap(
+		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "title");
-		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
-			actionRequest, "description");
+		Map<Locale, String> descriptionMap =
+			LocalizationUtil.getLocalizationMap(actionRequest, "description");
 		double priority = ParamUtil.getDouble(actionRequest, "priority");
 		String key = ParamUtil.getString(actionRequest, "key");
 
@@ -143,8 +143,5 @@ public class EditCPOptionCategoryMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private CPOptionCategoryService _cpOptionCategoryService;
-
-	@Reference
-	private Localization _localization;
 
 }

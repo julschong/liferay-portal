@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -149,7 +149,7 @@ public class EditCPInstanceUnitOfMeasureMVCActionCommand
 		BigDecimal incrementalOrderQuantity = (BigDecimal)ParamUtil.getNumber(
 			actionRequest, "incrementalOrderQuantity", BigDecimal.ZERO);
 		String key = ParamUtil.getString(actionRequest, "key");
-		Map<Locale, String> nameMap = _localization.getLocalizationMap(
+		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "name");
 		int precision = ParamUtil.getInteger(actionRequest, "precision");
 		boolean primary = ParamUtil.getBoolean(actionRequest, "primary");
@@ -256,8 +256,5 @@ public class EditCPInstanceUnitOfMeasureMVCActionCommand
 
 	@Reference
 	private CPInstanceUnitOfMeasureService _cpInstanceUnitOfMeasureService;
-
-	@Reference
-	private Localization _localization;
 
 }

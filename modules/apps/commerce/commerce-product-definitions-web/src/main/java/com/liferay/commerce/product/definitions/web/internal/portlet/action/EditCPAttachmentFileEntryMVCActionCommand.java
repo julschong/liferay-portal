@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -179,7 +179,7 @@ public class EditCPAttachmentFileEntryMVCActionCommand
 			actionRequest, "neverExpire");
 		String cpInstanceOptions = ParamUtil.getString(
 			actionRequest, "cpInstanceOptions");
-		Map<Locale, String> titleMap = _localization.getLocalizationMap(
+		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "title");
 		double priority = ParamUtil.getDouble(actionRequest, "priority");
 		int type = ParamUtil.getInteger(actionRequest, "type");
@@ -219,9 +219,6 @@ public class EditCPAttachmentFileEntryMVCActionCommand
 
 	@Reference
 	private CPDefinitionService _cpDefinitionService;
-
-	@Reference
-	private Localization _localization;
 
 	@Reference
 	private Portal _portal;
