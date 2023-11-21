@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Localization;
+import com.liferay.portal.kernel.util.LocalizationImpl;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -40,7 +41,6 @@ import com.liferay.portal.search.solr8.internal.search.engine.adapter.SolrSearch
 import com.liferay.portal.search.solr8.internal.suggest.NGramHolderBuilderImpl;
 import com.liferay.portal.search.solr8.internal.suggest.NGramQueryBuilderImpl;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.util.LocalizationImpl;
 
 import java.nio.ByteBuffer;
 

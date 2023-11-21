@@ -8,7 +8,7 @@ package com.liferay.portal.search.test.util.mappings;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Localization;
-import com.liferay.portal.util.LocalizationImpl;
+import com.liferay.portal.kernel.util.LocalizationImpl;
 
 import java.util.Arrays;
 import java.util.List;
