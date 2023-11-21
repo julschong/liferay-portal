@@ -5,6 +5,7 @@
 
 package com.liferay.social.kernel.util;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.social.kernel.model.SocialActivityDefinition;
 
 import java.util.List;
@@ -15,41 +16,42 @@ import java.util.List;
 public class SocialConfigurationUtil {
 
 	public static List<String> getActivityCounterNames() {
-		return _socialConfiguration.getActivityCounterNames();
+		return _getSocialConfiguration().getActivityCounterNames();
 	}
 
 	public static List<String> getActivityCounterNames(
 		boolean transientCounter) {
 
-		return _socialConfiguration.getActivityCounterNames(transientCounter);
+		return _getSocialConfiguration().getActivityCounterNames(
+			transientCounter);
 	}
 
 	public static List<String> getActivityCounterNames(int ownerType) {
-		return _socialConfiguration.getActivityCounterNames(ownerType);
+		return _getSocialConfiguration().getActivityCounterNames(ownerType);
 	}
 
 	public static List<String> getActivityCounterNames(
 		int ownerType, boolean transientCounter) {
 
-		return _socialConfiguration.getActivityCounterNames(
+		return _getSocialConfiguration().getActivityCounterNames(
 			ownerType, transientCounter);
 	}
 
 	public static SocialActivityDefinition getActivityDefinition(
 		String modelName, int activityType) {
 
-		return _socialConfiguration.getActivityDefinition(
+		return _getSocialConfiguration().getActivityDefinition(
 			modelName, activityType);
 	}
 
 	public static List<SocialActivityDefinition> getActivityDefinitions(
 		String modelName) {
 
-		return _socialConfiguration.getActivityDefinitions(modelName);
+		return _getSocialConfiguration().getActivityDefinitions(modelName);
 	}
 
 	public static String[] getActivityModelNames() {
-		return _socialConfiguration.getActivityModelNames();
+		return _getSocialConfiguration().getActivityModelNames();
 	}
 
 	public static SocialConfiguration getSocialConfiguration() {
@@ -59,13 +61,13 @@ public class SocialConfigurationUtil {
 	public static List<Object> read(ClassLoader classLoader, String[] xmls)
 		throws Exception {
 
-		return _socialConfiguration.read(classLoader, xmls);
+		return _getSocialConfiguration().read(classLoader, xmls);
 	}
 
 	public static void removeActivityDefinition(
 		SocialActivityDefinition activityDefinition) {
 
-		_socialConfiguration.removeActivityDefinition(activityDefinition);
+		_getSocialConfiguration().removeActivityDefinition(activityDefinition);
 	}
 
 	public void setSocialConfiguration(
@@ -74,6 +76,12 @@ public class SocialConfigurationUtil {
 		_socialConfiguration = socialConfiguration;
 	}
 
-	private static SocialConfiguration _socialConfiguration;
+	private static SocialConfiguration _getSocialConfiguration() {
+		return _socialConfigurationSnapshot.get();
+	}
+
+	private static final Snapshot<SocialConfiguration>
+		_socialConfigurationSnapshot = new Snapshot<>(
+			SocialConfigurationUtil.class, SocialConfiguration.class);
 
 }
