@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.CustomJspRegistryImpl;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 import com.liferay.portal.util.PortalImpl;
 
@@ -71,10 +70,6 @@ public class CustomJspBagRegistryUtilTest {
 
 		portalUtil.setPortal(new PortalImpl());
 
-		CustomJspRegistryUtil customJspRegistryUtil =
-			new CustomJspRegistryUtil();
-
-		customJspRegistryUtil.setCustomJspRegistry(new CustomJspRegistryImpl());
 	}
 
 	@Before
