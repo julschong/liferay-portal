@@ -117,8 +117,4 @@
 		<constructor-arg name="portletContainer" ref="com.liferay.portlet.internal.PortletContainerImpl" />
 	</bean>
 	<bean class="com.liferay.portlet.internal.PortletContainerImpl" id="com.liferay.portlet.internal.PortletContainerImpl" />
-	<bean class="com.liferay.portlet.social.util.SocialConfigurationImpl" id="com.liferay.social.kernel.util.SocialConfiguration" />
-	<bean class="com.liferay.social.kernel.util.SocialConfigurationUtil" id="com.liferay.social.kernel.util.SocialConfigurationUtil">
-		<property name="socialConfiguration" ref="com.liferay.social.kernel.util.SocialConfiguration" />
-	</bean>
 </beans>
