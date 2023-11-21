@@ -405,6 +405,6 @@ public class LocalizationUtil {
 		_localization = localization;
 	}
 
-	private static Localization _localization;
+	private static Localization _localization = new LocalizationImpl();
 
 }
