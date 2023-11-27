@@ -31,12 +31,6 @@ public class TunnelAuthenticationManagerUtil {
 			login, httpURLConnection);
 	}
 
-	public void setTunnelAuthenticationManager(
-		TunnelAuthenticationManager tunnelAuthenticationManager) {
-
-		_tunnelAuthenticationManager = tunnelAuthenticationManager;
-	}
-
 	private static TunnelAuthenticationManager
 		_getTunnelAuthenticationManager() {
 
