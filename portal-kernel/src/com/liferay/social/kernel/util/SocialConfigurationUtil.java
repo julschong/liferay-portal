@@ -54,10 +54,6 @@ public class SocialConfigurationUtil {
 		return _getSocialConfiguration().getActivityModelNames();
 	}
 
-	public static SocialConfiguration getSocialConfiguration() {
-		return _socialConfiguration;
-	}
-
 	public static List<Object> read(ClassLoader classLoader, String[] xmls)
 		throws Exception {
 
@@ -68,12 +64,6 @@ public class SocialConfigurationUtil {
 		SocialActivityDefinition activityDefinition) {
 
 		_getSocialConfiguration().removeActivityDefinition(activityDefinition);
-	}
-
-	public void setSocialConfiguration(
-		SocialConfiguration socialConfiguration) {
-
-		_socialConfiguration = socialConfiguration;
 	}
 
 	private static SocialConfiguration _getSocialConfiguration() {
