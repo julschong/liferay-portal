@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Language Implementation
+Bundle-SymbolicName: com.liferay.portal.language.impl
+Bundle-Version: 1.0.0
