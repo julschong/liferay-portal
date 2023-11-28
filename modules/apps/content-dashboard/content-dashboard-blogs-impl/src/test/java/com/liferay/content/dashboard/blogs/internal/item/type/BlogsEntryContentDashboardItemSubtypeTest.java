@@ -13,15 +13,19 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.security.permission.ResourceActionsImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 /**
  * @author Cristina González
@@ -35,13 +39,17 @@ public class BlogsEntryContentDashboardItemSubtypeTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
-
 		ResourceActionsUtil resourceActionsUtil = new ResourceActionsUtil();
 
 		resourceActionsUtil.setResourceActions(new ResourceActionsImpl());
+
+		_languageUtilMockedStatic.when(
+			() -> LanguageUtil.get(
+				Mockito.any(Locale.class), Mockito.anyString(),
+				Mockito.anyString())
+		).thenReturn(
+			null
+		);
 	}
 
 	@Test
@@ -103,5 +111,8 @@ public class BlogsEntryContentDashboardItemSubtypeTest {
 			).toString(),
 			blogsEntryContentDashboardItemSubtype.toJSONString(LocaleUtil.US));
 	}
+
+	private static final MockedStatic<LanguageUtil> _languageUtilMockedStatic =
+		Mockito.mockStatic(LanguageUtil.class);
 
 }

@@ -16,7 +16,6 @@ import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClass
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Dictionary;
@@ -24,11 +23,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.ListResourceBundle;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -60,18 +59,18 @@ public class ConfigurationModelToDDMFormValuesConverterTest extends Mockito {
 		).thenReturn(
 			bundleContext.getBundle()
 		);
+
+		_languageUtilMockedStatic.when(
+			() -> LanguageUtil.get(
+				Mockito.any(ResourceBundle.class), Mockito.anyString())
+		).thenReturn(
+			null
+		);
 	}
 
 	@AfterClass
 	public static void tearDownClass() {
 		_frameworkUtilMockedStatic.close();
-	}
-
-	@Before
-	public void setUp() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
 	}
 
 	@Test
@@ -496,6 +495,8 @@ public class ConfigurationModelToDDMFormValuesConverterTest extends Mockito {
 
 	private static final MockedStatic<FrameworkUtil>
 		_frameworkUtilMockedStatic = Mockito.mockStatic(FrameworkUtil.class);
+	private static final MockedStatic<LanguageUtil> _languageUtilMockedStatic =
+		Mockito.mockStatic(LanguageUtil.class);
 
 	private final Locale _enLocale = LocaleUtil.US;
 

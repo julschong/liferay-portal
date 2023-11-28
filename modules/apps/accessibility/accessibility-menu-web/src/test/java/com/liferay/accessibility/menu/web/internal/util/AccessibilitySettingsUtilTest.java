@@ -7,16 +7,20 @@ package com.liferay.accessibility.menu.web.internal.util;
 
 import com.liferay.accessibility.menu.web.internal.model.AccessibilitySetting;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -30,13 +34,24 @@ public class AccessibilitySettingsUtilTest {
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@BeforeClass
+	public static void setUpClass() {
+		_languageUtilMockedStatic.when(
+			() -> LanguageUtil.get(
+				Mockito.any(HttpServletRequest.class), Mockito.anyString())
+		).thenReturn(
+			null
+		);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		_languageUtilMockedStatic.close();
+	}
+
 	@Before
 	public void setUp() throws Exception {
 		_httpServletRequest = new MockHttpServletRequest();
-
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		languageUtil.setLanguage(new LanguageImpl());
 	}
 
 	@Test
@@ -49,6 +64,9 @@ public class AccessibilitySettingsUtilTest {
 				null, accessibilitySetting.getSessionClicksValue());
 		}
 	}
+
+	private static final MockedStatic<LanguageUtil> _languageUtilMockedStatic =
+		Mockito.mockStatic(LanguageUtil.class);
 
 	private HttpServletRequest _httpServletRequest;
 
