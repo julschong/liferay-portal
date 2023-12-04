@@ -46,6 +46,10 @@
 	<pbcast.STABLE desired_avg_gossip="50000"
 				   max_bytes="4M"
 				   stability_delay="1000" />
+	<AUTH
+		auth_class="org.jgroups.auth.SimpleToken"
+		auth_value="${cluster.link.auth.secret}"
+	/>
 	<pbcast.GMS join_timeout="2000" print_local_addr="true" view_bundling="true" />
 	<UFC
 		max_credits="2M"
