@@ -31,20 +31,20 @@ public class LayoutSetPrototypeLayoutModelListener
 
 	@Override
 	public void onAfterCreate(Layout layout) {
-		updateLayoutSetPrototype(layout, layout.getModifiedDate());
+		_updateLayoutSetPrototype(layout, layout.getModifiedDate());
 	}
 
 	@Override
 	public void onAfterRemove(Layout layout) {
-		updateLayoutSetPrototype(layout, new Date());
+		_updateLayoutSetPrototype(layout, new Date());
 	}
 
 	@Override
 	public void onAfterUpdate(Layout originalLayout, Layout layout) {
-		updateLayoutSetPrototype(layout, layout.getModifiedDate());
+		_updateLayoutSetPrototype(layout, layout.getModifiedDate());
 	}
 
-	protected void updateLayoutSetPrototype(Layout layout, Date modifiedDate) {
+	private void _updateLayoutSetPrototype(Layout layout, Date modifiedDate) {
 		if (layout == null) {
 			return;
 		}
