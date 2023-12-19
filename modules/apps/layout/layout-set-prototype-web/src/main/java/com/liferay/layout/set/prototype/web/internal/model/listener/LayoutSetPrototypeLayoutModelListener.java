@@ -13,13 +13,14 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.LayoutSetLocalService;
+import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
 
 import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Raymond Augé
@@ -48,7 +49,7 @@ public class LayoutSetPrototypeLayoutModelListener
 			return;
 		}
 
-		Group group = GroupLocalServiceUtil.fetchGroup(layout.getGroupId());
+		Group group = _groupLocalService.fetchGroup(layout.getGroupId());
 
 		if ((group == null) || !group.isLayoutSetPrototype()) {
 			return;
@@ -56,17 +57,17 @@ public class LayoutSetPrototypeLayoutModelListener
 
 		try {
 			LayoutSetPrototype layoutSetPrototype =
-				LayoutSetPrototypeLocalServiceUtil.fetchLayoutSetPrototype(
+				_layoutSetPrototypeLocalService.fetchLayoutSetPrototype(
 					group.getClassPK());
 
 			if (layoutSetPrototype != null) {
-				LayoutSet layoutSet = LayoutSetLocalServiceUtil.fetchLayoutSet(
+				LayoutSet layoutSet = _layoutSetLocalService.fetchLayoutSet(
 					layoutSetPrototype.getGroupId(), true);
 
 				if (layoutSet != null) {
 					layoutSet.setModifiedDate(modifiedDate);
 
-					LayoutSetLocalServiceUtil.updateLayoutSet(layoutSet);
+					_layoutSetLocalService.updateLayoutSet(layoutSet);
 				}
 			}
 		}
@@ -77,5 +78,14 @@ public class LayoutSetPrototypeLayoutModelListener
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutSetPrototypeLayoutModelListener.class);
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private LayoutSetLocalService _layoutSetLocalService;
+
+	@Reference
+	private LayoutSetPrototypeLocalService _layoutSetPrototypeLocalService;
 
 }
