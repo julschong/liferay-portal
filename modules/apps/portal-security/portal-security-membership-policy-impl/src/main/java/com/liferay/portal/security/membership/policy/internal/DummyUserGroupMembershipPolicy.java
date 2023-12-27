@@ -3,18 +3,23 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.kernel.security.membershippolicy;
+package com.liferay.portal.security.membership.policy.internal;
 
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.security.membershippolicy.BaseUserGroupMembershipPolicy;
+import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicy;
 
 import java.io.Serializable;
 
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Roberto Díaz
  * @author Sergio González
  */
+@Component(service = UserGroupMembershipPolicy.class)
 public class DummyUserGroupMembershipPolicy
 	extends BaseUserGroupMembershipPolicy {
 
