@@ -5,14 +5,15 @@
 
 package com.liferay.portal.webserver.internal;
 
+import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
-import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.webserver.WebServerServletToken;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -45,8 +46,13 @@ public class WebServerServletTokenImpl implements WebServerServletToken {
 
 	@Activate
 	protected void activate() {
-		_portalCache = PortalCacheHelperUtil.getPortalCache(
-			PortalCacheManagerNames.MULTI_VM, _CACHE_NAME);
+		_portalCache = (PortalCache<Long, String>)_multiVMPool.getPortalCache(
+			_CACHE_NAME);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(_CACHE_NAME);
 	}
 
 	private String _createToken() {
@@ -55,6 +61,9 @@ public class WebServerServletTokenImpl implements WebServerServletToken {
 
 	private static final String _CACHE_NAME =
 		WebServerServletToken.class.getName();
+
+	@Reference
+	private MultiVMPool _multiVMPool;
 
 	private PortalCache<Long, String> _portalCache;
 
