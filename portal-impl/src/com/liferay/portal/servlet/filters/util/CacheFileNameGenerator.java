@@ -10,8 +10,7 @@ import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFacto
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
-import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
+import com.liferay.portal.cache.key.CacheKeyGeneratorType;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
@@ -27,10 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 public class CacheFileNameGenerator {
 
 	public static String getCacheFileName(
-		HttpServletRequest httpServletRequest, String cacheName) {
-
-		CacheKeyGenerator cacheKeyGenerator =
-			CacheKeyGeneratorUtil.getCacheKeyGenerator(cacheName);
+		HttpServletRequest httpServletRequest,
+		CacheKeyGeneratorType cacheKeyGenerator) {
 
 		StringBundler sb = new StringBundler(4);
 

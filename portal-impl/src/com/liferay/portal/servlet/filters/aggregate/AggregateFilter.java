@@ -12,6 +12,7 @@ import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.cache.key.CacheKeyGeneratorType;
 import com.liferay.portal.internal.minifier.MinifierThreadLocal;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.log.Log;
@@ -367,7 +368,7 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 
 	protected String getCacheFileName(HttpServletRequest httpServletRequest) {
 		return CacheFileNameGenerator.getCacheFileName(
-			httpServletRequest, AggregateFilter.class.getName());
+			httpServletRequest, CacheKeyGeneratorType.SIMPLE);
 	}
 
 	protected Object getContent(

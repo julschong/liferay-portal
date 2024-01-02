@@ -11,6 +11,7 @@ import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.cache.key.CacheKeyGeneratorType;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -19,7 +20,6 @@ import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
-import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
@@ -585,28 +585,10 @@ public class FinderCacheImpl
 
 	private CacheKeyGenerator _getCacheKeyGenerator(boolean baseModel) {
 		if (baseModel) {
-			CacheKeyGenerator cacheKeyGenerator = _baseModelCacheKeyGenerator;
-
-			if (cacheKeyGenerator == null) {
-				cacheKeyGenerator = CacheKeyGeneratorUtil.getCacheKeyGenerator(
-					FinderCache.class.getName() + "#BaseModel");
-
-				_baseModelCacheKeyGenerator = cacheKeyGenerator;
-			}
-
-			return cacheKeyGenerator;
+			return CacheKeyGeneratorType.HASH_CODE;
 		}
 
-		CacheKeyGenerator cacheKeyGenerator = _cacheKeyGenerator;
-
-		if (cacheKeyGenerator == null) {
-			cacheKeyGenerator = CacheKeyGeneratorUtil.getCacheKeyGenerator(
-				FinderCache.class.getName());
-
-			_cacheKeyGenerator = cacheKeyGenerator;
-		}
-
-		return cacheKeyGenerator;
+		return CacheKeyGeneratorType.SIMPLE;
 	}
 
 	private String _getCacheNameWithoutPagination(String cacheName) {
@@ -731,9 +713,7 @@ public class FinderCacheImpl
 	private static final MethodKey _clearDSLQueryCacheMethodKey = new MethodKey(
 		FinderCacheUtil.class, "clearDSLQueryCache", String.class);
 
-	private volatile CacheKeyGenerator _baseModelCacheKeyGenerator;
 	private BundleContext _bundleContext;
-	private volatile CacheKeyGenerator _cacheKeyGenerator;
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;

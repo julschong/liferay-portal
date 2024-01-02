@@ -6,6 +6,7 @@
 package com.liferay.portal.servlet.filters.dynamiccss;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.cache.key.CacheKeyGeneratorType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
@@ -60,7 +61,7 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 
 	protected String getCacheFileName(HttpServletRequest httpServletRequest) {
 		String cacheFileName = CacheFileNameGenerator.getCacheFileName(
-			httpServletRequest, DynamicCSSFilter.class.getName());
+			httpServletRequest, CacheKeyGeneratorType.SIMPLE);
 
 		if (PortalUtil.isRightToLeft(httpServletRequest)) {
 			return cacheFileName + _CACHE_FILE_NAME_RTL;
