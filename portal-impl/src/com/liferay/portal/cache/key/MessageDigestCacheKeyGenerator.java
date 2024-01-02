@@ -28,11 +28,6 @@ import java.security.MessageDigest;
 public class MessageDigestCacheKeyGenerator implements CacheKeyGenerator {
 
 	@Override
-	public CacheKeyGenerator clone() {
-		return new MessageDigestCacheKeyGenerator();
-	}
-
-	@Override
 	public Serializable getCacheKey(String key) {
 		return getCacheKey(new String[] {key}, 1);
 	}

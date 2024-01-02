@@ -13,9 +13,7 @@ import java.io.Serializable;
  * @author Michael C. Han
  * @author Shuyang Zhou
  */
-public interface CacheKeyGenerator extends Cloneable {
-
-	public CacheKeyGenerator clone();
+public interface CacheKeyGenerator {
 
 	public Serializable getCacheKey(String key);
 

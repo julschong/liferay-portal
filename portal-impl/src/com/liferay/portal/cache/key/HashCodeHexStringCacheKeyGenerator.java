@@ -15,11 +15,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 public class HashCodeHexStringCacheKeyGenerator implements CacheKeyGenerator {
 
 	@Override
-	public CacheKeyGenerator clone() {
-		return new HashCodeHexStringCacheKeyGenerator();
-	}
-
-	@Override
 	public String getCacheKey(String key) {
 		return StringUtil.toHexString(key.hashCode());
 	}

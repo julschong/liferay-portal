@@ -14,11 +14,6 @@ import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 public class SimpleCacheKeyGenerator implements CacheKeyGenerator {
 
 	@Override
-	public CacheKeyGenerator clone() {
-		return new SimpleCacheKeyGenerator();
-	}
-
-	@Override
 	public String getCacheKey(String key) {
 		return key;
 	}
