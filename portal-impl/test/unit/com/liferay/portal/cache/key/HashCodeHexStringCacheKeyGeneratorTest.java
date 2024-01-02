@@ -25,7 +25,7 @@ public class HashCodeHexStringCacheKeyGeneratorTest
 	@Before
 	@Override
 	public void setUp() throws Exception {
-		cacheKeyGenerator = new HashCodeHexStringCacheKeyGenerator();
+		cacheKeyGenerator = CacheKeyGeneratorType.HASH_CODE;
 	}
 
 }

@@ -25,7 +25,7 @@ public class JavaSHA1CacheKeyGeneratorTest
 	@Before
 	@Override
 	public void setUp() throws Exception {
-		cacheKeyGenerator = new MessageDigestCacheKeyGenerator();
+		cacheKeyGenerator = CacheKeyGeneratorType.MESSAGE_DIGEST;
 	}
 
 }
