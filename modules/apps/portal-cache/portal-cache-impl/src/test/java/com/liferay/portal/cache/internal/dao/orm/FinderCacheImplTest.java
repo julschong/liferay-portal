@@ -6,11 +6,10 @@
 package com.liferay.portal.cache.internal.dao.orm;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.cache.key.HashCodeHexStringCacheKeyGenerator;
+import com.liferay.portal.cache.key.CacheKeyGeneratorType;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
-import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -70,11 +69,6 @@ public class FinderCacheImplTest {
 		_notSerializedMultiVMPool = (MultiVMPool)ProxyUtil.newProxyInstance(
 			_classLoader, new Class<?>[] {MultiVMPool.class},
 			new MultiVMPoolInvocationHandler(_classLoader, false));
-
-		CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
-			new CacheKeyGeneratorUtil();
-
-		cacheKeyGeneratorUtil.setDefaultCacheKeyGenerator(_cacheKeyGenerator);
 	}
 
 	@Before
@@ -235,7 +229,7 @@ public class FinderCacheImplTest {
 	private static final String[] _KEY2 = {"j1me"};
 
 	private static final CacheKeyGenerator _cacheKeyGenerator =
-		new HashCodeHexStringCacheKeyGenerator();
+		CacheKeyGeneratorType.HASH_CODE;
 	private static final ClassLoader _classLoader =
 		FinderCacheImplTest.class.getClassLoader();
 	private static MultiVMPool _notSerializedMultiVMPool;
