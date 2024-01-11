@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.security.auth.AuthFailure;
 import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.Authenticator;
-import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.security.auto.login.AutoLogin;
 import com.liferay.portal.kernel.security.ldap.AttributesTransformer;
@@ -1409,21 +1408,6 @@ public class HookHotDeployListener
 					servletContextName, sanitizerClassName, Sanitizer.class,
 					sanitizer, "service.ranking", 1000);
 			}
-		}
-
-		if (portalProperties.containsKey(PropsKeys.USERS_FULL_NAME_GENERATOR)) {
-			String fullNameGeneratorClassName = portalProperties.getProperty(
-				PropsKeys.USERS_FULL_NAME_GENERATOR);
-
-			FullNameGenerator fullNameGenerator =
-				(FullNameGenerator)newInstance(
-					portletClassLoader, FullNameGenerator.class,
-					fullNameGeneratorClassName);
-
-			registerService(
-				servletContextName, fullNameGeneratorClassName,
-				FullNameGenerator.class, fullNameGenerator, "service.ranking",
-				1000);
 		}
 
 		for (String tokenWhitelistName : _TOKEN_WHITELIST_NAMES) {
