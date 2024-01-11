@@ -8,13 +8,12 @@ package com.liferay.user.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator;
 import com.liferay.portal.kernel.security.auth.ScreenNameValidator;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.security.auth.ScreenNameValidatorFactory;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
@@ -43,9 +42,7 @@ public class UserServiceWhenAddingUserWithSpecialCharactersScreenNameTest {
 
 	@Before
 	public void setUp() {
-		_screenNameValidator = ScreenNameValidatorFactory.getInstance();
-
-		if (_screenNameValidator instanceof DefaultScreenNameValidator) {
+		if (_isDefaultScreenNameValidator()) {
 			_originalSpecialChars = ReflectionTestUtil.getAndSetFieldValue(
 				_screenNameValidator, _FIELD_KEY_SPECIAL_CHARS,
 				_SPECIAL_CHARACTERS);
@@ -56,7 +53,7 @@ public class UserServiceWhenAddingUserWithSpecialCharactersScreenNameTest {
 
 	@After
 	public void tearDown() {
-		if (_screenNameValidator instanceof DefaultScreenNameValidator) {
+		if (_isDefaultScreenNameValidator()) {
 			ReflectionTestUtil.setFieldValue(
 				_screenNameValidator, _FIELD_KEY_SPECIAL_CHARS,
 				_originalSpecialChars);
@@ -119,6 +116,14 @@ public class UserServiceWhenAddingUserWithSpecialCharactersScreenNameTest {
 		return group.getFriendlyURL();
 	}
 
+	private boolean _isDefaultScreenNameValidator() {
+		Class<?> screenNameValidatorClass = _screenNameValidator.getClass();
+
+		String className = screenNameValidatorClass.getSimpleName();
+
+		return className.startsWith("Default");
+	}
+
 	private static final String _FIELD_KEY_SPECIAL_CHARS = "_specialChars";
 
 	private static final String _FIELD_KEY_SPECIAL_CHARS_REGEX =
@@ -128,6 +133,8 @@ public class UserServiceWhenAddingUserWithSpecialCharactersScreenNameTest {
 
 	private String _originalSpecialChars;
 	private String _originalSpecialCharsRegex;
+
+	@Inject
 	private ScreenNameValidator _screenNameValidator;
 
 	@DeleteAfterTestRun
