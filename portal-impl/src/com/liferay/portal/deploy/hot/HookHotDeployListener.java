@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.ScreenNameValidator;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.security.auto.login.AutoLogin;
 import com.liferay.portal.kernel.security.ldap.AttributesTransformer;
@@ -1444,23 +1443,6 @@ public class HookHotDeployListener
 				servletContextName, fullNameGeneratorClassName,
 				FullNameGenerator.class, fullNameGenerator, "service.ranking",
 				1000);
-		}
-
-		if (portalProperties.containsKey(
-				PropsKeys.USERS_SCREEN_NAME_VALIDATOR)) {
-
-			String screenNameValidatorClassName = portalProperties.getProperty(
-				PropsKeys.USERS_SCREEN_NAME_VALIDATOR);
-
-			ScreenNameValidator screenNameValidator =
-				(ScreenNameValidator)newInstance(
-					portletClassLoader, ScreenNameValidator.class,
-					screenNameValidatorClassName);
-
-			registerService(
-				servletContextName, screenNameValidatorClassName,
-				ScreenNameValidator.class, screenNameValidator,
-				"service.ranking", 1000);
 		}
 
 		for (String tokenWhitelistName : _TOKEN_WHITELIST_NAMES) {
