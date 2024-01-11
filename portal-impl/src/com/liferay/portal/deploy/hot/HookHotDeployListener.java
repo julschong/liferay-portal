@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.security.auth.AuthFailure;
 import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.Authenticator;
-import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.security.auto.login.AutoLogin;
@@ -1410,24 +1409,6 @@ public class HookHotDeployListener
 					servletContextName, sanitizerClassName, Sanitizer.class,
 					sanitizer, "service.ranking", 1000);
 			}
-		}
-
-		if (portalProperties.containsKey(
-				PropsKeys.USERS_EMAIL_ADDRESS_VALIDATOR)) {
-
-			String emailAddressValidatorClassName =
-				portalProperties.getProperty(
-					PropsKeys.USERS_EMAIL_ADDRESS_VALIDATOR);
-
-			EmailAddressValidator emailAddressValidator =
-				(EmailAddressValidator)newInstance(
-					portletClassLoader, EmailAddressValidator.class,
-					emailAddressValidatorClassName);
-
-			registerService(
-				servletContextName, emailAddressValidatorClassName,
-				EmailAddressValidator.class, emailAddressValidator,
-				"service.ranking", 1000);
 		}
 
 		if (portalProperties.containsKey(PropsKeys.USERS_FULL_NAME_GENERATOR)) {
