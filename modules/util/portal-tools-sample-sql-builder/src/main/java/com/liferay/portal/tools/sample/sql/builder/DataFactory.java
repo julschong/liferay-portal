@@ -245,8 +245,6 @@ import com.liferay.portal.kernel.model.VirtualHostModel;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
-import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.theme.NavItem;
@@ -297,6 +295,7 @@ import com.liferay.portal.search.web.internal.suggestions.constants.SuggestionsP
 import com.liferay.portal.search.web.internal.tag.facet.constants.TagFacetPortletKeys;
 import com.liferay.portal.search.web.internal.type.facet.constants.TypeFacetPortletKeys;
 import com.liferay.portal.search.web.internal.user.facet.constants.UserFacetPortletKeys;
+import com.liferay.portal.security.auth.internal.DefaultFullNameGenerator;
 import com.liferay.portal.service.impl.LayoutLocalServiceImpl;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
 import com.liferay.portal.util.PropsValues;
@@ -2286,11 +2285,11 @@ public class DataFactory {
 		contactModel.setCompanyId(userModel.getCompanyId());
 		contactModel.setUserId(userModel.getUserId());
 
-		FullNameGenerator fullNameGenerator =
-			FullNameGeneratorFactory.getInstance();
+		DefaultFullNameGenerator defaultFullNameGenerator =
+			new DefaultFullNameGenerator();
 
 		contactModel.setUserName(
-			fullNameGenerator.getFullName(
+			defaultFullNameGenerator.getFullName(
 				userModel.getFirstName(), userModel.getMiddleName(),
 				userModel.getLastName()));
 
