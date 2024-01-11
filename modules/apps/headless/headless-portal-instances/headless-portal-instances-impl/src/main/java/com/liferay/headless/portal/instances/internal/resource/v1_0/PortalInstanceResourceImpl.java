@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.vulcan.pagination.Page;
 
@@ -189,19 +188,19 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 			throw new UserScreenNameException.MustNotBeNull();
 		}
 
-		EmailAddressValidator emailAddressValidator =
-			EmailAddressValidatorFactory.getInstance();
-
-		if (!emailAddressValidator.validate(
+		if (!_emailAddressValidator.validate(
 				companyId, admin.getEmailAddress())) {
 
 			throw new UserEmailAddressException.MustValidate(
-				admin.getEmailAddress(), emailAddressValidator);
+				admin.getEmailAddress(), _emailAddressValidator);
 		}
 	}
 
 	@Reference
 	private CompanyService _companyService;
+
+	@Reference
+	private EmailAddressValidator _emailAddressValidator;
 
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;

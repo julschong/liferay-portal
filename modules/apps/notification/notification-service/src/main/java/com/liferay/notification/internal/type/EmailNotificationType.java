@@ -59,7 +59,6 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.display.template.PortletDisplayTemplate;
@@ -578,10 +577,7 @@ public class EmailNotificationType extends BaseNotificationType {
 		StringBundler sb = new StringBundler();
 
 		for (String emailAddress : StringUtil.split(emailAddresses)) {
-			EmailAddressValidator emailAddressValidator =
-				EmailAddressValidatorFactory.getInstance();
-
-			if (!emailAddressValidator.validate(companyId, emailAddress)) {
+			if (!_emailAddressValidator.validate(companyId, emailAddress)) {
 				if (_log.isInfoEnabled()) {
 					_log.info("Invalid email address " + emailAddress);
 				}
@@ -649,6 +645,9 @@ public class EmailNotificationType extends BaseNotificationType {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private EmailAddressValidator _emailAddressValidator;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

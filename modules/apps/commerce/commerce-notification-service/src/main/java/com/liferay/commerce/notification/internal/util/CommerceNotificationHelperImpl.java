@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -214,9 +213,6 @@ public class CommerceNotificationHelperImpl
 			commerceNotificationType, _TOFIELD,
 			commerceNotificationTemplate.getTo(), object, userLocale);
 
-		EmailAddressValidator emailAddressValidator =
-			EmailAddressValidatorFactory.getInstance();
-
 		String[] toUserStrings = StringUtil.split(to);
 
 		for (String toUserString : toUserStrings) {
@@ -224,7 +220,7 @@ public class CommerceNotificationHelperImpl
 				GetterUtil.getLong(toUserString));
 
 			if ((toUser == null) &&
-				emailAddressValidator.validate(
+				_emailAddressValidator.validate(
 					user.getCompanyId(), toUserString)) {
 
 				toUser = _userLocalService.fetchUserByEmailAddress(
@@ -282,6 +278,9 @@ public class CommerceNotificationHelperImpl
 
 	@Reference
 	private CommerceNotificationTypeRegistry _commerceNotificationTypeRegistry;
+
+	@Reference
+	private EmailAddressValidator _emailAddressValidator;
 
 	@Reference
 	private Portal _portal;
