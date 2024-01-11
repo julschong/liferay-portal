@@ -13,8 +13,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.TreeModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.tree.TreeModelTasksAdapter;
 import com.liferay.portal.kernel.tree.TreePathUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -80,7 +80,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 					String lastName = resultSet.getString("lastName");
 
 					FullNameGenerator fullNameGenerator =
-						FullNameGeneratorFactory.getInstance();
+						_fullNameGeneratorSnapshot.get();
 
 					return fullNameGenerator.getFullName(
 						firstName, middleName, lastName);
@@ -366,6 +366,10 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		UpgradeDocumentLibrary.class);
+
+	private static final Snapshot<FullNameGenerator>
+		_fullNameGeneratorSnapshot = new Snapshot<>(
+			UpgradeDocumentLibrary.class, FullNameGenerator.class, null, true);
 
 	private class DLFolderTreeModel implements TreeModel {
 

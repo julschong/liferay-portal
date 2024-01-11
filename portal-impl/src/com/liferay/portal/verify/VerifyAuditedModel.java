@@ -11,8 +11,8 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.UserConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.verify.model.VerifiableAuditedModel;
@@ -166,7 +166,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 					String lastName = resultSet.getString("lastName");
 
 					FullNameGenerator fullNameGenerator =
-						FullNameGeneratorFactory.getInstance();
+						_fullNameGeneratorSnapshot.get();
 
 					String userName = fullNameGenerator.getFullName(
 						firstName, middleName, lastName);
@@ -200,7 +200,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 					String lastName = resultSet.getString("lastName");
 
 					FullNameGenerator fullNameGenerator =
-						FullNameGeneratorFactory.getInstance();
+						_fullNameGeneratorSnapshot.get();
 
 					return fullNameGenerator.getFullName(
 						firstName, middleName, lastName);
@@ -361,6 +361,10 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyAuditedModel.class);
+
+	private static final Snapshot<FullNameGenerator>
+		_fullNameGeneratorSnapshot = new Snapshot<>(
+			VerifyAuditedModel.class, FullNameGenerator.class, null, true);
 
 	private class VerifyAuditedModelCallable implements Callable<Void> {
 

@@ -97,7 +97,6 @@ import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
 import com.liferay.portal.kernel.security.auth.FullNameDefinition;
 import com.liferay.portal.kernel.security.auth.FullNameDefinitionFactory;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.security.auth.FullNameValidator;
 import com.liferay.portal.kernel.security.auth.PasswordModificationThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -1237,8 +1236,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		User guestUser = getGuestUser(companyId);
 
-		FullNameGenerator fullNameGenerator =
-			FullNameGeneratorFactory.getInstance();
+		FullNameGenerator fullNameGenerator = _fullNameGeneratorSnapshot.get();
 
 		String greeting = LanguageUtil.format(
 			locale, "welcome-x",
@@ -3647,7 +3645,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		try {
 			FullNameGenerator fullNameGenerator =
-				FullNameGeneratorFactory.getInstance();
+				_fullNameGeneratorSnapshot.get();
 
 			String fullName = fullNameGenerator.getFullName(
 				firstName, middleName, lastName);
@@ -4618,7 +4616,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			}
 
 			FullNameGenerator fullNameGenerator =
-				FullNameGeneratorFactory.getInstance();
+				_fullNameGeneratorSnapshot.get();
 
 			String greeting = LanguageUtil.format(
 				locale, "welcome-x",
@@ -7234,6 +7232,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		_emailAddressValidatorSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, EmailAddressValidator.class, null,
 			true);
+	private static final Snapshot<FullNameGenerator>
+		_fullNameGeneratorSnapshot = new Snapshot<>(
+			UserLocalServiceImpl.class, FullNameGenerator.class, null, true);
 	private static final Snapshot<FullNameValidator>
 		_fullNameValidatorSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, FullNameValidator.class, null, true);

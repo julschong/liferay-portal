@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -337,8 +336,7 @@ public class UserImpl extends UserBaseImpl {
 	@AutoEscape
 	@Override
 	public String getFullName(boolean usePrefix, boolean useSuffix) {
-		FullNameGenerator fullNameGenerator =
-			FullNameGeneratorFactory.getInstance();
+		FullNameGenerator fullNameGenerator = _fullNameGeneratorSnapshot.get();
 
 		long prefixListTypeId = 0;
 
@@ -1014,6 +1012,9 @@ public class UserImpl extends UserBaseImpl {
 	private static final Snapshot<EmailAddressGenerator>
 		_emailAddressGeneratorSnapshot = new Snapshot<>(
 			UserImpl.class, EmailAddressGenerator.class, null, true);
+	private static final Snapshot<FullNameGenerator>
+		_fullNameGeneratorSnapshot = new Snapshot<>(
+			UserImpl.class, FullNameGenerator.class, null, true);
 
 	private Contact _contact;
 	private long[] _groupIds;

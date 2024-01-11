@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.security.auth.ScreenNameGenerator;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.CountryServiceUtil;
@@ -156,7 +155,7 @@ public class SetupWizardSampleDataUtil {
 
 		if (adminUser != null) {
 			FullNameGenerator fullNameGenerator =
-				FullNameGeneratorFactory.getInstance();
+				_fullNameGeneratorSnapshot.get();
 
 			String greeting = LanguageUtil.format(
 				locale, "welcome-x",
@@ -354,6 +353,10 @@ public class SetupWizardSampleDataUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SetupWizardSampleDataUtil.class);
 
+	private static final Snapshot<FullNameGenerator>
+		_fullNameGeneratorSnapshot = new Snapshot<>(
+			SetupWizardSampleDataUtil.class, FullNameGenerator.class, null,
+			true);
 	private static final Snapshot<ScreenNameGenerator>
 		_screenNameGeneratorSnapshot = new Snapshot<>(
 			SetupWizardSampleDataUtil.class, ScreenNameGenerator.class, null,
