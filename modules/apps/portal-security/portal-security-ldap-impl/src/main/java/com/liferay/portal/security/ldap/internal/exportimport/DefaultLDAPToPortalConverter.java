@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.FullNameDefinition;
 import com.liferay.portal.kernel.security.auth.FullNameDefinitionFactory;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ListTypeService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -124,10 +123,7 @@ public class DefaultLDAPToPortalConverter implements LDAPToPortalConverter {
 			String fullName = LDAPUtil.getAttributeString(
 				attributes, userMappings, UserConverterKeys.FULL_NAME);
 
-			FullNameGenerator fullNameGenerator =
-				FullNameGeneratorFactory.getInstance();
-
-			String[] names = fullNameGenerator.splitFullName(fullName);
+			String[] names = _fullNameGenerator.splitFullName(fullName);
 
 			if (Validator.isNull(firstName)) {
 				firstName = names[0];
@@ -357,6 +353,9 @@ public class DefaultLDAPToPortalConverter implements LDAPToPortalConverter {
 
 	@Reference
 	private ContactPersistence _contactPersistence;
+
+	@Reference
+	private FullNameGenerator _fullNameGenerator;
 
 	@Reference
 	private ListTypeService _listTypeService;
