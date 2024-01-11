@@ -171,7 +171,6 @@ import com.liferay.portal.model.impl.LayoutImpl;
 import com.liferay.portal.model.impl.UserCacheModel;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.security.auth.AuthPipeline;
-import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.security.pwd.PwdAuthenticator;
 import com.liferay.portal.security.pwd.PwdToolkitUtil;
@@ -6862,7 +6861,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 
 		EmailAddressValidator emailAddressValidator =
-			EmailAddressValidatorFactory.getInstance();
+			_emailAddressValidatorSnapshot.get();
 
 		if (!emailAddressValidator.validate(companyId, emailAddress)) {
 			throw new UserEmailAddressException.MustValidate(
@@ -7230,6 +7229,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	private static final Snapshot<EmailAddressGenerator>
 		_emailAddressGeneratorSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, EmailAddressGenerator.class, null,
+			true);
+	private static final Snapshot<EmailAddressValidator>
+		_emailAddressValidatorSnapshot = new Snapshot<>(
+			UserLocalServiceImpl.class, EmailAddressValidator.class, null,
 			true);
 	private static final Snapshot<FullNameValidator>
 		_fullNameValidatorSnapshot = new Snapshot<>(

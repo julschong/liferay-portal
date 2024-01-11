@@ -114,7 +114,6 @@
 		<Logger level="INFO" name="com.liferay.portal.plugin.PluginPackageUtil" />
 		<Logger level="ERROR" name="com.liferay.portal.pop" />
 		<Logger level="WARN" name="com.liferay.portal.security" />
-		<Logger level="ERROR" name="com.liferay.portal.security.auth.EmailAddressValidatorFactory" />
 		<Logger level="ERROR" name="com.liferay.portal.security.permission.AdvancedPermissionChecker" />
 		<Logger level="WARN" name="com.liferay.portal.security.permission.ResourceActionsImpl" />
 		<Logger level="WARN" name="com.liferay.portal.security.pwd.RegExpToolkit" />

@@ -63,6 +63,7 @@ import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -113,7 +114,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.liveusers.LiveUsers;
-import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 import com.liferay.portal.service.base.CompanyLocalServiceBaseImpl;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsUtil;
@@ -1677,7 +1677,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX + "@" + mx;
 
 		EmailAddressValidator emailAddressValidator =
-			EmailAddressValidatorFactory.getInstance();
+			_emailAddressValidatorSnapshot.get();
 
 		if (!emailAddressValidator.validate(companyId, emailAddress)) {
 			throw new CompanyMxException(
@@ -2290,6 +2290,11 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyLocalServiceImpl.class);
+
+	private static final Snapshot<EmailAddressValidator>
+		_emailAddressValidatorSnapshot = new Snapshot<>(
+			CompanyLocalServiceImpl.class, EmailAddressValidator.class, null,
+			true);
 
 	private final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
