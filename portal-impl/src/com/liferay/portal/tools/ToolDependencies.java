@@ -21,8 +21,6 @@ import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.security.auth.DefaultFullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.util.DigesterUtil;
@@ -76,8 +74,6 @@ public class ToolDependencies {
 				new Class<?>[] {FriendlyURLNormalizer.class},
 				(proxy, method, args) -> null),
 			null);
-		bundleContext.registerService(
-			FullNameGenerator.class, DefaultFullNameGenerator.INSTANCE, null);
 
 		CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
 			new CacheKeyGeneratorUtil();

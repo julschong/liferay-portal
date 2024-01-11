@@ -14,13 +14,7 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 public class FullNameGeneratorFactory {
 
 	public static FullNameGenerator getInstance() {
-		FullNameGenerator fullNameGenerator = _fullNameGeneratorSnapshot.get();
-
-		if (fullNameGenerator != null) {
-			return fullNameGenerator;
-		}
-
-		return DefaultFullNameGenerator.INSTANCE;
+		return _fullNameGeneratorSnapshot.get();
 	}
 
 	private FullNameGeneratorFactory() {
