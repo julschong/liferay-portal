@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
-import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -35,6 +34,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Dante Wang
@@ -82,8 +82,10 @@ public class IntegrationPointTest {
 			FullNameGenerator.class, fullNameGenerator,
 			MapUtil.singletonDictionary("service.ranking", Integer.MAX_VALUE));
 
-		Assert.assertSame(
-			fullNameGenerator, FullNameGeneratorFactory.getInstance());
+		ServiceTracker<FullNameGenerator, FullNameGenerator> serviceTracker =
+			new ServiceTracker<>(_bundleContext, FullNameGenerator.class, null);
+
+		Assert.assertSame(fullNameGenerator, serviceTracker.getService());
 	}
 
 	@Test
