@@ -172,7 +172,6 @@ import com.liferay.portal.model.impl.UserCacheModel;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.security.auth.AuthPipeline;
 import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
-import com.liferay.portal.security.auth.ScreenNameValidatorFactory;
 import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.security.pwd.PwdAuthenticator;
 import com.liferay.portal.security.pwd.PwdToolkitUtil;
@@ -7030,7 +7029,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 
 		ScreenNameValidator screenNameValidator =
-			ScreenNameValidatorFactory.getInstance();
+			_screenNameValidatorSnapshot.get();
 
 		if (!screenNameValidator.validate(companyId, screenName)) {
 			throw new UserScreenNameException.MustValidate(
@@ -7238,6 +7237,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	private static final Snapshot<ScreenNameGenerator>
 		_screenNameGeneratorSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, ScreenNameGenerator.class, null, true);
+	private static final Snapshot<ScreenNameValidator>
+		_screenNameValidatorSnapshot = new Snapshot<>(
+			UserLocalServiceImpl.class, ScreenNameValidator.class, null, true);
 	private static final Snapshot<UserFileUploadsSettings>
 		_userFileUploadsSettingsSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, UserFileUploadsSettings.class);
