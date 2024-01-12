@@ -158,14 +158,9 @@ renderResponse.setTitle(LanguageUtil.get(request, "create-account"));
 
 						<c:if test="<%= !autoGenerateScreenName %>">
 							<aui:input model="<%= User.class %>" name="screenName">
-
-								<%
-								ScreenNameValidator screenNameValidator = ScreenNameValidatorFactory.getInstance();
-								%>
-
-								<c:if test="<%= Validator.isNotNull(screenNameValidator.getAUIValidatorJS()) %>">
-									<aui:validator errorMessage="<%= screenNameValidator.getDescription(locale) %>" name="custom">
-										<%= screenNameValidator.getAUIValidatorJS() %>
+								<c:if test="<%= Validator.isNotNull(ScreenNameValidatorUtil.getAUIValidatorJS()) %>">
+									<aui:validator errorMessage="<%= ScreenNameValidatorUtil.getDescription(locale) %>" name="custom">
+										<%= ScreenNameValidatorUtil.getAUIValidatorJS() %>
 									</aui:validator>
 								</c:if>
 							</aui:input>

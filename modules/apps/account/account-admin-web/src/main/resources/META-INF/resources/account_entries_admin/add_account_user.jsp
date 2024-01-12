@@ -88,14 +88,9 @@ renderResponse.setTitle(LanguageUtil.format(request, "add-new-user-to-x", accoun
 			<aui:input label="job-title" maxlength='<%= ModelHintsUtil.getMaxLength(Contact.class.getName(), "jobTitle") %>' name="jobTitle" type="text" />
 
 			<aui:input name="screenName">
-
-				<%
-				ScreenNameValidator screenNameValidator = ScreenNameValidatorFactory.getInstance();
-				%>
-
-				<c:if test="<%= Validator.isNotNull(screenNameValidator.getAUIValidatorJS()) %>">
-					<aui:validator errorMessage="<%= screenNameValidator.getDescription(locale) %>" name="custom">
-						<%= screenNameValidator.getAUIValidatorJS() %>
+				<c:if test="<%= Validator.isNotNull(ScreenNameValidatorUtil.getAUIValidatorJS()) %>">
+					<aui:validator errorMessage="<%= ScreenNameValidatorUtil.getDescription(locale) %>" name="custom">
+						<%= ScreenNameValidatorUtil.getAUIValidatorJS() %>
 					</aui:validator>
 				</c:if>
 			</aui:input>
