@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Mail Implementation
+Bundle-SymbolicName: com.liferay.portal.mail.impl
+Bundle-Version: 1.0.0
