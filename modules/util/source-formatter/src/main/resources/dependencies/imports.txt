@@ -154,7 +154,6 @@ com.liferay.layout.page.template.LayoutPageTemplateEntryTypeConstants=com.lifera
 com.liferay.mail.model.FileAttachment=com.liferay.mail.kernel.model.FileAttachment
 com.liferay.mail.model.Filter=com.liferay.mail.kernel.model.Filter
 com.liferay.mail.service.MailService=com.liferay.mail.kernel.service.MailService
-com.liferay.mail.service.MailServiceUtil=com.liferay.mail.kernel.service.MailServiceUtil
 com.liferay.message.boards.MBConstants=com.liferay.message.boards.constants.MBConstants
 com.liferay.message.boards.kernel.constants.MBConstants=com.liferay.message.boards.constants.MBConstants
 com.liferay.message.boards.kernel.exception.BannedUserException=com.liferay.message.boards.exception.BannedUserException
