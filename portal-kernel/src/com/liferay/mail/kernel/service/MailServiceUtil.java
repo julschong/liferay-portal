@@ -7,7 +7,7 @@ package com.liferay.mail.kernel.service;
 
 import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import javax.mail.Session;
 
@@ -17,38 +17,30 @@ import javax.mail.Session;
 public class MailServiceUtil {
 
 	public static void clearSession() {
-		getService().clearSession();
-	}
-
-	public static MailService getService() {
-		if (_mailService == null) {
-			_mailService = (MailService)PortalBeanLocatorUtil.locate(
-				MailService.class.getName());
-		}
-
-		return _mailService;
+		_getService().clearSession();
 	}
 
 	public static Session getSession() {
-		return getService().getSession();
+		return _getService().getSession();
 	}
 
 	public static Session getSession(Account account) {
-		return getService().getSession(account);
+		return _getService().getSession(account);
 	}
 
 	public static Session getSession(long companyId) {
-		return getService().getSession(companyId);
+		return _getService().getSession(companyId);
 	}
 
 	public static void sendEmail(MailMessage mailMessage) {
-		getService().sendEmail(mailMessage);
+		_getService().sendEmail(mailMessage);
 	}
 
-	public void setService(MailService mailService) {
-		_mailService = mailService;
+	private static MailService _getService() {
+		return _mailServiceSnapshot.get();
 	}
 
-	private static MailService _mailService;
+	private static final Snapshot<MailService> _mailServiceSnapshot =
+		new Snapshot<>(MailServiceUtil.class, MailService.class, null);
 
 }
