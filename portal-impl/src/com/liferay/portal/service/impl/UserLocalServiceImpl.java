@@ -7086,9 +7086,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 	}
 
-	@BeanReference(type = MailService.class)
-	protected MailService mailService;
-
 	private User _checkPasswordPolicy(User user) throws PortalException {
 
 		// Check password policy to see if the is account locked out or if the
@@ -7222,6 +7219,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				PortalUtil.getMailId(
 					company.getMx(), "user", System.currentTimeMillis()));
 
+			MailService mailService = _mailServiceSnapshot.get();
+
 			mailService.sendEmail(mailMessage);
 		}
 		catch (IOException ioException) {
@@ -7232,6 +7231,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserLocalServiceImpl.class);
 
+	private static final Snapshot<MailService> _mailServiceSnapshot =
+		new Snapshot<>(UserLocalServiceImpl.class, MailService.class, null);
 	private static final Snapshot<UserFileUploadsSettings>
 		_userFileUploadsSettingsSnapshot = new Snapshot<>(
 			UserLocalServiceImpl.class, UserFileUploadsSettings.class);
