@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceLocalService;
@@ -639,9 +640,6 @@ public class AnnouncementsEntryLocalServiceImpl
 		}
 	}
 
-	@BeanReference(type = MailService.class)
-	protected MailService mailService;
-
 	private void _sendNotificationEmail(
 			String fromAddress, String fromName, String toAddress,
 			String toName, String subject, String body, Company company,
@@ -719,6 +717,8 @@ public class AnnouncementsEntryLocalServiceImpl
 					company.getMx(), "announcements_entry",
 					entry.getEntryId()));
 
+			MailService mailService = _mailServiceSnapshot.get();
+
 			mailService.sendEmail(mailMessage);
 		}
 		catch (IOException ioException) {
@@ -731,6 +731,10 @@ public class AnnouncementsEntryLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AnnouncementsEntryLocalServiceImpl.class);
+
+	private static final Snapshot<MailService> _mailServiceSnapshot =
+		new Snapshot<>(
+			AnnouncementsEntryLocalServiceImpl.class, MailService.class, null);
 
 	@BeanReference(type = AnnouncementsDeliveryLocalService.class)
 	private AnnouncementsDeliveryLocalService

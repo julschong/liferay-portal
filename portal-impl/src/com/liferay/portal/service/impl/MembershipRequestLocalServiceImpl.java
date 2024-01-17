@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -440,9 +441,6 @@ public class MembershipRequestLocalServiceImpl
 		}
 	}
 
-	@BeanReference(type = MailService.class)
-	protected MailService mailService;
-
 	private void _sendNotificationEmail(
 			String fromAddress, String fromName, String toAddress, User toUser,
 			String subject, String body, MembershipRequest membershipRequest,
@@ -473,12 +471,18 @@ public class MembershipRequestLocalServiceImpl
 					company.getMx(), "membership_request",
 					membershipRequest.getMembershipRequestId()));
 
+			MailService mailService = _mailServiceSnapshot.get();
+
 			mailService.sendEmail(mailMessage);
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
 		}
 	}
+
+	private static final Snapshot<MailService> _mailServiceSnapshot =
+		new Snapshot<>(
+			MembershipRequestLocalServiceImpl.class, MailService.class, null);
 
 	@BeanReference(type = CompanyLocalService.class)
 	private CompanyLocalService _companyLocalService;
