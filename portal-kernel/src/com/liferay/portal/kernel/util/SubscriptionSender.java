@@ -11,7 +11,7 @@ import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.mail.kernel.model.FileAttachment;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.model.SMTPAccount;
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.template.MailTemplate;
 import com.liferay.mail.kernel.template.MailTemplateContext;
 import com.liferay.mail.kernel.template.MailTemplateContextBuilder;
@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.notifications.UserNotificationManagerUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -919,7 +920,9 @@ public class SubscriptionSender implements Serializable {
 
 		processMailMessage(mailMessage, locale);
 
-		MailServiceUtil.sendEmail(mailMessage);
+		MailService mailService = _mailServiceSnapshot.get();
+
+		mailService.sendEmail(mailMessage);
 	}
 
 	protected void sendEmailNotification(User user) throws Exception {
@@ -1156,6 +1159,9 @@ public class SubscriptionSender implements Serializable {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SubscriptionSender.class);
+
+	private static final Snapshot<MailService> _mailServiceSnapshot =
+		new Snapshot<>(SubscriptionSender.class, MailService.class, null);
 
 	private List<InternetAddress> _bulkAddresses;
 	private transient ClassLoader _classLoader;

@@ -9,13 +9,14 @@ import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.FileAttachment;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.model.SMTPAccount;
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.log.LogUtil;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -134,11 +135,13 @@ public class MailEngine {
 
 			Session session = null;
 
+			MailService mailService = _mailServiceSnapshot.get();
+
 			if (smtpAccount == null) {
-				session = MailServiceUtil.getSession();
+				session = mailService.getSession();
 			}
 			else {
-				session = MailServiceUtil.getSession(smtpAccount);
+				session = mailService.getSession(smtpAccount);
 			}
 
 			Message message = new LiferayMimeMessage(session);
@@ -507,6 +510,8 @@ public class MailEngine {
 	private static final AtomicLong _lastResetTime = new AtomicLong();
 	private static final Map<Long, AtomicLong> _mailMessageCounts =
 		new ConcurrentHashMap<>();
+	private static final Snapshot<MailService> _mailServiceSnapshot =
+		new Snapshot<>(MailEngine.class, MailService.class, null);
 
 	private static class LiferayMimeMessage extends MimeMessage {
 

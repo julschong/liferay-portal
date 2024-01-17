@@ -9,8 +9,9 @@ import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
 import com.dumbster.smtp.mailstores.RollingMailStore;
 
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PrefsPropsTestUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -129,7 +130,9 @@ public class MailServiceTestUtil {
 			SmtpServerFactory.class, "startServerThread",
 			new Class<?>[] {SmtpServer.class}, _smtpServer);
 
-		MailServiceUtil.clearSession();
+		MailService mailService = _mailServiceSnapshot.get();
+
+		mailService.clearSession();
 	}
 
 	public static void stop() throws Exception {
@@ -143,7 +146,9 @@ public class MailServiceTestUtil {
 
 		_safeCloseable.close();
 
-		MailServiceUtil.clearSession();
+		MailService mailService = _mailServiceSnapshot.get();
+
+		mailService.clearSession();
 	}
 
 	private static int _getFreePort() throws Exception {
@@ -181,6 +186,8 @@ public class MailServiceTestUtil {
 
 	private static final int _START_PORT = 3241;
 
+	private static final Snapshot<MailService> _mailServiceSnapshot =
+		new Snapshot<>(MailServiceTestUtil.class, MailService.class, null);
 	private static SafeCloseable _safeCloseable;
 	private static SmtpServer _smtpServer;
 
