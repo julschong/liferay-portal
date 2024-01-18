@@ -5,6 +5,7 @@
 
 package com.liferay.portal.language;
 
+import com.liferay.portal.kernel.language.ResourceBundleEnumeration;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
