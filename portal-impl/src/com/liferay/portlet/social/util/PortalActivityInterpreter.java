@@ -5,9 +5,9 @@
 
 package com.liferay.portlet.social.util;
 
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.social.kernel.model.BaseSocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialActivity;
 import com.liferay.social.kernel.model.SocialActivityFeedEntry;

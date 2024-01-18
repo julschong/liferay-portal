@@ -16,7 +16,7 @@ import com.liferay.commerce.util.CommerceQuantityFormatter;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderItemShipment;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.Status;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.language.LanguageResources;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
