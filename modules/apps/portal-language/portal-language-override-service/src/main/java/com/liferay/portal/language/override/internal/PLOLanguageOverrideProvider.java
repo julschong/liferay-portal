@@ -5,7 +5,7 @@
 
 package com.liferay.portal.language.override.internal;
 
-import com.liferay.portal.language.LanguageOverrideProvider;
+import com.liferay.portal.kernel.language.LanguageOverrideProvider;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
