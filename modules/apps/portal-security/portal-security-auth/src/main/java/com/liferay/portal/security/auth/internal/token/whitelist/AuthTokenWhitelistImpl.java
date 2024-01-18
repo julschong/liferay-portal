@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.auth;
+package com.liferay.portal.security.auth.internal.token.whitelist;
 
 import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
+import com.liferay.portal.kernel.security.auth.AuthTokenWhitelist;
 import com.liferay.portal.kernel.security.auth.BaseAuthTokenWhitelist;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -21,10 +22,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Raymond Augé
  * @author Tomas Polesovsky
  */
+@Component(service = AuthTokenWhitelist.class)
 public class AuthTokenWhitelistImpl extends BaseAuthTokenWhitelist {
 
 	@Override
