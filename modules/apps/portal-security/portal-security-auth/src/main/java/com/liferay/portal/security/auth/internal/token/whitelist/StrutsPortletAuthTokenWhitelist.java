@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.auth;
+package com.liferay.portal.security.auth.internal.token.whitelist;
 
 import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.string.CharPool;
@@ -13,10 +13,11 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
+import com.liferay.portal.kernel.security.auth.AuthTokenWhitelist;
 import com.liferay.portal.kernel.security.auth.BaseAuthTokenWhitelist;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.PortletLocalService;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -26,9 +27,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Tomas Polesovsky
  */
+@Component(service = AuthTokenWhitelist.class)
 public class StrutsPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 
 	@Override
@@ -37,7 +42,7 @@ public class StrutsPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 
 		String portletId = portlet.getPortletId();
 
-		String namespace = PortalUtil.getPortletNamespace(portletId);
+		String namespace = _portal.getPortletNamespace(portletId);
 
 		String strutsAction = httpServletRequest.getParameter(
 			namespace.concat("struts_action"));
@@ -67,7 +72,7 @@ public class StrutsPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 
 		String portletId = portlet.getPortletId();
 
-		String namespace = PortalUtil.getPortletNamespace(portletId);
+		String namespace = _portal.getPortletNamespace(portletId);
 
 		String strutsAction = httpServletRequest.getParameter(
 			namespace.concat("struts_action"));
@@ -111,7 +116,7 @@ public class StrutsPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 		if (portletCSRFWhitelist.contains(strutsAction)) {
 			long plid = liferayPortletURL.getPlid();
 
-			Layout layout = LayoutLocalServiceUtil.fetchLayout(plid);
+			Layout layout = _layoutLocalService.fetchLayout(plid);
 
 			if (layout == null) {
 				if (_log.isDebugEnabled()) {
@@ -149,7 +154,7 @@ public class StrutsPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 		if (portletInvocationWhitelist.contains(strutsAction)) {
 			long plid = liferayPortletURL.getPlid();
 
-			Layout layout = LayoutLocalServiceUtil.fetchLayout(plid);
+			Layout layout = _layoutLocalService.fetchLayout(plid);
 
 			if (layout == null) {
 				if (_log.isDebugEnabled()) {
@@ -173,7 +178,7 @@ public class StrutsPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 		long companyId, String portletId, String strutsAction) {
 
 		try {
-			Portlet portlet = PortletLocalServiceUtil.getPortletById(
+			Portlet portlet = _portletLocalService.getPortletById(
 				companyId, portletId);
 
 			if (portlet == null) {
@@ -227,9 +232,18 @@ public class StrutsPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 	private static final Log _log = LogFactoryUtil.getLog(
 		StrutsPortletAuthTokenWhitelist.class);
 
+	@Reference
+	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private final DCLSingleton<Set<String>> _portletCSRFWhitelistDCLSingleton =
 		new DCLSingleton<>();
 	private final DCLSingleton<Set<String>>
 		_portletInvocationWhitelistDCLSingleton = new DCLSingleton<>();
+
+	@Reference
+	private PortletLocalService _portletLocalService;
 
 }

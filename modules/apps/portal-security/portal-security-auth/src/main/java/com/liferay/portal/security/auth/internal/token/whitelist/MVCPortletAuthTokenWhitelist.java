@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.security.auth;
+package com.liferay.portal.security.auth.internal.token.whitelist;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -14,9 +14,10 @@ import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.security.auth.AuthTokenWhitelist;
 import com.liferay.portal.kernel.security.auth.BaseAuthTokenWhitelist;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -35,28 +36,17 @@ import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Tomas Polesovsky
  */
+@Component(service = AuthTokenWhitelist.class)
 public class MVCPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
-
-	public MVCPortletAuthTokenWhitelist() {
-		trackWhitelistServices(
-			"auth.token.ignore.mvc.action", MVCActionCommand.class,
-			_portletCSRFWhitelist);
-		trackWhitelistServices(
-			"portlet.add.default.resource.check.whitelist.mvc.action",
-			MVCActionCommand.class, _portletInvocationWhitelistAction);
-		trackWhitelistServices(
-			"portlet.add.default.resource.check.whitelist.mvc.action",
-			MVCRenderCommand.class, _portletInvocationWhitelistRender);
-		trackWhitelistServices(
-			"portlet.add.default.resource.check.whitelist.mvc.action",
-			MVCResourceCommand.class, _portletInvocationWhitelistResource);
-	}
 
 	@Override
 	public boolean isPortletCSRFWhitelisted(
@@ -90,7 +80,7 @@ public class MVCPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 				mvcActionCommandNames);
 		}
 		else if (themeDisplay.isLifecycleRender()) {
-			String namespace = PortalUtil.getPortletNamespace(portletId);
+			String namespace = _portal.getPortletNamespace(portletId);
 
 			String mvcRenderCommandName = httpServletRequest.getParameter(
 				namespace.concat("mvcRenderCommandName"));
@@ -158,10 +148,26 @@ public class MVCPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 		return false;
 	}
 
+	@Activate
+	protected void activate() {
+		trackWhitelistServices(
+			"auth.token.ignore.mvc.action", MVCActionCommand.class,
+			_portletCSRFWhitelist);
+		trackWhitelistServices(
+			"portlet.add.default.resource.check.whitelist.mvc.action",
+			MVCActionCommand.class, _portletInvocationWhitelistAction);
+		trackWhitelistServices(
+			"portlet.add.default.resource.check.whitelist.mvc.action",
+			MVCRenderCommand.class, _portletInvocationWhitelistRender);
+		trackWhitelistServices(
+			"portlet.add.default.resource.check.whitelist.mvc.action",
+			MVCResourceCommand.class, _portletInvocationWhitelistResource);
+	}
+
 	protected String[] getMVCActionCommandNames(
 		HttpServletRequest httpServletRequest, String portletId) {
 
-		String namespace = PortalUtil.getPortletNamespace(portletId);
+		String namespace = _portal.getPortletNamespace(portletId);
 
 		String[] actionNames = httpServletRequest.getParameterValues(
 			namespace.concat(ActionRequest.ACTION_NAME));
@@ -236,6 +242,9 @@ public class MVCPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 
 		return true;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private final Set<String> _portletCSRFWhitelist = Collections.newSetFromMap(
 		new ConcurrentHashMap<>());
