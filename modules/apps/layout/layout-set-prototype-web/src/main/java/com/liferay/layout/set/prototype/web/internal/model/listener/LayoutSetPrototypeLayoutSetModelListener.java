@@ -12,15 +12,19 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
-import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
-import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypeUtil;
+import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.sites.kernel.util.Sites;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Raymond Augé
  */
+@Component(service = ModelListener.class)
 public class LayoutSetPrototypeLayoutSetModelListener
 	extends BaseModelListener<LayoutSet> {
 
@@ -54,12 +58,13 @@ public class LayoutSetPrototypeLayoutSetModelListener
 
 		try {
 			LayoutSetPrototype layoutSetPrototype =
-				LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
+				_layoutSetPrototypeLocalService.getLayoutSetPrototype(
 					group.getClassPK());
 
 			layoutSetPrototype.setModifiedDate(layoutSet.getModifiedDate());
 
-			LayoutSetPrototypeUtil.update(layoutSetPrototype);
+			_layoutSetPrototypeLocalService.updateLayoutSetPrototype(
+				layoutSetPrototype);
 
 			UnicodeProperties settingsUnicodeProperties =
 				layoutSet.getSettingsProperties();
@@ -94,5 +99,8 @@ public class LayoutSetPrototypeLayoutSetModelListener
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutSetPrototypeLayoutSetModelListener.class);
+
+	@Reference
+	private LayoutSetPrototypeLocalService _layoutSetPrototypeLocalService;
 
 }
