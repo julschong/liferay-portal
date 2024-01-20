@@ -14,7 +14,6 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypeUtil;
-import com.liferay.portal.kernel.service.persistence.LayoutSetUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.sites.kernel.util.Sites;
@@ -86,8 +85,6 @@ public class LayoutSetPrototypeLayoutSetModelListener
 				(mergeFailCount == 0)) {
 
 				settingsUnicodeProperties.remove(Sites.MERGE_FAIL_COUNT);
-
-				LayoutSetUtil.updateImpl(layoutSet);
 			}
 		}
 		catch (Exception exception) {
