@@ -130,11 +130,6 @@ public class LanguageResources {
 		return superLocale;
 	}
 
-	public void afterPropertiesSet() {
-		ResourceBundleLoaderUtil.setPortalResourceBundleLoader(
-			PORTAL_RESOURCE_BUNDLE_LOADER);
-	}
-
 	public void destroy() {
 		for (MapHolder mapHolder : _mapHolders.values()) {
 			mapHolder.close();

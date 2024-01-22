@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.resource.bundle;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import org.osgi.framework.BundleContext;
@@ -45,7 +46,8 @@ public class ResourceBundleLoaderUtil {
 
 	private static final ServiceTrackerMap<String, ResourceBundleLoader>
 		_bundleSymbolicNameServiceTrackerMap;
-	private static ResourceBundleLoader _portalResourceBundleLoader;
+	private static ResourceBundleLoader _portalResourceBundleLoader =
+		LanguageResourcesUtil::getResourceBundle;
 	private static final ServiceTrackerMap<String, ResourceBundleLoader>
 		_servletContextNameServiceTrackerMap;
 
