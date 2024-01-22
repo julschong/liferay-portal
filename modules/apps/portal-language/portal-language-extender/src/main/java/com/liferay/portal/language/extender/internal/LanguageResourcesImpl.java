@@ -3,16 +3,19 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.portal.language;
+package com.liferay.portal.language.extender.internal;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.language.LanguageOverrideProvider;
+import com.liferay.portal.language.ResourceBundleEnumeration;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -29,14 +32,18 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
  * @author Kamesh Sampath
  */
-public class LanguageResources {
+@Component(service = LanguageResources.class)
+public class LanguageResourcesImpl implements LanguageResources {
 
-	public static String getMessage(Locale locale, String key) {
+	public String getMessage(Locale locale, String key) {
 		if (locale == null) {
 			return null;
 		}
@@ -66,7 +73,7 @@ public class LanguageResources {
 		return value;
 	}
 
-	public static ResourceBundle getResourceBundle(Locale locale) {
+	public ResourceBundle getResourceBundle(Locale locale) {
 		ResourceBundle resourceBundle = new LanguageResourcesBundle(locale);
 
 		ResourceBundle overrideResourceBundle = _getOverrideResourceBundle(
@@ -80,7 +87,7 @@ public class LanguageResources {
 		return resourceBundle;
 	}
 
-	public static Locale getSuperLocale(Locale locale) {
+	public Locale getSuperLocale(Locale locale) {
 		Long companyId = CompanyThreadLocal.getCompanyId();
 
 		Map<Locale, Locale> superLocales = _superLocalesMap.get(companyId);
@@ -118,7 +125,8 @@ public class LanguageResources {
 		return superLocale;
 	}
 
-	public void destroy() {
+	@Deactivate
+	protected void deactivate() {
 		for (MapHolder mapHolder : _mapHolders.values()) {
 			mapHolder.close();
 		}
@@ -126,7 +134,7 @@ public class LanguageResources {
 		_mapHolders.clear();
 	}
 
-	private static MapHolder _getMapHolder(Locale locale) {
+	private MapHolder _getMapHolder(Locale locale) {
 		MapHolder mapHolder = _mapHolders.get(locale);
 
 		if (mapHolder == null) {
@@ -145,7 +153,7 @@ public class LanguageResources {
 		return mapHolder;
 	}
 
-	private static ResourceBundle _getOverrideResourceBundle(Locale locale) {
+	private ResourceBundle _getOverrideResourceBundle(Locale locale) {
 		LanguageOverrideProvider languageOverrideProvider =
 			_languageOverrideProviderSnapshot.get();
 
@@ -156,7 +164,7 @@ public class LanguageResources {
 		return languageOverrideProvider.getOverrideResourceBundle(locale);
 	}
 
-	private static Locale _getSuperLocale(Locale locale) {
+	private Locale _getSuperLocale(Locale locale) {
 		String variant = locale.getVariant();
 
 		if (variant.length() > 0) {
@@ -166,8 +174,7 @@ public class LanguageResources {
 		String country = locale.getCountry();
 
 		if (country.length() > 0) {
-			Locale priorityLocale = LanguageUtil.getLocale(
-				locale.getLanguage());
+			Locale priorityLocale = _language.getLocale(locale.getLanguage());
 
 			if (priorityLocale != null) {
 				variant = priorityLocale.getVariant();
@@ -197,77 +204,15 @@ public class LanguageResources {
 		SystemBundleUtil.getBundleContext();
 	private static final Snapshot<LanguageOverrideProvider>
 		_languageOverrideProviderSnapshot = new Snapshot<>(
-			LanguageResources.class, LanguageOverrideProvider.class);
+			LanguageResourcesImpl.class, LanguageOverrideProvider.class);
 	private static final Map<Locale, MapHolder> _mapHolders =
 		new ConcurrentHashMap<>();
 	private static final Locale _nullLocale = new Locale(StringPool.BLANK);
 	private static final Map<Long, Map<Locale, Locale>> _superLocalesMap =
 		new ConcurrentHashMap<>();
 
-	private static class LanguageResourcesBundle extends ResourceBundle {
-
-		@Override
-		public Enumeration<String> getKeys() {
-			MapHolder mapHolder = _getMapHolder(_locale);
-
-			Map<String, String> languageMap = mapHolder.getMap();
-
-			Set<String> keySet = languageMap.keySet();
-
-			if (parent == null) {
-				return Collections.enumeration(keySet);
-			}
-
-			return new ResourceBundleEnumeration(keySet, parent.getKeys());
-		}
-
-		@Override
-		public Locale getLocale() {
-			return _locale;
-		}
-
-		@Override
-		protected Object handleGetObject(String key) {
-			MapHolder mapHolder = _getMapHolder(_locale);
-
-			Map<String, String> languageMap = mapHolder.getMap();
-
-			return languageMap.get(key);
-		}
-
-		@Override
-		protected Set<String> handleKeySet() {
-			MapHolder mapHolder = _getMapHolder(_locale);
-
-			Map<String, String> languageMap = mapHolder.getMap();
-
-			return languageMap.keySet();
-		}
-
-		private LanguageResourcesBundle(Locale locale) {
-			_locale = locale;
-
-			Locale superLocale = getSuperLocale(locale);
-
-			if (superLocale != null) {
-				ResourceBundle superResourceBundle =
-					new LanguageResourcesBundle(superLocale);
-
-				ResourceBundle superLocaleOverrideResourceBundle =
-					_getOverrideResourceBundle(superLocale);
-
-				if (superLocaleOverrideResourceBundle != null) {
-					superResourceBundle = new AggregateResourceBundle(
-						superLocaleOverrideResourceBundle, superResourceBundle);
-				}
-
-				setParent(superResourceBundle);
-			}
-		}
-
-		private final Locale _locale;
-
-	}
+	@Reference
+	private Language _language;
 
 	private static class MapHolder {
 
@@ -344,6 +289,71 @@ public class LanguageResources {
 				throw new ExceptionInInitializerError(invalidSyntaxException);
 			}
 		}
+
+	}
+
+	private class LanguageResourcesBundle extends ResourceBundle {
+
+		@Override
+		public Enumeration<String> getKeys() {
+			MapHolder mapHolder = _getMapHolder(_locale);
+
+			Map<String, String> languageMap = mapHolder.getMap();
+
+			Set<String> keySet = languageMap.keySet();
+
+			if (parent == null) {
+				return Collections.enumeration(keySet);
+			}
+
+			return new ResourceBundleEnumeration(keySet, parent.getKeys());
+		}
+
+		@Override
+		public Locale getLocale() {
+			return _locale;
+		}
+
+		@Override
+		protected Object handleGetObject(String key) {
+			MapHolder mapHolder = _getMapHolder(_locale);
+
+			Map<String, String> languageMap = mapHolder.getMap();
+
+			return languageMap.get(key);
+		}
+
+		@Override
+		protected Set<String> handleKeySet() {
+			MapHolder mapHolder = _getMapHolder(_locale);
+
+			Map<String, String> languageMap = mapHolder.getMap();
+
+			return languageMap.keySet();
+		}
+
+		private LanguageResourcesBundle(Locale locale) {
+			_locale = locale;
+
+			Locale superLocale = getSuperLocale(locale);
+
+			if (superLocale != null) {
+				ResourceBundle superResourceBundle =
+					new LanguageResourcesBundle(superLocale);
+
+				ResourceBundle superLocaleOverrideResourceBundle =
+					_getOverrideResourceBundle(superLocale);
+
+				if (superLocaleOverrideResourceBundle != null) {
+					superResourceBundle = new AggregateResourceBundle(
+						superLocaleOverrideResourceBundle, superResourceBundle);
+				}
+
+				setParent(superResourceBundle);
+			}
+		}
+
+		private final Locale _locale;
 
 	}
 
