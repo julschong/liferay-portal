@@ -12,10 +12,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
 
@@ -55,7 +55,7 @@ public class SAPEntryPortalInstanceLifecycleListener
 			ObjectSAPConstants.ALLOWED_SERVICE_SIGNATURES, true, true,
 			ObjectSAPConstants.SAP_ENTRY_NAME,
 			ResourceBundleUtil.getLocalizationMap(
-				LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER,
+				ResourceBundleLoaderUtil.getPortalResourceBundleLoader(),
 				"service-access-policy-entry-default-object-title"),
 			new ServiceContext());
 	}

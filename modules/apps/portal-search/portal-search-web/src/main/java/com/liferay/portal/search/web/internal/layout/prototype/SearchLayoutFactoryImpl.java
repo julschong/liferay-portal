@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.module.service.Snapshot;
+import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
@@ -213,7 +214,7 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 
 	private Map<Locale, String> _getLocalizationMap(String key) {
 		return ResourceBundleUtil.getLocalizationMap(
-			LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER, key);
+			ResourceBundleLoaderUtil.getPortalResourceBundleLoader(), key);
 	}
 
 	private Map<Locale, String> _getSearchDescriptionLocalizationMap() {

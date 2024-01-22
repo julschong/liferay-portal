@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
+import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -1167,7 +1168,7 @@ public class LanguageImpl implements Language, Serializable {
 
 	@Override
 	public ResourceBundleLoader getResourceBundleLoader() {
-		return LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER;
+		return ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
 	}
 
 	@Override

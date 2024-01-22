@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.language.LanguageResources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -234,7 +233,8 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 					resourceBundleLoader = new AggregateResourceBundleLoader(
 						new ClassResourceBundleLoader(
 							"content.Language", clazz.getClassLoader()),
-						LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER);
+						ResourceBundleLoaderUtil.
+							getPortalResourceBundleLoader());
 				}
 
 				Map<Locale, String> nameMap = getLocalizationMap(

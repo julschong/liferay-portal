@@ -48,7 +48,7 @@ if (Validator.isNotNull(scriptContent)) {
 							ResourceBundleLoader resourceBundleLoader = ResourceBundleLoaderUtil.getResourceBundleLoaderByBundleSymbolicName(bundle.getSymbolicName());
 
 							if (resourceBundleLoader == null) {
-								resourceBundleLoader = new AggregateResourceBundleLoader(new ClassResourceBundleLoader("content.Language", clazz.getClassLoader()), LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER);
+								resourceBundleLoader = new AggregateResourceBundleLoader(new ClassResourceBundleLoader("content.Language", clazz.getClassLoader()), ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
 							}
 
 							ResourceBundle templateHandlerResourceBundle = resourceBundleLoader.loadResourceBundle(locale);

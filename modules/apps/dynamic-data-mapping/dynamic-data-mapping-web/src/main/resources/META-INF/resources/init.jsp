@@ -107,7 +107,6 @@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
-page import="com.liferay.portal.language.LanguageResources" %><%@
 page import="com.liferay.portal.template.engine.TemplateContextHelper" %><%@
 page import="com.liferay.taglib.search.ResultRow" %>
 

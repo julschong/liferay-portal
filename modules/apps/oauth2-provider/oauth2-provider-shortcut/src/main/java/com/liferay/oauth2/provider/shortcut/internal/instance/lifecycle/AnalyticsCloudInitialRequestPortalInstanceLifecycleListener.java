@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -47,7 +48,6 @@ import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
 
@@ -229,7 +229,7 @@ public class AnalyticsCloudInitialRequestPortalInstanceLifecycleListener
 
 			Map<Locale, String> titleMap =
 				ResourceBundleUtil.getLocalizationMap(
-					LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER,
+					ResourceBundleLoaderUtil.getPortalResourceBundleLoader(),
 					sapEntryName);
 
 			_sapEntryLocalService.addSAPEntry(

@@ -5,8 +5,8 @@
 
 package com.liferay.message.boards.layout.set.prototype.internal.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.upgrade.BaseLocalizedColumnUpgradeProcess;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.PortalInstances;
 
 /**
@@ -19,12 +19,12 @@ public class UpgradeLocalizedColumn extends BaseLocalizedColumnUpgradeProcess {
 		long[] companyIds = PortalInstances.getCompanyIdsBySQL();
 
 		upgradeLocalizedColumn(
-			LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER,
+			ResourceBundleLoaderUtil.getPortalResourceBundleLoader(),
 			"LayoutSetPrototype", "name", _NAME,
 			"layout-set-prototype-community-site-title", "Name", companyIds);
 
 		upgradeLocalizedColumn(
-			LanguageResources.PORTAL_RESOURCE_BUNDLE_LOADER,
+			ResourceBundleLoaderUtil.getPortalResourceBundleLoader(),
 			"LayoutSetPrototype", "description", _DESCRIPTION,
 			"layout-set-prototype-community-site-description", "Description",
 			companyIds);
