@@ -9,8 +9,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -37,16 +35,6 @@ import org.osgi.framework.ServiceReference;
  * @author Kamesh Sampath
  */
 public class LanguageResources {
-
-	public static ResourceBundleLoader PORTAL_RESOURCE_BUNDLE_LOADER =
-		new ResourceBundleLoader() {
-
-			@Override
-			public ResourceBundle loadResourceBundle(Locale locale) {
-				return LanguageResources.getResourceBundle(locale);
-			}
-
-		};
 
 	public static String getMessage(Locale locale, String key) {
 		if (locale == null) {
