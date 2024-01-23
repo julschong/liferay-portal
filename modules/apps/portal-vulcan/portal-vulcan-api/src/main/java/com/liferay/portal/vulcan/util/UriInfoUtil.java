@@ -5,7 +5,6 @@
 
 package com.liferay.portal.vulcan.util;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -13,8 +12,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.lang.reflect.Field;
 
 import java.net.URI;
 
@@ -87,20 +84,6 @@ public class UriInfoUtil {
 		return _updateUriBuilder(uriInfo.getBaseUriBuilder());
 	}
 
-	private static String _getHost(UriBuilder uriBuilder) {
-		try {
-			if (_uriBuilderHostField == null) {
-				_uriBuilderHostField = ReflectionUtil.getDeclaredField(
-					uriBuilder.getClass(), "host");
-			}
-
-			return (String)_uriBuilderHostField.get(uriBuilder);
-		}
-		catch (Exception exception) {
-			return ReflectionUtil.throwException(exception);
-		}
-	}
-
 	private static boolean _isHttpsEnabled() {
 		if (Http.HTTPS.equals(
 				PropsUtil.get(PropsKeys.PORTAL_INSTANCE_PROTOCOL)) ||
@@ -113,19 +96,17 @@ public class UriInfoUtil {
 	}
 
 	private static UriBuilder _updateUriBuilder(UriBuilder uriBuilder) {
-		if (!Validator.isBlank(PortalUtil.getPathContext())) {
-			URI uri = uriBuilder.build();
+		URI uri = uriBuilder.build();
 
+		if (!Validator.isBlank(PortalUtil.getPathContext())) {
 			uriBuilder.replacePath(PortalUtil.getPathContext(uri.getPath()));
 		}
 
-		if (Validator.isNotNull(_getHost(uriBuilder)) && _isHttpsEnabled()) {
+		if (Validator.isNotNull(uri.getHost()) && _isHttpsEnabled()) {
 			uriBuilder.scheme(Http.HTTPS);
 		}
 
 		return uriBuilder;
 	}
-
-	private static volatile Field _uriBuilderHostField;
 
 }
