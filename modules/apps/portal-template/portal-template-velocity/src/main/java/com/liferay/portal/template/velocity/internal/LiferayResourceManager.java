@@ -5,7 +5,6 @@
 
 package com.liferay.portal.template.velocity.internal;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateResource;
@@ -15,14 +14,11 @@ import com.liferay.portal.template.TemplateResourceThreadLocal;
 import java.io.IOException;
 import java.io.Reader;
 
-import java.lang.reflect.Field;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.ResourceManager;
@@ -103,12 +99,6 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 
 		ExtendedProperties extendedProperties =
 			runtimeServices.getConfiguration();
-
-		Field field = ReflectionUtil.getDeclaredField(
-			RuntimeInstance.class, "configuration");
-
-		field.set(
-			runtimeServices, new FastExtendedProperties(extendedProperties));
 
 		_templateResourceLoader =
 			(TemplateResourceLoader)extendedProperties.get(
