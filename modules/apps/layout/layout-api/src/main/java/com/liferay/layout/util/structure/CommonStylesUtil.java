@@ -9,11 +9,11 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.language.LanguageResources;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +62,8 @@ public class CommonStylesUtil {
 	public static JSONArray getCommonStylesJSONArray() {
 		try {
 			return getCommonStylesJSONArray(
-				LanguageResources.getResourceBundle(LocaleUtil.getDefault()));
+				LanguageResourcesUtil.getResourceBundle(
+					LocaleUtil.getDefault()));
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception);

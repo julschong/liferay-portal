@@ -34,11 +34,11 @@ import com.liferay.headless.commerce.delivery.order.dto.v1_0.VirtualItem;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.BigDecimalUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
@@ -213,8 +213,8 @@ public class PlacedOrderItemDTOConverter
 		CPInstance cpInstance = commerceOrderItem.fetchCPInstance();
 
 		if (cpInstance == null) {
-			ResourceBundle resourceBundle = LanguageResources.getResourceBundle(
-				locale);
+			ResourceBundle resourceBundle =
+				_languageResources.getResourceBundle(locale);
 
 			return new String[] {
 				_language.get(
@@ -445,5 +445,8 @@ public class PlacedOrderItemDTOConverter
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

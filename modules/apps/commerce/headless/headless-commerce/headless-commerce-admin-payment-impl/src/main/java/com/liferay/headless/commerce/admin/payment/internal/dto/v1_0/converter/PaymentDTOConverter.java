@@ -15,8 +15,8 @@ import com.liferay.headless.commerce.admin.payment.dto.v1_0.Payment;
 import com.liferay.headless.commerce.admin.payment.dto.v1_0.Status;
 import com.liferay.headless.commerce.core.util.LanguageUtils;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
@@ -62,7 +62,7 @@ public class PaymentDTOConverter
 
 		Locale locale = dtoConverterContext.getLocale();
 
-		ResourceBundle resourceBundle = LanguageResources.getResourceBundle(
+		ResourceBundle resourceBundle = _languageResources.getResourceBundle(
 			locale);
 
 		return new Payment() {
@@ -156,5 +156,8 @@ public class PaymentDTOConverter
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

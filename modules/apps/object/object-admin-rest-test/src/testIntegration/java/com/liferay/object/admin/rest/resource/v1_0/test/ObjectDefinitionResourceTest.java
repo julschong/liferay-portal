@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -45,7 +46,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
@@ -146,7 +146,7 @@ public class ObjectDefinitionResourceTest
 				label = WorkflowConstants.getStatusLabel(
 					WorkflowConstants.STATUS_APPROVED);
 				label_i18n = _language.get(
-					LanguageResources.getResourceBundle(
+					_languageResources.getResourceBundle(
 						LocaleUtil.getDefault()),
 					WorkflowConstants.getStatusLabel(
 						WorkflowConstants.STATUS_APPROVED));
@@ -287,7 +287,7 @@ public class ObjectDefinitionResourceTest
 				label = WorkflowConstants.getStatusLabel(
 					WorkflowConstants.STATUS_APPROVED);
 				label_i18n = _language.get(
-					LanguageResources.getResourceBundle(
+					_languageResources.getResourceBundle(
 						LocaleUtil.getDefault()),
 					WorkflowConstants.getStatusLabel(
 						WorkflowConstants.STATUS_APPROVED));
@@ -599,7 +599,7 @@ public class ObjectDefinitionResourceTest
 					label = WorkflowConstants.getStatusLabel(
 						WorkflowConstants.STATUS_DRAFT);
 					label_i18n = _language.get(
-						LanguageResources.getResourceBundle(
+						_languageResources.getResourceBundle(
 							LocaleUtil.getDefault()),
 						WorkflowConstants.getStatusLabel(
 							WorkflowConstants.STATUS_DRAFT));
@@ -912,7 +912,7 @@ public class ObjectDefinitionResourceTest
 					label = WorkflowConstants.getStatusLabel(
 						WorkflowConstants.STATUS_APPROVED);
 					label_i18n = _language.get(
-						LanguageResources.getResourceBundle(
+						_languageResources.getResourceBundle(
 							LocaleUtil.getDefault()),
 						WorkflowConstants.getStatusLabel(
 							WorkflowConstants.STATUS_APPROVED));
@@ -928,6 +928,9 @@ public class ObjectDefinitionResourceTest
 
 	@Inject
 	private Language _language;
+
+	@Inject
+	private LanguageResources _languageResources;
 
 	@Inject
 	private ListTypeDefinitionLocalService _listTypeDefinitionLocalService;

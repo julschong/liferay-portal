@@ -20,9 +20,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,7 +62,7 @@ public class DLFileVersionConstraintResolver
 
 	@Override
 	public ResourceBundle getResourceBundle(Locale locale) {
-		return LanguageResources.getResourceBundle(locale);
+		return _languageResources.getResourceBundle(locale);
 	}
 
 	@Override
@@ -207,5 +207,8 @@ public class DLFileVersionConstraintResolver
 
 	@Reference
 	private DLFileVersionLocalService _dlFileVersionLocalService;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

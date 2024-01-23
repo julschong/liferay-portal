@@ -8,12 +8,12 @@ package com.liferay.translation.web.internal.resource.bundle;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.translation.constants.TranslationConstants;
 
@@ -37,7 +37,7 @@ public class TranslationResourceBundleLoader implements ResourceBundleLoader {
 	@Override
 	public ResourceBundle loadResourceBundle(Locale locale) {
 		return new AggregateResourceBundle(
-			LanguageResources.getResourceBundle(locale),
+			_languageResources.getResourceBundle(locale),
 			new ResourceBundle() {
 
 				@Override
@@ -66,6 +66,9 @@ public class TranslationResourceBundleLoader implements ResourceBundleLoader {
 	private static final String _PREFIX =
 		"model.resource." + TranslationConstants.RESOURCE_NAME +
 			StringPool.PERIOD;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

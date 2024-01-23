@@ -30,9 +30,9 @@ import com.liferay.headless.commerce.delivery.cart.dto.v1_0.Price;
 import com.liferay.headless.commerce.delivery.cart.dto.v1_0.Settings;
 import com.liferay.headless.commerce.delivery.cart.dto.v1_0.SkuUnitOfMeasure;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.util.BigDecimalUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
@@ -194,8 +194,8 @@ public class CartItemDTOConverter
 		CPInstance cpInstance = commerceOrderItem.fetchCPInstance();
 
 		if (cpInstance == null) {
-			ResourceBundle resourceBundle = LanguageResources.getResourceBundle(
-				locale);
+			ResourceBundle resourceBundle =
+				_languageResources.getResourceBundle(locale);
 
 			return new String[] {
 				_language.get(
@@ -380,5 +380,8 @@ public class CartItemDTOConverter
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

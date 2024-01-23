@@ -8,12 +8,13 @@ package com.liferay.document.library.internal.change.tracking.spi.resolver;
 import com.liferay.change.tracking.spi.resolver.ConstraintResolver;
 import com.liferay.change.tracking.spi.resolver.context.ConstraintResolverContext;
 import com.liferay.document.library.kernel.model.DLFileEntry;
-import com.liferay.portal.language.LanguageResources;
+import com.liferay.portal.kernel.language.LanguageResources;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Samuel Trong Tran
@@ -39,7 +40,7 @@ public class DLFileEntryFileNameConstraintResolver
 
 	@Override
 	public ResourceBundle getResourceBundle(Locale locale) {
-		return LanguageResources.getResourceBundle(locale);
+		return _languageResources.getResourceBundle(locale);
 	}
 
 	@Override
@@ -51,5 +52,8 @@ public class DLFileEntryFileNameConstraintResolver
 	public void resolveConflict(
 		ConstraintResolverContext<DLFileEntry> constraintResolverContext) {
 	}
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

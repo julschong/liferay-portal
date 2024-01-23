@@ -11,6 +11,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
@@ -33,7 +34,6 @@ import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.xmlrpc.Method;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialRequestInterpreter;
 
@@ -194,14 +194,14 @@ public class PortletBagImpl implements PortletBag {
 			_resourceBundleLoaderSnapshot.get();
 
 		if (resourceBundleLoader == null) {
-			return LanguageResources.getResourceBundle(locale);
+			return LanguageResourcesUtil.getResourceBundle(locale);
 		}
 
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
 			locale);
 
 		if (resourceBundle == null) {
-			resourceBundle = LanguageResources.getResourceBundle(locale);
+			resourceBundle = LanguageResourcesUtil.getResourceBundle(locale);
 		}
 
 		return resourceBundle;

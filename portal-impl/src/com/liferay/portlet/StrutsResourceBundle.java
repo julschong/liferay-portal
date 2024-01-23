@@ -7,11 +7,11 @@ package com.liferay.portlet;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.language.ResourceBundleEnumeration;
 
 import java.util.Enumeration;
@@ -31,7 +31,7 @@ public class StrutsResourceBundle extends ResourceBundle {
 		_portletName = portletName;
 		_locale = locale;
 
-		setParent(LanguageResources.getResourceBundle(locale));
+		setParent(LanguageResourcesUtil.getResourceBundle(locale));
 	}
 
 	@Override

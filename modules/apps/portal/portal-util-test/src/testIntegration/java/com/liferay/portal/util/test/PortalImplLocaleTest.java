@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.servlet.HttpMethods;
@@ -21,7 +22,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.servlet.I18nServlet;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -68,8 +68,8 @@ public class PortalImplLocaleTest {
 
 		_language.init();
 
-		LanguageResources.getSuperLocale(LocaleUtil.GERMANY);
-		LanguageResources.getSuperLocale(LocaleUtil.US);
+		_languageResources.getSuperLocale(LocaleUtil.GERMANY);
+		_languageResources.getSuperLocale(LocaleUtil.US);
 
 		_group = GroupTestUtil.addGroup();
 
@@ -186,6 +186,9 @@ public class PortalImplLocaleTest {
 
 	@Inject
 	private Language _language;
+
+	@Inject
+	private LanguageResources _languageResources;
 
 	@DeleteAfterTestRun
 	private Layout _layout;

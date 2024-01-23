@@ -6,6 +6,7 @@
 package com.liferay.portlet.internal;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletConstants;
@@ -19,7 +20,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portlet.StrutsResourceBundle;
 
 import java.util.ArrayList;
@@ -247,7 +247,8 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 
 			if (resourceBundle == null) {
 				resourceBundle = new PortletResourceBundle(
-					LanguageResources.getResourceBundle(locale), _portletInfos);
+					LanguageResourcesUtil.getResourceBundle(locale),
+					_portletInfos);
 
 				_resourceBundles.put(resourceBundleId, resourceBundle);
 			}

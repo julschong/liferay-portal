@@ -6,6 +6,7 @@
 package com.liferay.portal.servlet.filters.language;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -21,7 +22,6 @@ import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class LanguageFilter extends BasePortalFilter {
 		return LanguageUtil.process(
 			() -> {
 				ResourceBundle resourceBundle =
-					LanguageResources.getResourceBundle(locale);
+					LanguageResourcesUtil.getResourceBundle(locale);
 
 				if (_portletConfig != null) {
 					resourceBundle = new AggregateResourceBundle(

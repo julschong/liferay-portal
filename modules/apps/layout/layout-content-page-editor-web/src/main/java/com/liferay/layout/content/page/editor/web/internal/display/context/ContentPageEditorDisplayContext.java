@@ -70,6 +70,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -109,7 +110,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.configuration.provider.SegmentsConfigurationProvider;
 import com.liferay.segments.constants.SegmentsEntryConstants;
@@ -295,7 +295,7 @@ public class ContentPageEditorDisplayContext {
 			).put(
 				"commonStyles",
 				CommonStylesUtil.getCommonStylesJSONArray(
-					LanguageResources.getResourceBundle(
+					LanguageResourcesUtil.getResourceBundle(
 						themeDisplay.getLocale()))
 			).put(
 				"createLayoutPageTemplateEntryURL",

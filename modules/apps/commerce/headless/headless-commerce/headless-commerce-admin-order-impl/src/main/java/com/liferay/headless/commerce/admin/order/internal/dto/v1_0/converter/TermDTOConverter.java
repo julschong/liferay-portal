@@ -10,8 +10,8 @@ import com.liferay.commerce.term.service.CommerceTermEntryService;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.Status;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.Term;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
@@ -57,7 +57,7 @@ public class TermDTOConverter implements DTOConverter<CommerceTermEntry, Term> {
 				setType(commerceTermEntry::getType);
 				setTypeLocalized(
 					() -> _language.get(
-						LanguageResources.getResourceBundle(
+						_languageResources.getResourceBundle(
 							dtoConverterContext.getLocale()),
 						commerceTermEntry.getType()));
 				setTypeSettings(commerceTermEntry::getTypeSettings);
@@ -70,7 +70,7 @@ public class TermDTOConverter implements DTOConverter<CommerceTermEntry, Term> {
 									commerceTermEntry.getStatus()));
 							setLabel_i18n(
 								() -> _language.get(
-									LanguageResources.getResourceBundle(
+									_languageResources.getResourceBundle(
 										dtoConverterContext.getLocale()),
 									WorkflowConstants.getStatusLabel(
 										commerceTermEntry.getStatus())));
@@ -85,5 +85,8 @@ public class TermDTOConverter implements DTOConverter<CommerceTermEntry, Term> {
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

@@ -56,6 +56,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -71,7 +72,6 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.security.audit.event.generators.constants.EventTypes;
 import com.liferay.portal.security.audit.storage.service.AuditEventLocalService;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
@@ -222,7 +222,7 @@ public class ObjectEntryDTOConverter
 									objectEntry.getStatus()));
 							setLabel_i18n(
 								() -> _language.get(
-									LanguageResources.getResourceBundle(
+									_languageResources.getResourceBundle(
 										dtoConverterContext.getLocale()),
 									WorkflowConstants.getStatusLabel(
 										objectEntry.getStatus())));
@@ -919,6 +919,9 @@ public class ObjectEntryDTOConverter
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;

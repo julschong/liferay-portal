@@ -12,8 +12,8 @@ import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderType;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.Status;
 import com.liferay.headless.commerce.core.util.LanguageUtils;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
@@ -71,7 +71,7 @@ public class OrderTypeDTOConverter
 						WorkflowConstants.getStatusLabel(
 							commerceOrderType.getStatus()),
 						_language.get(
-							LanguageResources.getResourceBundle(
+							_languageResources.getResourceBundle(
 								dtoConverterContext.getLocale()),
 							WorkflowConstants.getStatusLabel(
 								commerceOrderType.getStatus())),
@@ -98,5 +98,8 @@ public class OrderTypeDTOConverter
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

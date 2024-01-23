@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.cookies.constants.CookiesConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.language.LanguageWrapper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -947,7 +948,7 @@ public class LanguageImpl implements Language, Serializable {
 			return defaultValue;
 		}
 
-		String value = LanguageResources.getMessage(locale, key);
+		String value = LanguageResourcesUtil.getMessage(locale, key);
 
 		if (value != null) {
 			return value;

@@ -28,8 +28,8 @@ import com.liferay.headless.commerce.core.util.LanguageUtils;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
@@ -149,7 +149,7 @@ public class ProductDTOConverter
 				setWorkflowStatusInfo(
 					() -> {
 						ResourceBundle resourceBundle =
-							LanguageResources.getResourceBundle(locale);
+							_languageResources.getResourceBundle(locale);
 
 						String productStatusLabel =
 							WorkflowConstants.getStatusLabel(
@@ -251,5 +251,8 @@ public class ProductDTOConverter
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 }

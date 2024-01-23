@@ -5,13 +5,13 @@
 
 package com.liferay.wiki.web.internal.display.context.helper;
 
+import com.liferay.portal.kernel.language.LanguageResourcesUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.wiki.configuration.WikiGroupServiceOverriddenConfiguration;
 
 import java.util.Map;
@@ -152,7 +152,8 @@ public class MailTemplatesHelper {
 		ResourceBundle bundleResourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", _wikiRequestHelper.getLocale(), getClass());
 		ResourceBundle portalResourceBundle =
-			LanguageResources.getResourceBundle(_wikiRequestHelper.getLocale());
+			LanguageResourcesUtil.getResourceBundle(
+				_wikiRequestHelper.getLocale());
 
 		return new AggregateResourceBundle(
 			bundleResourceBundle, portalResourceBundle);

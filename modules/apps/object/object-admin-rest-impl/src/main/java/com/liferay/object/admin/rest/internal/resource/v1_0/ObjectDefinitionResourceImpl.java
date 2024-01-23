@@ -61,6 +61,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -75,7 +76,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
@@ -1280,7 +1280,7 @@ public class ObjectDefinitionResourceImpl
 									objectDefinition.getStatus()));
 							setLabel_i18n(
 								() -> _language.get(
-									LanguageResources.getResourceBundle(
+									_languageResources.getResourceBundle(
 										contextAcceptLanguage.
 											getPreferredLocale()),
 									WorkflowConstants.getStatusLabel(
@@ -1318,6 +1318,9 @@ public class ObjectDefinitionResourceImpl
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 	@Reference
 	private ListTypeDefinitionLocalService _listTypeDefinitionLocalService;

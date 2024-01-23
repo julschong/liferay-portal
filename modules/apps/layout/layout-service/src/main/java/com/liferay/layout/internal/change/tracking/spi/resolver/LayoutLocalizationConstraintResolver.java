@@ -10,7 +10,7 @@ import com.liferay.change.tracking.spi.resolver.context.ConstraintResolverContex
 import com.liferay.layout.model.LayoutLocalization;
 import com.liferay.layout.service.LayoutLocalizationLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.language.LanguageResources;
+import com.liferay.portal.kernel.language.LanguageResources;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -42,7 +42,7 @@ public class LayoutLocalizationConstraintResolver
 
 	@Override
 	public ResourceBundle getResourceBundle(Locale locale) {
-		return LanguageResources.getResourceBundle(locale);
+		return _languageResources.getResourceBundle(locale);
 	}
 
 	@Override
@@ -59,6 +59,9 @@ public class LayoutLocalizationConstraintResolver
 		_layoutLocalizationLocalService.deleteLayoutLocalization(
 			constraintResolverContext.getSourceCTModel());
 	}
+
+	@Reference
+	private LanguageResources _languageResources;
 
 	@Reference
 	private LayoutLocalizationLocalService _layoutLocalizationLocalService;

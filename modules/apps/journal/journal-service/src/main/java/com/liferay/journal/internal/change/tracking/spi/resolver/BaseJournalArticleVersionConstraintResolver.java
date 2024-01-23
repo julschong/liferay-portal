@@ -12,13 +12,13 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MathUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.language.LanguageResources;
 
 import java.util.List;
 import java.util.Locale;
@@ -49,7 +49,7 @@ public abstract class BaseJournalArticleVersionConstraintResolver
 
 	@Override
 	public ResourceBundle getResourceBundle(Locale locale) {
-		return LanguageResources.getResourceBundle(locale);
+		return languageResources.getResourceBundle(locale);
 	}
 
 	@Override
@@ -107,6 +107,9 @@ public abstract class BaseJournalArticleVersionConstraintResolver
 
 	@Reference
 	protected JournalArticleLocalService journalArticleLocalService;
+
+	@Reference
+	protected LanguageResources languageResources;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseJournalArticleVersionConstraintResolver.class);

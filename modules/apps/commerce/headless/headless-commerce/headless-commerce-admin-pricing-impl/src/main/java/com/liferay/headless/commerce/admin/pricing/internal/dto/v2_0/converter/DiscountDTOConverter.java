@@ -15,7 +15,7 @@ import com.liferay.commerce.percentage.PercentageFormatter;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.Discount;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.language.LanguageResources;
+import com.liferay.portal.kernel.language.LanguageResources;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
@@ -86,7 +86,7 @@ public class DiscountDTOConverter
 				setRulesConjunction(commerceDiscount::isRulesConjunction);
 				setTarget(
 					() -> _language.get(
-						LanguageResources.getResourceBundle(
+						_languageResources.getResourceBundle(
 							dtoConverterContext.getLocale()),
 						commerceDiscount.getTarget()));
 				setTitle(commerceDiscount::getTitle);
@@ -162,6 +162,9 @@ public class DiscountDTOConverter
 
 	@Reference
 	private Language _language;
+
+	@Reference
+	private LanguageResources _languageResources;
 
 	@Reference
 	private PercentageFormatter _percentageFormatter;
