@@ -1,0 +1,19 @@
+diff --git a/org/eclipse/equinox/http/servlet/internal/servlet/ServletContextAdaptor.java b/org/eclipse/equinox/http/servlet/internal/servlet/ServletContextAdaptor.java
+index 273a617..c5ab8a3 100644
+--- a/org/eclipse/equinox/http/servlet/internal/servlet/ServletContextAdaptor.java
++++ b/org/eclipse/equinox/http/servlet/internal/servlet/ServletContextAdaptor.java
+@@ -143,7 +143,13 @@ public class ServletContextAdaptor {
+ 	}
+ 
+ 	public String getInitParameter(String name) {
+-		return contextController.getInitParams().get(name);
++		Map<String, String> initParams = contextController.getInitParams();
++		
++		if (initParams == null) {
++			return null;
++		}
++		
++		return initParams.get(name);
+ 	}
+ 
+ 	public Enumeration<String> getInitParameterNames() {
