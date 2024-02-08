@@ -143,7 +143,13 @@ public class ServletContextAdaptor {
 	}
 
 	public String getInitParameter(String name) {
-		return contextController.getInitParams().get(name);
+		Map<String, String> initParams = contextController.getInitParams();
+		
+		if (initParams == null) {
+			return null;
+		}
+		
+		return initParams.get(name);
 	}
 
 	public Enumeration<String> getInitParameterNames() {
