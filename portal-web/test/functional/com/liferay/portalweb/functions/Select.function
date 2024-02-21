@@ -13,6 +13,14 @@ definition {
 		selenium.assertLiferayErrors();
 	}
 
+	function selectWithOptionLocator(optionLocator) {
+		Click.clickNoMouseOver(locator1 = ${optionLocator});
+
+		selenium.assertJavaScriptErrors("true");
+
+		selenium.assertLiferayErrors();
+	}
+
 	function select(locator1, value1) {
 		WaitForSPARefresh();
 

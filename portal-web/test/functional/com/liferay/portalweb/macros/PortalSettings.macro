@@ -306,6 +306,14 @@ definition {
 	}
 
 	@summary = "Default summary"
+	macro configureTimeZoneWithOptionLocator(optionLocator = null) {
+		Select.selectWithOptionLocator(
+			optionLocator = ${optionLocator});
+
+		PortalSettings._saveDisplaySettings();
+	}
+
+	@summary = "Default summary"
 	macro configureWikiService(editor = null, counter = null) {
 		var key_counter = ${counter};
 
