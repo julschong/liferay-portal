@@ -61,6 +61,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.analysis.KeywordTokenizer;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.segments.SegmentsEntryRetriever;
 import com.liferay.segments.context.RequestContextMapper;
@@ -80,9 +81,6 @@ import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.text.StrMatcher;
-import org.apache.commons.lang.text.StrTokenizer;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -360,6 +358,9 @@ public class AssetPublisherConfigurationAction
 	protected ItemSelector itemSelector;
 
 	@Reference
+	protected KeywordTokenizer keywordTokenizer;
+
+	@Reference
 	protected LayoutLocalService layoutLocalService;
 
 	@Reference
@@ -526,14 +527,10 @@ public class AssetPublisherConfigurationAction
 				actionRequest, "queryTagNames" + index);
 		}
 		else if (name.equals("keywords")) {
-			StrTokenizer strTokenizer = new StrTokenizer(
+			List<String> tokens = keywordTokenizer.tokenize(
 				ParamUtil.getString(actionRequest, "keywords" + index));
 
-			strTokenizer.setQuoteMatcher(StrMatcher.quoteMatcher());
-
-			List<String> valuesList = (List<String>)strTokenizer.getTokenList();
-
-			values = valuesList.toArray(new String[0]);
+			values = tokens.toArray(new String[0]);
 		}
 		else {
 			values = ParamUtil.getStringValues(

@@ -24,15 +24,13 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.analysis.KeywordTokenizer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-
-import org.apache.commons.lang.text.StrMatcher;
-import org.apache.commons.lang.text.StrTokenizer;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -116,14 +114,10 @@ public class UpdateAssetListEntryDynamicMVCActionCommand
 				actionRequest, "queryTagNames" + index);
 		}
 		else if (name.equals("keywords")) {
-			StrTokenizer strTokenizer = new StrTokenizer(
+			List<String> tokens = _keywordTokenizer.tokenize(
 				ParamUtil.getString(actionRequest, "keywords" + index));
 
-			strTokenizer.setQuoteMatcher(StrMatcher.quoteMatcher());
-
-			List<String> valuesList = (List<String>)strTokenizer.getTokenList();
-
-			values = valuesList.toArray(new String[0]);
+			values = tokens.toArray(new String[0]);
 		}
 		else {
 			values = ParamUtil.getStringValues(
@@ -213,5 +207,8 @@ public class UpdateAssetListEntryDynamicMVCActionCommand
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
+
+	@Reference
+	private KeywordTokenizer _keywordTokenizer;
 
 }
