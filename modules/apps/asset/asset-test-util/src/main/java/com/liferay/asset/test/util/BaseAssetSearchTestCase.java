@@ -14,6 +14,7 @@ import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.util.AssetHelper;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.security.RandomUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -45,15 +45,13 @@ import com.liferay.portal.util.PropsValues;
 import java.text.DateFormat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import org.apache.commons.lang.ArrayUtils;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -826,7 +824,7 @@ public abstract class BaseAssetSearchTestCase {
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group1.getGroupId(), new String[] {getBaseModelClassName()});
 
-		Date[] expirationDates = generateRandomDates(new Date(), 6);
+		List<Date> expirationDates = generateRandomDates(new Date(), 6);
 
 		testOrderByExpirationDate(assetEntryQuery, "asc", expirationDates);
 	}
@@ -837,7 +835,7 @@ public abstract class BaseAssetSearchTestCase {
 			AssetEntryQueryTestUtil.createAssetEntryQuery(
 				_group1.getGroupId(), new String[] {getBaseModelClassName()});
 
-		Date[] expirationDates = generateRandomDates(new Date(), 6);
+		List<Date> expirationDates = generateRandomDates(new Date(), 6);
 
 		testOrderByExpirationDate(assetEntryQuery, "desc", expirationDates);
 	}
@@ -1067,18 +1065,8 @@ public abstract class BaseAssetSearchTestCase {
 		Assert.assertEquals(expectedCount, actualCount);
 	}
 
-	protected String[] format(Date[] dates, DateFormat dateFormat) {
-		String[] strings = new String[dates.length];
-
-		for (int i = 0; i < strings.length; i++) {
-			strings[i] = dateFormat.format(dates[i]);
-		}
-
-		return strings;
-	}
-
-	protected Date[] generateRandomDates(Date startDate, int size) {
-		Date[] dates = new Date[size];
+	protected List<Date> generateRandomDates(Date startDate, int size) {
+		List<Date> dates = new ArrayList<>();
 
 		for (int i = 0; i < size; i++) {
 			Date date = new Date(
@@ -1092,7 +1080,7 @@ public abstract class BaseAssetSearchTestCase {
 			calendar.set(Calendar.SECOND, 0);
 			calendar.set(Calendar.MILLISECOND, 0);
 
-			dates[i] = calendar.getTime();
+			dates.add(calendar.getTime());
 		}
 
 		return dates;
@@ -1110,40 +1098,25 @@ public abstract class BaseAssetSearchTestCase {
 		return null;
 	}
 
-	protected Date[] getExpirationDates(
+	protected List<Date> getExpirationDates(
 			List<AssetEntry> assetEntries, String orderByType)
 		throws Exception {
 
-		Date[] dates = new Date[assetEntries.size()];
+		List<Date> dates = new ArrayList<>(assetEntries.size());
 
-		for (int i = 0; i < dates.length; i++) {
+		for (int i = 0; i < assetEntries.size(); i++) {
 			int index = i;
 
 			if (orderByType.equals("desc")) {
-				index = dates.length - 1 - i;
+				index = assetEntries.size() - 1 - i;
 			}
 
 			AssetEntry assetEntry = assetEntries.get(index);
 
-			dates[i] = assetEntry.getExpirationDate();
+			dates.add(assetEntry.getExpirationDate());
 		}
 
 		return dates;
-	}
-
-	protected String[] getOrderedTitles(
-			List<Map<Locale, String>> orderedTitleMaps, Locale locale)
-		throws Exception {
-
-		String[] titles = new String[orderedTitleMaps.size()];
-
-		for (int i = 0; i < titles.length; i++) {
-			Map<Locale, String> orderedTitleMap = orderedTitleMaps.get(i);
-
-			titles[i] = orderedTitleMap.get(locale);
-		}
-
-		return titles;
 	}
 
 	protected BaseModel<?> getParentBaseModel(
@@ -1154,20 +1127,6 @@ public abstract class BaseAssetSearchTestCase {
 	}
 
 	protected abstract String getSearchKeywords();
-
-	protected String[] getTitles(List<AssetEntry> assetEntries, Locale locale)
-		throws Exception {
-
-		String[] titles = new String[assetEntries.size()];
-
-		for (int i = 0; i < titles.length; i++) {
-			AssetEntry assetEntry = assetEntries.get(i);
-
-			titles[i] = assetEntry.getTitle(locale);
-		}
-
-		return titles;
-	}
 
 	protected boolean isLocalizableTitle() {
 		return true;
@@ -1292,7 +1251,7 @@ public abstract class BaseAssetSearchTestCase {
 
 	protected void testOrderByExpirationDate(
 			AssetEntryQuery assetEntryQuery, String orderByType,
-			Date[] expirationDates)
+			List<Date> expirationDates)
 		throws Exception {
 
 		ServiceContext serviceContext =
@@ -1314,7 +1273,7 @@ public abstract class BaseAssetSearchTestCase {
 		assetEntryQuery.setOrderByCol1("expirationDate");
 		assetEntryQuery.setOrderByType1(orderByType);
 
-		Arrays.sort(expirationDates);
+		Collections.sort(expirationDates);
 
 		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
 			PropsValues.INDEX_DATE_FORMAT_PATTERN);
@@ -1322,11 +1281,10 @@ public abstract class BaseAssetSearchTestCase {
 		List<AssetEntry> assetEntries = search(assetEntryQuery, searchContext);
 
 		Assert.assertEquals(
-			ArrayUtils.toString(format(expirationDates, dateFormat)),
-			ArrayUtils.toString(
-				format(
-					getExpirationDates(assetEntries, orderByType),
-					dateFormat)));
+			TransformUtil.transform(expirationDates, dateFormat::format),
+			TransformUtil.transform(
+				getExpirationDates(assetEntries, orderByType),
+				dateFormat::format));
 	}
 
 	protected void testOrderByTitle(
@@ -1359,8 +1317,11 @@ public abstract class BaseAssetSearchTestCase {
 				assetEntryQuery, searchContext);
 
 			Assert.assertEquals(
-				ArrayUtils.toString(getOrderedTitles(orderedTitleMaps, locale)),
-				ArrayUtils.toString(getTitles(assetEntries, locale)));
+				TransformUtil.transform(
+					orderedTitleMaps,
+					orderedTitleMap -> orderedTitleMap.get(locale)),
+				TransformUtil.transform(
+					assetEntries, assetEntry -> assetEntry.getTitle(locale)));
 		}
 	}
 
