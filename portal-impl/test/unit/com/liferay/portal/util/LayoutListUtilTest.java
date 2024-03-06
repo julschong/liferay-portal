@@ -25,8 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.lang.time.StopWatch;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -106,19 +104,15 @@ public class LayoutListUtilTest {
 
 	@Test
 	public void testGetLayoutDescriptions() {
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
+		long startTime = System.currentTimeMillis();
 
 		List<LayoutDescription> layoutDescriptions =
 			LayoutListUtil.getLayoutDescriptions(0, false, "ROOT", null);
 
 		if (_log.isDebugEnabled()) {
-			stopWatch.stop();
-
 			_log.debug(
-				"Retrieved layout descriptions in " + stopWatch.getTime() +
-					" ms");
+				"Retrieved layout descriptions in " +
+					(System.currentTimeMillis() - startTime) + " ms");
 		}
 
 		List<String> expectedLayoutDescriptionStrings = new ArrayList<>(
