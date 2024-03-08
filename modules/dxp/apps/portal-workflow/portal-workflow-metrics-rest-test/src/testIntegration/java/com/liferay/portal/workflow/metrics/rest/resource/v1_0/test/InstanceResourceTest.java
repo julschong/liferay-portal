@@ -38,6 +38,7 @@ import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Process;
 import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.SLAResult;
 import com.liferay.portal.workflow.metrics.rest.client.pagination.Page;
 import com.liferay.portal.workflow.metrics.rest.client.pagination.Pagination;
+import com.liferay.portal.workflow.metrics.rest.resource.v1_0.test.helper.DateUtil;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.test.helper.WorkflowMetricsRESTTestHelper;
 
 import java.util.ArrayList;
@@ -49,8 +50,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -142,7 +141,7 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 		instance1.setClassPK(_classPK);
 		instance1.setCompleted(true);
 		instance1.setDateCompletion(
-			DateUtils.truncate(new Date(), Calendar.SECOND));
+			DateUtil.truncateTime(new Date(), Calendar.SECOND));
 
 		testGetProcessInstancesPage_addInstance(_process.getId(), instance1);
 
@@ -290,7 +289,7 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 					BeanTestUtil.setProperty(
 						instance1, entityField.getName(),
 						DateTestUtil.addToDate(
-							DateUtils.truncate(new Date(), Calendar.SECOND),
+							DateUtil.truncateTime(new Date(), Calendar.SECOND),
 							Calendar.MINUTE, -2));
 				}
 			});
@@ -435,7 +434,7 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 		instance.setCompleted(false);
 		instance.setDateCompletion((Date)null);
 		instance.setDateCreated(
-			DateUtils.truncate(new Date(), Calendar.SECOND));
+			DateUtil.truncateTime(new Date(), Calendar.SECOND));
 		instance.setProcessId(_process.getId());
 		instance.setProcessVersion(_process.getVersion());
 		instance.setSlaResults(
@@ -589,9 +588,10 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 
 		return new SLAResult() {
 			{
-				dateModified = DateUtils.truncate(
+				dateModified = DateUtil.truncateTime(
 					RandomTestUtil.nextDate(), Calendar.SECOND);
-				dateOverdue = DateUtils.truncate(new Date(), Calendar.SECOND);
+				dateOverdue = DateUtil.truncateTime(
+					new Date(), Calendar.SECOND);
 				id = RandomTestUtil.randomLong();
 				name = StringPool.BLANK;
 				onTime = !overdue;

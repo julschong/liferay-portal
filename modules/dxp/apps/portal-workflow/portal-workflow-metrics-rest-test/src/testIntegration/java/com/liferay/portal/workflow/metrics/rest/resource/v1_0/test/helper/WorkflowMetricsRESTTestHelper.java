@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -82,7 +81,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.Assert;
 
@@ -422,9 +420,9 @@ public class WorkflowMetricsRESTTestHelper {
 					companyId, instance,
 					new SLAResult() {
 						{
-							dateModified = DateUtils.truncate(
+							dateModified = DateUtil.truncateTime(
 								RandomTestUtil.nextDate(), Calendar.SECOND);
-							dateOverdue = DateUtils.truncate(
+							dateOverdue = DateUtil.truncateTime(
 								RandomTestUtil.nextDate(), Calendar.SECOND);
 							id = RandomTestUtil.randomLong();
 							name = null;
@@ -441,9 +439,9 @@ public class WorkflowMetricsRESTTestHelper {
 					companyId, instance,
 					new SLAResult() {
 						{
-							dateModified = DateUtils.truncate(
+							dateModified = DateUtil.truncateTime(
 								RandomTestUtil.nextDate(), Calendar.SECOND);
-							dateOverdue = DateUtils.truncate(
+							dateOverdue = DateUtil.truncateTime(
 								RandomTestUtil.nextDate(), Calendar.SECOND);
 							id = RandomTestUtil.randomLong();
 							name = null;
@@ -1356,7 +1354,7 @@ public class WorkflowMetricsRESTTestHelper {
 
 	private String _getDateString(Date date) {
 		try {
-			return DateUtil.getDate(
+			return com.liferay.portal.kernel.util.DateUtil.getDate(
 				date, "yyyyMMddHHmmss", LocaleUtil.getDefault());
 		}
 		catch (Exception exception) {
@@ -1439,7 +1437,7 @@ public class WorkflowMetricsRESTTestHelper {
 
 	private Date _parseDate(String dateString) {
 		try {
-			return DateUtil.parseDate(
+			return com.liferay.portal.kernel.util.DateUtil.parseDate(
 				"yyyyMMddHHmmss", dateString, LocaleUtil.getDefault());
 		}
 		catch (Exception exception) {

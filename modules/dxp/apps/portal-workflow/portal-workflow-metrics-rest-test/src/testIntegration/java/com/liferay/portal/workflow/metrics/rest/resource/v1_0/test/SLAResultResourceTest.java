@@ -16,12 +16,11 @@ import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Instance;
 import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Process;
 import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.SLAResult;
 import com.liferay.portal.workflow.metrics.rest.client.serdes.v1_0.SLAResultSerDes;
+import com.liferay.portal.workflow.metrics.rest.resource.v1_0.test.helper.DateUtil;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.test.helper.WorkflowMetricsRESTTestHelper;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -67,7 +66,7 @@ public class SLAResultResourceTest extends BaseSLAResultResourceTestCase {
 	@Override
 	@Test
 	public void testGetProcessLastSLAResult() throws Exception {
-		Date dateModified = DateUtils.truncate(
+		Date dateModified = DateUtil.truncateTime(
 			RandomTestUtil.nextDate(), Calendar.SECOND);
 
 		SLAResult slaResult1 = randomSLAResult();
@@ -137,7 +136,7 @@ public class SLAResultResourceTest extends BaseSLAResultResourceTestCase {
 
 		return new SLAResult() {
 			{
-				dateModified = DateUtils.truncate(
+				dateModified = DateUtil.truncateTime(
 					RandomTestUtil.nextDate(), Calendar.SECOND);
 				dateOverdue = RandomTestUtil.nextDate();
 				id = RandomTestUtil.randomLong();
