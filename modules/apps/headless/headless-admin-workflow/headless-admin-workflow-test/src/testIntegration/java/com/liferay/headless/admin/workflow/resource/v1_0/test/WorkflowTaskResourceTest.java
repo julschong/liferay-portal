@@ -41,11 +41,10 @@ import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.test.rule.Inject;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -655,15 +654,17 @@ public class WorkflowTaskResourceTest extends BaseWorkflowTaskResourceTestCase {
 				new WorkflowTaskAssignToMe[] {
 					new WorkflowTaskAssignToMe() {
 						{
-							dueDate = DateUtils.addDays(
-								RandomTestUtil.nextDate(), 1);
+							dueDate = addToDate(
+								RandomTestUtil.nextDate(),
+								Calendar.DAY_OF_MONTH, 1);
 							workflowTaskId = workflowTask1.getId();
 						}
 					},
 					new WorkflowTaskAssignToMe() {
 						{
-							dueDate = DateUtils.addDays(
-								RandomTestUtil.nextDate(), 2);
+							dueDate = addToDate(
+								RandomTestUtil.nextDate(),
+								Calendar.DAY_OF_MONTH, 2);
 							workflowTaskId = workflowTask2.getId();
 						}
 					}
@@ -884,8 +885,9 @@ public class WorkflowTaskResourceTest extends BaseWorkflowTaskResourceTestCase {
 				workflowTask.getId(),
 				new WorkflowTaskAssignToMe() {
 					{
-						dueDate = DateUtils.addDays(
-							RandomTestUtil.nextDate(), 2);
+						dueDate = addToDate(
+							RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH,
+							2);
 					}
 				});
 

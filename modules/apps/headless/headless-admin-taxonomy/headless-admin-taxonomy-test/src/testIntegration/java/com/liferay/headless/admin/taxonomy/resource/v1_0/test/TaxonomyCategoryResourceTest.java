@@ -45,12 +45,11 @@ import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -217,7 +216,7 @@ public class TaxonomyCategoryResourceTest
 				ServiceContextTestUtil.getServiceContext());
 
 		AssetCategory assetCategory1 = _addAssetCategory(
-			_assetVocabulary, DateUtils.addMinutes(new Date(), -2),
+			_assetVocabulary, addToDate(new Date(), Calendar.MINUTE, -2),
 			parentAssetCategory);
 		AssetCategory assetCategory2 = _addAssetCategory(
 			_assetVocabulary, new Date(), parentAssetCategory);

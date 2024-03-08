@@ -35,9 +35,8 @@ import com.liferay.portal.workflow.metrics.rest.client.pagination.Pagination;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.test.helper.WorkflowMetricsRESTTestHelper;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -442,8 +441,8 @@ public class AssigneeMetricResourceTest
 				{
 					completed = true;
 					dateEnd = RandomTestUtil.nextDate();
-					dateStart = DateUtils.addMinutes(
-						RandomTestUtil.nextDate(), -2);
+					dateStart = addToDate(
+						RandomTestUtil.nextDate(), Calendar.MINUTE, -2);
 				}
 			});
 

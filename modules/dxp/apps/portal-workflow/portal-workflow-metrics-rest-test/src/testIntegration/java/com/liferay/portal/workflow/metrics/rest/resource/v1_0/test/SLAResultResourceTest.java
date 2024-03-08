@@ -72,7 +72,8 @@ public class SLAResultResourceTest extends BaseSLAResultResourceTestCase {
 
 		SLAResult slaResult1 = randomSLAResult();
 
-		slaResult1.setDateModified(DateUtils.addDays(dateModified, -2));
+		slaResult1.setDateModified(
+			addToDate(dateModified, Calendar.DAY_OF_MONTH, -2));
 
 		SLAResult slaResult2 = randomSLAResult();
 

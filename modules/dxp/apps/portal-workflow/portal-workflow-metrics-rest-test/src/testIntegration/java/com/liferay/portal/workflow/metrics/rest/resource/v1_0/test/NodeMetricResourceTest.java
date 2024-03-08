@@ -24,10 +24,9 @@ import com.liferay.portal.workflow.metrics.rest.client.pagination.Pagination;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.test.helper.WorkflowMetricsRESTTestHelper;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -180,8 +179,8 @@ public class NodeMetricResourceTest extends BaseNodeMetricResourceTestCase {
 
 		page = nodeMetricResource.getProcessNodeMetricsPage(
 			_process.getId(), true, RandomTestUtil.nextDate(),
-			DateUtils.addMinutes(RandomTestUtil.nextDate(), -2), null, null,
-			Pagination.of(1, 2), "durationAvg:desc");
+			addToDate(RandomTestUtil.nextDate(), Calendar.MINUTE, -2), null,
+			null, Pagination.of(1, 2), "durationAvg:desc");
 
 		assertEquals(
 			Arrays.asList(
@@ -211,8 +210,8 @@ public class NodeMetricResourceTest extends BaseNodeMetricResourceTestCase {
 
 		page = nodeMetricResource.getProcessNodeMetricsPage(
 			_process.getId(), true,
-			DateUtils.addHours(RandomTestUtil.nextDate(), -1),
-			DateUtils.addHours(RandomTestUtil.nextDate(), -2), null, null,
+			addToDate(RandomTestUtil.nextDate(), Calendar.HOUR, -1),
+			addToDate(RandomTestUtil.nextDate(), Calendar.HOUR, -2), null, null,
 			Pagination.of(1, 2), "durationAvg:desc");
 
 		Assert.assertEquals(2, page.getTotalCount());
