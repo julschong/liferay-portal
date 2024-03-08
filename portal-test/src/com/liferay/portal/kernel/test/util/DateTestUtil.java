@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.test.util;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -13,6 +14,19 @@ import org.junit.Assert;
  * @author Kyle Miho
  */
 public class DateTestUtil {
+
+	public static Date addToDate(Date date, int calendarField, int amount) {
+		if (date == null) {
+			throw new IllegalArgumentException("The date must not be null");
+		}
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(date);
+		calendar.add(calendarField, amount);
+
+		return calendar.getTime();
+	}
 
 	public static void assertEquals(Date expectedDate, Date actualDate) {
 		if (expectedDate == actualDate) {
