@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.DateTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -67,12 +68,11 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -261,8 +261,10 @@ public class KBArticleLocalServiceTest {
 			KBFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			StringUtil.randomString(), StringUtil.randomString(),
 			StringUtil.randomString(), StringUtil.randomString(), null, null,
-			null, DateUtils.addDays(RandomTestUtil.nextDate(), 1), null, null,
-			_serviceContext);
+			null,
+			DateTestUtil.addToDate(
+				RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1),
+			null, null, _serviceContext);
 	}
 
 	@FeatureFlags("LPS-188058")
@@ -270,9 +272,11 @@ public class KBArticleLocalServiceTest {
 	public void testAddKBArticleDisplayDateKBArticleStatusScheduled()
 		throws Exception {
 
-		Date displayDate = DateUtils.addDays(RandomTestUtil.nextDate(), 2);
+		Date displayDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 2);
 
-		Date expirationDate = DateUtils.addDays(displayDate, 1);
+		Date expirationDate = DateTestUtil.addToDate(
+			displayDate, Calendar.DAY_OF_MONTH, 1);
 
 		KBArticle kbArticle = _kbArticleLocalService.addKBArticle(
 			null, _user.getUserId(), _kbFolderClassNameId,
@@ -289,9 +293,11 @@ public class KBArticleLocalServiceTest {
 	public void testAddKBArticleInvalidExpirationDateBeforeDisplayDateKBArticleExpirationDateException()
 		throws Exception {
 
-		Date displayDate = DateUtils.addDays(RandomTestUtil.nextDate(), 2);
+		Date displayDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 2);
 
-		Date expirationDate = DateUtils.addDays(displayDate, -1);
+		Date expirationDate = DateTestUtil.addToDate(
+			displayDate, Calendar.DAY_OF_MONTH, -1);
 
 		_kbArticleLocalService.addKBArticle(
 			null, _user.getUserId(), _kbFolderClassNameId,
@@ -354,8 +360,10 @@ public class KBArticleLocalServiceTest {
 	public void testAddKBArticleUpdatesExpirationReviewDate() throws Exception {
 		_serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		Date expirationDate = DateUtils.addDays(RandomTestUtil.nextDate(), 1);
-		Date reviewDate = DateUtils.addDays(RandomTestUtil.nextDate(), 1);
+		Date expirationDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1);
+		Date reviewDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1);
 
 		KBArticle kbArticle = _kbArticleLocalService.addKBArticle(
 			null, _user.getUserId(), _kbFolderClassNameId,
@@ -367,8 +375,10 @@ public class KBArticleLocalServiceTest {
 		Assert.assertEquals(expirationDate, kbArticle.getExpirationDate());
 		Assert.assertEquals(reviewDate, kbArticle.getReviewDate());
 
-		expirationDate = DateUtils.addDays(RandomTestUtil.nextDate(), 2);
-		reviewDate = DateUtils.addDays(RandomTestUtil.nextDate(), 2);
+		expirationDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 2);
+		reviewDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 2);
 
 		_kbArticleLocalService.updateKBArticle(
 			_user.getUserId(), kbArticle.getResourcePrimKey(),
@@ -1326,8 +1336,10 @@ public class KBArticleLocalServiceTest {
 	public void testRemoveExpirationReviewDate() throws Exception {
 		_serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		Date expirationDate = DateUtils.addDays(RandomTestUtil.nextDate(), 1);
-		Date reviewDate = DateUtils.addDays(RandomTestUtil.nextDate(), 1);
+		Date expirationDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1);
+		Date reviewDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1);
 
 		KBArticle kbArticle = _kbArticleLocalService.addKBArticle(
 			null, _user.getUserId(), _kbFolderClassNameId,
@@ -1420,8 +1432,9 @@ public class KBArticleLocalServiceTest {
 			StringUtil.randomString(), StringUtil.randomString(),
 			StringUtil.randomString(), StringUtil.randomString(), null, null,
 			RandomTestUtil.nextDate(),
-			DateUtils.addDays(RandomTestUtil.nextDate(), 1), null, null,
-			_serviceContext);
+			DateTestUtil.addToDate(
+				RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1),
+			null, null, _serviceContext);
 
 		_kbArticleLocalService.updateKBArticle(
 			_user.getUserId(), kbArticle.getResourcePrimKey(),
@@ -1437,7 +1450,8 @@ public class KBArticleLocalServiceTest {
 
 		_serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		Date expirationDate = DateUtils.addDays(RandomTestUtil.nextDate(), 1);
+		Date expirationDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1);
 
 		KBArticle kbArticle = _kbArticleLocalService.addKBArticle(
 			null, _user.getUserId(), _kbFolderClassNameId,
@@ -1455,7 +1469,8 @@ public class KBArticleLocalServiceTest {
 		Assert.assertEquals(
 			WorkflowConstants.STATUS_EXPIRED, kbArticle.getStatus());
 
-		expirationDate = DateUtils.addDays(RandomTestUtil.nextDate(), 2);
+		expirationDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 2);
 
 		kbArticle = _kbArticleLocalService.updateKBArticle(
 			_user.getUserId(), kbArticle.getResourcePrimKey(),

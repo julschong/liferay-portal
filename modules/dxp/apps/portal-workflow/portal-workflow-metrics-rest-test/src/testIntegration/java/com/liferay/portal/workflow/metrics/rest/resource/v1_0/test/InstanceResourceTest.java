@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.DataGuard;
+import com.liferay.portal.kernel.test.util.DateTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -248,9 +249,10 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 			instances -> assertEqualsIgnoringOrder(
 				Arrays.asList(instance1, instance2, instance3), instances));
 
-		Date dateEnd = DateUtils.addSeconds(instance1.getDateCompletion(), 1);
-		Date dateStart = DateUtils.addSeconds(
-			instance1.getDateCompletion(), -1);
+		Date dateEnd = DateTestUtil.addToDate(
+			instance1.getDateCompletion(), Calendar.SECOND, 1);
+		Date dateStart = DateTestUtil.addToDate(
+			instance1.getDateCompletion(), Calendar.SECOND, -1);
 
 		_testGetProcessInstancesPage(
 			null, null, dateEnd, dateStart, new String[] {"Completed"},
@@ -272,20 +274,24 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 				if (Objects.equals(entityField.getName(), "dateOverdue")) {
 					for (SLAResult slaResult : instance1.getSlaResults()) {
 						slaResult.setDateOverdue(
-							DateUtils.addDays(slaResult.getDateOverdue(), -2));
+							DateTestUtil.addToDate(
+								slaResult.getDateOverdue(),
+								Calendar.DAY_OF_MONTH, -2));
 					}
 
 					for (SLAResult slaResult : instance2.getSlaResults()) {
 						slaResult.setDateOverdue(
-							DateUtils.addDays(slaResult.getDateOverdue(), -1));
+							DateTestUtil.addToDate(
+								slaResult.getDateOverdue(),
+								Calendar.DAY_OF_MONTH, -1));
 					}
 				}
 				else {
 					BeanTestUtil.setProperty(
 						instance1, entityField.getName(),
-						DateUtils.addMinutes(
+						DateTestUtil.addToDate(
 							DateUtils.truncate(new Date(), Calendar.SECOND),
-							-2));
+							Calendar.MINUTE, -2));
 				}
 			});
 	}

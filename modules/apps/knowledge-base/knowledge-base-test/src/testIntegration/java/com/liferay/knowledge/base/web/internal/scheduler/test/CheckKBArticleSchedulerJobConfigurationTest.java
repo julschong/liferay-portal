@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
+import com.liferay.portal.kernel.test.util.DateTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -29,9 +30,8 @@ import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import java.util.Calendar;
 import java.util.Date;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,9 +67,11 @@ public class CheckKBArticleSchedulerJobConfigurationTest {
 	public void testDoNotExpireKBArticleIfKBArticleIsScheduled()
 		throws Exception {
 
-		Date displayDate = DateUtils.addDays(RandomTestUtil.nextDate(), 1);
+		Date displayDate = DateTestUtil.addToDate(
+			RandomTestUtil.nextDate(), Calendar.DAY_OF_MONTH, 1);
 
-		Date expirationDate = DateUtils.addDays(displayDate, 1);
+		Date expirationDate = DateTestUtil.addToDate(
+			displayDate, Calendar.DAY_OF_MONTH, 1);
 
 		KBArticle kbArticle = _kbArticleLocalService.addKBArticle(
 			null, UserLocalServiceUtil.getGuestUserId(_group.getCompanyId()),
