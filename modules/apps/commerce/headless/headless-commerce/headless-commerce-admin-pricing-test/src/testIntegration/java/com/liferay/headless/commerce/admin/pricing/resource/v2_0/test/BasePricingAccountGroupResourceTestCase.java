@@ -44,6 +44,7 @@ import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -849,6 +850,19 @@ public abstract class BasePricingAccountGroupResourceTestCase {
 	protected com.liferay.portal.kernel.model.Group irrelevantGroup;
 	protected com.liferay.portal.kernel.model.Company testCompany;
 	protected com.liferay.portal.kernel.model.Group testGroup;
+
+	protected static Date addToDate(Date date, int calendarField, int amount) {
+		if (date == null) {
+			throw new IllegalArgumentException("The date must not be null");
+		}
+		else {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(calendarField, amount);
+
+			return calendar.getTime();
+		}
+	}
 
 	protected static class BeanTestUtil {
 

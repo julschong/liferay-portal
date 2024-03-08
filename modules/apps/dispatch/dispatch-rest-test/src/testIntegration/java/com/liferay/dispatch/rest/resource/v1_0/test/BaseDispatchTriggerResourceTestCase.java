@@ -44,6 +44,7 @@ import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,8 +57,6 @@ import java.util.Set;
 import javax.annotation.Generated;
 
 import javax.ws.rs.core.MultivaluedHashMap;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -1056,14 +1055,16 @@ public abstract class BaseDispatchTriggerResourceTestCase {
 				sb.append(" gt ");
 				sb.append(
 					_dateFormat.format(
-						DateUtils.addSeconds(
-							dispatchTrigger.getEndDate(), -2)));
+						addToDate(
+							dispatchTrigger.getEndDate(), Calendar.SECOND,
+							-2)));
 				sb.append(" and ");
 				sb.append(entityFieldName);
 				sb.append(" lt ");
 				sb.append(
 					_dateFormat.format(
-						DateUtils.addSeconds(dispatchTrigger.getEndDate(), 2)));
+						addToDate(
+							dispatchTrigger.getEndDate(), Calendar.SECOND, 2)));
 				sb.append(")");
 			}
 			else {
@@ -1190,15 +1191,17 @@ public abstract class BaseDispatchTriggerResourceTestCase {
 				sb.append(" gt ");
 				sb.append(
 					_dateFormat.format(
-						DateUtils.addSeconds(
-							dispatchTrigger.getStartDate(), -2)));
+						addToDate(
+							dispatchTrigger.getStartDate(), Calendar.SECOND,
+							-2)));
 				sb.append(" and ");
 				sb.append(entityFieldName);
 				sb.append(" lt ");
 				sb.append(
 					_dateFormat.format(
-						DateUtils.addSeconds(
-							dispatchTrigger.getStartDate(), 2)));
+						addToDate(
+							dispatchTrigger.getStartDate(), Calendar.SECOND,
+							2)));
 				sb.append(")");
 			}
 			else {
@@ -1353,6 +1356,19 @@ public abstract class BaseDispatchTriggerResourceTestCase {
 	protected com.liferay.portal.kernel.model.Group irrelevantGroup;
 	protected com.liferay.portal.kernel.model.Company testCompany;
 	protected com.liferay.portal.kernel.model.Group testGroup;
+
+	protected static Date addToDate(Date date, int calendarField, int amount) {
+		if (date == null) {
+			throw new IllegalArgumentException("The date must not be null");
+		}
+		else {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(calendarField, amount);
+
+			return calendar.getTime();
+		}
+	}
 
 	protected static class BeanTestUtil {
 

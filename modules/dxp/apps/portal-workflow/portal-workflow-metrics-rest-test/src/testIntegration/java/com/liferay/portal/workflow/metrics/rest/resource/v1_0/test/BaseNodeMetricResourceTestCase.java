@@ -34,6 +34,7 @@ import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
+import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Calendar;
 import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.NodeMetric;
 import com.liferay.portal.workflow.metrics.rest.client.http.HttpInvoker;
 import com.liferay.portal.workflow.metrics.rest.client.pagination.Page;
@@ -47,6 +48,7 @@ import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,8 +61,6 @@ import java.util.Set;
 import javax.annotation.Generated;
 
 import javax.ws.rs.core.MultivaluedHashMap;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -337,7 +337,7 @@ public abstract class BaseNodeMetricResourceTestCase {
 			(entityField, nodeMetric1, nodeMetric2) -> {
 				BeanTestUtil.setProperty(
 					nodeMetric1, entityField.getName(),
-					DateUtils.addMinutes(new Date(), -2));
+					addToDate(new Date(), Calendar.MINUTE, -2));
 			});
 	}
 
@@ -1038,6 +1038,19 @@ public abstract class BaseNodeMetricResourceTestCase {
 	protected com.liferay.portal.kernel.model.Group irrelevantGroup;
 	protected com.liferay.portal.kernel.model.Company testCompany;
 	protected com.liferay.portal.kernel.model.Group testGroup;
+
+	protected static Date addToDate(Date date, int calendarField, int amount) {
+		if (date == null) {
+			throw new IllegalArgumentException("The date must not be null");
+		}
+		else {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(calendarField, amount);
+
+			return calendar.getTime();
+		}
+	}
 
 	protected static class BeanTestUtil {
 
