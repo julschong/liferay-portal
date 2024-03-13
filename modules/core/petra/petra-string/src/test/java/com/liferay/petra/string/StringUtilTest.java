@@ -321,4 +321,30 @@ public class StringUtilTest {
 			StringUtil.split("test1-test2", CharPool.DASH));
 	}
 
+	@Test
+	public void testSubstringBetween() {
+		_assertSubstring("wx[b]yz", "[", "]", "b");
+		_assertSubstring(null, RandomTestUtil.randomString(), RandomTestUtil.randomString(), null);
+		_assertSubstring(RandomTestUtil.randomString(), null, RandomTestUtil.randomString(), null);
+		_assertSubstring(RandomTestUtil.randomString(), RandomTestUtil.randomString(), null, null);
+		_assertSubstring(
+			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
+			StringPool.BLANK);
+		_assertSubstring(StringPool.BLANK, StringPool.BLANK, RandomTestUtil.randomString(), null);
+		_assertSubstring(StringPool.BLANK, RandomTestUtil.randomString(), RandomTestUtil.randomString(), null);
+		_assertSubstring(
+			"yabcz", StringPool.BLANK, StringPool.BLANK, StringPool.BLANK);
+		_assertSubstring("yabcz", "y", "z", "abc");
+		_assertSubstring("yabczyabcz", "y", "z", "abc");
+	}
+
+	private void _assertSubstring(
+		String s, String start, String end, String expected) {
+
+		Assert.assertEquals(
+			expected, StringUtil.substringBetween(s, start, end));
+	}
+
+	private static final String _ANY_STRING = "ANY_STRING";
+
 }
