@@ -6,6 +6,7 @@
 package com.liferay.ai.creator.openai.web.internal.client;
 
 import com.liferay.ai.creator.openai.web.internal.exception.AICreatorOpenAIClientException;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -17,8 +18,6 @@ import java.net.HttpURLConnection;
 
 import java.util.Locale;
 import java.util.Objects;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -93,7 +92,7 @@ public class MockAICreatorOpenAIClient implements AICreatorOpenAIClient {
 			return new AICreatorOpenAIClientException(new IOException());
 		}
 
-		String errorMessage = StringUtils.substringBetween(
+		String errorMessage = StringUtil.substringBetween(
 			key, "OPENAI_API_", "_ERROR_MESSAGE");
 
 		if (Validator.isNotNull(errorMessage)) {

@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.snapshot;
 
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
@@ -15,8 +16,6 @@ import com.liferay.portal.search.engine.adapter.snapshot.SnapshotRepositoryDetai
 import java.io.IOException;
 
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.elasticsearch.ElasticsearchStatusException;
 import org.elasticsearch.action.admin.cluster.repositories.get.GetRepositoriesRequest;
@@ -113,7 +112,7 @@ public class GetSnapshotRepositoriesRequestExecutorImpl
 
 			if (message.contains("type=repository_missing_exception")) {
 				throw new RepositoryMissingException(
-					StringUtils.substringBetween(
+					StringUtil.substringBetween(
 						message, "reason=[", "] missing"));
 			}
 
