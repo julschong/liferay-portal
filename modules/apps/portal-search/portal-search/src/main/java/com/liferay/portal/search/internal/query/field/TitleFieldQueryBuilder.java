@@ -6,7 +6,6 @@
 package com.liferay.portal.search.internal.query.field;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.search.analysis.KeywordTokenizer;
 import com.liferay.portal.search.configuration.TitleFieldQueryBuilderConfiguration;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.query.Query;
@@ -32,7 +31,7 @@ public class TitleFieldQueryBuilder implements FieldQueryBuilder {
 	@Override
 	public Query build(String field, String keywords) {
 		FullTextQueryBuilder fullTextQueryBuilder = new FullTextQueryBuilder(
-			keywordTokenizer, queries);
+			queries);
 
 		fullTextQueryBuilder.setAutocomplete(true);
 		fullTextQueryBuilder.setExactMatchBoost(_exactMatchBoost);
@@ -54,9 +53,6 @@ public class TitleFieldQueryBuilder implements FieldQueryBuilder {
 
 		_maxExpansions = titleFieldQueryBuilderConfiguration.maxExpansions();
 	}
-
-	@Reference
-	protected KeywordTokenizer keywordTokenizer;
 
 	@Reference
 	protected Queries queries;

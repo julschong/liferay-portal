@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.search.analysis.FieldQueryBuilderFactory;
 import com.liferay.portal.search.expando.ExpandoBridgeIndexer;
 import com.liferay.portal.search.internal.analysis.DescriptionFieldQueryBuilder;
-import com.liferay.portal.search.internal.analysis.SimpleKeywordTokenizer;
 import com.liferay.portal.search.internal.analysis.SubstringFieldQueryBuilder;
 import com.liferay.portal.search.internal.expando.ExpandoFieldQueryBuilderFactory;
 import com.liferay.portal.search.internal.expando.helper.ExpandoQueryContributorHelper;
@@ -102,11 +101,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 	protected static DescriptionFieldQueryBuilder
 		createDescriptionFieldQueryBuilder() {
 
-		return new DescriptionFieldQueryBuilder() {
-			{
-				keywordTokenizer = new SimpleKeywordTokenizer();
-			}
-		};
+		return new DescriptionFieldQueryBuilder();
 	}
 
 	protected static ExpandoFieldQueryBuilderFactory
@@ -114,11 +109,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 
 		return new ExpandoFieldQueryBuilderFactory() {
 			{
-				substringQueryBuilder = new SubstringFieldQueryBuilder() {
-					{
-						keywordTokenizer = new SimpleKeywordTokenizer();
-					}
-				};
+				substringQueryBuilder = new SubstringFieldQueryBuilder();
 			}
 		};
 	}

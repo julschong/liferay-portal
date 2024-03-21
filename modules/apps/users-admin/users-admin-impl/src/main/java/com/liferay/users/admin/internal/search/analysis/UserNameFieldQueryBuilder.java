@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.MatchQuery;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.analysis.FieldQueryBuilder;
-import com.liferay.portal.search.analysis.KeywordTokenizer;
 import com.liferay.portal.search.engine.SearchEngineInformation;
 
 import java.util.List;
@@ -33,7 +32,8 @@ public class UserNameFieldQueryBuilder implements FieldQueryBuilder {
 	public Query build(String field, String keywords) {
 		BooleanQueryImpl booleanQueryImpl = new BooleanQueryImpl();
 
-		List<String> tokens = _keywordTokenizer.tokenize(keywords);
+		List<String> tokens = com.liferay.petra.string.StringUtil.tokenize(
+			keywords, true);
 
 		for (String token : tokens) {
 			token = StringUtil.removeChar(token, CharPool.PERCENT);
@@ -60,9 +60,6 @@ public class UserNameFieldQueryBuilder implements FieldQueryBuilder {
 
 		return matchQuery;
 	}
-
-	@Reference
-	private KeywordTokenizer _keywordTokenizer;
 
 	@Reference
 	private SearchEngineInformation _searchEngineInformation;

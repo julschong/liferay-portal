@@ -8,7 +8,6 @@ package com.liferay.portal.search.internal.query.field;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.search.analysis.KeywordTokenizer;
 import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.query.Query;
@@ -21,17 +20,15 @@ import java.util.List;
  */
 public class FullTextQueryBuilder {
 
-	public FullTextQueryBuilder(
-		KeywordTokenizer keywordTokenizer, Queries queries) {
-
-		_keywordTokenizer = keywordTokenizer;
+	public FullTextQueryBuilder(Queries queries) {
 		_queries = queries;
 	}
 
 	public Query build(String field, String keywords) {
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
-		List<String> tokens = _keywordTokenizer.tokenize(keywords);
+		List<String> tokens = com.liferay.petra.string.StringUtil.tokenize(
+			keywords, true);
 
 		List<String> phrases = new ArrayList<>(tokens.size());
 		List<String> words = new ArrayList<>(tokens.size());
@@ -144,7 +141,6 @@ public class FullTextQueryBuilder {
 
 	private boolean _autocomplete;
 	private float _exactMatchBoost;
-	private final KeywordTokenizer _keywordTokenizer;
 	private Integer _maxExpansions;
 	private Integer _proximitySlop;
 	private final Queries _queries;

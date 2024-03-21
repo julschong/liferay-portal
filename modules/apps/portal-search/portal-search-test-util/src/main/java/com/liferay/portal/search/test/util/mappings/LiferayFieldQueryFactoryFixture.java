@@ -7,7 +7,6 @@ package com.liferay.portal.search.test.util.mappings;
 
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.search.internal.analysis.SimpleKeywordTokenizer;
 import com.liferay.portal.search.internal.query.QueriesImpl;
 import com.liferay.portal.search.internal.query.field.AssetTagNamesFieldQueryBuilderFactory;
 import com.liferay.portal.search.internal.query.field.DescriptionFieldQueryBuilder;
@@ -30,15 +29,12 @@ public class LiferayFieldQueryFactoryFixture {
 
 	public LiferayFieldQueryFactoryFixture() {
 		QueriesImpl queriesImpl = new QueriesImpl();
-		SimpleKeywordTokenizer simpleKeywordTokenizer =
-			new SimpleKeywordTokenizer();
 
 		_descriptionFieldQueryBuilder = createDescriptionFieldQueryBuilder(
-			simpleKeywordTokenizer, queriesImpl);
+			queriesImpl);
 		_substringFieldQueryBuilder = createSubstringFieldQueryBuilder(
-			simpleKeywordTokenizer, queriesImpl);
-		_titleFieldQueryBuilder = createTitleFieldQueryBuilder(
-			simpleKeywordTokenizer, queriesImpl);
+			queriesImpl);
+		_titleFieldQueryBuilder = createTitleFieldQueryBuilder(queriesImpl);
 
 		FieldQueryBuilderFactoryImpl fieldQueryBuilderFactoryImpl =
 			new FieldQueryBuilderFactoryImpl() {
@@ -82,38 +78,30 @@ public class LiferayFieldQueryFactoryFixture {
 	}
 
 	protected static DescriptionFieldQueryBuilder
-		createDescriptionFieldQueryBuilder(
-			SimpleKeywordTokenizer simpleKeywordTokenizer,
-			QueriesImpl queriesImpl) {
+		createDescriptionFieldQueryBuilder(QueriesImpl queriesImpl) {
 
 		return new DescriptionFieldQueryBuilder() {
 			{
-				keywordTokenizer = simpleKeywordTokenizer;
 				queries = queriesImpl;
 			}
 		};
 	}
 
 	protected static SubstringFieldQueryBuilder
-		createSubstringFieldQueryBuilder(
-			SimpleKeywordTokenizer simpleKeywordTokenizer,
-			QueriesImpl queriesImpl) {
+		createSubstringFieldQueryBuilder(QueriesImpl queriesImpl) {
 
 		return new SubstringFieldQueryBuilder() {
 			{
-				keywordTokenizer = simpleKeywordTokenizer;
 				queries = queriesImpl;
 			}
 		};
 	}
 
 	protected static TitleFieldQueryBuilder createTitleFieldQueryBuilder(
-		SimpleKeywordTokenizer simpleKeywordTokenizer,
 		QueriesImpl queriesImpl) {
 
 		return new TitleFieldQueryBuilder() {
 			{
-				keywordTokenizer = simpleKeywordTokenizer;
 				queries = queriesImpl;
 			}
 		};

@@ -14,12 +14,10 @@ import com.liferay.portal.kernel.search.generic.QueryTermImpl;
 import com.liferay.portal.kernel.search.generic.WildcardQueryImpl;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.analysis.FieldQueryBuilder;
-import com.liferay.portal.search.analysis.KeywordTokenizer;
 
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author André de Oliveira
@@ -32,7 +30,8 @@ public class SubstringFieldQueryBuilder implements FieldQueryBuilder {
 	public Query build(String field, String keywords) {
 		BooleanQueryImpl booleanQueryImpl = new BooleanQueryImpl();
 
-		List<String> tokens = keywordTokenizer.tokenize(keywords);
+		List<String> tokens = com.liferay.petra.string.StringUtil.tokenize(
+			keywords, true);
 
 		for (String token : tokens) {
 			booleanQueryImpl.add(
@@ -41,9 +40,6 @@ public class SubstringFieldQueryBuilder implements FieldQueryBuilder {
 
 		return booleanQueryImpl;
 	}
-
-	@Reference
-	protected KeywordTokenizer keywordTokenizer;
 
 	private Query _createQuery(String field, String value) {
 		if (StringUtil.startsWith(value, CharPool.QUOTE)) {

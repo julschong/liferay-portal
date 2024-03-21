@@ -8,7 +8,6 @@ package com.liferay.portal.search.internal.query.field;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.search.analysis.KeywordTokenizer;
 import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.query.Query;
@@ -32,7 +31,8 @@ public class SubstringFieldQueryBuilder implements FieldQueryBuilder {
 	public Query build(String field, String keywords) {
 		BooleanQuery booleanQuery = queries.booleanQuery();
 
-		List<String> tokens = keywordTokenizer.tokenize(keywords);
+		List<String> tokens = com.liferay.petra.string.StringUtil.tokenize(
+			keywords, true);
 
 		for (String token : tokens) {
 			booleanQuery.addShouldQueryClauses(createQuery(field, token));
@@ -58,9 +58,6 @@ public class SubstringFieldQueryBuilder implements FieldQueryBuilder {
 
 		return queries.wildcard(field, value);
 	}
-
-	@Reference
-	protected KeywordTokenizer keywordTokenizer;
 
 	@Reference
 	protected Queries queries;

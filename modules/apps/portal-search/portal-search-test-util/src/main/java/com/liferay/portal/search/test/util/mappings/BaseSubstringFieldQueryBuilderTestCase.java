@@ -10,7 +10,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.analysis.FieldQueryBuilder;
-import com.liferay.portal.search.internal.analysis.SimpleKeywordTokenizer;
 import com.liferay.portal.search.internal.analysis.SubstringFieldQueryBuilder;
 
 import java.util.Arrays;
@@ -329,11 +328,7 @@ public abstract class BaseSubstringFieldQueryBuilderTestCase
 
 	@Override
 	protected FieldQueryBuilder createFieldQueryBuilder() {
-		return new SubstringFieldQueryBuilder() {
-			{
-				keywordTokenizer = new SimpleKeywordTokenizer();
-			}
-		};
+		return new SubstringFieldQueryBuilder();
 	}
 
 	@Override

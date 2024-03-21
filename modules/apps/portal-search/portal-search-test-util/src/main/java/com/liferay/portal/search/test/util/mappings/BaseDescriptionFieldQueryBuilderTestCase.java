@@ -8,7 +8,6 @@ package com.liferay.portal.search.test.util.mappings;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.search.analysis.FieldQueryBuilder;
 import com.liferay.portal.search.internal.analysis.DescriptionFieldQueryBuilder;
-import com.liferay.portal.search.internal.analysis.SimpleKeywordTokenizer;
 
 import java.util.Arrays;
 
@@ -256,11 +255,7 @@ public abstract class BaseDescriptionFieldQueryBuilderTestCase
 
 	@Override
 	protected FieldQueryBuilder createFieldQueryBuilder() {
-		return new DescriptionFieldQueryBuilder() {
-			{
-				keywordTokenizer = new SimpleKeywordTokenizer();
-			}
-		};
+		return new DescriptionFieldQueryBuilder();
 	}
 
 	@Override

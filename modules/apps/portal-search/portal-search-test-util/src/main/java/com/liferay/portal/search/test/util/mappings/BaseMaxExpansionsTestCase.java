@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.analysis.FieldQueryBuilder;
-import com.liferay.portal.search.internal.analysis.SimpleKeywordTokenizer;
 import com.liferay.portal.search.internal.analysis.TitleFieldQueryBuilder;
 
 import org.junit.Test;
@@ -88,8 +87,6 @@ public abstract class BaseMaxExpansionsTestCase
 	protected FieldQueryBuilder createFieldQueryBuilder() {
 		return new TitleFieldQueryBuilder() {
 			{
-				keywordTokenizer = new SimpleKeywordTokenizer();
-
 				activate(
 					HashMapBuilder.<String, Object>put(
 						"maxExpansions", MAX_EXPANSIONS

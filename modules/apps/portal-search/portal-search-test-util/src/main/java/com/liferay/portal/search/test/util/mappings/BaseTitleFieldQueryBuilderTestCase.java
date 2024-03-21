@@ -9,7 +9,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.search.analysis.FieldQueryBuilder;
-import com.liferay.portal.search.internal.analysis.SimpleKeywordTokenizer;
 import com.liferay.portal.search.internal.analysis.TitleFieldQueryBuilder;
 
 import java.util.Arrays;
@@ -363,11 +362,7 @@ public abstract class BaseTitleFieldQueryBuilderTestCase
 
 	@Override
 	protected FieldQueryBuilder createFieldQueryBuilder() {
-		return new TitleFieldQueryBuilder() {
-			{
-				keywordTokenizer = new SimpleKeywordTokenizer();
-			}
-		};
+		return new TitleFieldQueryBuilder();
 	}
 
 	@Override
