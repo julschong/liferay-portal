@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<checkstyle>
+		<suppress checks="ContractionsCheck" files="src/test/java/com/liferay/petra/string/StringUtilTest\.java" />
+	</checkstyle>
+</suppressions>

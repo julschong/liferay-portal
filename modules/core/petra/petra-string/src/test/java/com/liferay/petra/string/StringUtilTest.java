@@ -321,4 +321,88 @@ public class StringUtilTest {
 			StringUtil.split("test1-test2", CharPool.DASH));
 	}
 
+	@Test
+	public void testTokenize() {
+		Assert.assertEquals(
+			Arrays.asList("This", "is", "a", "tokenizer"),
+			StringUtil.tokenize("This is a tokenizer"));
+	}
+
+	@Test
+	public void testTokenizeWithApostrophe() {
+		Assert.assertEquals(
+			Arrays.asList("It's", "a", "tokenizer"),
+			StringUtil.tokenize("It's a tokenizer", true));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "'is a'", "tokenizer"),
+			StringUtil.tokenize("This 'is a' tokenizer", true));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "'is a tokenizer'"),
+			StringUtil.tokenize("This 'is a tokenizer", true));
+	}
+
+	@Test
+	public void testTokenizeWithIdeographicSpace() {
+		Assert.assertEquals(
+			Arrays.asList(String.valueOf(CharPool.IDEOGRAPHIC_SPACE)),
+			StringUtil.tokenize(String.valueOf(CharPool.IDEOGRAPHIC_SPACE)));
+	}
+
+	@Test
+	public void testTokenizeWithNullOrEmptyString() {
+		Assert.assertEquals(Collections.emptyList(), StringUtil.tokenize(null));
+		Assert.assertEquals(
+			Collections.emptyList(), StringUtil.tokenize(StringPool.BLANK));
+	}
+
+	@Test
+	public void testTokenizeWithQuotes() {
+		Assert.assertEquals(
+			Arrays.asList("This"), StringUtil.tokenize("\"This\""));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "is", "a", "tokenizer"),
+			StringUtil.tokenize("This \"is\" a tokenizer"));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "\"is\"", "a", "tokenizer"),
+			StringUtil.tokenize("This \"is\" a tokenizer", true));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "is a", "tokenizer"),
+			StringUtil.tokenize("This \"is a\" tokenizer"));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "\"is a' tokenizer\""),
+			StringUtil.tokenize("This \"is a' tokenizer", true));
+	}
+
+	@Test
+	public void testTokenizeWithQuotesIgnoreQuoteNotFollowedByWhiteSpace() {
+		Assert.assertEquals(
+			Arrays.asList("This", "isa", "tokenizer"),
+			StringUtil.tokenize("This \"is\"a\" tokenizer"));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "\"isa\"", "tokenizer"),
+			StringUtil.tokenize("This \"is\"a\" tokenizer", true));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "is\"a", "tokenizer"),
+			StringUtil.tokenize("This is\"a tokenizer"));
+
+		Assert.assertEquals(
+			Arrays.asList("This", "is\"a", "tokenizer"),
+			StringUtil.tokenize("This is\"a tokenizer", true));
+	}
+
+	@Test
+	public void testTokenizeWithQuotesWithMixedSpaces() {
+		Assert.assertEquals(
+			Arrays.asList("This", "is", "a", "tokenizer"),
+			StringUtil.tokenize("     This    is  a    tokenizer   ", true));
+	}
+
 }

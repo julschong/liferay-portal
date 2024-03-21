@@ -48,6 +48,8 @@ public class CharPool {
 
 	public static final char GREATER_THAN = '>';
 
+	public static final char IDEOGRAPHIC_SPACE = '\u3000';
+
 	public static final char LESS_THAN = '<';
 
 	public static final char LOWER_CASE_A = 'a';

@@ -580,6 +580,34 @@ public class StringUtil {
 		return elements;
 	}
 
+	public static List<String> tokenize(String s) {
+		return tokenize(s, false);
+	}
+
+	public static List<String> tokenize(String s, boolean includeQuote) {
+		if ((s == null) || s.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		return _tokenize(s, includeQuote);
+	}
+
+	private static boolean _isQuoteOrApostrophe(char c) {
+		if ((c == CharPool.APOSTROPHE) || (c == CharPool.QUOTE)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private static boolean _isWhitespaceExcludingIdeographicSpace(char c) {
+		if (Character.isWhitespace(c) && (c != CharPool.IDEOGRAPHIC_SPACE)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private static String _read(InputStream inputStream) throws IOException {
 		byte[] buffer = new byte[8192];
 		int offset = 0;
@@ -625,6 +653,87 @@ public class StringUtil {
 		if (offset < s.length()) {
 			values.add(s.substring(offset));
 		}
+	}
+
+	private static List<String> _tokenize(String s, boolean includeQuote) {
+		List<String> tokens = new ArrayList<>();
+
+		int index = 0;
+		char quoteCharacter = 0;
+		boolean quoteMode = false;
+		StringBundler sb = new StringBundler();
+		boolean skipWhiteSpace = true;
+
+		while (index < s.length()) {
+			if (skipWhiteSpace) {
+				while ((index < s.length()) &&
+					   _isWhitespaceExcludingIdeographicSpace(
+						   s.charAt(index))) {
+
+					index++;
+				}
+
+				skipWhiteSpace = false;
+
+				continue;
+			}
+
+			if (quoteMode) {
+				while ((index < s.length()) &&
+					   (s.charAt(index) != quoteCharacter)) {
+
+					sb.append(s.charAt(index));
+					index++;
+				}
+
+				// Add token when quote followed by white space is reached
+
+				if ((index >= (s.length() - 1)) ||
+					_isWhitespaceExcludingIdeographicSpace(
+						s.charAt(index + 1))) {
+
+					if (includeQuote) {
+						sb.append(quoteCharacter);
+					}
+
+					tokens.add(sb.toString());
+
+					sb.setIndex(0);
+					skipWhiteSpace = true;
+					quoteMode = false;
+				}
+
+				index++;
+			}
+			else {
+				if (_isQuoteOrApostrophe(s.charAt(index))) {
+					quoteMode = true;
+					quoteCharacter = s.charAt(index);
+					index++;
+
+					if (includeQuote) {
+						sb.append(quoteCharacter);
+					}
+
+					continue;
+				}
+
+				while ((index < s.length()) &&
+					   !_isWhitespaceExcludingIdeographicSpace(
+						   s.charAt(index))) {
+
+					sb.append(s.charAt(index));
+					index++;
+				}
+
+				tokens.add(sb.toString());
+
+				sb.setIndex(0);
+				skipWhiteSpace = true;
+			}
+		}
+
+		return tokens;
 	}
 
 }
