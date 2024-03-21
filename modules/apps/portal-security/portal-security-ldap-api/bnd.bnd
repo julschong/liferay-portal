@@ -11,3 +11,4 @@ Export-Package:\
 	com.liferay.portal.security.ldap.exportimport.configuration,\
 	com.liferay.portal.security.ldap.util,\
 	com.liferay.portal.security.ldap.validator
+-fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/9/";is:=warning

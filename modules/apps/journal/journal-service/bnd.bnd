@@ -4,3 +4,4 @@ Bundle-Version: 7.0.147
 Liferay-Require-SchemaVersion: 6.1.1
 Liferay-Service: true
 -dsannotations-options: inherit
+-fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/9/";is:=warning

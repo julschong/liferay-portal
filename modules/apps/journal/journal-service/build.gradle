@@ -4,6 +4,8 @@ buildService {
 }
 
 dependencies {
+	compileInclude group: "org.apache.commons", name: "commons-lang3", version: "3.14.0"
+
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
