@@ -22,6 +22,7 @@
 			<package-name>javax.validation.*</package-name>
 			<package-name>org.antlr.*</package-name>
 			<package-name>org.apache.commons.lang.*</package-name>
+			<package-name>org.apache.commons.lang3.*</package-name>
 			<package-name>org.mozilla.*</package-name>
 			<package-name>org.xmlpull.*</package-name>
 		</prefer-application-packages>
