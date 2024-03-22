@@ -81,8 +81,8 @@ import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.text.StrMatcher;
-import org.apache.commons.lang.text.StrTokenizer;
+import org.apache.commons.lang3.text.StrMatcher;
+import org.apache.commons.lang3.text.StrTokenizer;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
