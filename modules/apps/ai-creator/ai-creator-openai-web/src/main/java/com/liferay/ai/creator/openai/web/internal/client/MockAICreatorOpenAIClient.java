@@ -18,7 +18,7 @@ import java.net.HttpURLConnection;
 import java.util.Locale;
 import java.util.Objects;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.osgi.service.component.annotations.Component;
 

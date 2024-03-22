@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Petteri Karttunen

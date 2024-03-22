@@ -7,7 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.settings;
 
 import com.liferay.petra.string.CharPool;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.xcontent.XContentType;
