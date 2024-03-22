@@ -27,7 +27,7 @@ import com.liferay.portal.search.spi.model.query.contributor.helper.KeywordQuery
 
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
