@@ -7,6 +7,7 @@ package com.liferay.portal.tools;
 
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.petra.lang.StopWatch;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.db.index.IndexUpdaterUtil;
@@ -51,7 +52,6 @@ import java.sql.Connection;
 
 import java.util.Collection;
 
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.logging.log4j.core.Appender;
 
 import org.osgi.framework.BundleContext;
@@ -116,6 +116,10 @@ public class DBUpgrader {
 	public static long getUpgradeTime() {
 		if (_stopWatch == null) {
 			return 0;
+		}
+
+		if (_duration != 0) {
+			return _duration;
 		}
 
 		return _stopWatch.getTime();
@@ -189,7 +193,7 @@ public class DBUpgrader {
 			System.out.println(
 				StringBundler.concat(
 					"\n", result, " Liferay upgrade process in ",
-					_stopWatch.getTime() / Time.SECOND, " seconds"));
+					getUpgradeTime() / Time.SECOND, " seconds"));
 		}
 
 		System.out.println("Exiting DBUpgrader#main(String[]).");
@@ -218,7 +222,7 @@ public class DBUpgrader {
 
 	public static void stopUpgradeLogAppender() {
 		if (_appender != null) {
-			_stopWatch.stop();
+			_duration = _stopWatch.getTime();
 
 			_appender.stop();
 		}
@@ -433,6 +437,7 @@ public class DBUpgrader {
 	private static volatile Appender _appender;
 	private static volatile ServiceReference<Appender>
 		_appenderServiceReference;
+	private static long _duration;
 	private static volatile StopWatch _stopWatch;
 	private static volatile boolean _upgradeClient;
 	private static Boolean _upgradeDatabaseAutoRun;
