@@ -63,8 +63,10 @@ public class ValueTokenizer {
 					// input has been reached. Note this will result in loop 
 					// counter 'i' being incremented twice, once here and once 
 					// at the end of the loop.
-					if (i + 1 < values_str.length()) {
+					if (i + 1 < values_str.length() && values_str.charAt(i + 1) == ',') {
 						buffer.append(values_str.charAt(++i));
+					} else {
+						buffer.append(ESCAPE);
 					}
 					// If the ESCAPE character occurs as the last character
 					// of the string, ignore it.
