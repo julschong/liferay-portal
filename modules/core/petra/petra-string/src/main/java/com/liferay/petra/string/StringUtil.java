@@ -580,6 +580,36 @@ public class StringUtil {
 		return elements;
 	}
 
+	/**
+	 * search and return the string between open and close string.
+	 *
+	 * @param  s the string to search in
+	 * @param  opening opening tag
+	 * @param  closing closing tag
+	 * @return returns <code>stringInBetween</code>
+	 * 		   if both opening and closing tags are found;
+	 *         returns <code>null</code> otherwise
+	 */
+	public static String substringBetween(
+		String s, String opening, String closing) {
+
+		if ((s == null) || (opening == null) || (closing == null)) {
+			return null;
+		}
+
+		int start = s.indexOf(opening);
+
+		if (start != -1) {
+			int end = s.indexOf(closing, start + opening.length());
+
+			if (end != -1) {
+				return s.substring(start + opening.length(), end);
+			}
+		}
+
+		return null;
+	}
+
 	private static String _read(InputStream inputStream) throws IOException {
 		byte[] buffer = new byte[8192];
 		int offset = 0;

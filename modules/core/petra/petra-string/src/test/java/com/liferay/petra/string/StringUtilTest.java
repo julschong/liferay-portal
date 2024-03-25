@@ -321,4 +321,41 @@ public class StringUtilTest {
 			StringUtil.split("test1-test2", CharPool.DASH));
 	}
 
+	@Test
+	public void testSubstringBetween() {
+		String openingString = "_OPENING_";
+		String betweenString = RandomTestUtil.randomString();
+		String closingString = "_CLOSING_";
+
+		String testString = StringBundler.concat(
+			RandomTestUtil.randomString(), openingString, betweenString,
+			closingString, RandomTestUtil.randomString());
+
+		Assert.assertNull(
+			StringUtil.substringBetween(null, openingString, closingString));
+		Assert.assertNull(
+			StringUtil.substringBetween(testString, null, closingString));
+		Assert.assertNull(
+			StringUtil.substringBetween(testString, openingString, null));
+
+		Assert.assertEquals(
+			betweenString,
+			StringUtil.substringBetween(
+				testString, openingString, closingString));
+
+		String missingOpeningTestString = StringBundler.concat(
+			RandomTestUtil.randomString(), betweenString, closingString);
+
+		Assert.assertNull(
+			StringUtil.substringBetween(
+				missingOpeningTestString, openingString, closingString));
+
+		String missingClosingTestString = StringBundler.concat(
+			RandomTestUtil.randomString(), openingString, betweenString);
+
+		Assert.assertNull(
+			StringUtil.substringBetween(
+				missingClosingTestString, openingString, closingString));
+	}
+
 }
