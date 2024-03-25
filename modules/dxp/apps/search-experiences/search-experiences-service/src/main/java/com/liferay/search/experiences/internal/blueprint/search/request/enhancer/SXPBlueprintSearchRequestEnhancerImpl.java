@@ -74,8 +74,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.apache.commons.lang.StringUtils;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -270,8 +268,17 @@ public class SXPBlueprintSearchRequestEnhancerImpl
 			(name, options) -> _resolveProperty(
 				name, options, sxpParameterData),
 			(name, options) -> {
-				String shortName = StringUtils.substringAfter(
-					name, "configuration.");
+				if (Validator.isNull(name)) {
+					return null;
+				}
+
+				int pos = name.indexOf("configuration.");
+
+				if (pos == -1) {
+					return null;
+				}
+
+				String shortName = name.substring(pos + 14);
 
 				if (Validator.isNull(shortName)) {
 					return null;
