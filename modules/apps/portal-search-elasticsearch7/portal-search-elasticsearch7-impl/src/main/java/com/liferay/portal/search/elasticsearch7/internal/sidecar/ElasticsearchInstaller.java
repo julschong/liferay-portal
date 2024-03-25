@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
-import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.IOException;
@@ -18,7 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Wade Cao
@@ -159,8 +158,13 @@ public class ElasticsearchInstaller {
 
 		Path filePath = _getFilePath(distributable);
 
-		String pluginName = StringUtils.substringBeforeLast(
-			String.valueOf(filePath.getFileName()), StringPool.DASH);
+		String pluginName = String.valueOf(filePath.getFileName());
+
+		int pos = pluginName.lastIndexOf(CharPool.DASH);
+
+		if (pos != -1) {
+			pluginName = pluginName.substring(0, pos);
+		}
 
 		Path extractedDirectoryPath = _temporaryDirectoryPath.resolve(
 			pluginName);
@@ -212,8 +216,13 @@ public class ElasticsearchInstaller {
 
 		String downloadURLString = distributable.getDownloadURLString();
 
-		String fileName = StringUtils.substringAfterLast(
-			downloadURLString, StringPool.FORWARD_SLASH);
+		String fileName = downloadURLString;
+
+		int pos = fileName.lastIndexOf(CharPool.FORWARD_SLASH);
+
+		if (pos != -1) {
+			fileName = fileName.substring(pos + 1);
+		}
 
 		Path distributableFilePath = _distributablesDirectoryPath.resolve(
 			fileName);
