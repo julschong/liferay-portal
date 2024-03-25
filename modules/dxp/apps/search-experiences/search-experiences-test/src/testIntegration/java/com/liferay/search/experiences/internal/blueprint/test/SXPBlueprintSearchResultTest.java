@@ -28,8 +28,10 @@ import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalFolderServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -106,8 +108,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -2164,7 +2164,8 @@ public class SXPBlueprintSearchResultTest {
 
 		Class<?> clazz = getClass();
 
-		String clazzName = clazz.getName();
+		String clazzName = StringUtil.replace(
+			clazz.getName(), CharPool.PERIOD, CharPool.FORWARD_SLASH);
 
 		String fileName = StringBundler.concat(
 			"dependencies/", clazz.getSimpleName(), StringPool.PERIOD,
@@ -2175,8 +2176,7 @@ public class SXPBlueprintSearchResultTest {
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, sourceFileName,
 			ContentTypes.APPLICATION_PDF,
 			FileUtil.getBytes(
-				SXPBlueprintSearchResultTest.class,
-				StringUtils.replace(clazzName, ".", "/") + fileName),
+				SXPBlueprintSearchResultTest.class, clazzName + fileName),
 			null, null, null, _serviceContext);
 	}
 
