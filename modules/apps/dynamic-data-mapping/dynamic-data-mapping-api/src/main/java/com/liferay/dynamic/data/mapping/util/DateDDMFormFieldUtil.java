@@ -12,8 +12,6 @@ import java.text.SimpleDateFormat;
 
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * @author Carolina Barbosa
  */
@@ -25,23 +23,23 @@ public class DateDDMFormFieldUtil {
 
 		String pattern = simpleDateFormat.toPattern();
 
-		if (StringUtils.countMatches(pattern, "d") == 1) {
+		if (StringUtil.count(pattern, 'd') == 1) {
 			pattern = StringUtil.replace(pattern, 'd', "dd");
 		}
 
-		if (StringUtils.countMatches(pattern, "h") == 1) {
+		if (StringUtil.count(pattern, 'h') == 1) {
 			pattern = StringUtil.replace(pattern, 'h', "hh");
 		}
 
-		if (StringUtils.countMatches(pattern, "H") == 1) {
+		if (StringUtil.count(pattern, 'H') == 1) {
 			pattern = StringUtil.replace(pattern, 'H', "HH");
 		}
 
-		if (StringUtils.countMatches(pattern, "M") == 1) {
+		if (StringUtil.count(pattern, 'M') == 1) {
 			pattern = StringUtil.replace(pattern, 'M', "MM");
 		}
 
-		if (StringUtils.countMatches(pattern, "y") == 2) {
+		if (StringUtil.count(pattern, 'y') == 2) {
 			pattern = StringUtil.replace(pattern, 'y', "yy");
 		}
 
