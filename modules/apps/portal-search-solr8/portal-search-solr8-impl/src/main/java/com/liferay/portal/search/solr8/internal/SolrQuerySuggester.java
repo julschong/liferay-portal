@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.solr8.internal;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -31,7 +32,6 @@ import com.liferay.portal.search.solr8.internal.connection.SolrClientManager;
 import com.liferay.portal.search.solr8.internal.suggest.NGramQueryBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.search.spell.LevenshteinDistance;
 import org.apache.lucene.search.spell.StringDistance;
 import org.apache.solr.client.solrj.SolrClient;
@@ -167,10 +166,10 @@ public class SolrQuerySuggester implements QuerySuggester {
 
 		List<Suggestion> suggestions = new ArrayList<>();
 
-		List<String> keywords = Arrays.asList(
-			StringUtils.split(
-				StringUtil.toLowerCase(
-					StringUtil.unquote(searchContext.getKeywords()))));
+		List<String> keywords = com.liferay.petra.string.StringUtil.split(
+			StringUtil.toLowerCase(
+				StringUtil.unquote(searchContext.getKeywords())),
+			CharPool.SPACE);
 
 		for (String keyword : keywords) {
 			suggestions.add(

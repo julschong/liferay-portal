@@ -5,10 +5,12 @@
 
 package com.liferay.portal.search.suggest;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.List;
 
 /**
  * @author Michael C. Han
@@ -16,19 +18,19 @@ import org.apache.commons.lang.StringUtils;
 public class DictionaryEntry {
 
 	public DictionaryEntry(String line) {
-		String[] values = StringUtils.split(line);
+		List<String> values = StringUtil.split(line, CharPool.SPACE);
 
-		if (values.length == 0) {
+		if (values.isEmpty()) {
 			_weight = 0;
 			_word = StringPool.BLANK;
 
 			return;
 		}
 
-		_word = values[0];
+		_word = values.get(0);
 
-		if (values.length == 2) {
-			_weight = GetterUtil.getFloat(values[1]);
+		if (values.size() == 2) {
+			_weight = GetterUtil.getFloat(values.get(1));
 		}
 		else {
 			_weight = 0;
