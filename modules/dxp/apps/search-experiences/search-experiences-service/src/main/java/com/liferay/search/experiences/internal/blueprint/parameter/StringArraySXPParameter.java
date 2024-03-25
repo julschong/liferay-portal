@@ -6,12 +6,11 @@
 package com.liferay.search.experiences.internal.blueprint.parameter;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Petteri Karttunen
@@ -50,7 +49,7 @@ public class StringArraySXPParameter extends BaseSXPParameter {
 		}
 
 		return StringBundler.concat(
-			"[\"", StringUtils.join(_value, "\", \""), "\"]");
+			"[\"", StringUtil.merge(_value, "\", \""), "\"]");
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.message.boards.model.MBCategory;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBThread;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
@@ -36,8 +37,6 @@ import com.liferay.users.admin.test.util.search.UserSearchFixture;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -190,7 +189,8 @@ public class MBThreadIndexerIndexedFieldsTest {
 	}
 
 	private String _getValues(String[] stringArray) {
-		String values = StringUtils.join(stringArray, ", ");
+		String values = StringUtil.merge(
+			stringArray, StringPool.COMMA_AND_SPACE);
 
 		if (stringArray.length > 1) {
 			values = '[' + values + ']';
