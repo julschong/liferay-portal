@@ -14,8 +14,6 @@ import com.liferay.portal.search.opensearch2.internal.index.constants.IndexSetti
 import com.liferay.portal.search.opensearch2.internal.util.IndexUtil;
 import com.liferay.portal.search.opensearch2.internal.util.ResourceUtil;
 
-import org.apache.commons.lang.StringUtils;
-
 import org.opensearch.client.opensearch._types.Time;
 import org.opensearch.client.opensearch._types.TimeUnit;
 import org.opensearch.client.opensearch.indices.IndexSettings;
@@ -124,7 +122,7 @@ public class SettingsFactory {
 			"max_result_window",
 			_openSearchConfigurationWrapper.indexMaxResultWindow());
 
-		if (!StringUtils.isBlank(
+		if (Validator.isNotNull(
 				_openSearchConfigurationWrapper.indexNumberOfReplicas())) {
 
 			jsonObject.put(
@@ -132,7 +130,7 @@ public class SettingsFactory {
 				_openSearchConfigurationWrapper.indexNumberOfReplicas());
 		}
 
-		if (!StringUtils.isBlank(
+		if (Validator.isNotNull(
 				_openSearchConfigurationWrapper.indexNumberOfShards())) {
 
 			jsonObject.put(

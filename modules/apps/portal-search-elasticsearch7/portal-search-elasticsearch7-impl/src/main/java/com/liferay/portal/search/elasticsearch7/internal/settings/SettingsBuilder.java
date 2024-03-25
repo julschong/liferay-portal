@@ -6,8 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.settings;
 
 import com.liferay.petra.string.CharPool;
-
-import org.apache.commons.lang.StringUtils;
+import com.liferay.portal.kernel.util.Validator;
 
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.xcontent.XContentType;
@@ -30,7 +29,7 @@ public class SettingsBuilder {
 	}
 
 	public void loadFromSource(String source) {
-		if (StringUtils.isBlank(source)) {
+		if (Validator.isNull(source)) {
 			return;
 		}
 
@@ -49,7 +48,7 @@ public class SettingsBuilder {
 	}
 
 	public void put(String key, String value) {
-		if (!StringUtils.isBlank(value)) {
+		if (Validator.isNotNull(value)) {
 			_builder.put(key, value);
 		}
 	}
