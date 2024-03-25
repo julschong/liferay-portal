@@ -30,8 +30,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * @author Alicia García
  */
@@ -231,7 +229,15 @@ public class MBMessageNotificationTemplateHelper {
 			return StringPool.BLANK;
 		}
 
-		return StringUtils.repeat(_QUOTE_MARK, depth) + _getQuoteMark();
+		StringBundler sb = new StringBundler(depth + 1);
+
+		for (int i = 0; i < depth; i++) {
+			sb.append(_QUOTE_MARK);
+		}
+
+		sb.append(_getQuoteMark());
+
+		return sb.toString();
 	}
 
 	private String _getQuotedMessage(
