@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.opensearch2.internal.highlight;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -25,8 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -164,20 +163,19 @@ public class HighlightTranslatorTest {
 	public ExpectedException expectedException = ExpectedException.none();
 
 	protected BoundaryScanner getBoundaryScanner(String boundaryScannerType) {
-		if (boundaryScannerType != null) {
-			return BoundaryScanner.valueOf(
-				StringUtils.capitalize(boundaryScannerType));
+		if (boundaryScannerType == null) {
+			return null;
 		}
 
-		return null;
+		return BoundaryScanner.valueOf(_capitalize(boundaryScannerType));
 	}
 
 	protected HighlighterOrder getOrder(String order) {
-		if (order != null) {
-			return HighlighterOrder.valueOf(StringUtils.capitalize(order));
+		if (order == null) {
+			return null;
 		}
 
-		return null;
+		return HighlighterOrder.valueOf(_capitalize(order));
 	}
 
 	protected Boolean getUseExplicitFieldOrder(Boolean useExplicitFieldOrder) {
@@ -590,6 +588,14 @@ public class HighlightTranslatorTest {
 		).useExplicitFieldOrder(
 			highlightPrototype._useExplicitFieldOrder
 		).build();
+	}
+
+	private String _capitalize(String string) {
+		if (string.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		return string.charAt(0) + string.substring(1);
 	}
 
 	private FieldConfigPrototype _createFieldConfigPrototype(String fieldName) {
