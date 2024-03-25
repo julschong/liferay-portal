@@ -6,10 +6,10 @@
 package com.liferay.search.experiences.internal.blueprint.property;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.search.experiences.blueprint.exception.UnresolvedTemplateVariableException;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author André de Oliveira
@@ -17,12 +17,38 @@ import org.apache.commons.lang.StringUtils;
 public class PropertyValidator {
 
 	public static <T> T validate(T object) {
-		String[] templateVariables = StringUtils.substringsBetween(
-			object.toString(), StringPool.DOLLAR_AND_OPEN_CURLY_BRACE,
-			StringPool.CLOSE_CURLY_BRACE);
+		String string = object.toString();
 
-		if (ArrayUtil.isNotEmpty(templateVariables)) {
-			throw UnresolvedTemplateVariableException.with(templateVariables);
+		if ((string == null) || string.isEmpty()) {
+			return object;
+		}
+
+		List<String> templateVariables = new ArrayList<>();
+
+		int pos = 0;
+
+		while (pos < (string.length() - 1)) {
+			pos = string.indexOf(StringPool.DOLLAR_AND_OPEN_CURLY_BRACE, pos);
+
+			if (pos == -1) {
+				break;
+			}
+
+			int closingPos = string.indexOf(
+				StringPool.CLOSE_CURLY_BRACE, pos + 2);
+
+			if (closingPos == -1) {
+				break;
+			}
+
+			templateVariables.add(string.substring(pos + 2, closingPos));
+
+			pos = closingPos + 1;
+		}
+
+		if (!templateVariables.isEmpty()) {
+			throw UnresolvedTemplateVariableException.with(
+				templateVariables.toArray(new String[0]));
 		}
 
 		return object;
