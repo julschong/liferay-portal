@@ -47,8 +47,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * @author Petteri Karttunen
  */
@@ -112,7 +110,7 @@ public class SXPParameterDataCreatorUtil {
 		SXPParameterContributorDefinition sxpParameterContributorDefinition,
 		Map<String, SXPParameter> sxpParameters) {
 
-		String name = StringUtils.substringBetween(
+		String name = com.liferay.petra.string.StringUtil.substringBetween(
 			sxpParameterContributorDefinition.getTemplateVariable(),
 			StringPool.DOLLAR_AND_OPEN_CURLY_BRACE,
 			StringPool.CLOSE_CURLY_BRACE);

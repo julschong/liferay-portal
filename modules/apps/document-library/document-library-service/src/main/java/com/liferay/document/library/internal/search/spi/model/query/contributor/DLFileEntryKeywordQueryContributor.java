@@ -27,8 +27,6 @@ import com.liferay.portal.search.spi.model.query.contributor.helper.KeywordQuery
 
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -103,8 +101,9 @@ public class DLFileEntryKeywordQueryContributor
 			BooleanQuery fileNameBooleanQuery, String keywords)
 		throws ParseException {
 
-		String exactMatch = StringUtils.substringBetween(
-			keywords, StringPool.QUOTE);
+		String exactMatch =
+			com.liferay.petra.string.StringUtil.substringBetween(
+				keywords, StringPool.QUOTE, StringPool.QUOTE);
 
 		if (Validator.isNull(exactMatch)) {
 			fileNameBooleanQuery.add(

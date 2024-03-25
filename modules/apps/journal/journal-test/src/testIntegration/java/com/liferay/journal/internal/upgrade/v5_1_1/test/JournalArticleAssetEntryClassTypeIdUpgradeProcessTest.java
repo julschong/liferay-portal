@@ -38,8 +38,6 @@ import com.liferay.portal.upgrade.test.util.UpgradeTestUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -265,7 +263,7 @@ public class JournalArticleAssetEntryClassTypeIdUpgradeProcessTest {
 		}
 
 		List<String> entryIds = StringUtil.split(
-			StringUtils.substringBetween(
+			StringUtil.substringBetween(
 				message, StringPool.OPEN_BRACKET, StringPool.CLOSE_BRACKET));
 
 		Assert.assertEquals(
