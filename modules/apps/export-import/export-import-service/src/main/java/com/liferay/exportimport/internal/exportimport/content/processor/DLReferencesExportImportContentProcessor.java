@@ -59,8 +59,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -168,9 +166,8 @@ public class DLReferencesExportImportContentProcessor
 					map.put(
 						"friendlyURL",
 						new String[] {
-							StringUtils.substringBefore(
-								HttpComponentsUtil.decodeURL(pathArray[4]),
-								StringPool.POUND)
+							_getURLWithoutAnchor(
+								HttpComponentsUtil.decodeURL(pathArray[4]))
 						});
 				}
 
@@ -187,9 +184,8 @@ public class DLReferencesExportImportContentProcessor
 					map.put(
 						"title",
 						new String[] {
-							StringUtils.substringBefore(
-								HttpComponentsUtil.decodeURL(pathArray[4]),
-								StringPool.POUND)
+							_getURLWithoutAnchor(
+								HttpComponentsUtil.decodeURL(pathArray[4]))
 						});
 				}
 			}
@@ -201,9 +197,8 @@ public class DLReferencesExportImportContentProcessor
 					map.put(
 						"title",
 						new String[] {
-							StringUtils.substringBefore(
-								HttpComponentsUtil.decodeURL(pathArray[4]),
-								StringPool.POUND)
+							_getURLWithoutAnchor(
+								HttpComponentsUtil.decodeURL(pathArray[4]))
 						});
 				}
 			}
@@ -343,6 +338,18 @@ public class DLReferencesExportImportContentProcessor
 			CompanyThreadLocal.getCompanyId(), name);
 
 		return user.getGroup();
+	}
+
+	private String _getURLWithoutAnchor(String url) {
+		if (!Validator.isBlank(url)) {
+			int pos = url.indexOf(StringPool.POUND);
+
+			if (pos != -1) {
+				url = url.substring(0, pos);
+			}
+		}
+
+		return url;
 	}
 
 	private String _getUuid(String s) {
