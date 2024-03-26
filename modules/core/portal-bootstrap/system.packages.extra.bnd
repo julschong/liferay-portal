@@ -156,16 +156,6 @@ Export-Package:\
 	jodd.util.*;version='6.0.1',\
 	\
 	org.apache.bcel.*;version='2.7.1',\
-	org.apache.commons.lang;version='2.6',\
-	org.apache.commons.lang.builder;version='2.6',\
-	org.apache.commons.lang.enum;version='2.6',\
-	org.apache.commons.lang.enums;version='2.6',\
-	org.apache.commons.lang.exception;version='2.6',\
-	org.apache.commons.lang.math;version='2.6',\
-	org.apache.commons.lang.mutable;version='2.6',\
-	org.apache.commons.lang.reflect;version='2.6',\
-	org.apache.commons.lang.text;version='2.6',\
-	org.apache.commons.lang.time;version='2.6',\
 	org.apache.commons.logging;version="1.2",\
 	org.apache.commons.logging.impl;version="1.2",\
 	org.apache.logging.log4j;version='2.17.1',\
