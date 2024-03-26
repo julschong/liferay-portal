@@ -61,6 +61,18 @@ public class MetatypeAttributeDefinitionTest {
 			_getDefaultValue(
 				extendedObjectClassDefinition,
 				"testStringEscapeMultiValuedAttribute"));
+
+		String[] res = _getDefaultValue(extendedObjectClassDefinition, "testString");
+
+
+		System.out.print("[");
+		for (int i = 0; i < res.length; i++) {
+			System.out.print("\"" + res[i] + "\"");
+			if (i < res.length - 1) {
+				System.out.print(",");
+			}
+		}
+		System.out.println("]");
 	}
 
 	private String[] _getDefaultValue(
@@ -90,6 +102,9 @@ public class MetatypeAttributeDefinitionTest {
 
 		@Meta.AD(deflt = "a=b,c=d\\,e=f", required = false)
 		public String[] testStringEscapeMultiValuedAttribute();
+
+		@Meta.AD(deflt = "  a\\,b,b\\,c,\\ c\\,d   ", required = false)
+		public String[] testString();
 
 		@Meta.AD(deflt = "a=b,c=d\\,e=f", required = false)
 		public String testStringEscapeSingleValuedAttribute();
