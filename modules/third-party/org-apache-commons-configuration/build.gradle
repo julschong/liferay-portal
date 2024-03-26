@@ -6,6 +6,8 @@ task deployJar(type: Copy)
 task patch(type: PatchTask)
 
 dependencies {
+	compileInclude group: "commons-lang", name: "commons-lang", version: "2.6"
+
 	compileOnly group: "commons-configuration", name: "commons-configuration", version: "1.10"
 }
 
