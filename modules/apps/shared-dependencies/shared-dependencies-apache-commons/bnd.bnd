@@ -23,6 +23,15 @@ Import-Package:\
 	org.apache.commons.io.file.attribute,\
 	org.apache.commons.io.input,\
 	org.apache.commons.io.output,\
+	org.apache.commons.lang,\
+	org.apache.commons.lang.builder,\
+	org.apache.commons.lang.enum,\
+	org.apache.commons.lang.enums,\
+	org.apache.commons.lang.exception,\
+	org.apache.commons.lang.math,\
+	org.apache.commons.lang.mutable,\
+	org.apache.commons.lang.reflection,\
+	org.apache.commons.lang.text,\
 	org.apache.commons.math3.*,\
 	org.apache.commons.validator.routines
 -fixupmessages: Classes found in the wrong directory: ...;is:=ignore
