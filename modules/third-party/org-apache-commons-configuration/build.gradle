@@ -7,10 +7,15 @@ task patch(type: PatchTask)
 
 dependencies {
 	compileOnly group: "commons-configuration", name: "commons-configuration", version: "1.10"
+	compileInclude group: "commons-lang", name: "commons-lang", version: "2.6"
 }
 
 deploy {
 	finalizedBy deployJar
+}
+
+jarSources {
+	mustRunAfter patch
 }
 
 deployJar {
