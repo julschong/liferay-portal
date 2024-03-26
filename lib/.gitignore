@@ -92,7 +92,7 @@
 /development/xmlresolver.jar
 /portal/activation.jar
 /portal/commons-configuration.jar
-/portal/commons-lang.jar
+/portal/commons-lang3.jar
 /portal/commons-logging.jar
 /portal/dom4j.jar
 /portal/hibernate-core.jar
