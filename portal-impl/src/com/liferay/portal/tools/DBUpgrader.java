@@ -51,7 +51,6 @@ import java.sql.Connection;
 
 import java.util.Collection;
 
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.logging.log4j.core.Appender;
 
 import org.osgi.framework.BundleContext;
@@ -114,11 +113,15 @@ public class DBUpgrader {
 	}
 
 	public static long getUpgradeTime() {
-		if (_stopWatch == null) {
+		if (_startTime == -1) {
 			return 0;
 		}
 
-		return _stopWatch.getTime();
+		if (_stopTime == -1) {
+			return _stopTime - _startTime;
+		}
+
+		return System.currentTimeMillis() - _startTime;
 	}
 
 	public static boolean isUpgradeClient() {
@@ -152,7 +155,7 @@ public class DBUpgrader {
 		_upgradeClient = true;
 
 		try {
-			_initUpgradeStopwatch();
+			_startTime = System.currentTimeMillis();
 
 			PortalClassPathUtil.initializeClassPaths(null);
 
@@ -189,15 +192,15 @@ public class DBUpgrader {
 			System.out.println(
 				StringBundler.concat(
 					"\n", result, " Liferay upgrade process in ",
-					_stopWatch.getTime() / Time.SECOND, " seconds"));
+					getUpgradeTime() / Time.SECOND, " seconds"));
 		}
 
 		System.out.println("Exiting DBUpgrader#main(String[]).");
 	}
 
 	public static void startUpgradeLogAppender() {
-		if (_stopWatch == null) {
-			_initUpgradeStopwatch();
+		if (_startTime == -1) {
+			_startTime = System.currentTimeMillis();
 		}
 
 		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
@@ -218,7 +221,7 @@ public class DBUpgrader {
 
 	public static void stopUpgradeLogAppender() {
 		if (_appender != null) {
-			_stopWatch.stop();
+			_stopTime = System.currentTimeMillis();
 
 			_appender.stop();
 		}
@@ -398,12 +401,6 @@ public class DBUpgrader {
 		return buildNumber;
 	}
 
-	private static void _initUpgradeStopwatch() {
-		_stopWatch = new StopWatch();
-
-		_stopWatch.start();
-	}
-
 	private static void _registerModuleServiceLifecycle(
 		String moduleServiceLifecycle) {
 
@@ -435,7 +432,8 @@ public class DBUpgrader {
 	private static volatile Appender _appender;
 	private static volatile ServiceReference<Appender>
 		_appenderServiceReference;
-	private static volatile StopWatch _stopWatch;
+	private static volatile long _startTime;
+	private static volatile long _stopTime;
 	private static volatile boolean _upgradeClient;
 	private static Boolean _upgradeDatabaseAutoRun;
 
