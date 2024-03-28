@@ -14,13 +14,14 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.text.Format;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang.time.FastDateFormat;
 
 /**
  * @author Brian Wing Shun Chan
@@ -35,7 +36,13 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _dateFormats.get(dateOrTimeCacheKey);
 
 		if (format == null) {
-			format = FastDateFormat.getDateInstance(style, timeZone, locale);
+			format = DateTimeFormatter.ofLocalizedDate(
+				_formatStyles[style]
+			).withLocale(
+				locale
+			).withZone(
+				timeZone.toZoneId()
+			).toFormat();
 
 			_dateFormats.put(dateOrTimeCacheKey, format);
 		}
@@ -68,8 +75,13 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _dateTimeFormats.get(dateAndTimeCacheKey);
 
 		if (format == null) {
-			format = FastDateFormat.getDateTimeInstance(
-				dateStyle, timeStyle, timeZone, locale);
+			format = DateTimeFormatter.ofLocalizedDateTime(
+				_formatStyles[dateStyle], _formatStyles[timeStyle]
+			).withLocale(
+				locale
+			).withZone(
+				timeZone.toZoneId()
+			).toFormat();
 
 			_dateTimeFormats.put(dateAndTimeCacheKey, format);
 		}
@@ -114,7 +126,13 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _simpleDateFormats.get(simpleDateCacheKey);
 
 		if (format == null) {
-			format = FastDateFormat.getInstance(pattern, timeZone, locale);
+			format = DateTimeFormatter.ofPattern(
+				pattern
+			).withLocale(
+				locale
+			).withZone(
+				timeZone.toZoneId()
+			).toFormat();
 
 			_simpleDateFormats.put(simpleDateCacheKey, format);
 		}
@@ -135,7 +153,13 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _timeFormats.get(dateOrTimeCacheKey);
 
 		if (format == null) {
-			format = FastDateFormat.getTimeInstance(style, timeZone, locale);
+			format = DateTimeFormatter.ofLocalizedTime(
+				_formatStyles[style]
+			).withLocale(
+				locale
+			).withZone(
+				timeZone.toZoneId()
+			).toFormat();
 
 			_timeFormats.put(dateOrTimeCacheKey, format);
 		}
@@ -171,6 +195,8 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 
 		return sb.toString();
 	}
+
+	private static final FormatStyle[] _formatStyles = FormatStyle.values();
 
 	private final Map<DateOrTimeCacheKey, Format> _dateFormats =
 		new ConcurrentHashMap<>();
