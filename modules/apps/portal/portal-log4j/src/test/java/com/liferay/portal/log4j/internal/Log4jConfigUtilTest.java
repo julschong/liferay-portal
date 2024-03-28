@@ -9,6 +9,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.LogContext;
 import com.liferay.portal.kernel.log.LogContextRegistryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
@@ -36,6 +37,8 @@ import java.util.logging.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.config.AppenderRef;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -356,6 +359,26 @@ public class Log4jConfigUtilTest {
 			Assert.assertTrue(
 				"Missing appender " + appenderType,
 				targetAppenderNames.contains(appenderType));
+		}
+
+		CentralizedConfiguration centralizedConfiguration =
+			ReflectionTestUtil.getFieldValue(
+				Log4jConfigUtil.class, "_centralizedConfiguration");
+
+		Map<String, LoggerConfig> loggerConfigsMap =
+			centralizedConfiguration.getLoggers();
+
+		LoggerConfig loggerConfig = loggerConfigsMap.get(logger.getName());
+
+		List<AppenderRef> appenderRefs = loggerConfig.getAppenderRefs();
+
+		Assert.assertEquals(
+			appenderRefs, targetAppenderNames.size(), appenderRefs.size());
+
+		for (AppenderRef appenderRef : appenderRefs) {
+			Assert.assertTrue(
+				"Missing appender " + appenderRef.getRef(),
+				targetAppenderNames.contains(appenderRef.getRef()));
 		}
 	}
 
