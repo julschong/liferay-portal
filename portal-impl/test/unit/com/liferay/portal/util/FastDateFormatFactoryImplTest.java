@@ -5,6 +5,7 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -24,6 +25,9 @@ import org.junit.Test;
  * @author Brian Wing Shun Chan
  * @author Roberto Díaz
  */
+
+@NewEnv(type = NewEnv.Type.JVM)
+@NewEnv.JVMArgsLine("-Djava.locale.providers=JRE,COMPAT,CLDR")
 public class FastDateFormatFactoryImplTest {
 
 	@ClassRule
