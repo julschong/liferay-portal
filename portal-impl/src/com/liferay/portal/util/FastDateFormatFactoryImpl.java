@@ -16,7 +16,7 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAccessor;
@@ -268,7 +268,7 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 			else if (object instanceof Number) {
 				Number number = (Number)object;
 
-				object = LocalDate.ofEpochDay(number.longValue());
+				object = Instant.ofEpochMilli(number.longValue());
 			}
 
 			if (!(object instanceof TemporalAccessor)) {
