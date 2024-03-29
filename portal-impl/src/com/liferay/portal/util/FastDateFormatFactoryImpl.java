@@ -42,6 +42,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _dateFormats.get(dateOrTimeCacheKey);
 
 		if (format == null) {
+			if (locale == null) {
+				locale = LocaleUtil.getDefault();
+			}
+
+			if (timeZone == null) {
+				timeZone = TimeZone.getDefault();
+			}
+
 			format = new ClassicFormatWrapper(
 				DateTimeFormatter.ofLocalizedDate(
 					_formatStyles[style]
@@ -69,7 +77,7 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 
 	@Override
 	public Format getDate(TimeZone timeZone) {
-		return getDate(LocaleUtil.getDefault(), timeZone);
+		return getDate(null, timeZone);
 	}
 
 	@Override
@@ -82,6 +90,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _dateTimeFormats.get(dateAndTimeCacheKey);
 
 		if (format == null) {
+			if (locale == null) {
+				locale = LocaleUtil.getDefault();
+			}
+
+			if (timeZone == null) {
+				timeZone = TimeZone.getDefault();
+			}
+
 			format = new ClassicFormatWrapper(
 				DateTimeFormatter.ofLocalizedDateTime(
 					_formatStyles[dateStyle], _formatStyles[timeStyle]
@@ -111,12 +127,12 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 
 	@Override
 	public Format getDateTime(TimeZone timeZone) {
-		return getDateTime(LocaleUtil.getDefault(), timeZone);
+		return getDateTime(null, timeZone);
 	}
 
 	@Override
 	public Format getSimpleDateFormat(String pattern) {
-		return getSimpleDateFormat(pattern, LocaleUtil.getDefault(), null);
+		return getSimpleDateFormat(pattern, null, null);
 	}
 
 	@Override
@@ -134,6 +150,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _simpleDateFormats.get(simpleDateCacheKey);
 
 		if (format == null) {
+			if (locale == null) {
+				locale = LocaleUtil.getDefault();
+			}
+
+			if (timeZone == null) {
+				timeZone = TimeZone.getDefault();
+			}
+
 			format = new ClassicFormatWrapper(
 				DateTimeFormatter.ofPattern(
 					pattern
@@ -151,7 +175,7 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 
 	@Override
 	public Format getSimpleDateFormat(String pattern, TimeZone timeZone) {
-		return getSimpleDateFormat(pattern, LocaleUtil.getDefault(), timeZone);
+		return getSimpleDateFormat(pattern, null, timeZone);
 	}
 
 	@Override
@@ -162,6 +186,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _timeFormats.get(dateOrTimeCacheKey);
 
 		if (format == null) {
+			if (locale == null) {
+				locale = LocaleUtil.getDefault();
+			}
+
+			if (timeZone == null) {
+				timeZone = TimeZone.getDefault();
+			}
+
 			format = new ClassicFormatWrapper(
 				DateTimeFormatter.ofLocalizedTime(
 					_formatStyles[style]
@@ -189,7 +221,7 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 
 	@Override
 	public Format getTime(TimeZone timeZone) {
-		return getTime(LocaleUtil.getDefault(), timeZone);
+		return getTime(null, timeZone);
 	}
 
 	protected String getKey(Object... arguments) {
