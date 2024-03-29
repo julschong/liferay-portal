@@ -12,11 +12,17 @@ import com.liferay.portal.kernel.util.FastDateFormatConstants;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
+import java.text.FieldPosition;
 import java.text.Format;
+import java.text.ParsePosition;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.temporal.TemporalAccessor;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -36,13 +42,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _dateFormats.get(dateOrTimeCacheKey);
 
 		if (format == null) {
-			format = DateTimeFormatter.ofLocalizedDate(
-				_formatStyles[style]
-			).withLocale(
-				locale
-			).withZone(
-				timeZone.toZoneId()
-			).toFormat();
+			format = new ClassicFormatWrapper(
+				DateTimeFormatter.ofLocalizedDate(
+					_formatStyles[style]
+				).withLocale(
+					locale
+				).withZone(
+					timeZone.toZoneId()
+				).toFormat());
 
 			_dateFormats.put(dateOrTimeCacheKey, format);
 		}
@@ -75,13 +82,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _dateTimeFormats.get(dateAndTimeCacheKey);
 
 		if (format == null) {
-			format = DateTimeFormatter.ofLocalizedDateTime(
-				_formatStyles[dateStyle], _formatStyles[timeStyle]
-			).withLocale(
-				locale
-			).withZone(
-				timeZone.toZoneId()
-			).toFormat();
+			format = new ClassicFormatWrapper(
+				DateTimeFormatter.ofLocalizedDateTime(
+					_formatStyles[dateStyle], _formatStyles[timeStyle]
+				).withLocale(
+					locale
+				).withZone(
+					timeZone.toZoneId()
+				).toFormat());
 
 			_dateTimeFormats.put(dateAndTimeCacheKey, format);
 		}
@@ -126,13 +134,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _simpleDateFormats.get(simpleDateCacheKey);
 
 		if (format == null) {
-			format = DateTimeFormatter.ofPattern(
-				pattern
-			).withLocale(
-				locale
-			).withZone(
-				timeZone.toZoneId()
-			).toFormat();
+			format = new ClassicFormatWrapper(
+				DateTimeFormatter.ofPattern(
+					pattern
+				).withLocale(
+					locale
+				).withZone(
+					timeZone.toZoneId()
+				).toFormat());
 
 			_simpleDateFormats.put(simpleDateCacheKey, format);
 		}
@@ -153,13 +162,14 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		Format format = _timeFormats.get(dateOrTimeCacheKey);
 
 		if (format == null) {
-			format = DateTimeFormatter.ofLocalizedTime(
-				_formatStyles[style]
-			).withLocale(
-				locale
-			).withZone(
-				timeZone.toZoneId()
-			).toFormat();
+			format = new ClassicFormatWrapper(
+				DateTimeFormatter.ofLocalizedTime(
+					_formatStyles[style]
+				).withLocale(
+					locale
+				).withZone(
+					timeZone.toZoneId()
+				).toFormat());
 
 			_timeFormats.put(dateOrTimeCacheKey, format);
 		}
@@ -206,6 +216,49 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 		new ConcurrentHashMap<>();
 	private final Map<DateOrTimeCacheKey, Format> _timeFormats =
 		new ConcurrentHashMap<>();
+
+	private static class ClassicFormatWrapper extends Format {
+
+		@Override
+		public StringBuffer format(
+			Object object, StringBuffer toAppendTo, FieldPosition pos) {
+
+			if (object instanceof Calendar) {
+				Calendar calendar = (Calendar)object;
+
+				object = calendar.toInstant();
+			}
+			else if (object instanceof Date) {
+				Date date = (Date)object;
+
+				object = date.toInstant();
+			}
+			else if (object instanceof Number) {
+				Number number = (Number)object;
+
+				object = LocalDate.ofEpochDay(number.longValue());
+			}
+
+			if (!(object instanceof TemporalAccessor)) {
+				throw new IllegalArgumentException(
+					"Cannot format given Object as a Date: " + object);
+			}
+
+			return _classicFormat.format(object, toAppendTo, pos);
+		}
+
+		@Override
+		public Object parseObject(String source, ParsePosition pos) {
+			return _classicFormat.parseObject(source, pos);
+		}
+
+		private ClassicFormatWrapper(Format classicFormat) {
+			_classicFormat = classicFormat;
+		}
+
+		private final Format _classicFormat;
+
+	}
 
 	private static class DateAndTimeCacheKey {
 
