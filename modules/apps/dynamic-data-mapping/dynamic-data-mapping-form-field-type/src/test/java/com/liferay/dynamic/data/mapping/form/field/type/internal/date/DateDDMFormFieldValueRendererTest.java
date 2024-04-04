@@ -11,6 +11,7 @@ import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
@@ -31,6 +32,8 @@ import org.junit.Test;
 /**
  * @author Bruno Basto
  */
+@NewEnv(type = NewEnv.Type.JVM)
+@NewEnv.JVMArgsLine("-Djava.locale.providers=CLDR")
 public class DateDDMFormFieldValueRendererTest {
 
 	@ClassRule
@@ -116,7 +119,7 @@ public class DateDDMFormFieldValueRendererTest {
 			).put(
 				LocaleUtil.BRAZIL, "25/01/2015 01:00"
 			).put(
-				new Locale("ca", "ES"), "25/01/2015 01:00"
+				new Locale("ca", "ES"), "25/01/2015 01.00"
 			).put(
 				new Locale("fi", "FI"), "25.01.2015 01:00"
 			).put(
