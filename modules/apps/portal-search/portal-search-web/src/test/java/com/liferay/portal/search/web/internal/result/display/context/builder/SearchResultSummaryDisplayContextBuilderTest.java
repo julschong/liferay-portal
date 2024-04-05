@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.search.internal.summary.SummaryBuilderFactoryImpl;
@@ -123,17 +124,27 @@ public class SearchResultSummaryDisplayContextBuilderTest {
 
 		document.addKeyword(Field.CREATE_DATE, "20180425171442");
 
-		_assertCreationDate("Apr 25, 2018 5:14 PM", document);
+		String javaLocaleProvider = System.getProperty("java.locale.providers");
+		boolean cldr = javaLocaleProvider.equals("CLDR");
+		boolean cldrAndJdk21 = cldr && JavaDetector.isJDK21();
 
-		_assertCreationDate(LocaleUtil.BRAZIL, "25/04/2018 17:14", document);
-		_assertCreationDate(LocaleUtil.CHINA, "2018-4-25 下午5:14", document);
-		_assertCreationDate(LocaleUtil.GERMANY, "25.04.2018 17:14", document);
-		_assertCreationDate(LocaleUtil.HUNGARY, "2018.04.25. 17:14", document);
-		_assertCreationDate(LocaleUtil.ITALY, "25-apr-2018 17.14", document);
+		_assertCreationDate(cldrAndJdk21 ? "Apr 25, 2018, 5:14\u202FPM" : "Apr 25, 2018 5:14 PM", document);
+		_assertCreationDate(LocaleUtil.BRAZIL, cldrAndJdk21 ? "25 de abr. de 2018 17:14": "25/04/2018 17:14", document);
+		_assertCreationDate(LocaleUtil.CHINA, cldrAndJdk21 ? "2018年4月25日 17:14":"2018-4-25 下午5:14", document);
+		_assertCreationDate(LocaleUtil.GERMANY, cldrAndJdk21 ? "25.04.2018, 17:14" : "25.04.2018 17:14", document);
+		_assertCreationDate(LocaleUtil.HUNGARY, cldrAndJdk21 ? "2018. ápr. 25. 17:14":"2018.04.25. 17:14", document);
+
+		// TODO Clean up after CLDR update is finished
+
+		_assertCreationDate(
+			LocaleUtil.ITALY,
+			cldr ? cldrAndJdk21 ? "25 apr 2018, 17:14":"25/apr/2018 17:14" :
+				"25-apr-2018 17.14",
+			document);
 		_assertCreationDate(LocaleUtil.JAPAN, "2018/04/25 17:14", document);
 		_assertCreationDate(
-			LocaleUtil.NETHERLANDS, "25-apr-2018 17:14", document);
-		_assertCreationDate(LocaleUtil.SPAIN, "25-abr-2018 17:14", document);
+			LocaleUtil.NETHERLANDS, cldr ? cldrAndJdk21?"25 apr 2018 17:14":"25 apr. 2018 17:14" : "25-apr-2018 17:14", document);
+		_assertCreationDate(LocaleUtil.SPAIN, cldr ?  cldrAndJdk21 ? "25 abr 2018, 17:14":"25/04/2018 17:14" : "25-abr-2018 17:14", document);
 	}
 
 	@Test
