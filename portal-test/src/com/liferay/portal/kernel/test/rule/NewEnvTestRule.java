@@ -82,6 +82,8 @@ public class NewEnvTestRule implements TestRule {
 
 		builder.setArguments(createArguments(description));
 		builder.setBootstrapClassPath(CLASS_PATH);
+		builder.setJavaExecutable(
+			System.getProperty("java.home") + "/bin/java");
 		builder.setRuntimeClassPath(CLASS_PATH);
 
 		setEnvironment(builder, description);
@@ -188,6 +190,16 @@ public class NewEnvTestRule implements TestRule {
 		if (Boolean.getBoolean("whip.static.instrument")) {
 			arguments.add("-Dwhip.static.instrument=true");
 		}
+
+		List<String> jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
+
+		for (String jvmArg : jvmArgs) {
+			if (jvmArg.startsWith("--add-opens")) {
+				arguments.add(jvmArg);
+			}
+		}
+
+		arguments.add("-Dnet.bytebuddy.experimental=true");
 
 		return arguments;
 	}
