@@ -36,6 +36,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 
+import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +82,32 @@ public class NewEnvTestRule implements TestRule {
 
 		ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
-		builder.setArguments(createArguments(description));
+		if (System.getProperty("junit.jvm.override.version") != null) {
+			builder.setJavaExecutable(
+				Paths.get(
+					System.getProperty("junit.jvm.override"), "bin", "java"
+				).toString());
+		}
+
+		List<String> arguments = createArguments(description);
+
+		if (System.getProperty("junit.java.add.opens") != null) {
+			String addOpensString = System.getProperty("junit.java.add.opens");
+
+			String[] addOpensArguments = StringUtil.split(
+				addOpensString, StringPool.SPACE);
+
+			for (int i = 0; i < addOpensArguments.length; i += 2) {
+				arguments.add(
+					StringBundler.concat(
+						addOpensArguments[i], StringPool.EQUAL,
+						addOpensArguments[i + 1]));
+			}
+		}
+
+		arguments.add("-Dnet.bytebuddy.experimental=true");
+
+		builder.setArguments(arguments);
 		builder.setBootstrapClassPath(CLASS_PATH);
 		builder.setRuntimeClassPath(CLASS_PATH);
 

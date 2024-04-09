@@ -567,10 +567,14 @@ gradle.beforeProject {
 					javaLauncher = javaToolchains.launcherFor {
 						languageVersion = JavaLanguageVersion.of(project.properties["junit.jvm.override.version"])
 					}
+
+					systemProperty "junit.jvm.override", project.properties["org.gradle.java.installations.paths"]
+					systemProperty "junit.jvm.override.version", project.properties["junit.jvm.override.version"]
 				}
 
 				if (project.properties["junit.java.add.opens"]) {
 					jvmArgs project.properties["junit.java.add.opens"].split("\\s+")
+					systemProperty "junit.java.add.opens", project.properties["junit.java.add.opens"]
 				}
 
 				jvmArgs "-Djava.locale.providers=JRE,COMPAT,CLDR"
