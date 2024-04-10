@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -90,13 +91,14 @@ public class DateDDMFormFieldValueRendererTest {
 			).put(
 				LocaleUtil.GERMANY, "25.01.2015"
 			).put(
-				LocaleUtil.HUNGARY, "2015.01.25."
+				LocaleUtil.HUNGARY, _JDK21 ? "2015. 01. 25." : "2015.01.25."
 			).put(
 				LocaleUtil.JAPAN, "2015/01/25"
 			).put(
 				LocaleUtil.NETHERLANDS, "25-01-2015"
 			).put(
-				LocaleUtil.SIMPLIFIED_CHINESE, "2015-01-25"
+				LocaleUtil.SIMPLIFIED_CHINESE,
+				_JDK21 ? "2015/01/25" : "2015-01-25"
 			).put(
 				LocaleUtil.SPAIN, "25/01/2015"
 			).put(
@@ -115,7 +117,7 @@ public class DateDDMFormFieldValueRendererTest {
 				).setExtension(
 					Locale.UNICODE_LOCALE_EXTENSION, "nu-arab"
 				).build(),
-				"٢٥‏/٠١‏/٢٠١٥ ٠١:٠٠ ص"
+				_JDK21 ? "٢٥‏/٠١‏/٢٠١٥، ٠١:٠٠ ص" : "٢٥‏/٠١‏/٢٠١٥ ٠١:٠٠ ص"
 			).put(
 				LocaleUtil.BRAZIL, "25/01/2015 01:00"
 			).put(
@@ -125,21 +127,26 @@ public class DateDDMFormFieldValueRendererTest {
 			).put(
 				LocaleUtil.FRANCE, "25/01/2015 01:00"
 			).put(
-				LocaleUtil.GERMANY, "25.01.2015 01:00"
+				LocaleUtil.GERMANY,
+				_JDK21 ? "25.01.2015, 01:00" : "25.01.2015 01:00"
 			).put(
-				LocaleUtil.HUNGARY, "2015.01.25. 01:00"
+				LocaleUtil.HUNGARY,
+				_JDK21 ? "2015. 01. 25. 01:00" : "2015.01.25. 01:00"
 			).put(
 				LocaleUtil.JAPAN, "2015/01/25 01:00"
 			).put(
 				LocaleUtil.NETHERLANDS, "25-01-2015 01:00"
 			).put(
-				LocaleUtil.SIMPLIFIED_CHINESE, "2015-01-25 上午01:00"
+				LocaleUtil.SIMPLIFIED_CHINESE,
+				_JDK21 ? "2015/01/25 01:00" : "2015-01-25 上午01:00"
 			).put(
-				LocaleUtil.SPAIN, "25/01/2015 01:00"
+				LocaleUtil.SPAIN,
+				_JDK21 ? "25/01/2015, 01:00" : "25/01/2015 01:00"
 			).put(
 				new Locale("sv", "SE"), "2015-01-25 01:00"
 			).put(
-				LocaleUtil.US, "01/25/2015 01:00 AM"
+				LocaleUtil.US,
+				_JDK21 ? "01/25/2015, 01:00\u202fAM" : "01/25/2015 01:00 AM"
 			).build(),
 			"2015-01-25 1:00");
 		_assertRenderValues(
@@ -156,7 +163,7 @@ public class DateDDMFormFieldValueRendererTest {
 		_assertRenderValues(
 			_getSingleValueExpectedValuesMap("01/25/2015"), "2015-01-25");
 		_assertRenderValues(
-			_getSingleValueExpectedValuesMap("01/25/2015 01:00 AM"),
+			_getSingleValueExpectedValuesMap("01/25/2015, 01:00 AM"),
 			"2015-01-25 1:00");
 	}
 
@@ -222,6 +229,10 @@ public class DateDDMFormFieldValueRendererTest {
 			LocaleUtil.US, expectedValue
 		).build();
 	}
+
+	// TODO Clean up after JDK21 update is finished
+
+	private static final boolean _JDK21 = JavaDetector.isJDK21();
 
 	private static final ThreadLocal<Locale> _themeDisplayLocale =
 		new CentralizedThreadLocal<>(

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.search.internal.summary.SummaryBuilderFactoryImpl;
@@ -126,17 +127,36 @@ public class SearchResultSummaryDisplayContextBuilderTest {
 
 		document.addKeyword(Field.CREATE_DATE, "20180425171442");
 
-		_assertCreationDate("Apr 25, 18 5:14 PM", document);
+		// TODO Clean up after JDK21 update is finished
 
-		_assertCreationDate(LocaleUtil.BRAZIL, "25/04/2018 17:14", document);
-		_assertCreationDate(LocaleUtil.CHINA, "2018-4-25 下午5:14", document);
-		_assertCreationDate(LocaleUtil.GERMANY, "25.04.2018 17:14", document);
-		_assertCreationDate(LocaleUtil.HUNGARY, "2018.04.25. 17:14", document);
-		_assertCreationDate(LocaleUtil.ITALY, "25/apr/18 17:14", document);
-		_assertCreationDate(LocaleUtil.JAPAN, "2018/04/25 17:14", document);
+		boolean jdk21 = JavaDetector.isJDK21();
+
 		_assertCreationDate(
-			LocaleUtil.NETHERLANDS, "25 apr. 18 17:14", document);
-		_assertCreationDate(LocaleUtil.SPAIN, "25/04/2018 17:14", document);
+			jdk21 ? "Apr 25, 18, 5:14 PM" : "Apr 25, 18 5:14 PM", document);
+		_assertCreationDate(
+			LocaleUtil.BRAZIL,
+			jdk21 ? "25 de abr. de 18 17:14" : "25/04/2018 17:14", document);
+		_assertCreationDate(
+			LocaleUtil.CHINA, jdk21 ? "18年4月25日 17:14" : "2018-4-25 下午5:14",
+			document);
+		_assertCreationDate(
+			LocaleUtil.GERMANY, jdk21 ? "25.04.18, 17:14" : "25.04.2018 17:14",
+			document);
+		_assertCreationDate(
+			LocaleUtil.HUNGARY,
+			jdk21 ? "18. ápr. 25. 17:14" : "2018.04.25. 17:14", document);
+		_assertCreationDate(
+			LocaleUtil.ITALY, jdk21 ? "25 apr 18, 17:14" : "25/apr/18 17:14",
+			document);
+		_assertCreationDate(
+			LocaleUtil.JAPAN, jdk21 ? "18/04/25 17:14" : "2018/04/25 17:14",
+			document);
+		_assertCreationDate(
+			LocaleUtil.NETHERLANDS,
+			jdk21 ? "25 apr 18 17:14" : "25 apr. 18 17:14", document);
+		_assertCreationDate(
+			LocaleUtil.SPAIN, jdk21 ? "25 abr 18, 17:14" : "25/04/2018 17:14",
+			document);
 	}
 
 	@Test
