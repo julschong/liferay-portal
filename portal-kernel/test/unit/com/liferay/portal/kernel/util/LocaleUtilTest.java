@@ -7,6 +7,8 @@ package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -18,6 +20,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -25,6 +28,8 @@ import org.mockito.Mockito;
 /**
  * @author Wesley Gong
  */
+@NewEnv(type = NewEnv.Type.JVM)
+@NewEnv.JVMArgsLine("-Djava.locale.providers=CLDR")
 public class LocaleUtilTest {
 
 	@Test
@@ -225,5 +230,8 @@ public class LocaleUtilTest {
 			LocaleUtil.getLongDisplayName(
 				catalanValenciaLocale, duplicateLanguages));
 	}
+
+	@Rule
+	public final NewEnvTestRule newEnvTestRule = NewEnvTestRule.INSTANCE;
 
 }
