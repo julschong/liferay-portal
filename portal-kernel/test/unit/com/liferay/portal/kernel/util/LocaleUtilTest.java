@@ -193,7 +193,8 @@ public class LocaleUtilTest {
 		Locale catalanValenciaLocale = new Locale("ca", "ES", "VALENCIA");
 
 		Assert.assertEquals(
-			"Catalan (Spain, VALENCIA)",
+			JavaDetector.isJDK21() ? "Catalan (Spain, Valencian)" :
+				"Catalan (Spain, VALENCIA)",
 			LocaleUtil.getLocaleDisplayName(catalanValenciaLocale, Locale.US));
 	}
 
@@ -226,7 +227,8 @@ public class LocaleUtilTest {
 		Locale catalanValenciaLocale = new Locale("ca", "ES", "VALENCIA");
 
 		Assert.assertEquals(
-			"catal\u00e0 (Espanya, VALENCIA)",
+			JavaDetector.isJDK21() ? "catal\u00e0 (Espanya, valenci\u00e0)" :
+				"catal\u00e0 (Espanya, VALENCIA)",
 			LocaleUtil.getLongDisplayName(
 				catalanValenciaLocale, duplicateLanguages));
 	}
