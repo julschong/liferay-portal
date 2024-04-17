@@ -7385,11 +7385,11 @@ information. Make sure to commit in all format-javadoc results.
 		<get-java-jdk-home type="zulu" version="21" />
 
 		<echo append="true" file="build.${user.name}.properties">
-junit.jvm.override=${java.jdk.home}/bin/java
+junit.jvm.override=${java.jdk.home}
 junit.jvm.override.version=21</echo>
 
 		<antcall target="modules-unit-jdk8">
-			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
+			<param name="junit.jvm.override" value="${java.jdk.home}" />
 			<param name="junit.jvm.override.version" value="21" />
 		</antcall>
 	</target>
@@ -8980,11 +8980,11 @@ ${output.content}</echo>
 		<get-java-jdk-home type="zulu" version="21" />
 
 		<echo append="true" file="build.${user.name}.properties">
-junit.jvm.override=${java.jdk.home}/bin/java
+junit.jvm.override=${java.jdk.home}
 junit.jvm.override.version=21</echo>
 
 		<antcall target="unit-jdk8">
-			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
+			<param name="junit.jvm.override" value="${java.jdk.home}" />
 			<param name="junit.jvm.override.version" value="21" />
 		</antcall>
 	</target>
