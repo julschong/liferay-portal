@@ -130,7 +130,9 @@ public class JSONWebServiceActionsManagerImpl
 			Map<String, Object> parameterMap)
 		throws NoSuchJSONWebServiceException {
 
-		_ensureOpen();
+		synchronized (this) {
+			_ensureOpen();
+		}
 
 		JSONWebServiceActionParameters jsonWebServiceActionParameters =
 			new JSONWebServiceActionParameters();
