@@ -313,7 +313,7 @@ public class JSONWebServiceActionsManagerImpl
 		return matched;
 	}
 
-	private void _ensureOpen() {
+	private synchronized void _ensureOpen() {
 		_openedServiceTrackerDCLSingleton.getSingleton(
 			() -> {
 				_serviceTracker.open();
