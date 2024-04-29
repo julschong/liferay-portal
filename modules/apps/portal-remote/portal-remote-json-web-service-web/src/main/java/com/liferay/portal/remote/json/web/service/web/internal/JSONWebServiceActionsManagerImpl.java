@@ -7,6 +7,7 @@ package com.liferay.portal.remote.json.web.service.web.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -314,6 +315,12 @@ public class JSONWebServiceActionsManagerImpl
 	}
 
 	private void _ensureOpen() {
+		if (!_ensureOpenThreadLocal.get()) {
+			return;
+		}
+
+		_ensureOpenThreadLocal.set(false);
+
 		_openedServiceTrackerDCLSingleton.getSingleton(
 			() -> {
 				_serviceTracker.open();
@@ -566,6 +573,11 @@ public class JSONWebServiceActionsManagerImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JSONWebServiceActionsManagerImpl.class);
+
+	private static final ThreadLocal<Boolean> _ensureOpenThreadLocal =
+		new CentralizedThreadLocal<>(
+			JSONWebServiceActionsManagerImpl.class + "._ensureOpenThreadLocal",
+			() -> Boolean.TRUE);
 
 	private final Map<String, List<JSONWebServiceActionConfig>>
 		_contextNameIndexedJSONWebServiceActionConfigs =
