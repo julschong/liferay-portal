@@ -5,6 +5,8 @@ definition {
 	property portal.upstream = "true";
 	property testray.main.component.name = "Account";
 
+	var password = PropsUtil.get("default.admin.password");
+
 	setUp {
 		TestCase.setUpPortalInstance();
 
@@ -471,6 +473,9 @@ definition {
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
+		echo("${password}");
+		echo("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 		task ("Block google.com domain and create a new account") {
 			AccountConfiguration.addBlockedEmailDomain(settingValues = "google.com");
 
@@ -500,7 +505,7 @@ definition {
 			SAML.addVirtualInstances(virtualHosts = "www.able.com");
 
 			User.firstLoginUI(
-				password = "test",
+				password = "${password}",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
 
@@ -2330,7 +2335,7 @@ definition {
 
 		task ("When the user creates an account") {
 			Account.createAccount(
-				newPassword = "test",
+				newPassword = "${password}",
 				userEmailAddress = "userea@liferay.com",
 				userFirstName = "userfn",
 				userLastName = "userln",
@@ -2482,7 +2487,7 @@ definition {
 			User.logoutPG();
 
 			User.loginUserPG(
-				password = "test",
+				password = "${password}",
 				userEmailAddress = "useramea@liferay.com");
 
 			Account.openAccountsAdmin();
@@ -2540,7 +2545,7 @@ definition {
 			User.logoutPG();
 
 			User.loginUserPG(
-				password = "test",
+				password = "${password}",
 				userEmailAddress = "useramea@liferay.com");
 
 			Account.openAccountsAdmin();
@@ -3962,7 +3967,7 @@ definition {
 				virtualHost = "www.able.com");
 
 			User.firstLoginUI(
-				password = "test",
+				password = "${password}",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
 
@@ -4229,7 +4234,7 @@ definition {
 		User.logoutPG();
 
 		User.loginUserPG(
-			password = "test",
+			password = "${password}",
 			userEmailAddress = "useramea@liferay.com");
 
 		Account.openAccountsAdmin();
