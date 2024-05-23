@@ -193,11 +193,13 @@ public class CompanyLogServlet extends HttpServlet {
 	private File _getFile(long companyId, String fileName) throws Exception {
 		File companyLogDirectory = Log4JUtil.getCompanyLogDirectory(companyId);
 
-		Path path = Paths.get(companyLogDirectory.getPath(), fileName);
+		String companyLogDirectoryPath = companyLogDirectory.getCanonicalPath();
+
+		Path path = Paths.get(companyLogDirectoryPath, fileName);
 
 		path = path.normalize();
 
-		if (!path.startsWith(companyLogDirectory.getPath())) {
+		if (!path.startsWith(companyLogDirectoryPath)) {
 			throw new PrincipalException("Invalid path " + path);
 		}
 
