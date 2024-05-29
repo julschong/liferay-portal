@@ -7,8 +7,6 @@ package com.liferay.portal.remote.json.web.service;
 
 import com.liferay.portal.remote.json.web.service.exception.NoSuchJSONWebServiceException;
 
-import java.lang.reflect.Method;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,11 +34,5 @@ public interface JSONWebServiceActionsManager {
 
 	public List<JSONWebServiceActionMapping> getJSONWebServiceActionMappings(
 		String contextName);
-
-	public void registerJSONWebServiceAction(
-		String contextName, String contextPath, Object actionObject,
-		Class<?> actionClass, Method actionMethod, String path, String method);
-
-	public int unregisterJSONWebServiceActions(Object actionObject);
 
 }
