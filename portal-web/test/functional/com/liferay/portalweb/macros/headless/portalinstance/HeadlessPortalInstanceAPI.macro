@@ -115,6 +115,9 @@ definition {
 	macro cleanAllPortalInstances(authenticationMethod = null) {
 		var portalInstanceJson = HeadlessPortalInstanceAPI._getPortalInstances(authenticationMethod = ${authenticationMethod});
 
+		echo("!!!!!!!!!!!!!!!!!!!!!!");
+		echo("${portalInstanceJson}");
+
 		var portalInstanceIds = JSONUtil.getWithJSONPath(${portalInstanceJson}, "$.items..portalInstanceId");
 		var lxcEnvironment = JSONUtil2.getLXCEnvironment();
 
