@@ -2184,152 +2184,154 @@ war.path=${app.server.portal.dir}/</echo>
 			</if>
 
 			<if>
-				<isset property="app.server.bundles.size" />
+				<equals arg1="${app.server.bundles.size}" arg2="0" />
 				<then>
-					<var name="app.server.bundle.index" value="1" />
-
-					<antelope:repeat count="${app.server.bundles.size}">
-						<set-app-server-properties
-							app.server.bundle.index="${app.server.bundle.index}"
-						/>
-
-						<delete dir="${test.app.server.parent.dir}" />
-
-						<copy
-							todir="${test.app.server.parent.dir}"
-						>
-							<fileset
-								dir="${app.server.parent.dir}"
-							/>
-						</copy>
-
-						<chmod
-							perm="a+x"
-						>
-							<fileset
-								dir="${test.app.server.bin.dir}"
-							>
-								<include name="*.sh" />
-							</fileset>
-						</chmod>
-
-						<local name="jmx.remote.port.overwrite" />
-
-						<math
-							datatype="int"
-							operand1="${app.server.bundle.index}"
-							operand2="${jmx.remote.port}"
-							operation="+"
-							result="jmx.remote.port.overwrite"
-						/>
-
-						<replace
-							file="${test.app.server.bin.dir}/setenv.sh"
-							token="-Dcom.sun.management.jmxremote.port=${jmx.remote.port}"
-							value="-Dcom.sun.management.jmxremote.port=${jmx.remote.port.overwrite}"
-						/>
-
-						<replace
-							file="${test.app.server.bin.dir}/setenv.bat"
-							token="-Dcom.sun.management.jmxremote.port=${jmx.remote.port}"
-							value="-Dcom.sun.management.jmxremote.port=${jmx.remote.port.overwrite}"
-						/>
-
-						<if>
-							<or>
-								<equals arg1="${app.server.type}" arg2="jboss" />
-								<equals arg1="${app.server.type}" arg2="wildfly" />
-							</or>
-							<then>
-								<replaceregexp
-									file="${test.app.server.dir}/standalone/configuration/standalone.xml"
-									match="offset:0"
-									replace="offset:${app.server.bundle.index}000"
-								/>
-							</then>
-							<elseif>
-								<equals arg1="${app.server.type}" arg2="tomcat" />
-								<then>
-									<replaceregexp
-										file="${test.app.server.dir}/conf/server.xml"
-										flags="g"
-										match="=&quot;8(\d\d\d)&quot;"
-										replace="=&quot;${test.app.server.leading.port.number}\1&quot;"
-									/>
-								</then>
-							</elseif>
-							<elseif>
-								<equals arg1="${app.server.type}" arg2="weblogic" />
-								<then>
-									<replace
-										file="${test.app.server.dir}/domains/liferay/config/config.xml"
-									>
-										<replacetoken><![CDATA[<listen-port>8080</listen-port>]]></replacetoken>
-										<replacevalue><![CDATA[<listen-port>${test.app.server.leading.port.number}080</listen-port>]]></replacevalue>
-									</replace>
-								</then>
-							</elseif>
-						</if>
-
-						<replace
-							file="${test.app.server.classes.portal.dir}/portal-ext.properties"
-							token="channel-logic-name"
-							value="channel-logic-name-${app.server.bundle.index}"
-						/>
-
-						<replace
-							file="${test.app.server.classes.portal.dir}/portal-ext.properties"
-							token="liferay.home=${liferay.home}"
-							value="liferay.home=${test.app.server.parent.dir}"
-						/>
-
-						<get-testcase-property property.name="portal.proxy.path" />
-						<propertycopy from="portal.proxy.path[${env.CI_TEST_SUITE}]" name="portal.proxy.path" silent="true" />
-
-						<if>
-							<isset property="portal.proxy.path" />
-							<then>
-								<replace
-									file="${test.app.server.classes.portal.dir}/portal-ext.properties"
-									token="web.server.http.port=88"
-									value="web.server.http.port=${test.app.server.leading.port.number}8"
-								/>
-							</then>
-							<else>
-								<replace
-									file="${test.app.server.classes.portal.dir}/portal-ext.properties"
-									token="web.server.http.port=8080"
-									value="web.server.http.port=${test.app.server.leading.port.number}080"
-								/>
-							</else>
-						</if>
-
-						<math
-							datatype="int"
-							operand1="${app.server.bundle.index}"
-							operand2="11312"
-							operation="+"
-							result="osgi.console.port"
-						/>
-
-						<replace
-							file="${test.app.server.classes.portal.dir}/portal-ext.properties"
-							token="module.framework.properties.osgi.console=11312"
-							value="module.framework.properties.osgi.console=${osgi.console.port}"
-						/>
-
-						<math
-							datatype="int"
-							operand1="${app.server.bundle.index}"
-							operand2="1"
-							operation="+"
-							result="app.server.bundle.index"
-						/>
-					</antelope:repeat>
-
-					<var name="app.server.bundle.index" unset="true" />
+					<property name="app.server.bundles.size" value="1" />
 				</then>
 			</if>
+
+			<var name="app.server.bundle.index" value="1" />
+
+			<antelope:repeat count="${app.server.bundles.size}">
+				<set-app-server-properties
+					app.server.bundle.index="${app.server.bundle.index}"
+				/>
+
+				<delete dir="${test.app.server.parent.dir}" />
+
+				<copy
+					todir="${test.app.server.parent.dir}"
+				>
+					<fileset
+						dir="${app.server.parent.dir}"
+					/>
+				</copy>
+
+				<chmod
+					perm="a+x"
+				>
+					<fileset
+						dir="${test.app.server.bin.dir}"
+					>
+						<include name="*.sh" />
+					</fileset>
+				</chmod>
+
+				<local name="jmx.remote.port.overwrite" />
+
+				<math
+					datatype="int"
+					operand1="${app.server.bundle.index}"
+					operand2="${jmx.remote.port}"
+					operation="+"
+					result="jmx.remote.port.overwrite"
+				/>
+
+				<replace
+					file="${test.app.server.bin.dir}/setenv.sh"
+					token="-Dcom.sun.management.jmxremote.port=${jmx.remote.port}"
+					value="-Dcom.sun.management.jmxremote.port=${jmx.remote.port.overwrite}"
+				/>
+
+				<replace
+					file="${test.app.server.bin.dir}/setenv.bat"
+					token="-Dcom.sun.management.jmxremote.port=${jmx.remote.port}"
+					value="-Dcom.sun.management.jmxremote.port=${jmx.remote.port.overwrite}"
+				/>
+
+				<if>
+					<or>
+						<equals arg1="${app.server.type}" arg2="jboss" />
+						<equals arg1="${app.server.type}" arg2="wildfly" />
+					</or>
+					<then>
+						<replaceregexp
+							file="${test.app.server.dir}/standalone/configuration/standalone.xml"
+							match="offset:0"
+							replace="offset:${app.server.bundle.index}000"
+						/>
+					</then>
+					<elseif>
+						<equals arg1="${app.server.type}" arg2="tomcat" />
+						<then>
+							<replaceregexp
+								file="${test.app.server.dir}/conf/server.xml"
+								flags="g"
+								match="=&quot;8(\d\d\d)&quot;"
+								replace="=&quot;${test.app.server.leading.port.number}\1&quot;"
+							/>
+						</then>
+					</elseif>
+					<elseif>
+						<equals arg1="${app.server.type}" arg2="weblogic" />
+						<then>
+							<replace
+								file="${test.app.server.dir}/domains/liferay/config/config.xml"
+							>
+								<replacetoken><![CDATA[<listen-port>8080</listen-port>]]></replacetoken>
+								<replacevalue><![CDATA[<listen-port>${test.app.server.leading.port.number}080</listen-port>]]></replacevalue>
+							</replace>
+						</then>
+					</elseif>
+				</if>
+
+				<replace
+					file="${test.app.server.classes.portal.dir}/portal-ext.properties"
+					token="channel-logic-name"
+					value="channel-logic-name-${app.server.bundle.index}"
+				/>
+
+				<replace
+					file="${test.app.server.classes.portal.dir}/portal-ext.properties"
+					token="liferay.home=${liferay.home}"
+					value="liferay.home=${test.app.server.parent.dir}"
+				/>
+
+				<get-testcase-property property.name="portal.proxy.path" />
+				<propertycopy from="portal.proxy.path[${env.CI_TEST_SUITE}]" name="portal.proxy.path" silent="true" />
+
+				<if>
+					<isset property="portal.proxy.path" />
+					<then>
+						<replace
+							file="${test.app.server.classes.portal.dir}/portal-ext.properties"
+							token="web.server.http.port=88"
+							value="web.server.http.port=${test.app.server.leading.port.number}8"
+						/>
+					</then>
+					<else>
+						<replace
+							file="${test.app.server.classes.portal.dir}/portal-ext.properties"
+							token="web.server.http.port=8080"
+							value="web.server.http.port=${test.app.server.leading.port.number}080"
+						/>
+					</else>
+				</if>
+
+				<math
+					datatype="int"
+					operand1="${app.server.bundle.index}"
+					operand2="11312"
+					operation="+"
+					result="osgi.console.port"
+				/>
+
+				<replace
+					file="${test.app.server.classes.portal.dir}/portal-ext.properties"
+					token="module.framework.properties.osgi.console=11312"
+					value="module.framework.properties.osgi.console=${osgi.console.port}"
+				/>
+
+				<math
+					datatype="int"
+					operand1="${app.server.bundle.index}"
+					operand2="1"
+					operation="+"
+					result="app.server.bundle.index"
+				/>
+			</antelope:repeat>
+
+			<var name="app.server.bundle.index" unset="true" />
 
 			<get-testcase-property property.name="databases.size" />
 
@@ -3239,13 +3241,15 @@ tell application "Safari" to quit
 			<get-testcase-property property.name="app.server.bundles.size" />
 
 			<if>
-				<equals arg1="${app.server.bundles.size}" arg2="1" />
+				<equals arg1="${app.server.bundles.size}" arg2="0" />
 				<then>
-					<set-app-server-properties app.server.bundle.index="1" />
-
-					<echo file="${test.app.server.liferay.home}/osgi/configs/com.liferay.saml.opensaml.integration.internal.bootstrap.SecurityConfigurationBootstrap.config">blacklisted.algorithms = ["http://www.w3.org/2000/09/xmldsig#rsa-sha1", "http://www.w3.org/2000/09/xmldsig#sha1"]</echo>
+					<property name="app.server.bundles.size" value="1" />
 				</then>
 			</if>
+
+			<set-app-server-properties app.server.bundle.index="1" />
+
+			<echo file="${test.app.server.liferay.home}/osgi/configs/com.liferay.saml.opensaml.integration.internal.bootstrap.SecurityConfigurationBootstrap.config">blacklisted.algorithms = ["http://www.w3.org/2000/09/xmldsig#rsa-sha1", "http://www.w3.org/2000/09/xmldsig#sha1"]</echo>
 
 			<print-file file.name="${liferay.home}/osgi/configs/com.liferay.saml.opensaml.integration.internal.bootstrap.SecurityConfigurationBootstrap.config" />
 
@@ -5150,33 +5154,35 @@ org.apache.catalina.ha.session.level=INFO]]>
 			<get-testcase-property property.name="app.server.bundles.size" />
 
 			<if>
-				<isset property="app.server.bundles.size" />
+				<equals arg1="${app.server.bundles.size}" arg2="0" />
 				<then>
-					<var name="app.server.bundle.index" value="1" />
-
-					<antelope:repeat count="${app.server.bundles.size}">
-						<set-app-server-properties
-							app.server.bundle.index="${app.server.bundle.index}"
-						/>
-
-						<replace
-							file="${test.app.server.dir}/conf/server.xml"
-							token="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;"
-							value="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot; jvmRoute=&quot;${test.app.server.leading.port.number}&quot;&gt;"
-						/>
-
-						<math
-							datatype="int"
-							operand1="${app.server.bundle.index}"
-							operand2="1"
-							operation="+"
-							result="app.server.bundle.index"
-						/>
-					</antelope:repeat>
-
-					<var name="app.server.bundle.index" unset="true" />
+					<property name="app.server.bundles.size" value="1" />
 				</then>
 			</if>
+
+			<var name="app.server.bundle.index" value="1" />
+
+			<antelope:repeat count="${app.server.bundles.size}">
+				<set-app-server-properties
+					app.server.bundle.index="${app.server.bundle.index}"
+				/>
+
+				<replace
+					file="${test.app.server.dir}/conf/server.xml"
+					token="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;"
+					value="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot; jvmRoute=&quot;${test.app.server.leading.port.number}&quot;&gt;"
+				/>
+
+				<math
+					datatype="int"
+					operand1="${app.server.bundle.index}"
+					operand2="1"
+					operation="+"
+					result="app.server.bundle.index"
+				/>
+			</antelope:repeat>
+
+			<var name="app.server.bundle.index" unset="true" />
 		</sequential>
 	</macrodef>
 
@@ -16206,11 +16212,13 @@ mail.send.blacklist=</echo>
 		<get-testcase-property property.name="app.server.bundles.size" />
 
 		<if>
-			<isset property="app.server.bundles.size" />
+			<equals arg1="${app.server.bundles.size}" arg2="0" />
 			<then>
-				<prepare-additional-bundles />
+				<property name="app.server.bundles.size" value="1" />
 			</then>
 		</if>
+
+		<prepare-additional-bundles />
 
 		<get-testcase-property property.name="configure.servlet.multipart" />
 
@@ -16342,36 +16350,38 @@ mail.send.blacklist=</echo>
 				<get-testcase-property property.name="app.server.bundles.size" />
 
 				<if>
-					<isset property="app.server.bundles.size" />
+					<equals arg1="${app.server.bundles.size}" arg2="0" />
 					<then>
-						<var name="app.server.bundle.index" value="1" />
-
-						<get-testcase-property property.name="skip.start.app.server.index" />
-
-						<antelope:repeat count="${app.server.bundles.size}">
-							<if>
-								<not>
-									<contains string="${skip.start.app.server.index}" substring="${app.server.bundle.index}" />
-								</not>
-								<then>
-									<start-app-server
-										app.server.bundle.index="${app.server.bundle.index}"
-									/>
-								</then>
-							</if>
-
-							<math
-								datatype="int"
-								operand1="${app.server.bundle.index}"
-								operand2="1"
-								operation="+"
-								result="app.server.bundle.index"
-							/>
-						</antelope:repeat>
-
-						<var name="app.server.bundle.index" unset="true" />
+						<property name="app.server.bundles.size" value="1" />
 					</then>
 				</if>
+
+				<var name="app.server.bundle.index" value="1" />
+
+				<get-testcase-property property.name="skip.start.app.server.index" />
+
+				<antelope:repeat count="${app.server.bundles.size}">
+					<if>
+						<not>
+							<contains string="${skip.start.app.server.index}" substring="${app.server.bundle.index}" />
+						</not>
+						<then>
+							<start-app-server
+								app.server.bundle.index="${app.server.bundle.index}"
+							/>
+						</then>
+					</if>
+
+					<math
+						datatype="int"
+						operand1="${app.server.bundle.index}"
+						operand2="1"
+						operation="+"
+						result="app.server.bundle.index"
+					/>
+				</antelope:repeat>
+
+				<var name="app.server.bundle.index" unset="true" />
 
 				<waitfor maxwait="150" maxwaitunit="second">
 					<available file="${liferay.home}/logs" type="dir" />
@@ -16511,27 +16521,29 @@ CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.managemen
 				<get-testcase-property property.name="app.server.bundles.size" />
 
 				<if>
-					<isset property="app.server.bundles.size" />
+					<equals arg1="${app.server.bundles.size}" arg2="0" />
 					<then>
-						<var name="app.server.bundle.index" value="1" />
-
-						<antelope:repeat count="${app.server.bundles.size}">
-							<stop-app-server
-								app.server.bundle.index="${app.server.bundle.index}"
-							/>
-
-							<math
-								datatype="int"
-								operand1="${app.server.bundle.index}"
-								operand2="1"
-								operation="+"
-								result="app.server.bundle.index"
-							/>
-						</antelope:repeat>
-
-						<var name="app.server.bundle.index" unset="true" />
+						<property name="app.server.bundles.size" value="1" />
 					</then>
 				</if>
+
+				<var name="app.server.bundle.index" value="1" />
+
+				<antelope:repeat count="${app.server.bundles.size}">
+					<stop-app-server
+						app.server.bundle.index="${app.server.bundle.index}"
+					/>
+
+					<math
+						datatype="int"
+						operand1="${app.server.bundle.index}"
+						operand2="1"
+						operation="+"
+						result="app.server.bundle.index"
+					/>
+				</antelope:repeat>
+
+				<var name="app.server.bundle.index" unset="true" />
 			</try>
 			<catch>
 				<fail message="${shutdown.error}" />

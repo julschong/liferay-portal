@@ -555,15 +555,15 @@ local.bundles.backup.file=${liferay.home.parent.dir}/bundles-master-${git.commit
 		<antcall target="prepare-portal-ext-properties" />
 
 		<if>
-			<not>
-				<equals arg1="${app.server.bundles.size}" arg2="0" />
-			</not>
+			<equals arg1="${app.server.bundles.size}" arg2="0" />
 			<then>
-				<ant antfile="build-test-elasticsearch7.xml" target="start-elasticsearch" />
-
-				<prepare-additional-bundles />
+				<property name="app.server.bundles.size" value="1" />
 			</then>
 		</if>
+
+		<ant antfile="build-test-elasticsearch7.xml" target="start-elasticsearch" />
+
+		<prepare-additional-bundles />
 
 		<prepare-test-cluster-properties />
 	</target>
