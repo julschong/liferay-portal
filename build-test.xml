@@ -5109,6 +5109,12 @@ tell application "Safari" to quit
 				value="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot; jvmRoute=&quot;0&quot;&gt;"
 			/>
 
+			<replaceregexp
+				file="${app.server.tomcat.dir}/conf/server.xml"
+				match="&lt;[!-]{3}\s+(&lt;Cluster className=&quot;org\.apache\.catalina\.ha\.tcp\.SimpleTcpCluster&quot;[/]&gt;)\s+[-]{2}&gt;"
+				replace="\1"
+			/>
+
 			<get-testcase-property property.name="app.server.bundles.size" />
 
 			<if>
