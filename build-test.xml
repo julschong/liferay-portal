@@ -5115,6 +5115,22 @@ tell application "Safari" to quit
 				replace="\1"
 			/>
 
+			<if>
+				<not>
+					<resourcecontains
+						resource="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/web.xml"
+						substring="&lt;distributable/&gt;"
+					/>
+				</not>
+				<then>
+					<replaceregexp
+						file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/web.xml"
+						match="(&lt;[/]web\-app&gt;)"
+						replace="&lt;distributable/&gt;\1"
+					/>
+				</then>
+			</if>
+
 			<get-testcase-property property.name="app.server.bundles.size" />
 
 			<if>
