@@ -5,13 +5,7 @@
  */
 --%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
-
-<%@ page import="com.liferay.portal.cluster.multiple.sample.web.internal.ClusterSampleData" %>
-
-<portlet:defineObjects />
+<%@ include file="/init.jsp" %>
 
 <%
 ClusterSampleData clusterSampleData = new ClusterSampleData();
@@ -60,6 +54,9 @@ ClusterSampleData portletSessionClusterSampleData = (ClusterSampleData)portletSe
 			</li>
 			<li>
 				<b>Liferay Home:</b> <%= portletSessionClusterSampleData.getLiferayHome() %>
+			</li>
+			<li>
+				<b>AllSession: </b> <%= portletSessionClusterSampleData.getAllSessions() %>
 			</li>
 		</ul>
 	</c:when>

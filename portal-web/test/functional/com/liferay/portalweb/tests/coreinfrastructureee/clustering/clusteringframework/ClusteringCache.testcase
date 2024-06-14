@@ -24,6 +24,31 @@ definition {
 		}
 	}
 
+	@priority = 4
+	test SessionsAreTheSameInBothNodes {
+		property cluster.session.replicated = "true";
+		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
+
+		Clustering.deployClusteringModule(nodePort = 8080);
+
+		ProductMenu.gotoPortlet(
+			category = "Site Builder",
+			portlet = "Pages");
+
+		PagesAdmin.addPage(pageName = "Session Replication Test");
+
+		Navigator.gotoPage(pageName = "Session Replication Test");
+
+		Portlet.addPG(portletName = "ClusterSampleSessionReplication");
+
+		Pause(value1 = 3000);
+
+		Refresh();
+
+		Pause(value1 = 3000);
+	}
+
 	@ignore = "true"
 	@priority = 4
 	test CanModuleBeShutdownDuringReplicateSession {

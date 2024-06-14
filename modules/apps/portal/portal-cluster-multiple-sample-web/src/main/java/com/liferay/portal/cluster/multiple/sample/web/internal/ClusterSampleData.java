@@ -5,11 +5,21 @@
 
 package com.liferay.portal.cluster.multiple.sample.web.internal;
 
+import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.portal.kernel.servlet.PortalSessionContext;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.Serializable;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Jorge Díaz
@@ -21,6 +31,29 @@ public class ClusterSampleData implements Serializable {
 		_data = StringUtil.randomString(20);
 		_liferayHome = SystemProperties.get("liferay.home");
 		_timestamp = System.currentTimeMillis();
+	}
+
+	public String getAllSessions() {
+		Collection<HttpSession> httpSessions = PortalSessionContext.values();
+
+		List<String> list = TransformUtil.transform(httpSessions, httpSession -> {
+			StringBundler sb = new StringBundler();
+
+			sb.append(httpSession.getId() + ": ");
+
+//			Enumeration<String> httpSessionEnumeration = httpSession.getAttributeNames();
+//
+//			while (httpSessionEnumeration.hasMoreElements()) {
+//				String attributeName = httpSessionEnumeration.nextElement();
+//
+//				sb.append(attributeName + " - " + httpSession.getAttribute(attributeName));
+//			}
+
+			return sb.toString();
+		});
+
+
+		return list.toString();
 	}
 
 	public String getComputerName() {
