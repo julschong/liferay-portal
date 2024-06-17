@@ -1790,12 +1790,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					"localhost can only be used with the default web ID " +
 						webId);
 			}
-			else if (!Validator.isDomain(virtualHostname) &&
-					 !Validator.isIPAddress(virtualHostname)) {
-
-				throw new CompanyVirtualHostException(
-					"Virtual hostname is invalid");
-			}
+//			else if (!Validator.isDomain(virtualHostname) &&
+//					 !Validator.isIPAddress(virtualHostname)) {
+//
+//				throw new CompanyVirtualHostException(
+//					"Virtual hostname is invalid");
+//			}
 
 			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 				virtualHostname);
