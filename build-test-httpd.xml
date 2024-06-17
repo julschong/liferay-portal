@@ -87,8 +87,8 @@ Listen ${test.app.server.leading.port.number}8]]></echo>
 <VirtualHost *:${test.app.server.leading.port.number}8>
 	ServerName localhost
 	ProxyPreserveHost On
-	ProxyPass /${portal.proxy.path} http://localhost:${test.app.server.leading.port.number}080
-	ProxyPassReverse /${portal.proxy.path} http://localhost:${test.app.server.leading.port.number}080
+	ProxyPass / http://localhost:${test.app.server.leading.port.number}080
+	ProxyPassReverse / http://localhost:${test.app.server.leading.port.number}080
 </VirtualHost>]]></echo>
 						</then>
 					</if>

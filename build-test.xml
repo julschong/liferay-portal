@@ -15652,20 +15652,15 @@ mail.send.blacklist=</echo>
 		<get-testcase-property property.name="portal.proxy.path" />
 		<propertycopy from="portal.proxy.path[${env.CI_TEST_SUITE}]" name="portal.proxy.path" silent="true" />
 
-		<if>
-			<isset property="portal.proxy.path" />
-			<then>
-				<ant antfile="build-test-httpd.xml" target="stop-httpd-server" />
+		<ant antfile="build-test-httpd.xml" target="stop-httpd-server" />
 
-				<ant antfile="build-test-httpd.xml" target="clean-up-httpd-server" />
+		<ant antfile="build-test-httpd.xml" target="clean-up-httpd-server" />
 
-				<ant antfile="build-test-httpd.xml" target="configure-httpd-server">
-					<property name="portal.proxy.path" value="${portal.proxy.path}" />
-				</ant>
+		<ant antfile="build-test-httpd.xml" target="configure-httpd-server">
+			<property name="portal.proxy.path" value="${portal.proxy.path}" />
+		</ant>
 
-				<ant antfile="build-test-httpd.xml" target="start-httpd-server" />
-			</then>
-		</if>
+		<ant antfile="build-test-httpd.xml" target="start-httpd-server" />
 
 		<get-testcase-property property.name="portal.ssl.enabled" />
 
