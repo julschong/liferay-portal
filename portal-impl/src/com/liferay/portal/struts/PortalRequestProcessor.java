@@ -9,12 +9,12 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.LayoutPermissionException;
+import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortletActiveException;
 import com.liferay.portal.kernel.exception.UserActiveException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.User;
@@ -128,13 +128,9 @@ public class PortalRequestProcessor {
 		ActionMapping actionMapping = _moduleConfig.getActionMapping(path);
 
 		if (actionMapping == null) {
-			String lastPath = _getLastPath(httpServletRequest);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Last path " + lastPath);
-			}
-
-			httpServletResponse.sendRedirect(lastPath);
+			PortalUtil.sendError(
+				HttpServletResponse.SC_NOT_FOUND, new NoSuchLayoutException(),
+				httpServletRequest, httpServletResponse);
 
 			return;
 		}
@@ -251,65 +247,6 @@ public class PortalRequestProcessor {
 		return StringBundler.concat(
 			layoutFriendlyURL, StringPool.QUESTION,
 			httpServletRequest.getQueryString());
-	}
-
-	private String _getLastPath(HttpServletRequest httpServletRequest) {
-		StringBundler sb = new StringBundler(5);
-
-		String portalURL = PortalUtil.getPortalURL(httpServletRequest);
-
-		sb.append(portalURL);
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		sb.append(themeDisplay.getPathMain());
-
-		sb.append(_PATH_PORTAL_LAYOUT);
-
-		if (!PropsValues.AUTH_FORWARD_BY_LAST_PATH) {
-			if (httpServletRequest.getRemoteUser() != null) {
-
-				// If we do not forward by last path and the user is logged in,
-				// forward to the user's default layout to prevent a lagging
-				// loop
-
-				sb.append("?p_l_id=");
-				sb.append(LayoutConstants.DEFAULT_PLID);
-			}
-
-			return sb.toString();
-		}
-
-		HttpSession httpSession = httpServletRequest.getSession();
-
-		LastPath lastPath = (LastPath)httpSession.getAttribute(
-			WebKeys.LAST_PATH);
-
-		if (lastPath == null) {
-			return sb.toString();
-		}
-
-		String parameters = lastPath.getParameters();
-
-		// Only test for existing mappings for last paths that were set when the
-		// user accessed a layout directly instead of through its friendly URL
-
-		String contextPath = lastPath.getContextPath();
-
-		if (contextPath.equals(themeDisplay.getPathMain())) {
-			ActionMapping actionMapping = _moduleConfig.getActionMapping(
-				lastPath.getPath());
-
-			if ((actionMapping == null) || parameters.isEmpty()) {
-				return sb.toString();
-			}
-		}
-
-		return StringBundler.concat(
-			portalURL, lastPath.getContextPath(), lastPath.getPath(),
-			parameters);
 	}
 
 	private void _internalModuleRelativeForward(
