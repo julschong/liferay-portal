@@ -5,6 +5,8 @@
 
 package com.liferay.portal.scripting.groovy.internal;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.scripting.ScriptingException;
 import com.liferay.portal.kernel.scripting.ScriptingExecutor;
 import com.liferay.portal.scripting.BaseScriptingExecutor;
@@ -14,6 +16,7 @@ import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -70,11 +73,15 @@ public class GroovyScriptingExecutor extends BaseScriptingExecutor {
 			return outputObjects;
 		}
 		catch (GroovyRuntimeException groovyRuntimeException) {
+			_log.error("Scripting Exception", groovyRuntimeException);
+
 			throw new ScriptingException(
 				groovyRuntimeException.getMessage(),
 				groovyRuntimeException.getCause());
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(GroovyScriptingExecutor.class);
 
 	@Override
 	public String getLanguage() {
