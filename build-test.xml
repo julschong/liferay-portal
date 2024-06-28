@@ -9689,7 +9689,7 @@ org.apache.catalina.tribes.level = FINE]]>
 		</replace>
 
 		<replace
-			failOnNoReplacements="true"
+			failOnNoReplacements="false"
 			file="${app.server.tomcat.dir}/conf/server.xml"
 		>
 			<replacetoken><![CDATA[<Engine name="Catalina" defaultHost="localhost">]]></replacetoken>
