@@ -61,6 +61,9 @@ ClusterSampleData portletSessionClusterSampleData = (ClusterSampleData)portletSe
 			<li>
 				<b>Liferay Home:</b> <%= portletSessionClusterSampleData.getLiferayHome() %>
 			</li>
+			<li>
+				<b>AllSession: </b> <%= portletSessionClusterSampleData.getAllSessions() %>
+			</li>
 		</ul>
 	</c:when>
 	<c:otherwise>

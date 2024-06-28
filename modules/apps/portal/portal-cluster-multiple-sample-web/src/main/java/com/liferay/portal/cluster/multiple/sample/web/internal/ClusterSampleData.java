@@ -5,11 +5,25 @@
 
 package com.liferay.portal.cluster.multiple.sample.web.internal;
 
+import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.servlet.PortalSessionContext;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.Serializable;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Jorge Díaz
@@ -21,6 +35,29 @@ public class ClusterSampleData implements Serializable {
 		_data = StringUtil.randomString(20);
 		_liferayHome = SystemProperties.get("liferay.home");
 		_timestamp = System.currentTimeMillis();
+	}
+
+	public String getAllSessions() {
+		Collection<HttpSession> httpSessions = PortalSessionContext.values();
+
+		Map<String, Map<String, String>> map = new TreeMap<>();
+
+
+		for (HttpSession httpSession : httpSessions) {
+			Map<String, String> attributeMap = new TreeMap<>();
+
+			Enumeration<String>  enumeration = httpSession.getAttributeNames();
+
+			while (enumeration.hasMoreElements()) {
+				String attributeName = enumeration.nextElement();
+
+				attributeMap.put(attributeName, JSONFactoryUtil.serialize(httpSession.getAttribute(attributeName)));
+			}
+
+			map.put(httpSession.getId(), attributeMap);
+		}
+
+		return map.toString();
 	}
 
 	public String getComputerName() {
