@@ -9636,27 +9636,26 @@ go</echo>
 	</target>
 
 	<target name="cluster-session-replication">
-		<replace
-			failOnNoReplacements="true"
-			file="${app.server.tomcat.dir}/conf/context.xml"
-		>
-			<replacetoken><![CDATA[<Context>]]></replacetoken>
-			<replacevalue><![CDATA[<Context>
-
-		<Manager
-			className="org.apache.catalina.ha.session.DeltaManager"
-			expireSessionsOnShutdown="false"
-			notifyListenersOnReplication="true"/>]]></replacevalue>
-		</replace>
-
-		<replace
-			failOnNoReplacements="true"
+		<replaceregexp
 			file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/web.xml"
-		>
-			<replacetoken><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">]]></replacetoken>
-			<replacevalue><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<distributable />]]></replacevalue>
-		</replace>
+			match="(&lt;\/security-role&gt;\s+)(&lt;\/web\-app&gt;)"
+			replace="\1&#x9;&lt;distributable /&gt;&#xD;&#xA;\2"
+		/>
+
+		<if>
+			<not>
+				<resourcecontains resource="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties" substring="org.apache.catalina.ha.session.handlers"/>
+			</not>
+			<then>
+				<echo append="true" file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties">
+			<![CDATA[
+org.apache.catalina.ha.session.handlers=java.util.logging.ConsoleHandler
+org.apache.catalina.ha.session.level=INFO]]>
+				</echo>
+			</then>
+		</if>
+
+
 
 		<echo append="true" file="${app.server.tomcat.dir}/conf/logging.properties">
 			<![CDATA[
