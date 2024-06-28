@@ -9644,7 +9644,10 @@ go</echo>
 
 		<if>
 			<not>
-				<resourcecontains resource="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties" substring="org.apache.catalina.ha.session.handlers"/>
+				<resourcecontains
+					resource="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties"
+					substring="org.apache.catalina.ha.session.handlers"
+				/>
 			</not>
 			<then>
 				<echo append="true" file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties">
@@ -9654,8 +9657,6 @@ org.apache.catalina.ha.session.level=INFO]]>
 				</echo>
 			</then>
 		</if>
-
-
 
 		<echo append="true" file="${app.server.tomcat.dir}/conf/logging.properties">
 			<![CDATA[
