@@ -9652,14 +9652,11 @@ org.apache.catalina.ha.session.level=INFO]]>
 			</then>
 		</if>
 
-		<replace
-			failOnNoReplacements="true"
+		<replaceregexp
 			file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/web.xml"
-		>
-			<replacetoken><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">]]></replacetoken>
-			<replacevalue><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<distributable />]]></replacevalue>
-		</replace>
+			match="(&lt;\/security-role&gt;\s+)(&lt;\/web\-app&gt;)"
+			replace="\1&#x9;&lt;distributable /&gt;&#xD;&#xA;\2"
+		/>
 
 		<echo append="true" file="${app.server.tomcat.dir}/conf/logging.properties">
 			<![CDATA[
