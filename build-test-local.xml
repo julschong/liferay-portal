@@ -541,7 +541,12 @@ local.bundles.backup.file=${liferay.home.parent.dir}/bundles-master-${git.commit
 					result="app.server.bundles.size"
 				/>
 
-				<property name="app.server.bundles.size" value="${app.server.bundles.size}" />
+				<if test="${node.count == 1}">
+					<property name="app.server.bundles.size" value="1" />
+					<else>
+						<property name="app.server.bundles.size" value="${app.server.bundles.size}" />
+					</else>
+				</if>
 			</then>
 			<else>
 				<property name="app.server.bundles.size" value="1" />

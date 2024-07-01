@@ -1944,6 +1944,11 @@ jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 								}
 							}
 
+							if (propertyName.equals("app.server.bundles.size") && ((propertyValue == null) || (propertyValue.equals("0")))) {
+								propertyValue = "1";
+								System.out.println("app.server.bundles.size is set to 1");
+							}
+
 							project.setProperty(propertyName, propertyValue);
 						]]>
 					</beanshell>
