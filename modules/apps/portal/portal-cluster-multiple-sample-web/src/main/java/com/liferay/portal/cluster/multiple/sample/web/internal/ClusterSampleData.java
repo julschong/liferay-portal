@@ -5,11 +5,23 @@
 
 package com.liferay.portal.cluster.multiple.sample.web.internal;
 
+import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.servlet.PortalSessionContext;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.Serializable;
+
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Jorge Díaz
@@ -23,6 +35,11 @@ public class ClusterSampleData implements Serializable {
 		_timestamp = System.currentTimeMillis();
 	}
 
+	public List<String> getAllSessionIds() {
+		return TransformUtil.transform(
+			PortalSessionContext.values(), HttpSession::getId);
+	}
+
 	public String getComputerName() {
 		return _computerName;
 	}
@@ -33,6 +50,58 @@ public class ClusterSampleData implements Serializable {
 
 	public String getLiferayHome() {
 		return _liferayHome;
+	}
+
+	public String getLoggedInSessions() {
+		Collection<HttpSession> httpSessions = PortalSessionContext.values();
+
+		Map<String, Map<String, String>> map = new TreeMap<>();
+
+		for (HttpSession httpSession : httpSessions) {
+			Map<String, String> attributeMap = new TreeMap<>();
+
+			Enumeration<String> enumeration = httpSession.getAttributeNames();
+
+			while (enumeration.hasMoreElements()) {
+				String attributeName = enumeration.nextElement();
+
+				attributeMap.put(
+					attributeName,
+					JSONFactoryUtil.serialize(
+						httpSession.getAttribute(attributeName)));
+			}
+
+			if (attributeMap.containsKey("USER_ID")) {
+				map.put(httpSession.getId(), attributeMap);
+			}
+		}
+
+		StringBundler sb = new StringBundler();
+
+		for (Map.Entry<String, Map<String, String>> sessionEntry :
+				map.entrySet()) {
+
+			sb.append("<strong>ID: ");
+			sb.append(sessionEntry.getKey());
+			sb.append("</strong>\n");
+
+			sb.append("<ul>");
+
+			for (Map.Entry<String, String> idEntry :
+					sessionEntry.getValue(
+					).entrySet()) {
+
+				sb.append("<li>");
+				sb.append(idEntry.getKey());
+				sb.append(": ");
+				sb.append(idEntry.getValue());
+				sb.append("</li>");
+			}
+
+			sb.append("</ul>");
+		}
+
+		return sb.toString();
 	}
 
 	public long getTimestamp() {

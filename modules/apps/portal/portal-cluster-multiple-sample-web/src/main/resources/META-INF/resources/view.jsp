@@ -33,6 +33,21 @@ ClusterSampleData clusterSampleData = new ClusterSampleData();
 	</li>
 </ul>
 
+<div class="all-session-ids">
+	<h4>All Session Ids: </h4>
+	<%= clusterSampleData.getAllSessionIds() %>
+</div>
+
+<div>
+	<h4>Current Session Id: </h4>
+	<p class="current-session-id"><%= request.getSession().getId() %></p>
+</div>
+
+<div class="logged-in-sessions">
+	<h4>Logged In Sessions with Attributes: </h4>
+	<%= clusterSampleData.getLoggedInSessions() %>
+</div>
+
 <div class="h4">Session Data:</div>
 
 <%
