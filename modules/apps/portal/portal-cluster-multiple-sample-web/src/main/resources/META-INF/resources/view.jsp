@@ -33,6 +33,11 @@ ClusterSampleData clusterSampleData = new ClusterSampleData();
 	</li>
 </ul>
 
+<div class="logged-in-sessions">
+	<h4>Logged In Sessions: </h4>
+	<%= clusterSampleData.getLoggedInSessions() %>
+</div>
+
 <div class="h4">Session Data:</div>
 
 <%
