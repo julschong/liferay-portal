@@ -9,7 +9,10 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ page import="com.liferay.portal.cluster.multiple.sample.web.internal.ClusterSampleData" %>
+<%@ page import="com.liferay.portal.cluster.multiple.sample.web.internal.ClusterSampleData" %><%@
+page import="com.liferay.portal.kernel.servlet.PortalSessionContext" %>
+
+<%@ page import="javax.servlet.http.HttpSession" %>
 
 <portlet:defineObjects />
 
@@ -33,6 +36,25 @@ ClusterSampleData clusterSampleData = new ClusterSampleData();
 	</li>
 </ul>
 
+<div class="logged-in-session-count">
+	<h4> Logged In Session Count: </h4>
+
+	<%
+	int cnt = 0;
+
+	for (HttpSession httpSession : PortalSessionContext.values()) {
+		Object userId = httpSession.getAttribute("USER_ID");
+
+		if (userId != null) {
+			cnt++;
+		}
+	}
+
+	out.println(cnt);
+	%>
+
+</div>
+
 <div class="h4">Session Data:</div>
 
 <%
@@ -45,10 +67,13 @@ ClusterSampleData portletSessionClusterSampleData = (ClusterSampleData)portletSe
 
 		<ul>
 			<li>
-				<b>Stored Data:</b> <%= portletSessionClusterSampleData.getData() %>
+				<b>Stored Data:</b> <p class="stored-data" ><%= portletSessionClusterSampleData.getData() %> </p>
 			</li>
 			<li>
 				<b>Stored Timestamp:</b> <%= portletSessionClusterSampleData.getTimestamp() %>
+			</li>
+			<li>
+				<b>Session Id: </b> <p class="session-id"><%= portletSession.getId() %></p>
 			</li>
 		</ul>
 
