@@ -9,7 +9,15 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ page import="com.liferay.portal.cluster.multiple.sample.web.internal.ClusterSampleData" %>
+<%@ page import="com.liferay.petra.function.transform.TransformUtil" %><%@
+page import="com.liferay.portal.cluster.multiple.sample.web.internal.ClusterSampleData" %><%@
+page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.servlet.PortalSessionContext" %>
+
+<%@ page import="java.util.Collections" %><%@
+page import="java.util.List" %>
+
+<%@ page import="javax.servlet.http.HttpSession" %>
 
 <portlet:defineObjects />
 
@@ -32,6 +40,38 @@ ClusterSampleData clusterSampleData = new ClusterSampleData();
 		<b>Current timestamp:</b> <%= clusterSampleData.getTimestamp() %>
 	</li>
 </ul>
+
+<div class="logged-in-sessions">
+	<h4>Logged In Sessions with Attributes: </h4>
+
+	<%
+	List<String> sessionIds = TransformUtil.transform(PortalSessionContext.values(), HttpSession::getId);
+
+	Collections.sort(sessionIds);
+
+	for (String sessionId : sessionIds) {
+		HttpSession httpSession = PortalSessionContext.get(sessionId);
+
+		Object userId = httpSession.getAttribute("USER_ID");
+
+		if (userId == null) {
+			continue;
+		}
+
+		out.println(sessionId);
+
+		List<String> attributeNamesList = Collections.list(httpSession.getAttributeNames());
+
+		Collections.sort(attributeNamesList);
+
+		for (String attributeName : attributeNamesList) {
+			out.print(attributeName + ": ");
+			out.println(JSONFactoryUtil.serialize(httpSession.getAttribute(attributeName)));
+		}
+	}
+	%>
+
+</div>
 
 <div class="h4">Session Data:</div>
 

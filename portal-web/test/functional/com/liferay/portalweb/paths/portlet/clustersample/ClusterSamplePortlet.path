@@ -20,6 +20,12 @@
 	<td>//div[@class='portlet-body']/ul/li[contains(.,'Stored Data')]</td>
 	<td></td>
 </tr>
+<tr>
+	<td>LOGGED_IN_SESSIONS</td>
+	<td>//div[@class='logged-in-sessions']</td>
+	<td></td>
+</tr>
+
 </tbody>
 </table>
 </body>
