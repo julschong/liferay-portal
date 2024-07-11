@@ -4522,7 +4522,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-tomcat-postgresql121-jdk8">
+	<target name="functional-bundle-tomcat-postgresql121-jdk17_open">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
