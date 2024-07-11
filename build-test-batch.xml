@@ -4286,7 +4286,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-tomcat-mariadb102-jdk8">
+	<target name="functional-bundle-tomcat-mariadb102-jdk17_open">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -5140,8 +5140,8 @@ information. Make sure to commit in all format-javadoc results.
 		<antcall target="functional-bundle-tomcat-hypersonic20-jdk17_open" />
 	</target>
 
-	<target name="functional-smoke-bundle-tomcat-mariadb102-jdk8">
-		<antcall target="functional-bundle-tomcat-mariadb102-jdk8" />
+	<target name="functional-smoke-bundle-tomcat-mariadb102-jdk17_open">
+		<antcall target="functional-bundle-tomcat-mariadb102-jdk17_open" />
 	</target>
 
 	<target name="functional-smoke-bundle-tomcat-mysql56-jdk8">
