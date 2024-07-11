@@ -5317,7 +5317,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
 	</target>
 
-	<target name="functional-smoke-tomcat90-mysql57-jdk8_stable">
+	<target name="functional-smoke-tomcat90-mysql57-jdk21_stable">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
 	</target>
 
@@ -5559,7 +5559,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" browser.type="chrome" database.type="mysql" database.version="5.7" />
 	</target>
 
-	<target name="functional-tomcat90-mysql57-chrome100-jdk8_stable">
+	<target name="functional-tomcat90-mysql57-chrome100-jdk21_stable">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
 	</target>
 
@@ -5571,7 +5571,7 @@ information. Make sure to commit in all format-javadoc results.
 		<antcall target="functional-tomcat90-mysql57-jdk8" />
 	</target>
 
-	<target name="functional-tomcat90-mysql57-jdk8_stable">
+	<target name="functional-tomcat90-mysql57-jdk21_stable">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
 	</target>
 
@@ -5755,7 +5755,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
 	</target>
 
-	<target name="functional-upgrade-tomcat90-mysql57-jdk8_stable">
+	<target name="functional-upgrade-tomcat90-mysql57-jdk21_stable">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
 	</target>
 
