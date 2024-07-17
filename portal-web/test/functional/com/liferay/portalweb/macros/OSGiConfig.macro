@@ -74,6 +74,36 @@ ${configList}''';
 		FileUtil.write("${liferayHome}/osgi/configs/${osgiConfigFileName}", ${configList});
 	}
 
+	@summary = "Deploy an OSGI config file"
+	macro deployOSGiConfigFileToSpecificNodeWithNoAssertDefined(deployDir = null, osgiConfigFileName = null, osgiConfigs = null, nodePort = null) {
+		var configList = "";
+
+		for (var osgiConfig : list ${osgiConfigs}) {
+			var configList = '''${osgiConfig}
+${configList}''';
+		}
+
+		if (isSet(deployDir)) {
+			var liferayHome = ${deployDir};
+		}
+		else {
+			if (!(isSet(nodePort))) {
+				var nodePort = 8080;
+			}
+
+			var leadingPortNumber = StringUtil.replace(${nodePort}, 080, "");
+
+			var bundleIndex = ${leadingPortNumber} - 8;
+			var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+			if (${bundleIndex} != 0) {
+				var liferayHome = "${liferayHome}-${bundleIndex}";
+			}
+		}
+
+		FileUtil.write("${liferayHome}/osgi/configs/${osgiConfigFileName}", ${configList});
+	}
+
 	@summary = "Edit an OSGI config file located on Temp dir"
 	macro editOSGiConfigFileFromTempFolder(newValue = null, osgiConfigFileName = null, oldValue = null) {
 		var tempDir = PropsUtil.get("output.dir.name");

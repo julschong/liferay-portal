@@ -278,61 +278,27 @@ definition {
 
 		Clustering.deployClusteringModule(nodePort = 9080);
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+        Navigator.openSpecificURL(url = "http://localhost:9080");
 
-		PagesAdmin.addPage(pageName = "Session Replication Test");
+		ClusteringCache.assertAllSessionIdAndAttributesAreTheSameBetweenTwoNodes();
 
-		Navigator.gotoPage(pageName = "Session Replication Test");
+		User.viewLoggedInPG();
 
-		Portlet.addPG(portletName = "ClusterSampleSessionReplication");
+		User.logoutPG();
 
-		JSONUser.addUser(
-			userEmailAddress = "test1@liferay.com",
-			userFirstName = "Test1",
-			userLastName = "Test1",
-			userScreenName = "Test1");
+        Navigator.openSpecificURL(url = "http://localhost:8080");
 
-		JSONUser.setFirstPassword(
-			agreeToTermsAndAnswerReminderQuery = "true",
-			requireReset = "false",
-			userEmailAddress = "test1@liferay.com");
+		ClusteringCache.assertAllSessionIdAndAttributesAreTheSameBetweenTwoNodes();
 
-		Open(value1 = "http://www.able.com:9080/web/guest/session-replication-test");
+		User.viewLoggedOutPG();
 
-		var guestSessionId = selenium.getText("ClusterSamplePortlet#CURRENT_SESSION_ID");
+        Navigator.openSpecificURL(url = "http://localhost:9080");
 
-		User.firstLoginUI(
-			password = PropsUtil.get("default.admin.password"),
-			specificURL = "http://www.able.com:9080",
-			userEmailAddress = "test1@liferay.com");
-
-		Open(value1 = "http://www.able.com:9080/web/guest/session-replication-test");
-
-		AssertElementNotPresent(locator1 = "ClusterSamplePortlet#ALL_SESSION_IDS_CONTAINS_GUEST_SESSION_ID");
-
-		Open(value1 = "http://localhost:8080/web/guest/session-replication-test");
-
-		Refresh();
-
-		var sessionData = selenium.getText("ClusterSamplePortlet#LOGGED_IN_SESSIONS");
-
-		Open(value1 = "http://www.able.com:9080/web/guest/session-replication-test");
-
-		AssertTextEquals(
-			locator1 = "ClusterSamplePortlet#LOGGED_IN_SESSIONS",
-			value1 = ${sessionData});
+		User.loginPG();
 
 		Clustering.shutdownSpecificServer(nodePort = 9080);
 
-		Open(value1 = "http://www.able.com:8080/web/guest/session-replication-test");
-
-		Refresh();
-
-		AssertTextEquals(
-			locator1 = "ClusterSamplePortlet#LOGGED_IN_SESSIONS",
-			value1 = ${sessionData});
+        Navigator.openSpecificURL(url = "http://localhost:8080");
 
 		User.viewLoggedInPG();
 
@@ -341,13 +307,9 @@ definition {
 			keepCachedAppServerData = "true",
 			nodePort = 9080);
 
-		Open(value1 = "http://www.able.com:9080/web/guest/session-replication-test");
+        Navigator.openSpecificURL(url = "http://localhost:9080");
 
-		Refresh();
-
-		AssertTextEquals(
-			locator1 = "ClusterSamplePortlet#LOGGED_IN_SESSIONS",
-			value1 = ${sessionData});
+		ClusteringCache.assertAllSessionIdAndAttributesAreTheSameBetweenTwoNodes();
 
 		User.viewLoggedInPG();
 	}

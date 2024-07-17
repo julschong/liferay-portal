@@ -1,0 +1,41 @@
+definition {
+
+	@summary = "Assert all session ids and attributes are the same in both nodes"
+	macro assertAllSessionIdAndAttributesAreTheSameBetweenTwoNodes() {
+		OSGiConfig.deployOSGiConfigFileToSpecificNodeWithNoAssertDefined(
+			nodePort = 8080,
+			osgiConfigFileName = "com.liferay.portal.cluster.multiple.sample.web.internal.configuration.ClusterSampleConfiguration.config",
+			osgiConfigs = "clusterSampleCommand=\"print-all-session-id-and-attributes\"");
+
+		OSGiConfig.deployOSGiConfigFileToSpecificNodeWithNoAssertDefined(
+			nodePort = 9080,
+			osgiConfigFileName = "com.liferay.portal.cluster.multiple.sample.web.internal.configuration.ClusterSampleConfiguration.config",
+			osgiConfigs = "clusterSampleCommand=\"print-all-session-id-and-attributes\"");
+
+		Pause(value1 = 10000);
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		var node1 = FileUtil.read("${liferayHome}/session-attributes");
+
+		var liferayHome = "${liferayHome}-1";
+
+		var node2 = FileUtil.read("${liferayHome}/session-attributes");
+
+		TestUtils.assertEquals(
+			actual = ${node1},
+			expected = ${node2});
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		FileUtil.delete("${liferayHome}/session-attributes");
+
+		FileUtil.delete("${liferayHome}/osgi/configs/com.liferay.portal.cluster.multiple.sample.web.internal.configuration.ClusterSampleConfiguration.config");
+
+		var liferayHome = "${liferayHome}-1";
+
+		FileUtil.delete("${liferayHome}/session-attributes");
+
+		FileUtil.delete("${liferayHome}/osgi/configs/com.liferay.portal.cluster.multiple.sample.web.internal.configuration.ClusterSampleConfiguration.config");
+	}
+}

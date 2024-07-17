@@ -5,6 +5,8 @@
 
 package com.liferay.portal.cluster.multiple.sample.web.internal;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cluster.multiple.sample.web.internal.configuration.ClusterSampleConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
@@ -14,13 +16,26 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.PortalSessionContext;
+import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Future;
 
 import org.osgi.service.component.ComponentContext;
@@ -28,6 +43,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Tina Tian
@@ -74,6 +91,9 @@ public class ClusterSampleDispatcher {
 
 				_invokeMethodPortalOnMaster(_clusterMasterExecutor);
 			}
+			else if (clusterSampleCommand.equals("print-all-session-id-and-attributes")) {
+				_printAllSessionIdAndAttributes();
+			}
 			else {
 				_log.error(
 					"Unable to find cluster sample command " +
@@ -84,6 +104,54 @@ public class ClusterSampleDispatcher {
 			_log.error(exception);
 		}
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Props _props;
+
+	private void _printAllSessionIdAndAttributes() throws IOException {
+		Collection<HttpSession> httpSessions = PortalSessionContext.values();
+
+		Map<String, Map<String, String>> map = new TreeMap<>();
+
+		for (HttpSession httpSession : httpSessions) {
+			Map<String, String> attributeMap = new TreeMap<>();
+
+			Enumeration<String> enumeration = httpSession.getAttributeNames();
+
+			while (enumeration.hasMoreElements()) {
+				String attributeName = enumeration.nextElement();
+
+				attributeMap.put(
+					attributeName,
+					_jsonFactory.serialize(
+						httpSession.getAttribute(attributeName)));
+			}
+
+			map.put(httpSession.getId(), attributeMap);
+		}
+
+		StringBundler sb = new StringBundler();
+
+		for (Map.Entry<String, Map<String, String>> sessionEntry :
+				map.entrySet()) {
+
+			sb.append(sessionEntry.getKey());
+			sb.append("-->");
+			sb.append(sessionEntry.getValue());
+		}
+
+		String liferayHome = _props.get(PropsKeys.LIFERAY_HOME);
+
+		_file.write(liferayHome + "/session-attributes", sb.toString());
+
+		_log.info("print-all-session-id-and-attributes finished on Node: " + _props.get(PropsKeys.WEB_SERVER_HTTP_PORT));
+	}
+
+	@Reference
+	private File _file;
 
 	private ClusterNode _getTargetClusterNode() throws Exception {
 		ClusterNode localClusterNode = _clusterExecutor.getLocalClusterNode();
