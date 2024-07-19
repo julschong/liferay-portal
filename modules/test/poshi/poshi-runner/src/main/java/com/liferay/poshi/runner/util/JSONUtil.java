@@ -151,6 +151,8 @@ public class JSONUtil {
 	}
 
 	public static String getWithJSONPath(String json, String path) {
+		System.out.println(json);
+
 		return getWithJSONPath(json, path, "true");
 	}
 
