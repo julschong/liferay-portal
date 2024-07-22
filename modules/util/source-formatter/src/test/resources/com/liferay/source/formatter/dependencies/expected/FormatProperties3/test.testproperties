@@ -1,11 +1,11 @@
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8-1][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu-1][relevant]=\
         (portal.acceptance == true) AND \
         (\
             (testray.main.component.name ~ "Friendly URL") OR \
             (testray.main.component.name ~ "Friendly URL Service")\
         )
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8-2][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu-2][relevant]=\
         (portal.acceptance == true) AND \
         (\
             (testray.component.names ~ "Web Content") OR \
@@ -14,14 +14,14 @@
             (testray.main.component.name ~ "Web Content Display")\
         )
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8-3][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu-3][relevant]=\
         (\
             (portal.acceptance != quarantine) AND \
             (portal.upstream != quarantine)\
         ) AND \
         (testray.main.component.name == "Team Extranet")
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8-4][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu-4][relevant]=\
         (\
             (portal.acceptance == true) AND \
             (testray.main.component.name == "Staging")\
@@ -32,7 +32,7 @@
         ) OR \
         (testray.main.component.name == "Scheduler")
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8-4][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu-4][relevant]=\
         (\
             (environment.acceptance == true) OR \
             (portal.acceptance == true) OR \
@@ -52,7 +52,7 @@
         ) OR \
         (testray.main.component.name == "Scheduler")
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8-5][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu-5][relevant]=\
         (\
             (portal.acceptance == true) AND \
             (testray.main.component.name == "Staging")\
@@ -63,7 +63,7 @@
         ) OR \
         (testray.main.component.name == "Scheduler")
 
-    test.batch.run.property.global.query[functional-tomcat*-mysql*-jdk8][relevant]=\
+    test.batch.run.property.global.query[functional-tomcat*-mysql*-jdk21_zulu][relevant]=\
         (\
             (app.server.types == null) OR \
             (app.server.types ~ tomcat)\
@@ -78,14 +78,14 @@
         ) AND \
         (portal.stable != "true")
 
-    test.batch.run.property.query[functional-tomcat90-mysql57-jdk8][search-remote]=\
-        (${test.batch.run.property.query[functional-tomcat90-mysql57-jdk8][search]}) AND \
+    test.batch.run.property.query[functional-tomcat90-mysql57-jdk21_zulu][search-remote]=\
+        (${test.batch.run.property.query[functional-tomcat90-mysql57-jdk21_zulu][search]}) AND \
         (embedded.elasticsearch.only != "true")
 
-    test.batch.run.property.query[functional-smoke-bundle-jboss73-mysql57-jdk8]=\
-        ${test.batch.run.property.query[functional-smoke-bundle-jboss-mysql57-jdk8]}
+    test.batch.run.property.query[functional-smoke-bundle-jboss73-mysql57-jdk21_zulu]=\
+        ${test.batch.run.property.query[functional-smoke-bundle-jboss-mysql57-jdk21_zulu]}
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu][relevant]=\
         (\
             (portal.acceptance == true) AND \
             (testray.main.component.name == "Staging")\
@@ -95,15 +95,15 @@
             (testray.main.component.name == "Clustering"\
         )
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8-1][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu-1][relevant]=\
         (portal.acceptance == true) AND \
         (testray.main.component.name ~ "Headless Frontend Infrastructure")
 
-    test.batch.run.property.query[functional-tomcat90-mysql57-jdk8][site-template]=\
+    test.batch.run.property.query[functional-tomcat90-mysql57-jdk21_zulu][site-template]=\
         (testray.component.names ~ "Site Templates") OR \
         (testray.main.component.name ~ "Site Templates")
 
-    test.batch.run.property.query[functional-tomcat*-mysql*-jdk8][relevant]=\
+    test.batch.run.property.query[functional-tomcat*-mysql*-jdk21_zulu][relevant]=\
         (\
             (environment.acceptance == true) AND \
             (portal.acceptance == true) AND \
