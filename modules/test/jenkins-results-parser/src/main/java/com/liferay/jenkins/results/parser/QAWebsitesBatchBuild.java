@@ -15,14 +15,14 @@ public class QAWebsitesBatchBuild extends BatchBuild {
 		String jobName = getJobName();
 
 		if (jobName.contains("firefox")) {
-			return "functional-firefox-jdk8";
+			return "functional-firefox-jdk21_zulu";
 		}
 
 		if (jobName.contains("internet.explorer")) {
-			return "functional-ie-jdk8";
+			return "functional-ie-jdk21_zulu";
 		}
 
-		return "functional-chrome-jdk8";
+		return "functional-chrome-jdk21_zulu";
 	}
 
 	protected QAWebsitesBatchBuild(
