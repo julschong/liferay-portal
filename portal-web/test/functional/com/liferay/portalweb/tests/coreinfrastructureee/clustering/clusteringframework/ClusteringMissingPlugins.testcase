@@ -48,6 +48,8 @@ definition {
 
 		Groovy.runScriptViaGogoShell(scriptFile = "groovy-script-portal-cache-put-modules.groovy");
 
+		Pause(value1 = 3000);
+
 		Clustering.viewTextPresentOnSpecificNode(
 			expectedText = "Put test.key into test.cache",
 			nodePort = 8080);
@@ -65,6 +67,8 @@ definition {
 			nodePort = 9080,
 			scriptFile = "groovy-script-portal-cache-remove.groovy");
 
+		Pause(value1 = 3000);
+
 		Clustering.viewTextPresentOnSpecificNode(
 			expectedText = "Removed test.key from test.cache",
 			nodePort = 8080);
@@ -74,6 +78,8 @@ definition {
 			nodePort = 9080);
 
 		Groovy.runScriptViaGogoShell(scriptFile = "groovy-script-portal-cache-put-modules.groovy");
+
+		Pause(value1 = 3000);
 
 		Clustering.viewTextPresentOnSpecificNode(
 			expectedText = "Unable to deserialize object",
