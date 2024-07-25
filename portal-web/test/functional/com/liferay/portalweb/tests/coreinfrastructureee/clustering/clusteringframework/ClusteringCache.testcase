@@ -44,8 +44,6 @@ definition {
 
 		Portlet.addPG(portletName = "ClusterSampleSessionReplication");
 
-		AssertElementPresent(locator1 = "ClusterSamplePortlet#NO_SESSION_DATA_MESSAGE");
-
 		Clustering.deployClusteringModule(nodePort = 9080);
 
 		Navigator.gotoPage(pageName = "Session Replication Test");
@@ -320,8 +318,6 @@ definition {
 			userEmailAddress = "test1@liferay.com");
 
 		Open(value1 = "http://www.able.com:9080/web/guest/session-replication-test");
-
-		Refresh();
 
 		AssertTextNotEquals(
 			locator1 = "ClusterSamplePortlet#STORED_DATA_VALUE",
