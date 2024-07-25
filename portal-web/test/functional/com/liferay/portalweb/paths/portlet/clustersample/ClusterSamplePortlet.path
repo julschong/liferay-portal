@@ -11,11 +11,6 @@
 
 <tbody>
 <tr>
-	<td>NO_SESSION_DATA_MESSAGE</td>
-	<td>//div[@class='portlet-body']//p[contains(.,'No session data exists, generating a new one with random string:')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>STORED_DATA</td>
 	<td>//div[@class='portlet-body']/ul/li[contains(.,'Stored Data')]</td>
 	<td></td>
