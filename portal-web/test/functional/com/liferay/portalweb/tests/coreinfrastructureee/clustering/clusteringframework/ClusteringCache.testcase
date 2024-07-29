@@ -26,8 +26,10 @@ definition {
 
 	@priority = 4
 	test CanModuleBeShutdownDuringReplicateSession {
+		property app.server.types = "jboss,tcserver,weblogic,websphere,wildfly";
 		property cluster.session.replicated = "true";
 		property custom.properties = "portlet.session.replicate.enabled=true";
+		property environment.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
