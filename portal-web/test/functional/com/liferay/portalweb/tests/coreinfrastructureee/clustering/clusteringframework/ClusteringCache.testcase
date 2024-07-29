@@ -63,9 +63,9 @@ definition {
 
 		GogoShell.executeCommand(commandName = "lb | grep 'Portal Cluster Multiple Sample Web'");
 
-		var moduleID = GogoShell.getModuleID(moduleName = "'Portal Cluster Multiple Sample Web'");
+		var moduleId = GogoShell.getModuleID(moduleName = "'Portal Cluster Multiple Sample Web'");
 
-		GogoShell.stopModule(moduleID = ${moduleID});
+		GogoShell.stopModule(moduleId = ${moduleId});
 
 		GogoShell.viewModuleStatus(
 			moduleName = "'Portal Cluster Multiple Sample Web'",
