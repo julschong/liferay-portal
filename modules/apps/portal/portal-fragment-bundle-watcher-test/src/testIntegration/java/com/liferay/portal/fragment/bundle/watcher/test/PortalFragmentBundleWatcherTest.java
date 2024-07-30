@@ -58,8 +58,17 @@ public class PortalFragmentBundleWatcherTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
+	private static int _testCount = 0;
+
 	@Before
 	public void setUp() {
+		_testCount++;
+		
+		_HOST_SYMBOLIC_NAME = _PACKAGE_NAME.concat(".host" + _testCount);
+
+		_FRAGMENT_A_SYMBOLIC_NAME = _HOST_SYMBOLIC_NAME.concat(".fragment.a");
+		_FRAGMENT_B_SYMBOLIC_NAME = _HOST_SYMBOLIC_NAME.concat(".fragment.b");
+
 		Bundle bundle = FrameworkUtil.getBundle(
 			PortalFragmentBundleWatcherTest.class);
 
@@ -380,11 +389,11 @@ public class PortalFragmentBundleWatcherTest {
 
 	private static final String _DEPENDENCY_B_SYMBOLIC_NAME;
 
-	private static final String _FRAGMENT_A_SYMBOLIC_NAME;
+	private static String _FRAGMENT_A_SYMBOLIC_NAME;
 
-	private static final String _FRAGMENT_B_SYMBOLIC_NAME;
+	private static String _FRAGMENT_B_SYMBOLIC_NAME;
 
-	private static final String _HOST_SYMBOLIC_NAME;
+	private static String _HOST_SYMBOLIC_NAME;
 
 	private static final String _PACKAGE_NAME;
 
@@ -396,10 +405,6 @@ public class PortalFragmentBundleWatcherTest {
 		_DEPENDENCY_A_SYMBOLIC_NAME = _PACKAGE_NAME.concat(".dependency.a");
 		_DEPENDENCY_B_SYMBOLIC_NAME = _PACKAGE_NAME.concat(".dependency.b");
 
-		_HOST_SYMBOLIC_NAME = _PACKAGE_NAME.concat(".host");
-
-		_FRAGMENT_A_SYMBOLIC_NAME = _HOST_SYMBOLIC_NAME.concat(".fragment.a");
-		_FRAGMENT_B_SYMBOLIC_NAME = _HOST_SYMBOLIC_NAME.concat(".fragment.b");
 	}
 
 	private BundleContext _bundleContext;
