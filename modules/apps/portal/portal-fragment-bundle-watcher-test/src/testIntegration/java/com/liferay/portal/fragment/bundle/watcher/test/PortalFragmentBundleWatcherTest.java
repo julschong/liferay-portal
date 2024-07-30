@@ -162,13 +162,15 @@ public class PortalFragmentBundleWatcherTest {
 
 			int expectedMaxHostRefreshCount = 2;
 
+			int refreshCount = _testFragmentBundleListener.getHostRefreshedCount();
+
 			Assert.assertTrue(
 				StringBundler.concat(
 					"Expected host to refresh at most ",
 					expectedMaxHostRefreshCount, " times, but was refreshed ",
-					_testFragmentBundleListener.getHostRefreshedCount(),
+					refreshCount,
 					" times instead."),
-				_testFragmentBundleListener.getHostRefreshedCount() <=
+				refreshCount <=
 					expectedMaxHostRefreshCount);
 		}
 		finally {
