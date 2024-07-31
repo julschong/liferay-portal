@@ -15891,6 +15891,17 @@ mail.send.blacklist=</echo>
 			</then>
 		</if>
 
+		<if>
+			<equals arg1="${app.server.type}" arg2="tomcat" />
+			<then>
+				<replace
+					file="${app.server.tomcat.dir}/bin/setenv${file.suffix.bat}"
+					token="CATALINA_OPTS=&quot;$CATALINA_OPTS"
+					value="CATALINA_OPTS=&quot;$CATALINA_OPTS -Djava.locale.providers=CLDR"
+				/>
+			</then>
+		</if>
+
 		<get-testcase-property property.name="portal.ssl.enabled" />
 
 		<if>
