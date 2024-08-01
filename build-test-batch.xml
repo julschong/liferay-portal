@@ -3833,7 +3833,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-amazonlinux2022-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-amazonlinux2022-tomcat90-mysql57-jdk21">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
