@@ -3791,7 +3791,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
 	</target>
 
-	<target name="functional-bundle-alpine310-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-alpine310-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -3812,7 +3812,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-amazonlinux2-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-amazonlinux2-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -3833,7 +3833,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-amazonlinux2022-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-amazonlinux2022-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -3854,7 +3854,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-centos8-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-centos8-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -3875,7 +3875,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-fedora35-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-fedora35-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4042,7 +4042,7 @@ information. Make sure to commit in all format-javadoc results.
 		<antcall target="functional-bundle-wildfly-mysql57-jdk8" />
 	</target>
 
-	<target name="functional-bundle-orcllinux7-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-orcllinux7-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4063,7 +4063,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-orcllinux8-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-orcllinux8-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4084,7 +4084,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-orcllinux9-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-orcllinux9-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4105,7 +4105,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-redhat8-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-redhat8-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4126,7 +4126,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-redhat9-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-redhat9-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4147,7 +4147,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-rockylinux91-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-rockylinux91-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4168,7 +4168,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-suse15-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-suse15-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -4701,7 +4701,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="functional-bundle-ubuntu18-tomcat90-mysql57-jdk8">
+	<target name="functional-bundle-ubuntu18-tomcat90-mysql57-jdk21_zulu">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
