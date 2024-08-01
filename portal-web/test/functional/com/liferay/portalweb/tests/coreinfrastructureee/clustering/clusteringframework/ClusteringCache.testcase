@@ -272,6 +272,7 @@ definition {
 	test SessionReplicatedIdAndAttributesAreTheSameInBothNodes {
 		property cluster.session.replicated = "true";
 		property custom.properties = "jsonws.web.service.paths.excludes=${line.separator}portlet.session.replicate.enabled=true";
+		property environment.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -352,6 +353,7 @@ definition {
 	test UserStayLoggedInOnBothNodes {
 		property cluster.session.replicated = "true";
 		property custom.properties = "portlet.session.replicate.enabled=true";
+		property environment.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
