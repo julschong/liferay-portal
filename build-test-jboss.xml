@@ -15,6 +15,7 @@
 		<lstopwatch action="start" name="run.selenium.jboss" />
 
 		<app-server-properties-update>
+			app.server.parent.dir=${app.server.parent.dir}
 			app.server.type=jboss
 		</app-server-properties-update>
 
