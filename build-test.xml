@@ -3023,7 +3023,7 @@ include-and-override=portal-liferay-online.properties</echo>
 			</if>
 
 			<replace
-				file="${app.server.tomcat.classes.portal.dir}/portal-liferay-online-config.properties"
+				file="${app.server.classes.portal.dir}/portal-liferay-online-config.properties"
 			>
 				<replacetoken>configuration.override.com.liferay.portal.security.configuration.BasicAuthHeaderSupportConfiguration_enabled=B"false"</replacetoken>
 				<replacevalue>configuration.override.com.liferay.portal.security.configuration.BasicAuthHeaderSupportConfiguration_enabled=B"true"</replacevalue>
