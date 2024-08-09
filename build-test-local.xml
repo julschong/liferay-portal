@@ -222,6 +222,22 @@ local.bundles.backup.file=${liferay.home.parent.dir}/bundles-master-${git.commit
 		</gradle-execute>
 	</target>
 
+	<target name="run-poshi-local">
+		<antcall inheritAll="false" target="clean-up-java-processes" />
+
+		<if>
+			<equals arg1="${restore.local.bundles}" arg2="true" />
+			<then>
+				<antcall target="restore-bundles-backup" />
+			</then>
+		</if>
+
+		<ant antfile="build-test-${app.server.type}-${database.type}.xml" target="run-selenium-${app.server.type}-${database.type}">
+			<property name="env.CI_TEST_SUITE" value="default" />
+			<property name="test.class" value="${test.class}" />
+		</ant>
+	</target>
+
 	<target name="run-poshi-test">
 		<antcall target="run-selenium-test" />
 	</target>
