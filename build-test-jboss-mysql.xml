@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<project basedir="." default="test" name="portal-test-jboss-mysql" xmlns:antelope="antlib:ise.antelope.tasks">
+	<import file="build-test-local.xml" />
+	<import file="build-test-jboss.xml" />
+
+	<target name="run-selenium-jboss-mysql">
+		<antcall target="record-test-generated-properties" />
+
+		<antcall inheritAll="false" target="start-docker-database-mysql">
+			<param name="skip.prepare.portal.ext.properties" value="true" />
+			<param name="skip.property.cleanup" value="true" />
+			<param name="skip.rebuild.database" value="true" />
+		</antcall>
+
+		<antcall inheritAll="false" target="run-selenium-jboss">
+			<param name="test.class" value="${test.class}" />
+		</antcall>
+
+		<antcall inheritAll="false" target="clean-up-database-properties" />
+	</target>
+</project>
