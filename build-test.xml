@@ -2267,6 +2267,12 @@ war.path=${app.server.portal.dir}/</echo>
 									match="offset:0"
 									replace="offset:${app.server.bundle.index}000"
 								/>
+
+								<replaceregexp
+									file="${test.app.server.dir}/standalone/configuration/standalone-ha.xml"
+									match="offset:0"
+									replace="offset:${app.server.bundle.index}000"
+								/>
 							</then>
 							<elseif>
 								<equals arg1="${app.server.type}" arg2="tomcat" />
@@ -2401,6 +2407,15 @@ war.path=${app.server.portal.dir}/</echo>
 				<then>
 					<replace
 						file="${app.server.dir}/standalone/configuration/standalone.xml"
+					>
+						<replacefilter>
+							<replacetoken><![CDATA[<inet-address value="${jboss.bind.address:127.0.0.1}"/>]]></replacetoken>
+							<replacevalue><![CDATA[<any-address />]]></replacevalue>
+						</replacefilter>
+					</replace>
+
+					<replace
+						file="${app.server.dir}/standalone/configuration/standalone-ha.xml"
 					>
 						<replacefilter>
 							<replacetoken><![CDATA[<inet-address value="${jboss.bind.address:127.0.0.1}"/>]]></replacetoken>
@@ -2639,7 +2654,10 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 					</if>
 				</then>
 				<elseif>
-					<equals arg1="${app.server.type}" arg2="wildfly" />
+					<or>
+						<equals arg1="${app.server.type}" arg2="wildfly" />
+						<equals arg1="${app.server.type}" arg2="jboss" />
+					</or>
 					<then>
 						<propertycopy from="jdbc.${database.type}.driver" name="jdbc.driver" />
 
@@ -2688,6 +2706,25 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 								</replace>
 
 								<replace
+									file="${app.server.dir}/standalone/configuration/standalone-ha.xml"
+								>
+									<replacetoken><![CDATA[<datasources>]]></replacetoken>
+									<replacevalue expandproperties="true">
+												<![CDATA[
+													<datasources>
+														<datasource jndi-name="java:/jdbc/LiferayPool" pool-name="LiferayPool" enabled="true" jta="true" use-java-context="true" use-ccm="true">
+															<connection-url>${database.url}</connection-url>
+															<driver>${database.type}</driver>
+															<security>
+																<user-name>${database.username}</user-name>
+																<password>${database.password}</password>
+															</security>
+														</datasource>
+												]]>
+									</replacevalue>
+								</replace>
+
+								<replace
 									file="${app.server.dir}/standalone/configuration/standalone.xml"
 								>
 									<replacetoken><![CDATA[<drivers>]]></replacetoken>
@@ -2700,8 +2737,30 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 										]]>
 									</replacevalue>
 								</replace>
+
+								<replace
+									file="${app.server.dir}/standalone/configuration/standalone-ha.xml"
+								>
+									<replacetoken><![CDATA[<drivers>]]></replacetoken>
+									<replacevalue expandproperties="true">
+										<![CDATA[
+											<drivers>
+            									<driver name="${database.type}" module="com.liferay.portal">
+                									<driver-class>${database.driver}</driver-class>
+            									</driver>
+										]]>
+									</replacevalue>
+								</replace>
+
 								<replace
 									file="${app.server.dir}/standalone/configuration/standalone.xml"
+								>
+									<replacetoken><![CDATA[datasource="java:jboss/datasources/ExampleDS"]]></replacetoken>
+									<replacevalue><![CDATA[datasource="java:/jdbc/LiferayPool"]]></replacevalue>
+								</replace>
+
+								<replace
+									file="${app.server.dir}/standalone/configuration/standalone-ha.xml"
 								>
 									<replacetoken><![CDATA[datasource="java:jboss/datasources/ExampleDS"]]></replacetoken>
 									<replacevalue><![CDATA[datasource="java:/jdbc/LiferayPool"]]></replacevalue>
@@ -5175,48 +5234,128 @@ tell application "Safari" to quit
 		<sequential>
 			<if>
 				<not>
-					<equals arg1="${app.server.type}" arg2="tomcat" />
+					<or>
+						<equals arg1="${app.server.type}" arg2="tomcat" />
+						<equals arg1="${app.server.type}" arg2="wildfly" />
+						<equals arg1="${app.server.type}" arg2="jboss" />
+					</or>
 				</not>
 				<then>
-					<fail>The public test clustering scripts are only available for Tomcat.</fail>
+					<fail>The public test clustering scripts are only available for Tomcat, Wildfly, and JBoss.</fail>
 				</then>
 			</if>
 
-			<replace
-				file="${app.server.tomcat.dir}/conf/server.xml"
-				token="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;"
-				value="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot; jvmRoute=&quot;0&quot;&gt;"
-			/>
-
-			<get-testcase-property property.name="app.server.bundles.size" />
-
 			<if>
-				<isset property="app.server.bundles.size" />
+				<equals arg1="${app.server.type}" arg2="tomcat" />
 				<then>
-					<var name="app.server.bundle.index" value="1" />
+					<replace
+						file="${app.server.tomcat.dir}/conf/server.xml"
+						token="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;"
+						value="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot; jvmRoute=&quot;0&quot;&gt;"
+					/>
 
-					<antelope:repeat count="${app.server.bundles.size}">
-						<set-app-server-properties
-							app.server.bundle.index="${app.server.bundle.index}"
-						/>
+					<get-testcase-property property.name="app.server.bundles.size" />
 
-						<replace
-							file="${test.app.server.dir}/conf/server.xml"
-							token="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;"
-							value="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot; jvmRoute=&quot;${test.app.server.leading.port.number}&quot;&gt;"
-						/>
+					<if>
+						<isset property="app.server.bundles.size" />
+						<then>
+							<var name="app.server.bundle.index" value="1" />
 
-						<math
-							datatype="int"
-							operand1="${app.server.bundle.index}"
-							operand2="1"
-							operation="+"
-							result="app.server.bundle.index"
-						/>
-					</antelope:repeat>
+							<antelope:repeat count="${app.server.bundles.size}">
+								<set-app-server-properties
+									app.server.bundle.index="${app.server.bundle.index}"
+								/>
 
-					<var name="app.server.bundle.index" unset="true" />
+								<replace
+									file="${test.app.server.dir}/conf/server.xml"
+									token="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;"
+									value="&lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot; jvmRoute=&quot;${test.app.server.leading.port.number}&quot;&gt;"
+								/>
+
+								<math
+									datatype="int"
+									operand1="${app.server.bundle.index}"
+									operand2="1"
+									operation="+"
+									result="app.server.bundle.index"
+								/>
+							</antelope:repeat>
+
+							<var name="app.server.bundle.index" unset="true" />
+						</then>
+					</if>
 				</then>
+				<elseif>
+					<or>
+						<equals arg1="${app.server.type}" arg2="wildfly" />
+						<equals arg1="${app.server.type}" arg2="jboss" />
+					</or>
+					<then>
+						<replaceregexp
+							file="${app.server.dir}/standalone/configuration/standalone.xml"
+							match="(&quot;default-server&quot;).*(default-virtual-host)"
+							replace="\1 instance-id=&quot;node-0&quot; \2"
+						/>
+
+						<replaceregexp
+							file="${app.server.dir}/standalone/configuration/standalone-ha.xml"
+							match="(&quot;default-server&quot;).*(default-virtual-host)"
+							replace="\1 instance-id=&quot;node-0&quot; \2"
+						/>
+
+						<get-testcase-property property.name="app.server.bundles.size" />
+
+						<if>
+							<isset property="app.server.bundles.size" />
+							<then>
+								<var name="app.server.bundle.index" value="1" />
+
+								<antelope:repeat count="${app.server.bundles.size}">
+									<set-app-server-properties
+										app.server.bundle.index="${app.server.bundle.index}"
+									/>
+
+									<replaceregexp
+										file="${test.app.server.dir}/standalone/configuration/standalone.xml"
+										match="(&quot;default-server&quot;).*(default-virtual-host)"
+										replace="\1 instance-id=&quot;node-${app.server.bundle.index}&quot; \2"
+									/>
+
+									<replaceregexp
+										file="${test.app.server.dir}/standalone/configuration/standalone-ha.xml"
+										match="(&quot;default-server&quot;).*(default-virtual-host)"
+										replace="\1 instance-id=&quot;node-${app.server.bundle.index}&quot; \2"
+									/>
+
+									<math
+										datatype="int"
+										operand1="${app.server.bundle.index}000"
+										operand2="9990"
+										operation="+"
+										result="app.server.jboss.cli.connector.port"
+									/>
+
+									<replaceregexp
+										file="${test.app.server.bin.dir}/jboss-cli.xml"
+										flags="g"
+										match="9990"
+										replace="${app.server.jboss.cli.connector.port}"
+									/>
+
+									<math
+										datatype="int"
+										operand1="${app.server.bundle.index}"
+										operand2="1"
+										operation="+"
+										result="app.server.bundle.index"
+									/>
+								</antelope:repeat>
+
+								<var name="app.server.bundle.index" unset="true" />
+							</then>
+						</if>
+					</then>
+				</elseif>
 			</if>
 		</sequential>
 	</macrodef>
@@ -9685,73 +9824,101 @@ go</echo>
 
 	<target name="cluster-session-replication">
 		<if>
-			<not>
-				<resourcecontains
-					resource="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties"
-					substring="org.apache.catalina.ha.session.handlers"
-				/>
-			</not>
+			<equals arg1="${app.server.type}" arg2="tomcat" />
 			<then>
-				<echo append="true" file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties">
-			<![CDATA[
-org.apache.catalina.ha.session.handlers=java.util.logging.ConsoleHandler
-org.apache.catalina.ha.session.level=INFO]]>
+				<if>
+					<not>
+						<resourcecontains
+							resource="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties"
+							substring="org.apache.catalina.ha.session.handlers"
+						/>
+					</not>
+					<then>
+						<echo append="true" file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/classes/logging.properties">
+					<![CDATA[
+		org.apache.catalina.ha.session.handlers=java.util.logging.ConsoleHandler
+		org.apache.catalina.ha.session.level=INFO]]>
+						</echo>
+					</then>
+				</if>
+
+				<replace
+					failOnNoReplacements="true"
+					file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/web.xml"
+				>
+					<replacetoken><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">]]></replacetoken>
+					<replacevalue><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+			<distributable />]]></replacevalue>
+				</replace>
+
+				<echo append="true" file="${app.server.tomcat.dir}/conf/logging.properties">
+					<![CDATA[
+		5cluster.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+		5cluster.org.apache.juli.AsyncFileHandler.level = FINER
+		5cluster.org.apache.juli.AsyncFileHandler.prefix = cluster.
+
+		org.apache.catalina.ha.deploy.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+		org.apache.catalina.ha.deploy.level = INFO
+
+		org.apache.catalina.ha.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+		org.apache.catalina.ha.level = FINE
+
+		org.apache.catalina.tribes.MESSAGES.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+		org.apache.catalina.tribes.MESSAGES.level = FINE
+
+		org.apache.catalina.tribes.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+		org.apache.catalina.tribes.level = FINE]]>
 				</echo>
+
+				<replace
+					failOnNoReplacements="true"
+					file="${app.server.tomcat.dir}/conf/logging.properties"
+				>
+					<replacetoken><![CDATA[3manager.org.apache.juli.AsyncFileHandler,]]></replacetoken>
+					<replacevalue><![CDATA[3manager.org.apache.juli.AsyncFileHandler, 5cluster.org.apache.juli.AsyncFileHandler,]]></replacevalue>
+				</replace>
+
+				<replace
+					failOnNoReplacements="true"
+					file="${app.server.tomcat.dir}/conf/server.xml"
+				>
+					<replacetoken><![CDATA[<Engine name="Catalina" defaultHost="localhost">]]></replacetoken>
+					<replacevalue><![CDATA[<Engine defaultHost="localhost" name="Catalina">
+
+			<Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster">
+				<Manager className="com.liferay.support.tomcat.session.LiferayDeltaManager" />
+				<Channel className="org.apache.catalina.tribes.group.GroupChannel">
+					<Sender className="org.apache.catalina.tribes.transport.ReplicationTransmitter">
+						<Transport className="org.apache.catalina.tribes.transport.nio.PooledParallelSender" timeout="300000" />
+					</Sender>
+				</Channel>
+			</Cluster>]]></replacevalue>
+				</replace>
 			</then>
+			<elseif>
+				<or>
+					<equals arg1="${app.server.type}" arg2="wildfly" />
+					<equals arg1="${app.server.type}" arg2="jboss" />
+				</or>
+				<then>
+					<replace
+						file="${app.server.bin.dir}/standalone.conf"
+						token="JAVA_OPTS -Dfile.encoding=UTF-8"
+						value="JAVA_OPTS -Djboss.server.default.config=standalone-ha.xml -Dfile.encoding=UTF-8"
+					/>
+
+					<replace
+						file="${app.server.deploy.dir}/ROOT.war/WEB-INF/web.xml"
+					>
+						<replacetoken><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<context-param>]]></replacetoken>
+						<replacevalue><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<distributable />
+	<context-param>]]></replacevalue>
+					</replace>
+				</then>
+			</elseif>
 		</if>
-
-		<replace
-			failOnNoReplacements="true"
-			file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/web.xml"
-		>
-			<replacetoken><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">]]></replacetoken>
-			<replacevalue><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<distributable />]]></replacevalue>
-		</replace>
-
-		<echo append="true" file="${app.server.tomcat.dir}/conf/logging.properties">
-			<![CDATA[
-5cluster.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
-5cluster.org.apache.juli.AsyncFileHandler.level = FINER
-5cluster.org.apache.juli.AsyncFileHandler.prefix = cluster.
-
-org.apache.catalina.ha.deploy.handlers = 5cluster.org.apache.juli.AsyncFileHandler
-org.apache.catalina.ha.deploy.level = INFO
-
-org.apache.catalina.ha.handlers = 5cluster.org.apache.juli.AsyncFileHandler
-org.apache.catalina.ha.level = FINE
-
-org.apache.catalina.tribes.MESSAGES.handlers = 5cluster.org.apache.juli.AsyncFileHandler
-org.apache.catalina.tribes.MESSAGES.level = FINE
-
-org.apache.catalina.tribes.handlers = 5cluster.org.apache.juli.AsyncFileHandler
-org.apache.catalina.tribes.level = FINE]]>
-		</echo>
-
-		<replace
-			failOnNoReplacements="true"
-			file="${app.server.tomcat.dir}/conf/logging.properties"
-		>
-			<replacetoken><![CDATA[3manager.org.apache.juli.AsyncFileHandler,]]></replacetoken>
-			<replacevalue><![CDATA[3manager.org.apache.juli.AsyncFileHandler, 5cluster.org.apache.juli.AsyncFileHandler,]]></replacevalue>
-		</replace>
-
-		<replace
-			failOnNoReplacements="true"
-			file="${app.server.tomcat.dir}/conf/server.xml"
-		>
-			<replacetoken><![CDATA[<Engine name="Catalina" defaultHost="localhost">]]></replacetoken>
-			<replacevalue><![CDATA[<Engine defaultHost="localhost" name="Catalina">
-
-	<Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster">
-		<Manager className="com.liferay.support.tomcat.session.LiferayDeltaManager" />
-		<Channel className="org.apache.catalina.tribes.group.GroupChannel">
-			<Sender className="org.apache.catalina.tribes.transport.ReplicationTransmitter">
-				<Transport className="org.apache.catalina.tribes.transport.nio.PooledParallelSender" timeout="300000" />
-			</Sender>
-		</Channel>
-	</Cluster>]]></replacevalue>
-		</replace>
 	</target>
 
 	<target name="cluster-session-replication-log">

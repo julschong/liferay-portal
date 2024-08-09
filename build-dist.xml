@@ -882,7 +882,29 @@ this task.
 		</replace>
 
 		<replace
+			file="${app.server.jboss.dir}/standalone/configuration/standalone-ha.xml"
+		>
+			<replacetoken><![CDATA[</extensions>]]></replacetoken>
+			<replacevalue>
+				<![CDATA[
+					</extensions>
+						<system-properties>
+							<property name="org.apache.catalina.connector.URI_ENCODING" value="UTF-8" />
+							<property name="org.apache.catalina.connector.USE_BODY_ENCODING_FOR_QUERY_STRING" value="true" />
+						</system-properties>
+				]]>
+			</replacevalue>
+		</replace>
+
+		<replace
 			file="${app.server.jboss.dir}/standalone/configuration/standalone.xml"
+		>
+			<replacetoken><![CDATA[<deployment-scanner ]]></replacetoken>
+			<replacevalue><![CDATA[<deployment-scanner deployment-timeout="360" ]]></replacevalue>
+		</replace>
+
+		<replace
+			file="${app.server.jboss.dir}/standalone/configuration/standalone-ha.xml"
 		>
 			<replacetoken><![CDATA[<deployment-scanner ]]></replacetoken>
 			<replacevalue><![CDATA[<deployment-scanner deployment-timeout="360" ]]></replacevalue>
@@ -890,6 +912,18 @@ this task.
 
 		<replace-multilines
 			file="${app.server.jboss.dir}/standalone/configuration/standalone.xml"
+		>
+			<replace-elements>
+				<replacetoken><![CDATA[<formatter>
+                    <named-formatter name="COLOR-PATTERN"]]></replacetoken>
+				<replacevalue><![CDATA[<filter-spec value="not(any(match(&quot;WFLYSRV0059&quot;),match(&quot;WFLYEE0007&quot;)))" />
+                <formatter>
+                    <named-formatter name="COLOR-PATTERN"]]></replacevalue>
+			</replace-elements>
+		</replace-multilines>
+
+		<replace-multilines
+			file="${app.server.jboss.dir}/standalone/configuration/standalone-ha.xml"
 		>
 			<replace-elements>
 				<replacetoken><![CDATA[<formatter>
@@ -923,7 +957,29 @@ this task.
 		</replace>
 
 		<replace
+			file="${app.server.jboss.instance.dir}/configuration/standalone-ha.xml"
+		>
+			<replacetoken><![CDATA[<subsystem xmlns="urn:jboss:domain:security:2.0">
+            <security-domains>]]></replacetoken>
+			<replacevalue><![CDATA[<subsystem xmlns="urn:jboss:domain:security:2.0">
+            <security-domains>
+				<security-domain name="PortalRealm">
+					<authentication>
+						<login-module code="com.liferay.portal.security.jaas.PortalLoginModule" flag="required" />
+					</authentication>
+				</security-domain>]]>
+			</replacevalue>
+		</replace>
+
+		<replace
 			file="${app.server.jboss.dir}/standalone/configuration/standalone.xml"
+		>
+			<replacetoken><![CDATA[<location name="/" handler="welcome-content"/>]]></replacetoken>
+			<replacevalue><![CDATA[<!--<location name="/" handler="welcome-content"/>-->]]></replacevalue>
+		</replace>
+
+		<replace
+			file="${app.server.jboss.dir}/standalone/configuration/standalone-ha.xml"
 		>
 			<replacetoken><![CDATA[<location name="/" handler="welcome-content"/>]]></replacetoken>
 			<replacevalue><![CDATA[<!--<location name="/" handler="welcome-content"/>-->]]></replacevalue>
@@ -937,13 +993,23 @@ this task.
 		</replace>
 
 		<replace
-			file="${app.server.jboss.dir}/standalone/configuration/standalone.xml"
+			file="${app.server.jboss.dir}/standalone/configuration/standalone-ha.xml"
 		>
-			<replacetoken><![CDATA[<jsp-config />]]></replacetoken>
-			<replacevalue>
-				<![CDATA[<jsp-config development="true" source-vm="1.8" target-vm="1.8" />]]>
-			</replacevalue>
+			<replacetoken><![CDATA[<file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>]]></replacetoken>
+			<replacevalue><![CDATA[<!--<file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>-->]]></replacevalue>
 		</replace>
+
+		<replace
+			file="${app.server.jboss.dir}/standalone/configuration/standalone.xml"
+			token="&lt;jsp-config/&gt;"
+			value="&lt;jsp-config development=&quot;true&quot; source-vm=&quot;1.8&quot; target-vm=&quot;1.8&quot; /&gt;"
+		/>
+
+		<replace
+			file="${app.server.jboss.dir}/standalone/configuration/standalone-ha.xml"
+			token="&lt;jsp-config/&gt;"
+			value="&lt;jsp-config development=&quot;true&quot; source-vm=&quot;1.8&quot; target-vm=&quot;1.8&quot; /&gt;"
+		/>
 
 		<echo append="true" file="${app.server.jboss.bin.dir}/standalone.conf">
 			<![CDATA[${line.separator}JAVA_OPTS="$JAVA_OPTS ${app.server.jboss.jvm.args} ${app.server.jboss.jvm.mem}"
@@ -2600,7 +2666,29 @@ this task.
 		</replace>
 
 		<replace
+			file="${app.server.wildfly.dir}/standalone/configuration/standalone-ha.xml"
+		>
+			<replacetoken><![CDATA[</extensions>]]></replacetoken>
+			<replacevalue>
+				<![CDATA[
+					</extensions>
+						<system-properties>
+							<property name="org.apache.catalina.connector.URI_ENCODING" value="UTF-8" />
+							<property name="org.apache.catalina.connector.USE_BODY_ENCODING_FOR_QUERY_STRING" value="true" />
+						</system-properties>
+				]]>
+			</replacevalue>
+		</replace>
+
+		<replace
 			file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml"
+		>
+			<replacetoken><![CDATA[<deployment-scanner ]]></replacetoken>
+			<replacevalue><![CDATA[<deployment-scanner deployment-timeout="360" ]]></replacevalue>
+		</replace>
+
+		<replace
+			file="${app.server.wildfly.dir}/standalone/configuration/standalone-ha.xml"
 		>
 			<replacetoken><![CDATA[<deployment-scanner ]]></replacetoken>
 			<replacevalue><![CDATA[<deployment-scanner deployment-timeout="360" ]]></replacevalue>
@@ -2622,8 +2710,31 @@ this task.
 			</replace-elements>
 		</replace-multilines>
 
+		<replace-multilines
+			file="${app.server.wildfly.dir}/standalone/configuration/standalone-ha.xml"
+		>
+			<replace-elements>
+				<replacetoken><![CDATA[">
+            <security-domains>]]></replacetoken>
+				<replacevalue><![CDATA[">
+            <security-domains>
+				<security-domain name="PortalRealm">
+					<authentication>
+						<login-module code="com.liferay.portal.security.jaas.PortalLoginModule" flag="required" />
+					</authentication>
+				</security-domain>]]></replacevalue>
+			</replace-elements>
+		</replace-multilines>
+
 		<replace
 			file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml"
+		>
+			<replacetoken><![CDATA[<location name="/" handler="welcome-content"/>]]></replacetoken>
+			<replacevalue></replacevalue>
+		</replace>
+
+		<replace
+			file="${app.server.wildfly.dir}/standalone/configuration/standalone-ha.xml"
 		>
 			<replacetoken><![CDATA[<location name="/" handler="welcome-content"/>]]></replacetoken>
 			<replacevalue></replacevalue>
@@ -2635,8 +2746,26 @@ this task.
 			replace=""
 		/>
 
+		<replaceregexp
+			file="${app.server.wildfly.dir}/standalone/configuration/standalone-ha.xml"
+			match=" *&lt;handlers>\r?\n *&lt;file name=&quot;welcome-content&quot; path=&quot;\$\{jboss\.home\.dir}\/welcome-content&quot;\/>\r?\n *&lt;\/handlers>"
+			replace=""
+		/>
+
 		<replace-multilines
 			file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml"
+		>
+			<replace-elements>
+				<replacetoken><![CDATA[<formatter>
+                    <named-formatter name="COLOR-PATTERN"]]></replacetoken>
+				<replacevalue><![CDATA[<filter-spec value="not(any(match(&quot;WFLYSRV0059&quot;),match(&quot;WFLYEE0007&quot;)))" />
+                <formatter>
+                    <named-formatter name="COLOR-PATTERN"]]></replacevalue>
+			</replace-elements>
+		</replace-multilines>
+
+		<replace-multilines
+			file="${app.server.wildfly.dir}/standalone/configuration/standalone-ha.xml"
 		>
 			<replace-elements>
 				<replacetoken><![CDATA[<formatter>
@@ -2681,12 +2810,15 @@ set "JDK_JAVA_OPTIONS=%JDK_JAVA_OPTIONS% ${app.server.wildfly.jdk.java.options}"
 
 		<replace
 			file="${app.server.wildfly.instance.dir}/configuration/standalone.xml"
-		>
-			<replacetoken><![CDATA[<jsp-config />]]></replacetoken>
-			<replacevalue>
-				<![CDATA[<jsp-config development="true" source-vm="1.8" target-vm="1.8" />]]>
-			</replacevalue>
-		</replace>
+			token="&lt;jsp-config/&gt;"
+			value="&lt;jsp-config development=&quot;true&quot; source-vm=&quot;1.8&quot; target-vm=&quot;1.8&quot; /&gt;"
+		/>
+
+		<replace
+			file="${app.server.wildfly.instance.dir}/configuration/standalone-ha.xml"
+			token="&lt;jsp-config/&gt;"
+			value="&lt;jsp-config development=&quot;true&quot; source-vm=&quot;1.8&quot; target-vm=&quot;1.8&quot; /&gt;"
+		/>
 
 		<chmod
 			perm="a+x"
