@@ -5,6 +5,8 @@
 
 package com.liferay.portal.scripting.groovy.internal;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.scripting.ScriptingException;
 import com.liferay.portal.kernel.scripting.ScriptingExecutor;
 import com.liferay.portal.scripting.BaseScriptingExecutor;
@@ -70,9 +72,11 @@ public class GroovyScriptingExecutor extends BaseScriptingExecutor {
 			return outputObjects;
 		}
 		catch (GroovyRuntimeException groovyRuntimeException) {
+			_log.error(groovyRuntimeException.getStackTrace());
+
 			throw new ScriptingException(
 				groovyRuntimeException.getMessage(),
-				groovyRuntimeException.getCause());
+				groovyRuntimeException);
 		}
 	}
 
@@ -85,5 +89,7 @@ public class GroovyScriptingExecutor extends BaseScriptingExecutor {
 	public ScriptingExecutor newInstance(boolean executeInSeparateThread) {
 		return new GroovyScriptingExecutor();
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(GroovyScriptingExecutor.class);
 
 }
