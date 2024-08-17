@@ -61,6 +61,8 @@ definition {
 			nodePort = 9080,
 			scriptFile = "groovy-script-portal-cache-get.groovy");
 
+		Pause(value1 = 2000);
+
 		Groovy.runScriptViaGogoShell(
 			nodePort = 9080,
 			scriptFile = "groovy-script-portal-cache-remove.groovy");
@@ -94,9 +96,15 @@ definition {
 			nodePort = 9080,
 			scriptFile = "groovy-script-portal-cache-get.groovy");
 
+		Pause(value1 = 2000);
+
 		Groovy.runScriptViaGogoShell(scriptFile = "groovy-script-portal-cache-remove.groovy");
 
+		Pause(value1 = 2000);
+
 		Groovy.runScriptViaGogoShell(scriptFile = "groovy-script-portal-cache-put-modules.groovy");
+
+		Pause(value1 = 2000);
 
 		Clustering.viewTextPresentOnSpecificNode(
 			expectedText = "Put test.key into test.cache",
