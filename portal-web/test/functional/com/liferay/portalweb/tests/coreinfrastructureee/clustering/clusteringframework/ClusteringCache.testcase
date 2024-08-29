@@ -341,10 +341,6 @@ definition {
 		AssertTextEquals(
 			locator1 = "ClusterSamplePortlet#SESSION_ID",
 			value1 = ${sessionId});
-
-		AssertElementPresent(
-			locator1 = "ClusterSamplePortlet#LOGGED_IN_SESSION_COUNT",
-			sessionCount = 2);
 	}
 
 	@priority = 4

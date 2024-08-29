@@ -7,10 +7,7 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ page import="com.liferay.portal.cluster.multiple.sample.web.internal.ClusterSampleData" %><%@
-page import="com.liferay.portal.kernel.servlet.PortalSessionContext" %>
-
-<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="com.liferay.portal.cluster.multiple.sample.web.internal.ClusterSampleData" %>
 
 <portlet:defineObjects />
 
@@ -33,23 +30,6 @@ ClusterSampleData clusterSampleData = new ClusterSampleData();
 		<b>Current timestamp:</b> <%= clusterSampleData.getTimestamp() %>
 	</li>
 </ul>
-
-<div class="logged-in-session-count">
-	<h4>Logged in Session Count:</h4>
-
-	<%
-	int count = 0;
-
-	for (HttpSession httpSession : PortalSessionContext.values()) {
-		if (httpSession.getAttribute("USER_ID") != null) {
-			count++;
-		}
-	}
-
-	out.println(count);
-	%>
-
-</div>
 
 <div class="h4">Session Data:</div>
 

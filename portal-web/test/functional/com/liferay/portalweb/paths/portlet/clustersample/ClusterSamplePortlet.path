@@ -30,11 +30,6 @@
 	<td>//p[@class='session-id']</td>
 	<td></td>
 </tr>
-<tr>
-	<td>LOGGED_IN_SESSION_COUNT</td>
-	<td>//div[@class='logged-in-session-count'][contains(., '${sessionCount}')]</td>
-	<td></td>
-</tr>
 </tbody>
 </table>
 </body>
