@@ -1,0 +1,5 @@
+Bundle-Name: Liferay Portal Cluster Multiple Test Utilities
+Bundle-SymbolicName: com.liferay.portal.cluster.multiple.test.util
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.portal.cluster.multiple.test.rule
