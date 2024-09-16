@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 
@@ -89,8 +90,12 @@ public abstract class InitialRequestPortalInstanceLifecycleListener
 
 		InitialRequestSyncUtil.registerSyncCallable(
 			() -> {
+				String name = PrincipalThreadLocal.getName();
+
 				try (SafeCloseable safeCloseable =
 						CompanyThreadLocal.setWithSafeCloseable(companyId)) {
+
+					PrincipalThreadLocal.setName(null);
 
 					doPortalInstanceRegistered(companyId);
 				}
@@ -101,6 +106,8 @@ public abstract class InitialRequestPortalInstanceLifecycleListener
 
 					_portalInstanceRegisteredUnsafeConsumer =
 						this::doPortalInstanceRegistered;
+
+					PrincipalThreadLocal.setName(name);
 				}
 
 				return null;

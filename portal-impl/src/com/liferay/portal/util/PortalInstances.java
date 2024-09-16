@@ -262,15 +262,6 @@ public class PortalInstances {
 		try {
 			CompanyThreadLocal.setCompanyId(company.getCompanyId());
 
-			if (!skipCheck) {
-				try {
-					CompanyLocalServiceUtil.checkCompany(company.getWebId());
-				}
-				catch (Exception exception) {
-					_log.error(exception);
-				}
-			}
-
 			String principalName = null;
 
 			long userId = PrincipalThreadLocal.getUserId();
@@ -286,6 +277,15 @@ public class PortalInstances {
 			}
 
 			PrincipalThreadLocal.setName(principalName);
+
+			if (!skipCheck) {
+				try {
+					CompanyLocalServiceUtil.checkCompany(company.getWebId());
+				}
+				catch (Exception exception) {
+					_log.error(exception);
+				}
+			}
 
 			// Process application startup events
 

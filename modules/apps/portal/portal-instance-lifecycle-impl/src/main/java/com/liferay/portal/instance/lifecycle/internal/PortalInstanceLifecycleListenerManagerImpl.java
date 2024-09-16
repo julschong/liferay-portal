@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
@@ -176,6 +177,7 @@ public class PortalInstanceLifecycleListenerManagerImpl
 			() -> {
 				Long companyId = CompanyThreadLocal.getCompanyId();
 				Locale defaultLocale = LocaleThreadLocal.getDefaultLocale();
+				String name = PrincipalThreadLocal.getName();
 				Locale siteDefaultLocale =
 					LocaleThreadLocal.getSiteDefaultLocale();
 
@@ -186,6 +188,7 @@ public class PortalInstanceLifecycleListenerManagerImpl
 					CompanyThreadLocal.setCompanyId(company.getCompanyId());
 					LocaleThreadLocal.setDefaultLocale(company.getLocale());
 					LocaleThreadLocal.setSiteDefaultLocale(null);
+					PrincipalThreadLocal.setName(null);
 
 					portalInstanceLifecycleListener.portalInstanceRegistered(
 						company);
@@ -201,6 +204,7 @@ public class PortalInstanceLifecycleListenerManagerImpl
 					CompanyThreadLocal.setCompanyId(companyId);
 					LocaleThreadLocal.setDefaultLocale(defaultLocale);
 					LocaleThreadLocal.setSiteDefaultLocale(siteDefaultLocale);
+					PrincipalThreadLocal.setName(name);
 				}
 			});
 	}
