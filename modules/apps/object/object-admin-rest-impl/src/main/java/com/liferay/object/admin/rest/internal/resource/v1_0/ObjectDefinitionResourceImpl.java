@@ -264,17 +264,13 @@ public class ObjectDefinitionResourceImpl
 						objectDefinition.getEnableIndexSearch()),
 					GetterUtil.getBoolean(
 						objectDefinition.getEnableLocalization()),
-					_getLocalizedMap(
-						defaultLocale,
-						LocalizedMapUtil.getLocalizedMap(
-							objectDefinition.getLabel())),
+					LocalizedMapUtil.getLocalizedMap(
+						objectDefinition.getLabel()),
 					objectDefinition.getName(),
 					objectDefinition.getPanelAppOrder(),
 					objectDefinition.getPanelCategoryKey(),
-					_getLocalizedMap(
-						defaultLocale,
-						LocalizedMapUtil.getLocalizedMap(
-							objectDefinition.getPluralLabel())),
+					LocalizedMapUtil.getLocalizedMap(
+						objectDefinition.getPluralLabel()),
 					GetterUtil.getBoolean(objectDefinition.getPortlet()),
 					objectDefinition.getScope(),
 					transformToList(
