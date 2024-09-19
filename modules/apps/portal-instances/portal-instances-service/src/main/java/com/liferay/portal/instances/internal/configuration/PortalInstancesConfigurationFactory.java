@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.util.PortalInstances;
 
@@ -38,53 +39,61 @@ public class PortalInstancesConfigurationFactory {
 	protected void activate(Map<String, Object> properties)
 		throws PortalException {
 
-		PortalInstancesConfiguration portalInstancesConfiguration =
-			ConfigurableUtil.createConfigurable(
-				PortalInstancesConfiguration.class, properties);
+		InitialRequestSyncUtil.registerSyncCallable(
+			() -> {
+				PortalInstancesConfiguration portalInstancesConfiguration =
+					ConfigurableUtil.createConfigurable(
+						PortalInstancesConfiguration.class, properties);
 
-		String webId = _getWebId(properties);
-		String virtualHostname = portalInstancesConfiguration.virtualHostname();
-		String mx = portalInstancesConfiguration.mx();
-		int maxUsers = portalInstancesConfiguration.maxUsers();
-		boolean active = portalInstancesConfiguration.active();
+				String webId = _getWebId(properties);
+				String virtualHostname =
+					portalInstancesConfiguration.virtualHostname();
+				String mx = portalInstancesConfiguration.mx();
+				int maxUsers = portalInstancesConfiguration.maxUsers();
+				boolean active = portalInstancesConfiguration.active();
 
-		Company company = null;
+				Company company = null;
 
-		try {
-			company = _companyLocalService.getCompanyByWebId(webId);
-		}
-		catch (NoSuchCompanyException noSuchCompanyException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(noSuchCompanyException);
-			}
-		}
+				try {
+					company = _companyLocalService.getCompanyByWebId(webId);
+				}
+				catch (NoSuchCompanyException noSuchCompanyException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(noSuchCompanyException);
+					}
+				}
 
-		if (company == null) {
-			PortalInstances.addCompany(
-				portalInstancesConfiguration.siteInitializerKey(),
-				() -> _companyLocalService.addCompany(
-					null, webId, virtualHostname, mx, maxUsers,
-					portalInstancesConfiguration.active(),
-					portalInstancesConfiguration.addDefaultAdminUser(),
-					portalInstancesConfiguration.adminPassword(),
-					portalInstancesConfiguration.adminScreenName(),
-					portalInstancesConfiguration.adminEmailAddress(),
-					portalInstancesConfiguration.adminFirstName(),
-					portalInstancesConfiguration.adminMiddleName(),
-					portalInstancesConfiguration.adminLastName()));
-		}
-		else {
-			if (company.getCompanyId() ==
-					_portalInstancesLocalService.getDefaultCompanyId()) {
+				if (company == null) {
+					PortalInstances.addCompany(
+						portalInstancesConfiguration.siteInitializerKey(),
+						() -> _companyLocalService.addCompany(
+							null, webId, virtualHostname, mx, maxUsers,
+							portalInstancesConfiguration.active(),
+							portalInstancesConfiguration.addDefaultAdminUser(),
+							portalInstancesConfiguration.adminPassword(),
+							portalInstancesConfiguration.adminScreenName(),
+							portalInstancesConfiguration.adminEmailAddress(),
+							portalInstancesConfiguration.adminFirstName(),
+							portalInstancesConfiguration.adminMiddleName(),
+							portalInstancesConfiguration.adminLastName()));
+				}
+				else {
+					if (company.getCompanyId() ==
+							_portalInstancesLocalService.
+								getDefaultCompanyId()) {
 
-				active = true;
-			}
+						active = true;
+					}
 
-			_companyLocalService.updateCompany(
-				company.getCompanyId(), virtualHostname, mx, maxUsers, active);
-		}
+					_companyLocalService.updateCompany(
+						company.getCompanyId(), virtualHostname, mx, maxUsers,
+						active);
+				}
 
-		_portalInstancesLocalService.synchronizePortalInstances();
+				_portalInstancesLocalService.synchronizePortalInstances();
+
+				return null;
+			});
 	}
 
 	private String _getWebId(Map<String, Object> properties) {
