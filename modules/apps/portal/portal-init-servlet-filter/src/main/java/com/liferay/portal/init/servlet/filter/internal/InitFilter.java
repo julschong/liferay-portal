@@ -5,6 +5,9 @@
 
 package com.liferay.portal.init.servlet.filter.internal;
 
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 
@@ -39,7 +42,20 @@ public class InitFilter extends BasePortalFilter {
 		_countDownLatch.await();
 
 		synchronized (this) {
-			InitialRequestSyncUtil.sync();
+			String name = PrincipalThreadLocal.getName();
+			PermissionChecker permissionChecker =
+				PermissionThreadLocal.getPermissionChecker();
+
+			try {
+				PermissionThreadLocal.setPermissionChecker(null);
+				PrincipalThreadLocal.setName(null);
+
+				InitialRequestSyncUtil.sync();
+			}
+			finally {
+				PermissionThreadLocal.setPermissionChecker(permissionChecker);
+				PrincipalThreadLocal.setName(name);
+			}
 
 			try {
 				processFilter(
