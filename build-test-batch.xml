@@ -6281,7 +6281,7 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
-	<target name="playwright-compile-jdk8">
+	<target name="playwright-compile">
 		<run-batch-test>
 			<test-action>
 				<trycatch>
@@ -6312,12 +6312,12 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
-	<target name="playwright-js-tomcat90-mysql57-jdk8">
+	<target name="playwright-js-tomcat90-mysql57">
 		<run-playwright-js-test />
 	</target>
 
-	<target name="playwright-js-tomcat90-mysql57-jdk8_stable">
-		<antcall target="playwright-js-tomcat90-mysql57-jdk8" />
+	<target name="playwright-js-tomcat90-mysql57-stable">
+		<antcall target="playwright-js-tomcat90-mysql57" />
 	</target>
 
 	<target name="playwright-js-tomcat90-mysql57-jdk21_zulu">
