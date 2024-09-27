@@ -3519,11 +3519,11 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 		</sequential>
 	</macrodef>
 
-	<target name="archived-module-smoke-mysql57-jdk8">
+	<target name="archived-module-smoke-mysql57">
 		<run-archived-module-smoke database.type="mysql" />
 	</target>
 
-	<target name="archived-module-smoke-postgresql155-jdk8">
+	<target name="archived-module-smoke-postgresql155">
 		<run-archived-module-smoke database.type="postgresql" />
 	</target>
 
