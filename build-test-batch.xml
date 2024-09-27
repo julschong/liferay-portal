@@ -7662,7 +7662,7 @@ ${output.content}</echo>
 		<antcall target="playwright-js-tomcat90-mysql57" />
 	</target>
 
-	<target name="plugins-compile-jdk8">
+	<target name="plugins-compile">
 		<run-batch-test>
 			<test-action>
 				<ant antfile="build-test-plugins.xml" target="test-plugin-group">
