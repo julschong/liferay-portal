@@ -6324,7 +6324,7 @@ ${output.content}</echo>
 		<run-playwright-js-test />
 	</target>
 
-	<target name="plugins-compile-jdk8">
+	<target name="plugins-compile">
 		<run-batch-test>
 			<test-action>
 				<ant antfile="build-test-plugins.xml" target="test-plugin-group">
