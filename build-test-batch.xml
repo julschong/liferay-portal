@@ -4487,8 +4487,8 @@ information. Make sure to commit in all format-javadoc results.
 		<antcall target="functional-tomcat-mysql57-jdk11_open" />
 	</target>
 
-	<target name="functional-smoke-tomcat-mysql57-jdk17_open">
-		<antcall target="functional-tomcat-mysql57-jdk17_open" />
+	<target name="functional-smoke-tomcat-mysql57-jdk17_zulu">
+		<antcall target="functional-tomcat-mysql57-jdk17_zulu" />
 	</target>
 
 	<target name="functional-smoke-tomcat-mysql57-jdk21_zulu">
@@ -4561,8 +4561,8 @@ information. Make sure to commit in all format-javadoc results.
 		<antcall target="functional-tomcat-postgresql155-jdk11_open" />
 	</target>
 
-	<target name="functional-smoke-tomcat-postgresql155-jdk17_open">
-		<antcall target="functional-tomcat-postgresql155-jdk17_open" />
+	<target name="functional-smoke-tomcat-postgresql155-jdk17_zulu">
+		<antcall target="functional-tomcat-postgresql155-jdk17_zulu" />
 	</target>
 
 	<target name="functional-smoke-tomcat-postgresql155-jdk21_zulu">
@@ -4976,7 +4976,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
 	</target>
 
-	<target name="functional-tomcat-mysql57-jdk17_open">
+	<target name="functional-tomcat-mysql57-jdk17_zulu">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
 	</target>
 
@@ -5032,7 +5032,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" database.type="postgresql" database.version="15.5" />
 	</target>
 
-	<target name="functional-tomcat-postgresql155-jdk17_open">
+	<target name="functional-tomcat-postgresql155-jdk17_zulu">
 		<run-functional-test app.server.type="tomcat" database.type="postgresql" database.version="15.5" />
 	</target>
 
@@ -6572,7 +6572,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
 	</target>
 
-	<target name="modules-integration-mysql57-jdk17_open">
+	<target name="modules-integration-mysql57-jdk17_zulu">
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
 	</target>
 
@@ -6652,7 +6652,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="postgresql" database.version="15.5" />
 	</target>
 
-	<target name="modules-integration-postgresql155-jdk17_open">
+	<target name="modules-integration-postgresql155-jdk17_zulu">
 		<run-modules-integration-test database.type="postgresql" database.version="15.5" />
 	</target>
 
@@ -6679,7 +6679,7 @@ information. Make sure to commit in all format-javadoc results.
 		</antcall>
 	</target>
 
-	<target name="modules-integration-project-templates-jdk17_open">
+	<target name="modules-integration-project-templates-jdk17_zulu">
 		<get-java-jdk-home type="open" version="17" />
 
 		<echo append="true" file="build.${user.name}.properties">
@@ -6936,7 +6936,7 @@ junit.jvm.override.version=21</echo>
 		</antcall>
 	</target>
 
-	<target name="modules-unit-project-templates-jdk17_open">
+	<target name="modules-unit-project-templates-jdk17_zulu">
 		<get-java-jdk-home type="open" version="17" />
 
 		<echo append="true" file="build.${user.name}.properties">
