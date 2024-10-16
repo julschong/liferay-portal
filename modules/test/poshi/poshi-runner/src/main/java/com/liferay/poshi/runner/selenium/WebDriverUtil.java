@@ -200,6 +200,8 @@ public class WebDriverUtil {
 
 		preferences.put("download.prompt_for_download", false);
 
+		preferences.put(
+			"profile.default_content_setting_values.geolocation", 1);
 		preferences.put("profile.default_content_settings.popups", 0);
 
 		chromeOptions.setExperimentalOption("prefs", preferences);
