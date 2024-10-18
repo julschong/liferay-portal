@@ -168,6 +168,11 @@ public class PortalPreferencesImplTest {
 				expectedDBType = ExpectedDBType.NONE,
 				expectedLog = "HHH000315: Exception executing batch [java.sql.BatchUpdateException",
 				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				expectedDBType = ExpectedDBType.DB2,
+				expectedLog = "HHH000315: Exception executing batch [com.ibm.db2.jcc.am.BatchUpdateException",
+				expectedType = ExpectedType.PREFIX
 			)
 		},
 		level = "ERROR", loggerClass = BatchingBatch.class
@@ -253,6 +258,11 @@ public class PortalPreferencesImplTest {
 				expectedDBType = ExpectedDBType.NONE,
 				expectedLog = "HHH000315: Exception executing batch [java.sql.BatchUpdateException",
 				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				expectedDBType = ExpectedDBType.DB2,
+				expectedLog = "HHH000315: Exception executing batch [com.ibm.db2.jcc.am.BatchUpdateException",
+				expectedType = ExpectedType.PREFIX
 			)
 		},
 		level = "ERROR", loggerClass = BatchingBatch.class
@@ -336,6 +346,11 @@ public class PortalPreferencesImplTest {
 			@ExpectedLog(
 				expectedDBType = ExpectedDBType.NONE,
 				expectedLog = "HHH000315: Exception executing batch [java.sql.BatchUpdateException",
+				expectedType = ExpectedType.PREFIX
+			),
+			@ExpectedLog(
+				expectedDBType = ExpectedDBType.DB2,
+				expectedLog = "HHH000315: Exception executing batch [com.ibm.db2.jcc.am.BatchUpdateException",
 				expectedType = ExpectedType.PREFIX
 			)
 		},
