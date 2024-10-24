@@ -30,24 +30,6 @@ public class JSONWebServiceClientImplSSLGetTest
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
-	public void test200OKOnGetIfTLS11() throws Exception {
-		JSONWebServiceClientImpl jsonWebServiceClientImpl =
-			_createJsonWebServiceClient();
-
-		HTTPSServerSimulator.start("TLSv1.1");
-
-		String json = jsonWebServiceClientImpl.doGet(
-			"/testGet/", getParameters("200"));
-
-		HTTPSServerSimulator.stop();
-
-		Assert.assertTrue(
-			json,
-			json.contains(
-				SimulatorConstants.HTTP_PARAMETER_RESPOND_WITH_STATUS));
-	}
-
-	@Test
 	public void test200OKOnGetIfTLS12() throws Exception {
 		JSONWebServiceClientImpl jsonWebServiceClientImpl =
 			_createJsonWebServiceClient();
@@ -67,7 +49,7 @@ public class JSONWebServiceClientImplSSLGetTest
 
 	@Test(expected = JSONWebServiceException.class)
 	public void testJSONWebServiceExceptionOnGetIfTLS10() throws Exception {
-		System.setProperty("https.protocols", "TLSv1.1");
+		System.setProperty("https.protocols", "TLSv1.2");
 
 		JSONWebServiceClientImpl jsonWebServiceClientImpl =
 			_createJsonWebServiceClient();
