@@ -8049,17 +8049,15 @@ ${docker.start.error}</fail>
 				dest="${test.smtp.server.dir}/MockMock.jar"
 				src="${test.smtp.server.url}"
 			/>
-
-			<parallel>
-				<daemons>
-					<java
-						fork="true"
-						jar="${test.smtp.server.dir}/MockMock.jar"
-					>
-						<arg line="-p 25000" />
-					</java>
-				</daemons>
-			</parallel>
+			<java
+				failonerror="true"
+				fork="true"
+				jar="${test.smtp.server.dir}/MockMock.jar"
+				jvm="${java.jdk.home}/bin/java"
+			>
+				<jvmarg line="--add-opens java.base/java.lang=ALL-UNNAMED" />
+				<arg line="-p 25000" />
+			</java>
 		</sequential>
 	</macrodef>
 
