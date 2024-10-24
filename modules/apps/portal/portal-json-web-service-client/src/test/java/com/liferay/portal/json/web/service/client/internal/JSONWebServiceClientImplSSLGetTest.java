@@ -47,6 +47,24 @@ public class JSONWebServiceClientImplSSLGetTest
 				SimulatorConstants.HTTP_PARAMETER_RESPOND_WITH_STATUS));
 	}
 
+	@Test
+	public void test200OKOnGetIfTLS13() throws Exception {
+		JSONWebServiceClientImpl jsonWebServiceClientImpl =
+			_createJsonWebServiceClient();
+
+		HTTPSServerSimulator.start("TLSv1.3");
+
+		String json = jsonWebServiceClientImpl.doGet(
+			"/testGet/", getParameters("200"));
+
+		HTTPSServerSimulator.stop();
+
+		Assert.assertTrue(
+			json,
+			json.contains(
+				SimulatorConstants.HTTP_PARAMETER_RESPOND_WITH_STATUS));
+	}
+
 	@Test(expected = JSONWebServiceException.class)
 	public void testJSONWebServiceExceptionOnGetIfTLS10() throws Exception {
 		System.setProperty("https.protocols", "TLSv1.2");
@@ -54,7 +72,7 @@ public class JSONWebServiceClientImplSSLGetTest
 		JSONWebServiceClientImpl jsonWebServiceClientImpl =
 			_createJsonWebServiceClient();
 
-		HTTPSServerSimulator.start("TLSv1");
+		HTTPSServerSimulator.start("TLSv1.2");
 
 		try {
 			String json = jsonWebServiceClientImpl.doGet(
