@@ -1,8 +1,8 @@
 @component-name = "portal-core-infra"
 definition {
 
-	property portal.release = "openjdk11";
-	property portal.upstream = "openjdk11";
+	property portal.release = "openjdk17";
+	property portal.upstream = "openjdk17";
 	property test.assert.warning.exceptions = "true";
 	property testray.main.component.name = "Service Builder";
 
@@ -22,7 +22,7 @@ definition {
 
 	@priority = 4
 	test Smoke {
-		property osgi.modules.includes.jdk11 = "portal-tools-service-builder-test-api";
+		property osgi.modules.includes.jdk17 = "portal-tools-service-builder-test-api";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -33,7 +33,7 @@ definition {
 
 		GogoShell.executeCommand(commandName = "headers com.liferay.portal.tools.service.builder.test.api");
 
-		GogoShell.viewOutput(outputContent = "Created-By = 11.");
+		GogoShell.viewOutput(outputContent = "Created-By = 17.");
 	}
 
 }

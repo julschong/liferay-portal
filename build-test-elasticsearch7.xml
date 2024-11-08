@@ -205,9 +205,9 @@ xpack.security.transport.ssl.enabled: true
 xpack.security.transport.ssl.key: certs/elastic-certificates.key
 xpack.security.transport.ssl.verification_mode: certificate</echo>
 
-			<get-testcase-property if:set="env.JENKINS_HOME" property.name="elasticsearch.jdk11.enabled" />
+			<get-testcase-property if:set="env.JENKINS_HOME" property.name="elasticsearch.jdk17.enabled" />
 
-			<echo append="true" file="${elasticsearch.dir}/config/elasticsearch.yml" if:true="${elasticsearch.jdk11.enabled}">${line.separator}xpack.security.transport.ssl.supported_protocols: [ "TLSv1.1", "TLSv1.2" ]
+			<echo append="true" file="${elasticsearch.dir}/config/elasticsearch.yml" if:true="${elasticsearch.jdk17.enabled}">${line.separator}xpack.security.transport.ssl.supported_protocols: [ "TLSv1.1", "TLSv1.2" ]
 xpack.security.http.ssl.supported_protocols: [ "TLSv1.1", "TLSv1.2" ]</echo>
 		</sequential>
 	</macrodef>
@@ -279,9 +279,9 @@ elasticsearch.username: "kibana_system"</echo>
 				</else>
 			</if>
 
-			<get-testcase-property if:set="env.JENKINS_HOME" property.name="elasticsearch.jdk11.enabled" />
+			<get-testcase-property if:set="env.JENKINS_HOME" property.name="elasticsearch.jdk17.enabled" />
 
-			<echo append="true" file="${elastic.kibana.dir}/config/node.options" if:true="${elasticsearch.jdk11.enabled}">${line.separator}--tls-max-v1.2</echo>
+			<echo append="true" file="${elastic.kibana.dir}/config/node.options" if:true="${elasticsearch.jdk17.enabled}">${line.separator}--tls-max-v1.2</echo>
 		</sequential>
 	</macrodef>
 
@@ -876,9 +876,9 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 				</else>
 			</if>
 
-			<get-testcase-property if:set="env.JENKINS_HOME" property.name="elasticsearch.jdk11.enabled" />
+			<get-testcase-property if:set="env.JENKINS_HOME" property.name="elasticsearch.jdk17.enabled" />
 
-			<configure-elasticsearch-jdk elasticsearch.java.home="/opt/java/jdk11" if:true="${elasticsearch.jdk11.enabled}" />
+			<configure-elasticsearch-jdk elasticsearch.java.home="/opt/java/jdk17" if:true="${elasticsearch.jdk17.enabled}" />
 
 			<antcall target="start-elasticsearch-node" />
 

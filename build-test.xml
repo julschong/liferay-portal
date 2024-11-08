@@ -10809,7 +10809,7 @@ org.apache.catalina.tribes.level = FINE]]>
 			</not>
 			<then>
 				<get-testcase-property property.name="osgi.modules.includes" />
-				<get-testcase-property property.name="osgi.modules.includes.jdk11" />
+				<get-testcase-property property.name="osgi.modules.includes.jdk17" />
 			</then>
 		</if>
 
@@ -10821,12 +10821,12 @@ org.apache.catalina.tribes.level = FINE]]>
 		</if>
 
 		<if>
-			<isset property="osgi.modules.includes.jdk11" />
+			<isset property="osgi.modules.includes.jdk17" />
 			<then>
 				<deploy-osgi-modules
-					java.jdk.type="oracle"
-					java.jdk.version="11"
-					osgi.modules="${osgi.modules.includes.jdk11}"
+					java.jdk.type="open"
+					java.jdk.version="17"
+					osgi.modules="${osgi.modules.includes.jdk17}"
 				/>
 			</then>
 		</if>

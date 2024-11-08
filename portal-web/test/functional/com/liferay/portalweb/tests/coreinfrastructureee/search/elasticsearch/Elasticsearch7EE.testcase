@@ -217,14 +217,14 @@ definition {
 
 	@ignore = "true"
 	@priority = 5
-	test XPackPkiAuthenticationWithJDK11 {
+	test XPackPkiAuthenticationWithJDK17 {
 		property elastic.pki.authentication.enabled = "true";
 		property elastic.xpack.enabled = "true";
-		property elasticsearch.jdk11.enabled = "true";
-		property environment.acceptance = "openjdk11";
-		property portal.release = "openjdk11";
-		property portal.suite.search.engine = "openjdk11";
-		property portal.upstream = "openjdk11";
+		property elasticsearch.jdk17.enabled = "true";
+		property environment.acceptance = "openjdk17";
+		property portal.release = "openjdk17";
+		property portal.suite.search.engine = "openjdk17";
+		property portal.upstream = "openjdk17";
 		property remote.elasticsearch.enabled = "true";
 		property search.environment.suite.exclude = "true";
 		property test.liferay.virtual.instance = "false";
@@ -293,13 +293,13 @@ definition {
 
 	@ignore = "true"
 	@priority = 5
-	test XPackWithJDK11 {
+	test XPackWithJDK17 {
 		property elastic.xpack.enabled = "true";
-		property elasticsearch.jdk11.enabled = "true";
-		property environment.acceptance = "openjdk11";
-		property portal.release = "openjdk11";
-		property portal.suite.search.engine = "openjdk11";
-		property portal.upstream = "openjdk11";
+		property elasticsearch.jdk17.enabled = "true";
+		property environment.acceptance = "openjdk17";
+		property portal.release = "openjdk17";
+		property portal.suite.search.engine = "openjdk17";
+		property portal.upstream = "openjdk17";
 		property remote.elasticsearch.enabled = "true";
 		property search.environment.suite.exclude = "true";
 		property test.assert.warning.exceptions = "true";
