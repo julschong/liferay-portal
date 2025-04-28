@@ -12,7 +12,9 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -48,7 +50,11 @@ public class EditRolesUsersDisplayContext {
 	}
 
 	public SearchContainer<User> getSearchContainer() throws PortalException {
-		if (_userSearch != null) {
+		if ((_userSearch != null) ||
+			!GroupPermissionUtil.contains(
+				_themeDisplay.getPermissionChecker(), _getGroupId(),
+				ActionKeys.ASSIGN_USER_ROLES)) {
+
 			return _userSearch;
 		}
 
