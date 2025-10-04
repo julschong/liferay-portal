@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.membershippolicy.MembershipPolicyException;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.ListTypeLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
@@ -610,14 +611,38 @@ public class EditUserMVCActionCommand
 		String parameterValue = ParamUtil.getString(
 			portletRequest, parameterName);
 
-		if (Validator.isNull(parameterValue)) {
-			return 0;
+		if (Validator.isNotNull(parameterValue)) {
+			ListType listType = _listTypeLocalService.addListType(
+				companyId, parameterValue, type);
+
+			return listType.getListTypeId();
 		}
 
-		ListType listType = _listTypeLocalService.addListType(
-			companyId, parameterValue, type);
+		User currentUser = _portal.getUser(portletRequest);
+		User selectedUser = _portal.getSelectedUser(portletRequest);
 
-		return listType.getListTypeId();
+		if (type.equals(ListTypeConstants.CONTACT_PREFIX)) {
+			if (!UsersAdminUtil.hasUpdateFieldPermission(
+					_permissionCheckerFactory.create(currentUser), currentUser,
+					selectedUser, "prefix")) {
+
+				Contact contact = selectedUser.getContact();
+
+				return contact.getPrefixListTypeId();
+			}
+		}
+		else {
+			if (!UsersAdminUtil.hasUpdateFieldPermission(
+					_permissionCheckerFactory.create(currentUser), currentUser,
+					selectedUser, "suffix")) {
+
+				Contact contact = selectedUser.getContact();
+
+				return contact.getSuffixListTypeId();
+			}
+		}
+
+		return 0;
 	}
 
 	private WorkflowTask _getWorkflowTask(
@@ -694,6 +719,9 @@ public class EditUserMVCActionCommand
 
 	@Reference
 	private ListTypeLocalService _listTypeLocalService;
+
+	@Reference
+	private PermissionCheckerFactory _permissionCheckerFactory;
 
 	@Reference
 	private Portal _portal;

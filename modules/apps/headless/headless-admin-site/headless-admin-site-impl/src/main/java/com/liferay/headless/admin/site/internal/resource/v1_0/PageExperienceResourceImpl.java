@@ -10,6 +10,7 @@ import com.liferay.headless.admin.site.internal.resource.v1_0.util.GroupUtil;
 import com.liferay.headless.admin.site.internal.resource.v1_0.util.SegmentsExperienceUtil;
 import com.liferay.headless.admin.site.internal.resource.v1_0.util.ServiceContextUtil;
 import com.liferay.headless.admin.site.resource.v1_0.PageExperienceResource;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
@@ -20,6 +21,8 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
+import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
+import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.segments.exception.NoSuchExperienceException;
 import com.liferay.segments.model.SegmentsExperience;
@@ -186,7 +189,8 @@ public class PageExperienceResourceImpl extends BasePageExperienceResourceImpl {
 
 		return _toPageExperience(
 			SegmentsExperienceUtil.updateSegmentsExperience(
-				layout, pageExperience, segmentsExperience,
+				_infoItemServiceRegistry, layout, pageExperience,
+				segmentsExperience,
 				ServiceContextUtil.createServiceContext(
 					groupId, contextHttpServletRequest,
 					contextUser.getUserId())));
@@ -216,7 +220,7 @@ public class PageExperienceResourceImpl extends BasePageExperienceResourceImpl {
 
 		return _toPageExperience(
 			SegmentsExperienceUtil.addSegmentsExperience(
-				layout, pageExperience,
+				_infoItemServiceRegistry, layout, pageExperience,
 				ServiceContextUtil.createServiceContext(
 					groupId, contextHttpServletRequest,
 					contextUser.getUserId())));
@@ -243,9 +247,18 @@ public class PageExperienceResourceImpl extends BasePageExperienceResourceImpl {
 			throw new UnsupportedOperationException();
 		}
 
+		DTOConverterContext dtoConverterContext =
+			new DefaultDTOConverterContext(null, null, null, null, null);
+
+		dtoConverterContext.setAttribute(
+			"scopeGroupId", layoutPageTemplateStructureRel.getGroupId());
+
 		return _pageExperienceDTOConverter.toDTO(
-			layoutPageTemplateStructureRel);
+			dtoConverterContext, layoutPageTemplateStructureRel);
 	}
+
+	@Reference
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

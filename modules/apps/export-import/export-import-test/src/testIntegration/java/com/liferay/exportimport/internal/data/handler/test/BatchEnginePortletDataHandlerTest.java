@@ -596,8 +596,9 @@ public class BatchEnginePortletDataHandlerTest {
 			JSONUtil.putAll(
 				_getExternalReferenceCodes(objectEntries)
 			).toString(),
-			_getExternalReferenceCodesJSON(
-				objectDefinition1.getName(), file, group.getGroupId()),
+			_getExternalReferenceCodesJSONArray(
+				objectDefinition1.getName(), file, group.getGroupId()
+			).toString(),
 			JSONCompareMode.LENIENT);
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
@@ -614,8 +615,9 @@ public class BatchEnginePortletDataHandlerTest {
 			JSONUtil.putAll(
 				objectEntry.getExternalReferenceCode()
 			).toString(),
-			_getExternalReferenceCodesJSON(
-				objectDefinition2.getName(), file, group.getGroupId()),
+			_getExternalReferenceCodesJSONArray(
+				objectDefinition2.getName(), file, group.getGroupId()
+			).toString(),
 			JSONCompareMode.LENIENT);
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
@@ -633,15 +635,17 @@ public class BatchEnginePortletDataHandlerTest {
 			JSONUtil.putAll(
 				_getExternalReferenceCodes(objectEntries)
 			).toString(),
-			_getExternalReferenceCodesJSON(
-				objectDefinition1.getName(), file, group.getGroupId()),
+			_getExternalReferenceCodesJSONArray(
+				objectDefinition1.getName(), file, group.getGroupId()
+			).toString(),
 			JSONCompareMode.LENIENT);
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
 				objectEntry.getExternalReferenceCode()
 			).toString(),
-			_getExternalReferenceCodesJSON(
-				objectDefinition2.getName(), file, group.getGroupId()),
+			_getExternalReferenceCodesJSONArray(
+				objectDefinition2.getName(), file, group.getGroupId()
+			).toString(),
 			JSONCompareMode.LENIENT);
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
@@ -800,19 +804,6 @@ public class BatchEnginePortletDataHandlerTest {
 
 		protected long id;
 
-	}
-
-	protected LogCapture getLogCapture(boolean expectError) {
-		LogCapture logCapture = null;
-
-		if (expectError) {
-			logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.exportimport.internal.lifecycle." +
-					"LoggerExportImportLifecycleListener",
-				LoggerTestUtil.ERROR);
-		}
-
-		return logCapture;
 	}
 
 	private DLFileEntry _addDLFileEntry(String content, long groupId)
@@ -1146,19 +1137,27 @@ public class BatchEnginePortletDataHandlerTest {
 
 			Element rootElement = document.getRootElement();
 
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-			for (Element deletionSystemEventElement :
-					rootElement.elements("deletion-system-event")) {
-
-				String classExternalReferenceCode =
+			return JSONUtil.toJSONArray(
+				rootElement.elements("deletion-system-event"),
+				deletionSystemEventElement ->
 					deletionSystemEventElement.attributeValue(
-						"class-external-reference-code");
+						"class-external-reference-code"),
+				exception -> {
+					throw new RuntimeException(exception);
+				});
+		}
+	}
 
-				jsonArray.put(classExternalReferenceCode);
-			}
+	private JSONArray _getExportedObjectEntriesJSONArray(
+			String className, File file, long groupId)
+		throws Exception {
 
-			return jsonArray;
+		try (ZipFile zipFile = new ZipFile(file)) {
+			ZipEntry zipEntry = zipFile.getEntry(
+				_getBatchFileNameWithPath(className + ".json", groupId));
+
+			return JSONFactoryUtil.createJSONArray(
+				StringUtil.read(zipFile.getInputStream(zipEntry)));
 		}
 	}
 
@@ -1222,7 +1221,7 @@ public class BatchEnginePortletDataHandlerTest {
 		return externalReferenceCodes;
 	}
 
-	private String _getExternalReferenceCodesJSON(
+	private JSONArray _getExternalReferenceCodesJSONArray(
 			String className, File file, long groupId)
 		throws Exception {
 
@@ -1246,8 +1245,21 @@ public class BatchEnginePortletDataHandlerTest {
 				jsonArray1.put(jsonObject.getString("externalReferenceCode"));
 			}
 
-			return jsonArray1.toString();
+			return jsonArray1;
 		}
+	}
+
+	private LogCapture _getLogCapture(boolean expectError) {
+		LogCapture logCapture = null;
+
+		if (expectError) {
+			logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.batch.engine.internal.strategy." +
+					"OnErrorContinueBatchEngineImportStrategy",
+				LoggerTestUtil.ERROR);
+		}
+
+		return logCapture;
 	}
 
 	private ManifestSummary _getManifestSummary(
@@ -1270,13 +1282,21 @@ public class BatchEnginePortletDataHandlerTest {
 		return groupId;
 	}
 
+	private String _getObjectEntryScopeKey(Group group, String scope) {
+		if (Objects.equals(ObjectDefinitionConstants.SCOPE_COMPANY, scope)) {
+			return null;
+		}
+
+		return group.getGroupKey();
+	}
+
 	private ExportImportConfiguration _importLayouts(
 			boolean deletions, boolean expectError, File file, long groupId,
 			boolean includeLayoutSetLayoutsPortlet, boolean privateLayout,
 			ObjectDefinition... objectDefinitions)
 		throws Exception {
 
-		try (LogCapture logCapture = getLogCapture(expectError)) {
+		try (LogCapture logCapture = _getLogCapture(expectError)) {
 			ExportImportConfiguration exportImportConfiguration =
 				_exportImportConfigurationLocalService.
 					addDraftExportImportConfiguration(
@@ -1432,19 +1452,75 @@ public class BatchEnginePortletDataHandlerTest {
 				TestPropsValues.getUserId());
 		}
 
-		// TODO: Export both portlets at once after LPD-62165 is fixed
+		File larFile = _exportLayouts(
+			false, group.getGroupId(), false, new long[0], objectDefinition1,
+			objectDefinition2);
 
-		File larFile1 = _exportLayouts(
-			false, group.getGroupId(), false, new long[0], objectDefinition1);
-		File larFile2 = _exportLayouts(
-			false, group.getGroupId(), false, new long[0], objectDefinition2);
+		JSONArray exportedObjectEntriesJSONArray =
+			_getExportedObjectEntriesJSONArray(
+				objectDefinition2.getName(), larFile, group.getGroupId());
+
+		if (Objects.equals(
+				ObjectRelationshipConstants.TYPE_MANY_TO_MANY, type)) {
+
+			for (int i = 0; i < objectEntries1.length; i++) {
+				ObjectEntry objectEntry = objectEntries1[i];
+
+				JSONAssert.assertEquals(
+					JSONUtil.put(
+						_toSimplifiedObjectEntryJSONObject(
+							group, objectEntry, scope)
+					).toString(),
+					exportedObjectEntriesJSONArray.getJSONObject(
+						i
+					).getJSONArray(
+						objectRelationship.getName()
+					).toString(),
+					JSONCompareMode.STRICT);
+			}
+
+			exportedObjectEntriesJSONArray = _getExportedObjectEntriesJSONArray(
+				objectDefinition1.getName(), larFile, group.getGroupId());
+
+			for (int i = 0; i < objectEntries2.length; i++) {
+				ObjectEntry objectEntry = objectEntries2[i];
+
+				JSONAssert.assertEquals(
+					JSONUtil.put(
+						_toSimplifiedObjectEntryJSONObject(
+							group, objectEntry, scope)
+					).toString(),
+					exportedObjectEntriesJSONArray.getJSONObject(
+						i
+					).getJSONArray(
+						objectRelationship.getName()
+					).toString(),
+					JSONCompareMode.STRICT);
+			}
+		}
+		else {
+			for (int i = 0; i < objectEntries1.length; i++) {
+				ObjectEntry objectEntry = objectEntries1[i];
+
+				JSONAssert.assertEquals(
+					_toSimplifiedObjectEntryJSONObject(
+						group, objectEntry, scope
+					).toString(),
+					exportedObjectEntriesJSONArray.getJSONObject(
+						i
+					).getJSONObject(
+						objectRelationship.getName()
+					).toString(),
+					JSONCompareMode.STRICT);
+			}
+		}
 
 		_deleteObjectEntries(objectEntries1);
 		_deleteObjectEntries(objectEntries2);
 
 		if (childFirst) {
 			_importLayouts(
-				false, false, larFile2, group.getGroupId(), objectDefinition2);
+				false, false, larFile, group.getGroupId(), objectDefinition2);
 
 			_assertObjectEntries(
 				true, objectDefinition1.getObjectDefinitionId(),
@@ -1454,7 +1530,7 @@ public class BatchEnginePortletDataHandlerTest {
 				objectEntries2);
 
 			_importLayouts(
-				false, false, larFile1, group.getGroupId(), objectDefinition1);
+				false, false, larFile, group.getGroupId(), objectDefinition1);
 
 			_assertObjectEntries(
 				false, objectDefinition1.getObjectDefinitionId(),
@@ -1462,7 +1538,7 @@ public class BatchEnginePortletDataHandlerTest {
 		}
 		else {
 			_importLayouts(
-				false, false, larFile1, group.getGroupId(), objectDefinition1);
+				false, false, larFile, group.getGroupId(), objectDefinition1);
 
 			_assertObjectEntries(
 				false, objectDefinition1.getObjectDefinitionId(),
@@ -1497,7 +1573,7 @@ public class BatchEnginePortletDataHandlerTest {
 			}
 
 			_importLayouts(
-				false, false, larFile2, group.getGroupId(), objectDefinition2);
+				false, false, larFile, group.getGroupId(), objectDefinition2);
 
 			_assertObjectEntries(
 				false, objectDefinition2.getObjectDefinitionId(),
@@ -1557,6 +1633,23 @@ public class BatchEnginePortletDataHandlerTest {
 							new Date(System.currentTimeMillis() - 10000),
 							new Date(System.currentTimeMillis() - 5000), null),
 					portletDataHandler)));
+	}
+
+	/**
+	 * @see com.liferay.object.rest.internal.dto.v1_0.converter.ObjectEntryDTOConverter#_toSimplifiedObjectEntry(
+	 *      com.liferay.object.rest.dto.v1_0.ObjectEntry, ObjectDefinition,
+	 *      ObjectEntryVersion, ObjectEntry)
+	 */
+	private JSONObject _toSimplifiedObjectEntryJSONObject(
+		Group group, ObjectEntry objectEntry, String scope) {
+
+		return JSONUtil.put(
+			"externalReferenceCode", objectEntry.getExternalReferenceCode()
+		).put(
+			"scopeId", (Long)_getObjectEntryGroupId(group.getGroupId(), scope)
+		).put(
+			"scopeKey", _getObjectEntryScopeKey(group, scope)
+		);
 	}
 
 	private static final String _OBJECT_FIELD_NAME_ATTACHMENT_DOCS_AND_MEDIA =

@@ -10,6 +10,7 @@ import com.liferay.headless.admin.site.internal.resource.v1_0.layout.structure.i
 import com.liferay.headless.admin.site.internal.resource.v1_0.util.GroupUtil;
 import com.liferay.headless.admin.site.internal.resource.v1_0.util.LayoutStructureUtil;
 import com.liferay.headless.admin.site.resource.v1_0.PageElementResource;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
 import com.liferay.layout.util.structure.LayoutStructure;
@@ -145,7 +146,8 @@ public class PageElementResourceImpl extends BasePageElementResourceImpl {
 		}
 
 		return _pageElementDTOConverter.toDTO(
-			_getDTOConverterContext(layoutStructure), layoutStructureItem);
+			_getDTOConverterContext(layoutStructure, groupId),
+			layoutStructureItem);
 	}
 
 	@Override
@@ -198,7 +200,7 @@ public class PageElementResourceImpl extends BasePageElementResourceImpl {
 				LayoutStructureItemUtil.getChildrenItemIds(
 					layoutStructureItem.getItemId(), layoutStructure),
 				itemId -> _pageElementDTOConverter.toDTO(
-					_getDTOConverterContext(layoutStructure),
+					_getDTOConverterContext(layoutStructure, groupId),
 					layoutStructure.getLayoutStructureItem(itemId))));
 	}
 
@@ -247,7 +249,7 @@ public class PageElementResourceImpl extends BasePageElementResourceImpl {
 				LayoutStructureItemUtil.getChildrenItemIds(
 					layoutStructure.getMainItemId(), layoutStructure),
 				itemId -> _pageElementDTOConverter.toDTO(
-					_getDTOConverterContext(layoutStructure),
+					_getDTOConverterContext(layoutStructure, groupId),
 					layoutStructure.getLayoutStructureItem(itemId))));
 	}
 
@@ -356,8 +358,9 @@ public class PageElementResourceImpl extends BasePageElementResourceImpl {
 			LayoutStructureUtil.addLayoutStructureItem(
 				layoutStructure,
 				new LayoutStructureItemImporterContext(
-					contextCompany.getCompanyId(), groupId, layout,
-					segmentsExperienceId, contextUser.getUserId()),
+					contextCompany.getCompanyId(), groupId,
+					_infoItemServiceRegistry, layout, segmentsExperienceId,
+					contextUser.getUserId()),
 				pageElement);
 
 		_layoutPageTemplateStructureLocalService.
@@ -366,20 +369,25 @@ public class PageElementResourceImpl extends BasePageElementResourceImpl {
 				layoutStructure.toString());
 
 		return _pageElementDTOConverter.toDTO(
-			_getDTOConverterContext(layoutStructure), layoutStructureItem);
+			_getDTOConverterContext(layoutStructure, groupId),
+			layoutStructureItem);
 	}
 
 	private DTOConverterContext _getDTOConverterContext(
-		LayoutStructure layoutStructure) {
+		LayoutStructure layoutStructure, long scopeGroupId) {
 
 		DTOConverterContext dtoConverterContext =
 			new DefaultDTOConverterContext(null, null, null, null, null);
 
 		dtoConverterContext.setAttribute(
 			LayoutStructure.class.getName(), layoutStructure);
+		dtoConverterContext.setAttribute("scopeGroupId", scopeGroupId);
 
 		return dtoConverterContext;
 	}
+
+	@Reference
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
