@@ -301,7 +301,7 @@ public class ObjectDefinitionLocalServiceImpl
 
 		objectDefinition = objectDefinitionPersistence.update(objectDefinition);
 
-		_addOrUpdateObjectDefinitionPLOEntries(objectDefinition);
+		addOrUpdateObjectDefinitionPLOEntries(objectDefinition);
 
 		_resourceLocalService.addResources(
 			objectDefinition.getCompanyId(), 0, objectDefinition.getUserId(),
@@ -317,6 +317,32 @@ public class ObjectDefinitionLocalServiceImpl
 			ObjectEntryTable.INSTANCE.objectEntryId.getName(), userId);
 
 		return _updateTitleObjectFieldId(objectDefinition, null);
+	}
+
+	@Override
+	public void addOrUpdateObjectDefinitionPLOEntries(
+			ObjectDefinition objectDefinition)
+		throws PortalException {
+
+		try {
+			for (Locale locale : _language.getAvailableLocales()) {
+				String languageId = LocaleUtil.toLanguageId(locale);
+
+				_ploEntryLocalService.addOrUpdatePLOEntry(
+					objectDefinition.getCompanyId(),
+					objectDefinition.getUserId(),
+					"model.resource." + objectDefinition.getClassName(),
+					languageId, objectDefinition.getLabel(locale));
+				_ploEntryLocalService.addOrUpdatePLOEntry(
+					objectDefinition.getCompanyId(),
+					objectDefinition.getUserId(),
+					"model.resource." + objectDefinition.getResourceName(),
+					languageId, objectDefinition.getPluralLabel(locale));
+			}
+		}
+		catch (PortalException portalException) {
+			_handleException(portalException, null, null);
+		}
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -1204,6 +1230,27 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
+	public ObjectDefinition updateClassName(long objectDefinitionId)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition =
+			objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
+
+		String className = _getClassName(
+			objectDefinition.getClassName(), objectDefinition.isModifiable(),
+			objectDefinition.isSystem());
+
+		if (StringUtil.equals(objectDefinition.getClassName(), className)) {
+			return objectDefinition;
+		}
+
+		objectDefinition.setClassName(className);
+
+		return objectDefinitionPersistence.update(objectDefinition);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
 	public ObjectDefinition updateCustomObjectDefinition(
 			String externalReferenceCode, long objectDefinitionId,
 			long accountEntryRestrictedObjectFieldId,
@@ -1549,7 +1596,7 @@ public class ObjectDefinitionLocalServiceImpl
 		if (objectDefinition.isModifiable() ||
 			!objectDefinition.isUnmodifiableSystemObject()) {
 
-			_addOrUpdateObjectDefinitionPLOEntries(objectDefinition);
+			addOrUpdateObjectDefinitionPLOEntries(objectDefinition);
 
 			dbTableName = "ObjectEntry";
 		}
@@ -1648,31 +1695,6 @@ public class ObjectDefinitionLocalServiceImpl
 				objectAction.getObjectActionTriggerKey(),
 				objectAction.getParametersUnicodeProperties(),
 				objectAction.isSystem());
-		}
-	}
-
-	private void _addOrUpdateObjectDefinitionPLOEntries(
-			ObjectDefinition objectDefinition)
-		throws PortalException {
-
-		try {
-			for (Locale locale : _language.getAvailableLocales()) {
-				String languageId = LocaleUtil.toLanguageId(locale);
-
-				_ploEntryLocalService.addOrUpdatePLOEntry(
-					objectDefinition.getCompanyId(),
-					objectDefinition.getUserId(),
-					"model.resource." + objectDefinition.getClassName(),
-					languageId, objectDefinition.getLabel(locale));
-				_ploEntryLocalService.addOrUpdatePLOEntry(
-					objectDefinition.getCompanyId(),
-					objectDefinition.getUserId(),
-					"model.resource." + objectDefinition.getResourceName(),
-					languageId, objectDefinition.getPluralLabel(locale));
-			}
-		}
-		catch (PortalException portalException) {
-			_handleException(portalException, null, null);
 		}
 	}
 
@@ -2680,7 +2702,7 @@ public class ObjectDefinitionLocalServiceImpl
 			objectDefinition, objectDefinitionSettings);
 
 		if (!objectDefinition.isUnmodifiableSystemObject()) {
-			_addOrUpdateObjectDefinitionPLOEntries(objectDefinition);
+			addOrUpdateObjectDefinitionPLOEntries(objectDefinition);
 		}
 
 		if (FeatureFlagManagerUtil.isEnabled(
